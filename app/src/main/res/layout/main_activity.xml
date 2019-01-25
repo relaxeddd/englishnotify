@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+                name="viewModel"
+                type="com.example.vchechin.testapp.ui.main.ViewModelMain" />
+    </data>
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_layout_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <fragment
+                    android:id="@+id/fragment_navigation_host"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:name="androidx.navigation.fragment.NavHostFragment"
+                    app:navGraph="@navigation/navigation_graph"
+                    app:defaultNavHost="true"/>
+            <Button
+                android:text="Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/button_test"
+                android:layout_gravity="center"/>
+
+            <TextView
+                    android:text="@{viewModel.email}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/textView"
+            android:textSize="24sp"/>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/navigation_view_main"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start|left"
+            app:headerLayout="@layout/header_navigation_main"
+            app:menu="@menu/menu_main_navigation" />
+
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+</layout>

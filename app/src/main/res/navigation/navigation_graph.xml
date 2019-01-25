@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/navigation_graph"
+            app:startDestination="@id/fragmentDictionary">
+
+    <fragment android:id="@+id/fragmentDictionary"
+              android:name="com.example.vchechin.testapp.ui.dictionary.FragmentDictionary"
+              android:label="main_fragment"
+              tools:layout="@layout/fragment_dictionary"/>
+
+    <fragment android:id="@+id/fragmentNotifications"
+              android:name="com.example.vchechin.testapp.ui.notifications.FragmentNotifications"
+              android:label="FragmentNotifications"/>
+
+</navigation>
