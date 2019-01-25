@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+                name="clickListener"
+                type="android.view.View.OnClickListener"/>
+        <variable
+                name="word"
+                type="com.example.vchechin.testapp.common.Word"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{clickListener}">
+
+        <TextView
+                android:text="@{word.eng}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/text_word_eng"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="@dimen/size_8"
+                app:layout_constraintEnd_toStartOf="@+id/text_word_transcription"
+                android:layout_marginEnd="@dimen/size_8"
+                app:layout_constraintBottom_toBottomOf="@+id/text_word_transcription"
+                app:layout_constraintTop_toTopOf="@+id/text_word_transcription"/>
+
+        <TextView
+                android:text="@{word.transcription}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/text_word_transcription"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="@dimen/size_8"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="@dimen/size_8"
+                android:layout_marginBottom="@dimen/size_8"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="@dimen/size_8"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+                android:text="@{word.rus}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/text_word_rus"
+                app:layout_constraintStart_toEndOf="@+id/text_word_transcription"
+                android:layout_marginStart="@dimen/size_8"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="@dimen/size_8"
+                app:layout_constraintTop_toTopOf="@+id/text_word_transcription"
+                app:layout_constraintBottom_toBottomOf="@+id/text_word_transcription"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

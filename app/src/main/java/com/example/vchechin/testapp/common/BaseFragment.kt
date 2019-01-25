@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 
 abstract class BaseFragment : Fragment() {
 
-    abstract fun getToolbarTitleResId() : Int
+    abstract fun getToolbarTitleResId(): Int
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

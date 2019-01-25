@@ -29,16 +29,10 @@
                     app:navGraph="@navigation/navigation_graph"
                     app:defaultNavHost="true"/>
             <Button
-                android:text="Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/button_test"
-                android:layout_gravity="center"/>
-
-            <TextView
-                    android:text="@{viewModel.email}"
+                    android:text="Test func"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:id="@+id/textView"
-            android:textSize="24sp"/>
+                    android:layout_height="wrap_content" android:id="@+id/button_test"
+            android:layout_gravity="center"/>
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

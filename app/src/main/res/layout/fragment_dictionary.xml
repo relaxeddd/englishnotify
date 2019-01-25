@@ -3,21 +3,40 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+                name="hasWords"
+                type="boolean" />
+
+    </data>
+
+    <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".ui.dictionary.FragmentDictionary">
+            android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_dictionary"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingLeft="@dimen/size_16"
+                android:paddingRight="@dimen/size_16"
+                android:visibility="@{hasWords ? View.VISIBLE : View.GONE}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/view_item_word"/>
 
         <TextView
-                android:id="@+id/message"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="MainFragment"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                android:id="@+id/text_dictionary_no_words"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/no_words"
+                android:textSize="24sp"
+                android:visibility="@{!hasWords ? View.VISIBLE : View.GONE}"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
 
 </layout>

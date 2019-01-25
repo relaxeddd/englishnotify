@@ -1,27 +1,29 @@
 package com.example.vchechin.testapp.ui.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.view.GravityCompat
 import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.example.vchechin.testapp.R
 import com.example.vchechin.testapp.common.ActivityBase
-import com.example.vchechin.testapp.data.LiveDataEmail
+import com.example.vchechin.testapp.common.InjectorUtils
+import com.example.vchechin.testapp.common.Word
 import com.example.vchechin.testapp.databinding.HeaderNavigationMainBinding
 import com.example.vchechin.testapp.databinding.MainActivityBinding
-import com.example.vchechin.testapp.model.CacheStub
-import kotlinx.android.synthetic.main.header_navigation_main.*
+import com.example.vchechin.testapp.model.db.AppDatabase
 import kotlinx.android.synthetic.main.main_activity.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : ActivityBase() {
 
+    private val uiScope = CoroutineScope(Dispatchers.Main)
     lateinit var viewModel: ViewModelMain
     lateinit var binding: MainActivityBinding
     lateinit var bindingHeader: HeaderNavigationMainBinding
@@ -29,8 +31,10 @@ class MainActivity : ActivityBase() {
     override fun configureBinding() {
         super.configureBinding()
 
+        val factory = InjectorUtils.provideMainViewModelFactory(this)
+
         binding = DataBindingUtil.setContentView(this, R.layout.main_activity)
-        viewModel = ViewModelProviders.of(this).get(ViewModelMain::class.java)
+        viewModel = ViewModelProviders.of(this, factory).get(ViewModelMain::class.java)
         binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
         binding.executePendingBindings()
@@ -44,21 +48,6 @@ class MainActivity : ActivityBase() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        button_test.setOnClickListener {
-            CacheStub.email.set(CacheStub.email.get() + "s")
-        }
-
-        /*if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container, FragmentDictionary.newInstance())
-                .commitNow()
-        }*/
-
-        /*navigation_view_main.setNavigationItemSelectedListener {
-            //it.isChecked = true
-            drawer_layout_main.closeDrawers()
-            true
-        }*/
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu)
 
@@ -67,18 +56,28 @@ class MainActivity : ActivityBase() {
         navController.navigate(R.id.fragmentDictionary)
         NavigationUI.setupWithNavController(navigation_view_main, navController)
 
-        LiveDataEmail.observe(this, Observer {
-
-        })
+        button_test.setOnClickListener {
+            uiScope.launch {
+                testFunc()
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             android.R.id.home -> {
-                drawer_layout_main.openDrawer(GravityCompat.START)
+                with(drawer_layout_main) {
+                    if (isDrawerOpen(GravityCompat.START)) closeDrawers() else openDrawer(GravityCompat.START)
+                }
                 return true
             }
             else -> return super.onOptionsItemSelected(item)
+        }
+    }
+
+    private suspend fun testFunc() {
+        withContext(Dispatchers.IO) {
+            AppDatabase.getInstance(this@MainActivity).wordDao().insertAll(Word("Test", "Тест", "test"))
         }
     }
 }

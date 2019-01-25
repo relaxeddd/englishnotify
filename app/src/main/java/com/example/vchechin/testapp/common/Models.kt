@@ -1,3 +1,22 @@
 package com.example.vchechin.testapp.common
 
-data class Word(val eng: String = "", val rus: String = "", val transcription: String = "", val tags: ArrayList<String>)
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = USERS)
+data class User(
+
+    @PrimaryKey
+    val id: String = "",
+    val email: String = ""
+)
+
+@Entity(tableName = WORDS)
+data class Word(
+
+    @PrimaryKey
+    val eng: String = "",
+    val rus: String = "",
+    val transcription: String = ""
+    //val tags: ArrayList<String> TODO
+)

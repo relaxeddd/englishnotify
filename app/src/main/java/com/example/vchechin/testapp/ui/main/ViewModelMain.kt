@@ -1,9 +1,8 @@
 package com.example.vchechin.testapp.ui.main
 
 import androidx.lifecycle.ViewModel
-import com.example.vchechin.testapp.data.LiveDataEmail
+import com.example.vchechin.testapp.model.repository.RepositoryUser
 
-class ViewModelMain : ViewModel() {
-
-    val email = LiveDataEmail
+class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModel() {
+    val user = repositoryUser.user
 }
