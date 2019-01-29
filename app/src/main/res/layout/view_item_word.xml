@@ -19,41 +19,36 @@
 
         <TextView
                 android:text="@{word.eng}"
-                android:layout_width="wrap_content"
+                android:layout_width="126dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/text_word_eng"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="@dimen/size_8"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintEnd_toStartOf="@+id/text_word_transcription"
-                android:layout_marginEnd="@dimen/size_8"
-                app:layout_constraintBottom_toBottomOf="@+id/text_word_transcription"
-                app:layout_constraintTop_toTopOf="@+id/text_word_transcription"/>
+                app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="8dp"
+                android:maxLines="1"
+                android:ellipsize="end"/>
 
         <TextView
-                android:text="@{word.transcription}"
-                android:layout_width="wrap_content"
+                android:text="@{'[' + word.transcription + ']'}"
+                android:layout_width="126dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/text_word_transcription"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="@dimen/size_8"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="@dimen/size_8"
-                android:layout_marginBottom="@dimen/size_8"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginTop="@dimen/size_8"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintStart_toEndOf="@+id/text_word_eng"
+                app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/text_word_rus"
+                app:layout_constraintTop_toTopOf="@+id/text_word_eng"
+                android:ellipsize="end"
+                android:maxLines="1"/>
 
         <TextView
                 android:text="@{word.rus}"
-                android:layout_width="wrap_content"
+                android:layout_width="127dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/text_word_rus"
                 app:layout_constraintStart_toEndOf="@+id/text_word_transcription"
-                android:layout_marginStart="@dimen/size_8"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="@dimen/size_8"
                 app:layout_constraintTop_toTopOf="@+id/text_word_transcription"
-                app:layout_constraintBottom_toBottomOf="@+id/text_word_transcription"/>
+                android:ellipsize="end"
+                android:maxLines="1"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

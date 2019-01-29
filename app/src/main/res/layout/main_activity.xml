@@ -12,10 +12,10 @@
                 type="com.example.vchechin.testapp.ui.main.ViewModelMain" />
     </data>
 
-    <androidx.drawerlayout.widget.DrawerLayout
+    <!--<androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent">-->
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
@@ -28,22 +28,27 @@
                     android:name="androidx.navigation.fragment.NavHostFragment"
                     app:navGraph="@navigation/navigation_graph"
                     app:defaultNavHost="true"/>
-            <Button
-                    android:text="Test func"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:id="@+id/button_test"
-            android:layout_gravity="center"/>
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                    android:id="@+id/navigation_view_main"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:background="@color/colorPrimary"
+                    app:itemIconTint="@drawable/selector_bottom_navigation"
+                    app:itemTextColor="@drawable/selector_bottom_navigation"
+                    app:menu="@menu/menu_main_navigation" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-        <com.google.android.material.navigation.NavigationView
+        <!--<com.google.android.material.navigation.NavigationView
             android:id="@+id/navigation_view_main"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start|left"
             app:headerLayout="@layout/header_navigation_main"
-            app:menu="@menu/menu_main_navigation" />
+            app:menu="@menu/menu_main_navigation" />-->
 
-    </androidx.drawerlayout.widget.DrawerLayout>
+    <!--</androidx.drawerlayout.widget.DrawerLayout>-->
 
 </layout>

@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.core.view.GravityCompat
 import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -21,49 +22,53 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MainActivity : ActivityBase() {
+class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>() {
 
     private val uiScope = CoroutineScope(Dispatchers.Main)
-    lateinit var viewModel: ViewModelMain
-    lateinit var binding: MainActivityBinding
     lateinit var bindingHeader: HeaderNavigationMainBinding
+
+    override fun getLayoutResId() = R.layout.main_activity
+    override fun getViewModelFactory() = InjectorUtils.provideMainViewModelFactory(this)
+    override fun getViewModelClass(): Class<ViewModelMain> = ViewModelMain::class.java
 
     override fun configureBinding() {
         super.configureBinding()
 
-        val factory = InjectorUtils.provideMainViewModelFactory(this)
+        binding.viewModel = viewModel
+
+        /*val factory = InjectorUtils.provideMainViewModelFactory(this)
 
         binding = DataBindingUtil.setContentView(this, R.layout.main_activity)
         viewModel = ViewModelProviders.of(this, factory).get(ViewModelMain::class.java)
         binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
-        binding.executePendingBindings()
+        binding.executePendingBindings()*/
 
-        bindingHeader = HeaderNavigationMainBinding.bind(binding.navigationViewMain.getHeaderView(0))
+        /*bindingHeader = HeaderNavigationMainBinding.bind(binding.navigationViewMain.getHeaderView(0))
         bindingHeader.viewModel = viewModel
         bindingHeader.setLifecycleOwner(this)
-        bindingHeader.executePendingBindings()
+        bindingHeader.executePendingBindings()*/
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu)
+        //supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        //supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu)
 
         val navController: NavController = Navigation.findNavController(this, R.id.fragment_navigation_host)
 
         navController.navigate(R.id.fragmentDictionary)
         NavigationUI.setupWithNavController(navigation_view_main, navController)
 
-        button_test.setOnClickListener {
+        /*button_test.setOnClickListener {
             uiScope.launch {
                 testFunc()
             }
-        }
+        }*/
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    /*override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             android.R.id.home -> {
                 with(drawer_layout_main) {
@@ -73,7 +78,7 @@ class MainActivity : ActivityBase() {
             }
             else -> return super.onOptionsItemSelected(item)
         }
-    }
+    }*/
 
     private suspend fun testFunc() {
         withContext(Dispatchers.IO) {

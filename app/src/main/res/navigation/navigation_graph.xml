@@ -13,4 +13,8 @@
               android:name="com.example.vchechin.testapp.ui.notifications.FragmentNotifications"
               android:label="FragmentNotifications"/>
 
+    <fragment android:id="@+id/fragmentSettings"
+              android:name="com.example.vchechin.testapp.ui.settings.FragmentSettings"
+              android:label="FragmentSettings"/>
+
 </navigation>
