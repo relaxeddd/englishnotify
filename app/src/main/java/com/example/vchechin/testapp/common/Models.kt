@@ -9,6 +9,7 @@ data class User(
     @PrimaryKey
     val id: String = "",
     val email: String = ""
+
 )
 
 @Entity(tableName = WORDS)
@@ -17,6 +18,6 @@ data class Word(
     @PrimaryKey
     val eng: String = "",
     val rus: String = "",
-    val transcription: String = ""
-    //val tags: ArrayList<String> TODO
+    val transcription: String = "",
+    val tags: List<String> = ArrayList()
 )

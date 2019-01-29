@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.vchechin.testapp.common.*
 import com.example.vchechin.testapp.common.User
@@ -12,8 +13,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
+import kotlin.collections.ArrayList
 
-@Database(entities = arrayOf(User::class, Word::class), version = 2, exportSchema = false)
+@Database(entities = [User::class, Word::class], version = 2, exportSchema = false)
+@TypeConverters(ConverterListStr::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao
@@ -46,9 +50,9 @@ abstract class AppDatabase : RoomDatabase() {
 
         private suspend fun addDefaultWords(db: AppDatabase) {
             withContext(Dispatchers.IO) {
-                db.wordDao().insertAll(Word("Dog", "Собака", "dog"),
-                    Word("Different", "Разные", "ˈdif(ə)rənt"),
-                    Word("Suspend", "Приостановить", "səˈspend"))
+                db.wordDao().insertAll(Word("Dog", "Собака", "dog", arrayListOf("noun", "top1")),
+                    Word("Different", "Разные", "ˈdif(ə)rənt", arrayListOf("adjective", "top1")),
+                    Word("Suspend", "Приостановить", "səˈspend", arrayListOf("verb")))
                 db.userDao().insertAll(User(USER_ID_TEST, "vadim25000@yandex.ru"))
             }
         }

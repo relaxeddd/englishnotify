@@ -24,14 +24,14 @@ class AdapterWords : ListAdapter<Word, AdapterWords.ViewHolder>(WordDiffCallback
         getItem(position).let { word ->
             with(holder) {
                 itemView.tag = word.eng
-                bind(createOnClickListener(word.eng), word)
+                bind(createOnClickListener(word), word)
             }
         }
     }
 
-    private fun createOnClickListener(eng: String): View.OnClickListener {
+    private fun createOnClickListener(word: Word): View.OnClickListener {
         return View.OnClickListener {
-            showToast(eng)
+            showToast(word.tags.toString())
         }
     }
 

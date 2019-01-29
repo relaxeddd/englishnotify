@@ -16,11 +16,13 @@ import com.example.vchechin.testapp.common.Word
 import com.example.vchechin.testapp.databinding.HeaderNavigationMainBinding
 import com.example.vchechin.testapp.databinding.MainActivityBinding
 import com.example.vchechin.testapp.model.db.AppDatabase
+import com.example.vchechin.testapp.model.db.ConverterListStr
 import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.Arrays.asList
 
 class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>() {
 
