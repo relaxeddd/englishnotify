@@ -11,4 +11,12 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
     override fun getToolbarTitleResId() = R.string.notifications
     override fun getViewModelFactory() = InjectorUtils.provideNotificationsViewModelFactory(requireContext())
     override fun getViewModelClass() = ViewModelNotifications::class.java
+    override fun getMenuResId() = R.menu.menu_accept
+    override fun isHomeMenuButtonEnabled() = true
+    override fun getHomeMenuButtonIconResId() = R.drawable.ic_close
+
+    override fun configureBinding() {
+        super.configureBinding()
+        binding.viewModel = viewModel
+    }
 }

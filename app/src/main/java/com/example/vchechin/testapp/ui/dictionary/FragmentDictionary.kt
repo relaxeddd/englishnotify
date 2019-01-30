@@ -1,5 +1,7 @@
 package com.example.vchechin.testapp.ui.dictionary
 
+import android.view.Menu
+import android.view.MenuInflater
 import androidx.lifecycle.Observer
 import com.example.vchechin.testapp.R
 import com.example.vchechin.testapp.common.BaseFragment

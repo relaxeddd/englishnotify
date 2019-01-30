@@ -1,6 +1,8 @@
 package com.example.vchechin.testapp.common
 
 import android.os.Bundle
+import android.view.MenuItem
+import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -13,6 +15,7 @@ import com.example.vchechin.testapp.R
 
 abstract class ActivityBase<VM : ViewModel, B : ViewDataBinding> : AppCompatActivity(), LifecycleOwner {
 
+    private var listenerHomeMenuButton: () -> Unit = {}
     protected lateinit var binding: B
     protected lateinit var viewModel: VM
 
@@ -29,10 +32,25 @@ abstract class ActivityBase<VM : ViewModel, B : ViewDataBinding> : AppCompatActi
 
         binding = DataBindingUtil.setContentView(this, getLayoutResId())
         viewModel = ViewModelProviders.of(this, factory).get(getViewModelClass())
-
         configureBinding()
-
         binding.setLifecycleOwner(this)
         binding.executePendingBindings()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            android.R.id.home -> {
+                listenerHomeMenuButton.invoke()
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
+
+    fun configureMenu(isShowHomeMenuButton: Boolean = false, homeMenuButtonIconResId: Int,
+                      clickListener: () -> Unit) {
+        supportActionBar?.setDisplayHomeAsUpEnabled(isShowHomeMenuButton)
+        supportActionBar?.setHomeAsUpIndicator(homeMenuButtonIconResId)
+        listenerHomeMenuButton = clickListener
     }
 }

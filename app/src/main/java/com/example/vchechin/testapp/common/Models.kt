@@ -8,8 +8,8 @@ data class User(
 
     @PrimaryKey
     val id: String = "",
-    val email: String = ""
-
+    val email: String = "",
+    val receiveNotifications: Boolean = true
 )
 
 @Entity(tableName = WORDS)

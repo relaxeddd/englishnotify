@@ -24,7 +24,8 @@ object InjectorUtils {
     }
 
     fun provideNotificationsViewModelFactory(context: Context): NotificationsViewModelFactory {
-        return NotificationsViewModelFactory()
+        val repository = RepositoryFactory.getUserRepository(context)
+        return NotificationsViewModelFactory(repository)
     }
 
     fun provideSettingsViewModelFactory(context: Context): SettingsViewModelFactory {

@@ -53,7 +53,7 @@ abstract class AppDatabase : RoomDatabase() {
                 db.wordDao().insertAll(Word("Dog", "Собака", "dog", arrayListOf("noun", "top1")),
                     Word("Different", "Разные", "ˈdif(ə)rənt", arrayListOf("adjective", "top1")),
                     Word("Suspend", "Приостановить", "səˈspend", arrayListOf("verb")))
-                db.userDao().insertAll(User(USER_ID_TEST, "vadim25000@yandex.ru"))
+                db.userDao().insertAll(User(USER_ID_TEST, "vadim25000@yandex.ru", true))
             }
         }
     }

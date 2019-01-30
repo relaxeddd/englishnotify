@@ -55,9 +55,6 @@ class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        //supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu)
-
         val navController: NavController = Navigation.findNavController(this, R.id.fragment_navigation_host)
 
         navController.navigate(R.id.fragmentDictionary)
