@@ -12,11 +12,8 @@ import com.example.vchechin.testapp.common.Word
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.util.*
-import kotlin.collections.ArrayList
 
-@Database(entities = [User::class, Word::class], version = 2, exportSchema = false)
+@Database(entities = [User::class, Word::class], version = 3, exportSchema = false)
 @TypeConverters(ConverterListStr::class)
 abstract class AppDatabase : RoomDatabase() {
 
@@ -25,7 +22,7 @@ abstract class AppDatabase : RoomDatabase() {
 
     companion object {
         @Volatile private var instance: AppDatabase? = null
-        private val uiScope = CoroutineScope(Dispatchers.Main)
+        private val ioScope = CoroutineScope(Dispatchers.IO)
 
         fun getInstance(context: Context): AppDatabase {
             return instance ?: synchronized(this) {
@@ -40,7 +37,7 @@ abstract class AppDatabase : RoomDatabase() {
                     override fun onCreate(db: SupportSQLiteDatabase) {
                         super.onCreate(db)
 
-                        uiScope.launch {
+                        ioScope.launch {
                             addDefaultWords(getInstance(context))
                         }
                     }
@@ -49,12 +46,10 @@ abstract class AppDatabase : RoomDatabase() {
         }
 
         private suspend fun addDefaultWords(db: AppDatabase) {
-            withContext(Dispatchers.IO) {
-                db.wordDao().insertAll(Word("Dog", "Собака", "dog", arrayListOf("noun", "top1")),
-                    Word("Different", "Разные", "ˈdif(ə)rənt", arrayListOf("adjective", "top1")),
-                    Word("Suspend", "Приостановить", "səˈspend", arrayListOf("verb")))
-                db.userDao().insertAll(User(USER_ID_TEST, "vadim25000@yandex.ru", true))
-            }
+            db.wordDao().insertAll(Word("Dog", "Собака", "dog", arrayListOf("noun", "top1")),
+                Word("Different", "Разные", "ˈdif(ə)rənt", arrayListOf("adjective", "top1")),
+                Word("Suspend", "Приостановить", "səˈspend", arrayListOf("verb")))
+            db.userDao().insertAll(User(USER_ID_TEST, "vadim25000@yandex.ru", true, 3))
         }
     }
 }

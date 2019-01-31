@@ -7,3 +7,9 @@ const val WORDS = "words"
 const val USERS = "users"
 
 const val EMPTY_RES = -1
+
+const val STATUS_UNDEFINED = 0
+const val STATUS_OK = 400
+const val STATUS_ERROR = 500
+
+const val NAVIGATION_DIALOG_REPEAT = 1000

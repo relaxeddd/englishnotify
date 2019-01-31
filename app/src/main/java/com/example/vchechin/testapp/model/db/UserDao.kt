@@ -7,6 +7,7 @@ import com.example.vchechin.testapp.common.User
 
 @Dao
 interface UserDao {
+
     @Query("SELECT * FROM $USERS")
     fun getAll(): LiveData<List<User>>
 
@@ -14,7 +15,10 @@ interface UserDao {
     fun findById(id: String): LiveData<User>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg users: User)
+    suspend fun insertAll(vararg users: User)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(user: User)
 
     @Delete
     fun delete(word: User)

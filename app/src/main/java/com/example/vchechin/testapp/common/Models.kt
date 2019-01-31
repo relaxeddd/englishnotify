@@ -9,8 +9,11 @@ data class User(
     @PrimaryKey
     val id: String = "",
     val email: String = "",
-    val receiveNotifications: Boolean = true
-)
+    var receiveNotifications: Boolean = true,
+    var receiveNotificationsTime: Int = 1
+) {
+    constructor(user: User) : this(user.id, user.email, user.receiveNotifications)
+}
 
 @Entity(tableName = WORDS)
 data class Word(
@@ -21,3 +24,28 @@ data class Word(
     val transcription: String = "",
     val tags: List<String> = ArrayList()
 )
+
+data class Resource<T>(
+
+    val status: Int = STATUS_UNDEFINED,
+    val errorStr: String = "",
+    val value: T
+) {
+    fun isSuccess() = status == STATUS_OK
+}
+
+open class Event<out T>(private val content: T) {
+    var hasBeenHandled = false
+        private set
+
+    fun getContentIfNotHandled(): T? {
+        return if (hasBeenHandled) {
+            null
+        } else {
+            hasBeenHandled = true
+            content
+        }
+    }
+
+    fun peekContent(): T = content
+}

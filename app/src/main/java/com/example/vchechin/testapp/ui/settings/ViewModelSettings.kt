@@ -1,6 +1,6 @@
 package com.example.vchechin.testapp.ui.settings
 
-import androidx.lifecycle.ViewModel
+import com.example.vchechin.testapp.common.ViewModelBase
 
-class ViewModelSettings : ViewModel() {
+class ViewModelSettings : ViewModelBase() {
 }

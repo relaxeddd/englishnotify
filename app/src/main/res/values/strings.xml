@@ -7,7 +7,7 @@
     <string name="no_words">No words</string>
     <string name="notification_categories">Notification categories</string>
     <string name="notifications">Notifications</string>
-    <string name="receive_notifications">Receive notifications</string>
+    <string name="receive_notifications_time">Receive notifications time</string>
     <string name="settings">Settings</string>
 
 </resources>

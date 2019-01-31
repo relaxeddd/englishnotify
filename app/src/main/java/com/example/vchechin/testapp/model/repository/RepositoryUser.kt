@@ -1,9 +1,12 @@
 package com.example.vchechin.testapp.model.repository
 
 import com.example.vchechin.testapp.common.USER_ID_TEST
+import com.example.vchechin.testapp.common.User
+import com.example.vchechin.testapp.common.showToast
 import com.example.vchechin.testapp.model.db.UserDao
+import com.example.vchechin.testapp.model.http.FirebaseStub
 
-class RepositoryUser private constructor(private val userDao: UserDao) {
+class RepositoryUser private constructor(val userDao: UserDao) {
 
     companion object {
 
@@ -15,5 +18,22 @@ class RepositoryUser private constructor(private val userDao: UserDao) {
             }
     }
 
-    var user = userDao.findById(USER_ID_TEST)
+    var liveDataUser = userDao.findById(USER_ID_TEST)
+
+    suspend fun setReceiveNotifications(isReceive: Boolean) {
+        val user = User(liveDataUser.value?: return)
+        user.receiveNotifications = isReceive
+        updateUser(user)
+    }
+
+    private suspend fun updateUser(user: User) {
+        val result = FirebaseStub.saveUser(user)
+
+        if (result.isSuccess()) {
+            userDao.insert(user)
+        } else {
+            showToast(result.errorStr)
+            userDao.insert(liveDataUser.value?: return)
+        }
+    }
 }

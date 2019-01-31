@@ -4,5 +4,5 @@ import androidx.lifecycle.ViewModel
 import com.example.vchechin.testapp.model.repository.RepositoryUser
 
 class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModel() {
-    val user = repositoryUser.user
+    val user = repositoryUser.liveDataUser
 }

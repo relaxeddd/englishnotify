@@ -2,17 +2,19 @@ package com.example.vchechin.testapp.common
 
 import android.os.Bundle
 import android.view.*
+import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.example.vchechin.testapp.R
 
-abstract class BaseFragment<VM : ViewModel, B : ViewDataBinding> : Fragment() {
+abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment() {
 
     protected lateinit var viewModel: VM
     protected lateinit var binding: B
@@ -22,11 +24,11 @@ abstract class BaseFragment<VM : ViewModel, B : ViewDataBinding> : Fragment() {
     abstract fun getToolbarTitleResId(): Int
     abstract fun getViewModelFactory() : ViewModelProvider.NewInstanceFactory
     abstract fun getViewModelClass(): Class<VM>
-    protected open fun configureBinding() {}
     protected open fun isHomeMenuButtonEnabled() = false
     protected open fun getHomeMenuButtonIconResId() = R.drawable.ic_menu
     protected open fun getHomeMenuButtonListener() = {}
     protected open fun getMenuResId() = EMPTY_RES
+    protected open fun onNavigationEvent(eventId: Int) {}
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, getLayoutResId(), null, false)
@@ -50,6 +52,15 @@ abstract class BaseFragment<VM : ViewModel, B : ViewDataBinding> : Fragment() {
         if (getMenuResId() != EMPTY_RES) {
             inflater.inflate(getMenuResId(), menu)
         }
+    }
+
+    @CallSuper
+    protected open fun configureBinding() {
+        viewModel.navigation.observe(this, Observer {
+            it.getContentIfNotHandled()?.let {eventId ->
+                onNavigationEvent(eventId)
+            }
+        })
     }
 
     private fun configureMenu() {

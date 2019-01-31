@@ -3,7 +3,9 @@ package com.example.vchechin.testapp.ui.notifications
 import com.example.vchechin.testapp.R
 import com.example.vchechin.testapp.common.BaseFragment
 import com.example.vchechin.testapp.common.InjectorUtils
+import com.example.vchechin.testapp.common.NAVIGATION_DIALOG_REPEAT
 import com.example.vchechin.testapp.databinding.FragmentNotificationsBinding
+import com.example.vchechin.testapp.dialogs.DialogSelectRepeatTime
 
 class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotificationsBinding>() {
 
@@ -18,5 +20,14 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
     override fun configureBinding() {
         super.configureBinding()
         binding.viewModel = viewModel
+        binding.checkedChangeListenerEnableNotifications = viewModel.checkedChangeListenerEnableNotifications
+        binding.clickListenerRepeatTime = viewModel.clickListenerRepeatTime
+        binding.listRepeatTime = resources.getStringArray(R.array.array_time_repeat)
+    }
+
+    override fun onNavigationEvent(eventId: Int) {
+        if (eventId == NAVIGATION_DIALOG_REPEAT) {
+            DialogSelectRepeatTime().show(this@FragmentNotifications.childFragmentManager, "Repeat Dialog")
+        }
     }
 }
