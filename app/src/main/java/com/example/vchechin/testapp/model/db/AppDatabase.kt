@@ -38,18 +38,21 @@ abstract class AppDatabase : RoomDatabase() {
                         super.onCreate(db)
 
                         ioScope.launch {
-                            addDefaultWords(getInstance(context))
+                            addDefaultContent(getInstance(context))
                         }
                     }
                 })
                 .build()
         }
 
-        private suspend fun addDefaultWords(db: AppDatabase) {
+        private suspend fun addDefaultContent(db: AppDatabase) {
+            val tags: ArrayList<String> = arrayListOf("noun", "adjective", "verb", "top1", "irregular")
+
             db.wordDao().insertAll(Word("Dog", "Собака", "dog", arrayListOf("noun", "top1")),
                 Word("Different", "Разные", "ˈdif(ə)rənt", arrayListOf("adjective", "top1")),
                 Word("Suspend", "Приостановить", "səˈspend", arrayListOf("verb")))
-            db.userDao().insertAll(User(USER_ID_TEST, "vadim25000@yandex.ru", true, 3))
+            db.userDao().insertAll(User(USER_ID_TEST, "vadim25000@yandex.ru", true, 3,
+                tags, arrayListOf("top1", "adjective")))
         }
     }
 }

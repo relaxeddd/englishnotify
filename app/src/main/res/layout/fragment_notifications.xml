@@ -10,6 +10,10 @@
                 type="android.view.View.OnClickListener"/>
 
         <variable
+                name="clickListenerCheckTags"
+                type="android.view.View.OnClickListener"/>
+
+        <variable
                 name="checkedChangeListenerEnableNotifications"
                 type="android.widget.CompoundButton.OnCheckedChangeListener"/>
 
@@ -65,6 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                android:onClick="@{clickListenerCheckTags}"
                 app:layout_constraintTop_toBottomOf="@+id/card_view_5" app:layout_constraintStart_toStartOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -125,7 +130,7 @@
                         android:layout_marginBottom="16dp" app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"/>
                 <TextView
-                        android:text="@{listRepeatTime[viewModel.user.receiveNotificationsTime]}"
+                        android:text="@{listRepeatTime[viewModel.user.notificationsTimeType]}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/blue"

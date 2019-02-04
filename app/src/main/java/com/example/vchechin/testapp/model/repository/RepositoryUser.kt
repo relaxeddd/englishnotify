@@ -21,19 +21,30 @@ class RepositoryUser private constructor(val userDao: UserDao) {
     var liveDataUser = userDao.findById(USER_ID_TEST)
 
     suspend fun setReceiveNotifications(isReceive: Boolean) {
-        val user = User(liveDataUser.value?: return)
+        val user = User(liveDataUser.value ?: return)
         user.receiveNotifications = isReceive
-        updateUser(user)
+        updateUser(user, liveDataUser.value)
     }
 
-    private suspend fun updateUser(user: User) {
+    suspend fun setNotificationsTimeType(timeType: Int) {
+        val user = User(liveDataUser.value ?: return)
+        user.notificationsTimeType = timeType
+        updateUser(user, liveDataUser.value)
+    }
+
+    suspend fun setCheckedTags(checkedTags: List<String>) {
+        val user = User(liveDataUser.value ?: return)
+        user.tagsSelected = checkedTags
+        updateUser(user, liveDataUser.value)
+    }
+
+    private suspend fun updateUser(user: User, oldUser: User?) {
+        userDao.insert(user)
         val result = FirebaseStub.saveUser(user)
 
-        if (result.isSuccess()) {
-            userDao.insert(user)
-        } else {
+        if (!result.isSuccess()) {
             showToast(result.errorStr)
-            userDao.insert(liveDataUser.value?: return)
+            userDao.insert(oldUser ?: return)
         }
     }
 }
