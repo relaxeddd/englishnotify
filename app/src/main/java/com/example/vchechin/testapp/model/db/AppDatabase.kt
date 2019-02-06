@@ -49,13 +49,14 @@ abstract class AppDatabase : RoomDatabase() {
             val tags: ArrayList<String> = arrayListOf("noun", "adjective", "verb", "top1", "irregular")
 
             db.wordDao().insertAll(Word("Dog", "Собака", "dog", arrayListOf("noun", "top1"),
-                "The dog follows me wherever I go.", "Собака следует за мной, куда бы я ни шёл."),
+                "The dog follows me wherever I go.", "Собака следует за мной, куда бы я ни шёл.", 111),
                 Word("Different", "Разные", "ˈdif(ə)rənt", arrayListOf("adjective", "top1"),
                     "These distinctions are important because different rules may apply to different types of securities.",
-                    "Эти различия имеют важное значение, потому что к различным видам ценных бумаг могут применяться различные правила."),
+                    "Эти различия имеют важное значение, потому что к различным видам ценных бумаг могут применяться различные правила.",
+                     51257),
                 Word("Suspend", "Приостановить", "səˈspend", arrayListOf("verb"),
                     "The Committee should suspend its formal deliberations and complete its unfinished work.",
-                    "Комитету следует приостановить свои официальные обсуждения и закончить свою незавершенную работу."))
+                    "Комитету следует приостановить свои официальные обсуждения и закончить свою незавершенную работу.", 3))
             db.userDao().insertAll(User(USER_ID_TEST, "vadim25000@yandex.ru", true, 3,
                 tags, arrayListOf("top1", "adjective")))
         }

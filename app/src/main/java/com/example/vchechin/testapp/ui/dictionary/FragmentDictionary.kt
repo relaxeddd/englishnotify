@@ -8,6 +8,7 @@ import com.example.vchechin.testapp.R
 import com.example.vchechin.testapp.common.*
 import com.example.vchechin.testapp.databinding.FragmentDictionaryBinding
 import com.example.vchechin.testapp.dialogs.DialogCheckTags
+import com.example.vchechin.testapp.dialogs.DialogSortBy
 import kotlinx.android.synthetic.main.fragment_dictionary.*
 
 class FragmentDictionary : BaseFragment<ViewModelDictionary, FragmentDictionaryBinding>() {
@@ -17,8 +18,16 @@ class FragmentDictionary : BaseFragment<ViewModelDictionary, FragmentDictionaryB
     private val listenerCheckTags: ListenerResult<List<String>> = object: ListenerResult<List<String>> {
         override fun onResult(result: List<String>) {
             viewModel.setFilterTags(result)
-            animateDropdown(card_view_dictionary_filter, false)
         }
+    }
+
+    private val listenerSortBy: ListenerResult<Int> = object: ListenerResult<Int> {
+        override fun onResult(result: Int) {
+            viewModel.onDialogSortByType(result)
+        }
+    }
+    private val clickListenerCloseFilter = View.OnClickListener {
+        animateDropdown(card_view_dictionary_filter, false)
     }
 
     override fun getToolbarTitleResId() = R.string.dictionary
@@ -41,7 +50,9 @@ class FragmentDictionary : BaseFragment<ViewModelDictionary, FragmentDictionaryB
         super.configureBinding()
         binding.viewModel = viewModel
         binding.recyclerViewDictionary.adapter = adapter
+        binding.clickListenerCloseFilter = clickListenerCloseFilter
         binding.clickListenerFilterTags = viewModel.clickListenerFilterTags
+        binding.clickListenerSortBy = viewModel.clickListenerSortBy
         viewModel.wordsFiltered.observe(viewLifecycleOwner, Observer { words ->
             binding.hasWords = (words != null && words.isNotEmpty())
             if (words != null && words.isNotEmpty())
@@ -59,6 +70,14 @@ class FragmentDictionary : BaseFragment<ViewModelDictionary, FragmentDictionaryB
                 dialog.arguments = args
                 dialog.listener = listenerCheckTags
                 dialog.show(this@FragmentDictionary.childFragmentManager, "Check tags Dialog")
+            }
+            NAVIGATION_DIALOG_SORT_BY -> {
+                val dialog = DialogSortBy()
+                val args = Bundle()
+                args.putInt(SELECTED_ITEM, viewModel.sortByType.value?.ordinal ?: 0)
+                dialog.arguments = args
+                dialog.listener = listenerSortBy
+                dialog.show(this@FragmentDictionary.childFragmentManager, "Repeat Dialog")
             }
         }
     }

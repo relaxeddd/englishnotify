@@ -27,7 +27,8 @@ data class Word(
     val transcription: String = "",
     val tags: List<String> = ArrayList(),
     val sampleEng: String = "",
-    val sampleRus: String = ""
+    val sampleRus: String = "",
+    val timestamp: Long = 0
 )
 
 data class Resource<T>(
