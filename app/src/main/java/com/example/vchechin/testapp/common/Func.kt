@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.example.vchechin.testapp.App
 import android.util.DisplayMetrics
-import android.view.View.MeasureSpec
+import android.view.View.*
 
 fun showToast(string: String) {
     Toast.makeText(App.context, string, Toast.LENGTH_SHORT).show()
@@ -17,6 +17,8 @@ fun convertDpToPixel(dp: Float): Float {
 }
 
 fun animateDropdown(view: ViewGroup, isOpen: Boolean, paddingDp: Float = 0f) {
+    if (view.visibility == GONE && !isOpen || view.visibility == VISIBLE && isOpen) return
+
     val widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(App.context.resources.displayMetrics.widthPixels,
                                                             View.MeasureSpec.AT_MOST)
     val heightMeasureSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
@@ -48,3 +50,12 @@ fun animateDropdown(view: ViewGroup, isOpen: Boolean, paddingDp: Float = 0f) {
 
 infix fun <T> Collection<T>.equalsIgnoreOrder(collection: Collection<T>?)
         = collection?.let { this.size == it.size && this.containsAll(it) } ?: false
+
+internal fun <T> Collection<T>.print() : String {
+    var string = ""
+    this.forEach {
+        if (string.isNotEmpty()) string += ", "
+        string += it
+    }
+    return string
+}
