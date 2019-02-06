@@ -37,7 +37,7 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
     }
 
     fun onDialogCheckTagsResult(checkedItems: List<String>) {
-        if (!checkedItems.equalsIgnoeOrder(repositoryUser.liveDataUser.value?.tagsSelected)) {
+        if (!checkedItems.equalsIgnoreOrder(repositoryUser.liveDataUser.value?.tagsSelected)) {
             uiScope.launch {
                 repositoryUser.setCheckedTags(checkedItems)
             }

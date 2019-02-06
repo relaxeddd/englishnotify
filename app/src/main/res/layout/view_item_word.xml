@@ -12,44 +12,103 @@
                 type="com.example.vchechin.testapp.common.Word"/>
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="@{clickListener}">
+            android:onClick="@{clickListener}"
+            style="@style/StyleCardViewSettings"
+            android:layout_marginBottom="5dp">
 
-        <TextView
-                android:text="@{word.eng}"
-                android:layout_width="126dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/text_word_eng"
-                app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintEnd_toStartOf="@+id/text_word_transcription"
-                app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="8dp"
-                android:maxLines="1"
-                android:ellipsize="end"/>
+                android:padding="@dimen/size_12">
 
-        <TextView
-                android:text="@{'[' + word.transcription + ']'}"
-                android:layout_width="126dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/text_word_transcription"
-                app:layout_constraintStart_toEndOf="@+id/text_word_eng"
-                app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/text_word_rus"
-                app:layout_constraintTop_toTopOf="@+id/text_word_eng"
-                android:ellipsize="end"
-                android:maxLines="1"/>
+            <TextView
+                    android:text="@{word.eng}"
+                    android:layout_width="126dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/text_word_eng"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintEnd_toStartOf="@+id/text_word_transcription"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:maxLines="1"
+                    android:ellipsize="end"/>
 
-        <TextView
-                android:text="@{word.rus}"
-                android:layout_width="127dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/text_word_rus"
-                app:layout_constraintStart_toEndOf="@+id/text_word_transcription"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/text_word_transcription"
-                android:ellipsize="end"
-                android:maxLines="1"/>
+            <TextView
+                    android:text="@{'[' + word.transcription + ']'}"
+                    android:layout_width="126dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/text_word_transcription"
+                    app:layout_constraintStart_toEndOf="@+id/text_word_eng"
+                    app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/text_word_rus"
+                    app:layout_constraintTop_toTopOf="@+id/text_word_eng"
+                    android:ellipsize="end"
+                    android:maxLines="1"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                    android:text="@{word.rus}"
+                    android:layout_width="127dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/text_word_rus"
+                    app:layout_constraintStart_toEndOf="@+id/text_word_transcription"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/text_word_transcription"
+                    android:ellipsize="end"
+                    android:maxLines="1"/>
+
+            <LinearLayout
+                    android:id="@+id/constraint_word_drop_dawn"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/text_word_eng"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
+                    android:orientation="vertical"
+                    android:paddingTop="@dimen/size_8">
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:text="@{word.sampleEng}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:id="@+id/text_word_sample_eng" app:layout_constraintStart_toStartOf="parent"
+                            android:layout_marginTop="8dp"
+                            app:layout_constraintTop_toTopOf="parent"/>
+
+                    <TextView
+                            android:text="@{word.sampleRus}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:id="@+id/text_word_sample_rus" app:layout_constraintStart_toStartOf="parent"
+                            android:layout_marginStart="@dimen/size_8"
+                            android:layout_marginTop="8dp"
+                            app:layout_constraintTop_toTopOf="parent"/>
+
+                </LinearLayout>
+
+                <TextView
+                        android:text="@{word.tags.toString()}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="italic"
+                        android:id="@+id/text_word_tags" app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_weight="1"/>
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
 </layout>

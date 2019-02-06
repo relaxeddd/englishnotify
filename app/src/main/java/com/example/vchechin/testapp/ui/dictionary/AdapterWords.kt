@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.vchechin.testapp.R
 import com.example.vchechin.testapp.common.Word
-import com.example.vchechin.testapp.common.showToast
+import com.example.vchechin.testapp.common.animateDropdown
 import com.example.vchechin.testapp.databinding.ViewItemWordBinding
 
 class AdapterWords : ListAdapter<Word, AdapterWords.ViewHolder>(WordDiffCallback()) {
@@ -24,18 +24,21 @@ class AdapterWords : ListAdapter<Word, AdapterWords.ViewHolder>(WordDiffCallback
         getItem(position).let { word ->
             with(holder) {
                 itemView.tag = word.eng
-                bind(createOnClickListener(word), word)
+                bind(createOnClickListener(this, word), word)
             }
         }
     }
 
-    private fun createOnClickListener(word: Word): View.OnClickListener {
+    private fun createOnClickListener(holder: ViewHolder, word: Word): View.OnClickListener {
         return View.OnClickListener {
-            showToast(word.tags.toString())
+            animateDropdown(it.findViewById(R.id.constraint_word_drop_dawn), !holder.isOpen, 16f)
+            holder.isOpen = !holder.isOpen
         }
     }
 
     class ViewHolder(private val binding: ViewItemWordBinding) : RecyclerView.ViewHolder(binding.root) {
+
+        var isOpen = false
 
         fun bind(listener: View.OnClickListener, word: Word) {
             with(binding) {

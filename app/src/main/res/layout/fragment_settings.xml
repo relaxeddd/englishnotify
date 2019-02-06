@@ -3,6 +3,14 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+                name="clickListenerTest"
+                type="android.view.View.OnClickListener"/>
+
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -11,10 +19,34 @@
                 android:text="Settings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{clickListenerTest}"
                 android:id="@+id/button" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
                 app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_view_test"
+                android:layout_width="350dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/button"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="8dp"
+                style="@style/StyleCardViewSettings"
+                android:visibility="gone">
+
+            <TextView
+                    android:text="Text with 2 lines. The cecond line is \n It's the second line. Text for test animating \n The third line. I don't know is that line is last."
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/font_16"
+                    android:id="@+id/text_test_animating"
+                    android:layout_gravity="center"/>
+
+        </com.google.android.material.card.MaterialCardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
