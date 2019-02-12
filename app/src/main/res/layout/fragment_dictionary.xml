@@ -12,14 +12,6 @@
                 type="boolean" />
 
         <variable
-                name="clickListenerFilterTags"
-                type="android.view.View.OnClickListener"/>
-
-        <variable
-                name="clickListenerSortBy"
-                type="android.view.View.OnClickListener"/>
-
-        <variable
                 name="clickListenerCloseFilter"
                 type="android.view.View.OnClickListener"/>
 
@@ -94,7 +86,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:cardElevation="0dp"
                         app:cardBackgroundColor="@android:color/transparent"
-                        android:onClick="@{clickListenerFilterTags}"
+                        android:onClick="@{viewModel.clickListenerFilterTags}"
                         app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -138,7 +130,7 @@
                         android:id="@+id/card_view_dictionary_filter_sort_by"
                         android:layout_width="match_parent"
                         style="@style/StyleCardView"
-                        android:onClick="@{clickListenerSortBy}"
+                        android:onClick="@{viewModel.clickListenerSortBy}"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         app:cardElevation="0dp"

@@ -35,6 +35,13 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
         }
     }
 
+    val clickListenerLearnLanguage = View.OnClickListener {
+        if (user.value != null) {
+            navigateEvent.value = Event(NAVIGATION_DIALOG_LEARN_ENGLISH)
+        } else {
+            showToast(R.string.pleases_authorize)
+        }
+    }
     val clickListenerRepeatTime = View.OnClickListener {
         if (user.value != null) {
             navigateEvent.value = Event(NAVIGATION_DIALOG_REPEAT)
@@ -57,6 +64,14 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
     override fun onCleared() {
         super.onCleared()
         repositoryUser.liveDataUser.removeObserver(userObserver)
+    }
+
+    fun onDialogLearnLanguageResult(learnEnglishType: Int) {
+        if (learnEnglishType != repositoryUser.liveDataUser.value?.learnLanguageType) {
+            uiScope.launch {
+                repositoryUser.setLearnLanguageType(learnEnglishType)
+            }
+        }
     }
 
     fun onDialogRepeatTimeResult(receiveNotificationsTime: Int) {

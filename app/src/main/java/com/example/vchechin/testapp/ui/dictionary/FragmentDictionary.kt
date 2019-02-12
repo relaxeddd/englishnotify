@@ -53,8 +53,6 @@ class FragmentDictionary : BaseFragment<ViewModelDictionary, FragmentDictionaryB
         binding.viewModel = viewModel
         binding.recyclerViewDictionary.adapter = adapter
         binding.clickListenerCloseFilter = clickListenerCloseFilter
-        binding.clickListenerFilterTags = viewModel.clickListenerFilterTags
-        binding.clickListenerSortBy = viewModel.clickListenerSortBy
         viewModel.wordsFiltered.observe(viewLifecycleOwner, Observer { words ->
             binding.hasWords = (words != null && words.isNotEmpty())
             if (words != null && words.isNotEmpty())

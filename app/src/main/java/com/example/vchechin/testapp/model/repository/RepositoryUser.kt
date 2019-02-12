@@ -26,6 +26,12 @@ class RepositoryUser private constructor(val userDao: UserDao) {
         updateUser(user, liveDataUser.value)
     }
 
+    suspend fun setLearnLanguageType(timeType: Int) {
+        val user = User(liveDataUser.value ?: return)
+        user.learnLanguageType = timeType
+        updateUser(user, liveDataUser.value)
+    }
+
     suspend fun setNotificationsTimeType(timeType: Int) {
         val user = User(liveDataUser.value ?: return)
         user.notificationsTimeType = timeType

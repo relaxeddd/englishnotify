@@ -29,7 +29,8 @@ object InjectorUtils {
     }
 
     fun provideSettingsViewModelFactory(context: Context): SettingsViewModelFactory {
-        return SettingsViewModelFactory()
+        val repository = RepositoryFactory.getUserRepository(context)
+        return SettingsViewModelFactory(repository)
     }
 }
 

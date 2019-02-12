@@ -1,21 +1,28 @@
 <resources>
     <string name="app_name">TestApp</string>
 
+    <string name="about_app">About app</string>
+    <string name="accept">Accept</string>
     <string name="alphabetical_name">Alphabetical name</string>
     <string name="alphabetical_translate">Alphabetical translate</string>
-    <string name="accept">Accept</string>
+    <string name="app_info">App info</string>
+    <string name="app_language">App language</string>
     <string name="dictionary">Dictionary</string>
     <string name="enable_notifications">Enable notifications</string>
+    <string name="english_at_russian">English at russian</string>
     <string name="error_update">Error update</string>
     <string name="filter">Filter</string>
+    <string name="learn_language">Learn language</string>
+    <string name="logout">Logout</string>
     <string name="network_not_available">Network is not available</string>
     <string name="no_words">No words</string>
     <string name="notification_categories">Notification categories</string>
     <string name="notifications_not_receiving_enable">Notifications is not receiving, please enable it</string>
-    <string name="notifications_not_receiving_authorize">Notifications is not receiving, please authorize</string>
+    <string name="notifications_not_receiving_authorize">Notifications is not receiving, please sign in</string>
     <string name="notifications">Notifications</string>
-    <string name="pleases_authorize">Please, authorize</string>
+    <string name="pleases_authorize">Please, sign in</string>
     <string name="receive_notifications_time">Receive notifications time</string>
+    <string name="russian_at_english">Russian at english</string>
     <string name="search_words">Search words</string>
     <string name="settings">Settings</string>
     <string name="sort_by">Sort by</string>
@@ -25,5 +32,7 @@
     <string name="label_fragment_dictionary">LabelFragmentDictionary</string>
     <string name="label_fragment_notifications">LabelFragmentNotifications</string>
     <string name="label_fragment_settings">LabelFragmentSettings</string>
+
+    <string name="text_app_about">The application is about ...</string>
 
 </resources>

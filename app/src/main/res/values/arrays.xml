@@ -15,4 +15,15 @@
         <item>Time old</item>
         <item>Alphabetical translate</item>
     </string-array>
+
+    <string-array name="array_learn_language">
+        <item>English at russian</item>
+        <item>Russian at english</item>
+    </string-array>
+
+    <string-array name="array_languages">
+        <item>English</item>
+        <item>Russian</item>
+    </string-array>
+
 </resources>

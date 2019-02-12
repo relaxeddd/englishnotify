@@ -12,10 +12,11 @@ data class User(
     var receiveNotifications: Boolean = true,
     var notificationsTimeType: Int = 1,
     val tagsAvailable: List<String> = ArrayList(),
-    var tagsSelected: List<String> = ArrayList()
+    var tagsSelected: List<String> = ArrayList(),
+    var learnLanguageType: Int = 0
 ) {
     constructor(user: User) : this(user.id, user.email, user.receiveNotifications, user.notificationsTimeType,
-        user.tagsAvailable, user.tagsSelected)
+        user.tagsAvailable, user.tagsSelected, user.learnLanguageType)
 }
 
 @Entity(tableName = WORDS)
