@@ -26,7 +26,7 @@
 
             <TextView
                     android:text="@{word.eng}"
-                    android:layout_width="126dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/text_word_eng"
                     android:textColor="@color/black"
@@ -38,7 +38,7 @@
 
             <TextView
                     android:text="@{'[' + word.transcription + ']'}"
-                    android:layout_width="126dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/text_word_transcription"
                     app:layout_constraintStart_toEndOf="@+id/text_word_eng"
@@ -49,7 +49,7 @@
 
             <TextView
                     android:text="@{word.rus}"
-                    android:layout_width="127dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/text_word_rus"
                     app:layout_constraintStart_toEndOf="@+id/text_word_transcription"

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/dialog_background"
+            android:layout_alignTop="@+id/container_dialog_privacy_policy_main"
+            android:layout_alignBottom="@+id/container_dialog_privacy_policy_main"
+            android:adjustViewBounds="true"
+            android:layout_centerHorizontal="true"/>
+
+    <LinearLayout
+            android:id="@+id/container_dialog_privacy_policy_main"
+            android:orientation="vertical"
+            android:layout_width="@dimen/size_240"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingTop="@dimen/size_24"
+            android:paddingBottom="@dimen/size_24"
+            android:layout_gravity="center"
+            android:layout_centerInParent="true">
+
+        <TextView
+                android:id="@+id/text_privacy_policy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="@dimen/font_16"
+                android:text="@string/privacy_policy_text"/>
+
+        <Button
+                android:id="@+id/button_privacy_policy_confirm"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_28"
+                android:text="@string/confirm_and_continue"
+                android:background="@drawable/rectangle_blue"
+                android:textColor="@color/white"
+                android:layout_marginTop="@dimen/size_20"/>
+
+        <Button
+                android:id="@+id/button_privacy_policy_decline"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_28"
+                android:background="@drawable/rectangle_gray"
+                android:text="@string/close"
+                android:layout_marginTop="@dimen/size_10"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

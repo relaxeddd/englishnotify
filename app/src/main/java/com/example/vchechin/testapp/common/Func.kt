@@ -10,9 +10,12 @@ import android.util.DisplayMetrics
 import android.view.View.*
 import android.net.NetworkInfo
 import android.content.Context.CONNECTIVITY_SERVICE
+import android.content.Intent
 import androidx.core.content.ContextCompat.getSystemService
 import android.net.ConnectivityManager
+import android.net.Uri
 import androidx.annotation.StringRes
+import androidx.fragment.app.FragmentActivity
 
 
 fun showToast(string: String) {
@@ -82,3 +85,9 @@ fun isNetworkAvailable(): Boolean {
 }
 
 fun getString(@StringRes resId: Int) = App.context.getString(resId)
+
+fun openWebPrivacyPolicy(activity: FragmentActivity?) {
+    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://ratingslots2.com/privacyPolicy.html"))
+    browserIntent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+    activity?.startActivity(browserIntent)
+}

@@ -7,6 +7,8 @@
     <string name="alphabetical_translate">Alphabetical translate</string>
     <string name="app_info">App info</string>
     <string name="app_language">App language</string>
+    <string name="close">Close</string>
+    <string name="confirm_and_continue">Confirm and continue</string>
     <string name="dictionary">Dictionary</string>
     <string name="enable_notifications">Enable notifications</string>
     <string name="english_at_russian">English at russian</string>
@@ -21,6 +23,7 @@
     <string name="notifications_not_receiving_authorize">Notifications is not receiving, please sign in</string>
     <string name="notifications">Notifications</string>
     <string name="pleases_authorize">Please, sign in</string>
+    <string name="privacy_policy">Privacy Policy</string>
     <string name="receive_notifications_time">Receive notifications time</string>
     <string name="russian_at_english">Russian at english</string>
     <string name="search_words">Search words</string>
@@ -34,5 +37,13 @@
     <string name="label_fragment_settings">LabelFragmentSettings</string>
 
     <string name="text_app_about">The application is about ...</string>
+
+    <!-- =========================================================================================================== -->
+    <string name="privacy_policy_text">Starting work in the application, you agree to our Privacy Policy</string>
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <!--
+        This is the name that users will see when interacting with this channel.
+        It should describe the category of notifications that will be sent through this channel
+     -->
 
 </resources>
