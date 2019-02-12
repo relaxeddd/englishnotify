@@ -17,29 +17,104 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">-->
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <fragment
-                    android:id="@+id/fragment_navigation_host"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:name="androidx.navigation.fragment.NavHostFragment"
-                    app:navGraph="@navigation/navigation_graph"
-                    app:defaultNavHost="true"/>
+        <fragment
+                android:id="@+id/fragment_navigation_host"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:name="androidx.navigation.fragment.NavHostFragment"
+                app:navGraph="@navigation/navigation_graph"
+                app:defaultNavHost="true"
+                app:layout_constraintBottom_toTopOf="@+id/navigation_view_main"
+                app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
 
-            <com.google.android.material.bottomnavigation.BottomNavigationView
-                    android:id="@+id/navigation_view_main"
-                    android:layout_width="match_parent"
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/container_main_warning_notifications"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:onClick="@{viewModel.clickListenerWarningNotifications}"
+                android:visibility="@{safeUnbox(viewModel.isShowWarningNotifications) ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toTopOf="@+id/container_main_warning_authorize">
+
+            <TextView
+                    android:text="@string/notifications_not_receiving_enable"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:background="@color/colorPrimary"
-                    app:itemIconTint="@drawable/selector_bottom_navigation"
-                    app:itemTextColor="@drawable/selector_bottom_navigation"
-                    app:menu="@menu/menu_main_navigation" />
+                    android:textSize="@dimen/font_14"
+                    android:textColor="@color/blue"
+                    android:gravity="center"
+                    android:id="@+id/text_main_warning_notifications" android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toStartOf="parent" android:layout_marginBottom="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="16dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintEnd_toStartOf="@+id/image_main_waring_notifications"
+                    app:layout_constraintHorizontal_chainStyle="packed"/>
 
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" app:srcCompat="@drawable/ic_error"
+                    android:id="@+id/image_main_waring_notifications"
+                    android:scaleType="centerInside"
+                    app:layout_constraintStart_toEndOf="@+id/text_main_warning_notifications"
+                    app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/text_main_warning_notifications"
+                    app:layout_constraintTop_toTopOf="@+id/text_main_warning_notifications"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/container_main_warning_authorize"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/fragment_navigation_host"
+                app:layout_constraintStart_toStartOf="parent"
+                android:visibility="@{safeUnbox(viewModel.isShowWarningAuthorize) ? View.VISIBLE : View.GONE}"
+                android:onClick="@{viewModel.clickListenerWarningAuthorize}">
+
+            <TextView
+                    android:text="@string/notifications_not_receiving_authorize"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/font_14"
+                    android:textColor="@color/blue"
+                    android:gravity="center"
+                    android:id="@+id/text_main_warning_authorize" android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toStartOf="parent" android:layout_marginBottom="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="16dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/image_main_waring_authorize"
+                    app:layout_constraintHorizontal_chainStyle="packed"/>
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" app:srcCompat="@drawable/ic_error"
+                    android:id="@+id/image_main_waring_authorize"
+                    android:scaleType="centerInside"
+                    app:layout_constraintStart_toEndOf="@+id/text_main_warning_authorize"
+                    app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/text_main_warning_authorize"
+                    app:layout_constraintTop_toTopOf="@+id/text_main_warning_authorize"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/navigation_view_main"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@color/colorPrimary"
+                app:itemIconTint="@drawable/selector_bottom_navigation"
+                app:itemTextColor="@drawable/selector_bottom_navigation"
+                app:menu="@menu/menu_main_navigation"
+                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!--<com.google.android.material.navigation.NavigationView
             android:id="@+id/navigation_view_main"

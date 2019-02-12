@@ -6,15 +6,15 @@
 
     <fragment android:id="@+id/fragmentDictionary"
               android:name="com.example.vchechin.testapp.ui.dictionary.FragmentDictionary"
-              android:label="main_fragment"
+              android:label="@string/label_fragment_dictionary"
               tools:layout="@layout/fragment_dictionary"/>
 
     <fragment android:id="@+id/fragmentNotifications"
               android:name="com.example.vchechin.testapp.ui.notifications.FragmentNotifications"
-              android:label="FragmentNotifications"/>
+              android:label="@string/label_fragment_notifications"/>
 
     <fragment android:id="@+id/fragmentSettings"
               android:name="com.example.vchechin.testapp.ui.settings.FragmentSettings"
-              android:label="FragmentSettings"/>
+              android:label="@string/label_fragment_settings"/>
 
 </navigation>

@@ -10,9 +10,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.example.vchechin.testapp.R
-import com.example.vchechin.testapp.common.ActivityBase
-import com.example.vchechin.testapp.common.InjectorUtils
-import com.example.vchechin.testapp.common.Word
+import com.example.vchechin.testapp.common.*
 import com.example.vchechin.testapp.databinding.HeaderNavigationMainBinding
 import com.example.vchechin.testapp.databinding.MainActivityBinding
 import com.example.vchechin.testapp.model.db.AppDatabase
@@ -28,6 +26,7 @@ class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>() {
 
     private val uiScope = CoroutineScope(Dispatchers.Main)
     lateinit var bindingHeader: HeaderNavigationMainBinding
+    lateinit var navController: NavController
 
     override fun getLayoutResId() = R.layout.main_activity
     override fun getViewModelFactory() = InjectorUtils.provideMainViewModelFactory(this)
@@ -55,7 +54,7 @@ class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val navController: NavController = Navigation.findNavController(this, R.id.fragment_navigation_host)
+        navController = Navigation.findNavController(this, R.id.fragment_navigation_host)
 
         navController.navigate(R.id.fragmentDictionary)
         NavigationUI.setupWithNavController(navigation_view_main, navController)
@@ -78,6 +77,22 @@ class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>() {
             else -> return super.onOptionsItemSelected(item)
         }
     }*/
+
+    override fun onNavigationEvent(eventId: Int) {
+        when (eventId) {
+            NAVIGATION_FRAGMENT_NOTIFICATIONS -> {
+                if (navController.currentDestination?.label != getString(R.string.label_fragment_notifications)) {
+                    navController.navigate(R.id.fragmentNotifications)
+                }
+            }
+            NAVIGATION_FRAGMENT_SETTINGS -> {
+                if (navController.currentDestination?.label != getString(R.string.label_fragment_settings)) {
+                    navController.navigate(R.id.fragmentSettings)
+                }
+            }
+            else -> super.onNavigationEvent(eventId)
+        }
+    }
 
     private suspend fun testFunc() {
         withContext(Dispatchers.IO) {

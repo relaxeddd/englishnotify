@@ -57,8 +57,8 @@ abstract class AppDatabase : RoomDatabase() {
                 Word("Suspend", "Приостановить", "səˈspend", arrayListOf("verb"),
                     "The Committee should suspend its formal deliberations and complete its unfinished work.",
                     "Комитету следует приостановить свои официальные обсуждения и закончить свою незавершенную работу.", 3))
-            db.userDao().insertAll(User(USER_ID_TEST, "vadim25000@yandex.ru", true, 3,
-                tags, arrayListOf("top1", "adjective")))
+            /*db.userDao().insertAll(User(USER_ID_TEST, "vadim25000@yandex.ru", true, 3,
+                tags, arrayListOf("top1", "adjective")))*/
         }
     }
 }

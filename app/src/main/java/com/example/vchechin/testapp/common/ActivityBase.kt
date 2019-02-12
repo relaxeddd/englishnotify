@@ -3,17 +3,19 @@ package com.example.vchechin.testapp.common
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.example.vchechin.testapp.R
 
-abstract class ActivityBase<VM : ViewModel, B : ViewDataBinding> : AppCompatActivity(), LifecycleOwner {
+abstract class ActivityBase<VM : ViewModelBase, B : ViewDataBinding> : AppCompatActivity(), LifecycleOwner {
 
     private var listenerHomeMenuButton: () -> Unit = {}
     protected lateinit var binding: B
@@ -23,7 +25,7 @@ abstract class ActivityBase<VM : ViewModel, B : ViewDataBinding> : AppCompatActi
     abstract fun getLayoutResId() : Int
     abstract fun getViewModelFactory() : ViewModelProvider.NewInstanceFactory
     abstract fun getViewModelClass(): Class<VM>
-    protected open fun configureBinding() {}
+    protected open fun onNavigationEvent(eventId: Int) {}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +47,15 @@ abstract class ActivityBase<VM : ViewModel, B : ViewDataBinding> : AppCompatActi
             }
             else -> return super.onOptionsItemSelected(item)
         }
+    }
+
+    @CallSuper
+    protected open fun configureBinding() {
+        viewModel.navigation.observe(this, Observer {
+            it.getContentIfNotHandled()?.let {eventId ->
+                onNavigationEvent(eventId)
+            }
+        })
     }
 
     fun configureMenu(isShowHomeMenuButton: Boolean = false, homeMenuButtonIconResId: Int,

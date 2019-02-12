@@ -9,10 +9,10 @@ import com.example.vchechin.testapp.common.User
 interface UserDao {
 
     @Query("SELECT * FROM $USERS")
-    fun getAll(): LiveData<List<User>>
+    fun getAll(): LiveData<List<User?>>
 
     @Query("SELECT * FROM $USERS WHERE id LIKE :id LIMIT 1")
-    fun findById(id: String): LiveData<User>
+    fun findById(id: String): LiveData<User?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(vararg users: User)

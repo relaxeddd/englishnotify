@@ -1,15 +1,26 @@
 package com.example.vchechin.testapp.common
 
 import android.animation.ValueAnimator
+import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.vchechin.testapp.App
 import android.util.DisplayMetrics
 import android.view.View.*
+import android.net.NetworkInfo
+import android.content.Context.CONNECTIVITY_SERVICE
+import androidx.core.content.ContextCompat.getSystemService
+import android.net.ConnectivityManager
+import androidx.annotation.StringRes
+
 
 fun showToast(string: String) {
     Toast.makeText(App.context, string, Toast.LENGTH_SHORT).show()
+}
+
+fun showToast(@StringRes resId: Int) {
+    Toast.makeText(App.context, resId, Toast.LENGTH_SHORT).show()
 }
 
 fun convertDpToPixel(dp: Float): Float {
@@ -63,3 +74,11 @@ internal fun <T> Collection<T>.print() : String {
     }
     return string
 }
+
+fun isNetworkAvailable(): Boolean {
+    val connectivityManager = App.context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+    val activeNetworkInfo = connectivityManager!!.activeNetworkInfo
+    return activeNetworkInfo != null && activeNetworkInfo.isConnected
+}
+
+fun getString(@StringRes resId: Int) = App.context.getString(resId)
