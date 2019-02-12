@@ -55,3 +55,5 @@ open class Event<out T>(private val content: T) {
 
     fun peekContent(): T = content
 }
+
+data class AnimBlock(var isAnimating: Boolean = false)

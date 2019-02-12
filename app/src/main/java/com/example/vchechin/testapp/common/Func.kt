@@ -16,8 +16,8 @@ fun convertDpToPixel(dp: Float): Float {
     return dp * (App.context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
 }
 
-fun animateDropdown(view: ViewGroup, isOpen: Boolean, paddingDp: Float = 0f) {
-    if (view.visibility == GONE && !isOpen || view.visibility == VISIBLE && isOpen) return
+fun animateDropdown(view: ViewGroup, isOpen: Boolean, animBlock: AnimBlock = AnimBlock(false), paddingDp: Float = 0f) {
+    if (animBlock.isAnimating || view.visibility == GONE && !isOpen || view.visibility == VISIBLE && isOpen) return
 
     val widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(App.context.resources.displayMetrics.widthPixels,
                                                             View.MeasureSpec.AT_MOST)
@@ -27,6 +27,7 @@ fun animateDropdown(view: ViewGroup, isOpen: Boolean, paddingDp: Float = 0f) {
     val maxHeight = view.measuredHeight + convertDpToPixel(paddingDp).toInt()
     val animator: ValueAnimator
 
+    animBlock.isAnimating = true
     if (isOpen) {
         view.visibility = View.VISIBLE
         animator = ValueAnimator.ofInt(1, maxHeight)
@@ -42,6 +43,9 @@ fun animateDropdown(view: ViewGroup, isOpen: Boolean, paddingDp: Float = 0f) {
 
         if (!isOpen && height == 0) {
             view.visibility = View.GONE
+        }
+        if ((!isOpen && height == 0) || (isOpen && height == maxHeight)) {
+            animBlock.isAnimating = false
         }
     }
     animator.duration = 200

@@ -54,22 +54,29 @@ class ViewModelDictionary(private val repositoryWord: RepositoryWord) : ViewMode
         updateFilteredWords()
     }
 
-    private fun updateFilteredWords() {
+    fun applySearch(searchText: String) {
+        updateFilteredWords(searchText)
+    }
+
+    private fun updateFilteredWords(searchText: String = "") {
         var filteredItems = HashSet<Word>()
         filteredItems.addAll(words.value ?: ArrayList())
 
         if (filterTags.value?.isNotEmpty() == true) {
-            filteredItems.filter { it.tags.intersect(filterTags.value ?: HashSet()).isNotEmpty() }
-            /*words.value?.forEach { it.tags.forEach { wordTag -> run {
-                if (filterTags.value?.contains(wordTag) == true) filteredItems.add(it)
-            }}}*/
+            filteredItems = filteredItems.filter { it.tags.intersect(filterTags.value ?: HashSet()).isNotEmpty() }.toHashSet()
         }
 
-        val sortList = when (sortByType) {
-            SortByType.ALPHABETICAL_NAME -> filteredItems.sortedWith(compareBy { it.eng })
-            SortByType.ALPHABETICAL_TRANSLATE -> filteredItems.sortedWith(compareBy { it.rus })
-            SortByType.TIME_OLD -> filteredItems.sortedWith(compareBy { it.timestamp })
-            else ->filteredItems.sortedWith(compareByDescending { it.timestamp })
+        if (searchText.isNotEmpty()) {
+            filteredItems = filteredItems.filter { it.eng.toLowerCase().contains(searchText)
+                    || it.rus.toLowerCase().contains(searchText)
+                    || it.transcription.toLowerCase().contains(searchText) }.toHashSet()
+        }
+
+        val sortList = when (sortByType.value) {
+            SortByType.ALPHABETICAL_NAME -> filteredItems.sortedBy{ it.eng }
+            SortByType.ALPHABETICAL_TRANSLATE -> filteredItems.sortedBy{ it.rus }
+            SortByType.TIME_OLD -> filteredItems.sortedBy{ it.timestamp }
+            else -> filteredItems.sortedByDescending{ it.timestamp }
         }
 
         wordsFiltered.value = sortList

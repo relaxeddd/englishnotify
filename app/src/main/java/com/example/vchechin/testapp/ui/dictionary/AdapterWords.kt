@@ -31,7 +31,7 @@ class AdapterWords : ListAdapter<Word, AdapterWords.ViewHolder>(WordDiffCallback
 
     private fun createOnClickListener(holder: ViewHolder, word: Word): View.OnClickListener {
         return View.OnClickListener {
-            animateDropdown(it.findViewById(R.id.constraint_word_drop_dawn), !holder.isOpen, 16f)
+            animateDropdown(it.findViewById(R.id.constraint_word_drop_dawn), !holder.isOpen, paddingDp = 16f)
             holder.isOpen = !holder.isOpen
         }
     }

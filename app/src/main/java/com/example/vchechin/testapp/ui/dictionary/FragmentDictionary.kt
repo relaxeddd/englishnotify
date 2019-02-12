@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.fragment_dictionary.*
 class FragmentDictionary : BaseFragment<ViewModelDictionary, FragmentDictionaryBinding>() {
 
     var adapter: AdapterWords = AdapterWords()
+    var animBlock: AnimBlock = AnimBlock(false)
 
     private val listenerCheckTags: ListenerResult<List<String>> = object: ListenerResult<List<String>> {
         override fun onResult(result: List<String>) {
@@ -27,19 +28,20 @@ class FragmentDictionary : BaseFragment<ViewModelDictionary, FragmentDictionaryB
         }
     }
     private val clickListenerCloseFilter = View.OnClickListener {
-        animateDropdown(card_view_dictionary_filter, false)
+        animateDropdown(card_view_dictionary_filter, false, animBlock)
     }
 
     override fun getToolbarTitleResId() = R.string.dictionary
     override fun getLayoutResId() = R.layout.fragment_dictionary
     override fun getViewModelFactory() = InjectorUtils.provideDictionaryViewModelFactory(requireContext())
     override fun getViewModelClass() = ViewModelDictionary::class.java
-    override fun getMenuResId() = R.menu.menu_filter
+    override fun getMenuResId() = R.menu.menu_filter_search
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.item_menu_filter -> {
-                animateDropdown(card_view_dictionary_filter, card_view_dictionary_filter.visibility == View.GONE)
+                animateDropdown(card_view_dictionary_filter, card_view_dictionary_filter.visibility == View.GONE,
+                    animBlock)
                 return true
             }
             else -> return super.onOptionsItemSelected(item)
@@ -58,6 +60,14 @@ class FragmentDictionary : BaseFragment<ViewModelDictionary, FragmentDictionaryB
             if (words != null && words.isNotEmpty())
                 adapter.submitList(words)
         })
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        recycler_view_dictionary.setOnTouchListener { _, _ ->
+            animateDropdown(card_view_dictionary_filter, false, animBlock)
+            false
+        }
     }
 
     override fun onNavigationEvent(eventId: Int) {
@@ -80,5 +90,10 @@ class FragmentDictionary : BaseFragment<ViewModelDictionary, FragmentDictionaryB
                 dialog.show(this@FragmentDictionary.childFragmentManager, "Repeat Dialog")
             }
         }
+    }
+
+    override fun onSearchTextChanged(searchText: String) {
+        super.onSearchTextChanged(searchText)
+        viewModel.applySearch(searchText)
     }
 }

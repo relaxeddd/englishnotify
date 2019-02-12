@@ -5,6 +5,7 @@ import android.view.*
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -16,6 +17,11 @@ import com.example.vchechin.testapp.R
 
 abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment() {
 
+    protected var textSearch = ""
+        set(value) {
+            field = value
+            onSearchTextChanged(value)
+        }
     protected lateinit var viewModel: VM
     protected lateinit var binding: B
 
@@ -29,6 +35,8 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
     protected open fun getHomeMenuButtonListener() = {}
     protected open fun getMenuResId() = EMPTY_RES
     protected open fun onNavigationEvent(eventId: Int) {}
+    protected open fun onSearchTextChanged(searchText: String) {}
+    protected open fun getSearchMenuItemId() = R.id.item_menu_search
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, getLayoutResId(), null, false)
@@ -51,6 +59,27 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
         super.onCreateOptionsMenu(menu, inflater)
         if (getMenuResId() != EMPTY_RES) {
             inflater.inflate(getMenuResId(), menu)
+        }
+
+        val searchItem = menu.findItem(getSearchMenuItemId())
+
+        if (searchItem != null && searchItem.actionView != null) {
+            val searchView = menu.findItem(R.id.item_menu_search).actionView as SearchView
+
+            searchView.setOnCloseListener {
+                textSearch = ""
+                true
+            }
+            searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    textSearch = newText?.toLowerCase() ?: ""
+                    return true
+                }
+
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return true
+                }
+            })
         }
     }
 
