@@ -9,7 +9,7 @@
                 type="android.view.View.OnClickListener"/>
         <variable
                 name="word"
-                type="com.example.vchechin.testapp.common.Word"/>
+                type="relaxeddd.pushenglish.common.Word"/>
     </data>
 
     <com.google.android.material.card.MaterialCardView

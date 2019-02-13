@@ -9,7 +9,7 @@
 
         <variable
                 name="viewModel"
-                type="com.example.vchechin.testapp.ui.main.ViewModelMain" />
+                type="relaxeddd.pushenglish.ui.main.ViewModelMain" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

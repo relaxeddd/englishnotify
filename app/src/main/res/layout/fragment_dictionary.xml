@@ -17,7 +17,7 @@
 
         <variable
                 name="viewModel"
-                type="com.example.vchechin.testapp.ui.dictionary.ViewModelDictionary" />
+                type="relaxeddd.pushenglish.ui.dictionary.ViewModelDictionary" />
 
     </data>
 

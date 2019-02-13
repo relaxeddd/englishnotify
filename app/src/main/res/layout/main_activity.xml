@@ -9,13 +9,8 @@
 
         <variable
                 name="viewModel"
-                type="com.example.vchechin.testapp.ui.main.ViewModelMain" />
+                type="relaxeddd.pushenglish.ui.main.ViewModelMain" />
     </data>
-
-    <!--<androidx.drawerlayout.widget.DrawerLayout
-        android:id="@+id/drawer_layout_main"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">-->
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -75,21 +70,21 @@
                 app:layout_constraintBottom_toBottomOf="@+id/fragment_navigation_host"
                 app:layout_constraintStart_toStartOf="parent"
                 android:visibility="@{safeUnbox(viewModel.isShowWarningAuthorize) ? View.VISIBLE : View.GONE}"
-                android:onClick="@{viewModel.clickListenerWarningAuthorize}">
+                android:onClick="@{viewModel.clickListenerGoogleAuth}">
 
             <TextView
                     android:text="@string/notifications_not_receiving_authorize"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="19dp"
                     android:textSize="@dimen/font_14"
                     android:textColor="@color/blue"
                     android:gravity="center"
                     android:id="@+id/text_main_warning_authorize" android:layout_marginStart="16dp"
-                    app:layout_constraintStart_toStartOf="parent" android:layout_marginBottom="16dp"
-                    app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="16dp"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/image_main_waring_authorize"
-                    app:layout_constraintHorizontal_chainStyle="packed"/>
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintEnd_toStartOf="@+id/image_main_waring_authorize"
+                    app:layout_constraintHorizontal_chainStyle="packed" android:layout_marginTop="16dp"/>
             <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" app:srcCompat="@drawable/ic_error"
@@ -99,6 +94,17 @@
                     app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
                     app:layout_constraintBottom_toBottomOf="@+id/text_main_warning_authorize"
                     app:layout_constraintTop_toTopOf="@+id/text_main_warning_authorize"/>
+
+            <com.google.android.gms.common.SignInButton android:layout_width="wrap_content"
+                                                        android:layout_height="wrap_content"
+                                                        app:buttonSize="wide"
+                                                        android:onClick="@{viewModel.clickListenerGoogleAuth}"
+                                                        app:layout_constraintTop_toBottomOf="@+id/text_main_warning_authorize"
+                                                        app:layout_constraintStart_toStartOf="parent"
+                                                        android:layout_marginStart="8dp"
+                                                        app:layout_constraintEnd_toEndOf="parent"
+                                                        android:layout_marginEnd="8dp"
+                                                        android:layout_marginTop="8dp"></com.google.android.gms.common.SignInButton>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -115,15 +121,5 @@
                 app:layout_constraintStart_toStartOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <!--<com.google.android.material.navigation.NavigationView
-            android:id="@+id/navigation_view_main"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="start|left"
-            app:headerLayout="@layout/header_navigation_main"
-            app:menu="@menu/menu_main_navigation" />-->
-
-    <!--</androidx.drawerlayout.widget.DrawerLayout>-->
 
 </layout>

@@ -27,6 +27,7 @@
     <string name="receive_notifications_time">Receive notifications time</string>
     <string name="russian_at_english">Russian at english</string>
     <string name="search_words">Search words</string>
+    <string name="send_feedback">Send feedback</string>
     <string name="settings">Settings</string>
     <string name="sort_by">Sort by</string>
     <string name="time_new">Time new</string>
@@ -40,7 +41,7 @@
 
     <!-- =========================================================================================================== -->
     <string name="privacy_policy_text">Starting work in the application, you agree to our Privacy Policy</string>
-    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="default_notification_channel_id">fcm_default_channel</string>
     <!--
         This is the name that users will see when interacting with this channel.
         It should describe the category of notifications that will be sent through this channel
