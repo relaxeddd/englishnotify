@@ -9,11 +9,13 @@ import relaxeddd.pushenglish.R
 import relaxeddd.pushenglish.dialogs.DialogPrivacyPolicy
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import relaxeddd.pushenglish.common.*
 import relaxeddd.pushenglish.databinding.MainActivityBinding
+import relaxeddd.pushenglish.push.PushTokenHelper.initChannelNotifications
 import java.util.*
 
 class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>() {
@@ -46,10 +48,12 @@ class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        initChannelNotifications(this)
         navController = Navigation.findNavController(this, R.id.fragment_navigation_host)
 
         navController.navigate(R.id.fragmentDictionary)
         NavigationUI.setupWithNavController(navigation_view_main, navController)
+        viewModel.onViewCreate()
     }
 
     override fun onResume() {
@@ -64,7 +68,7 @@ class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>() {
             REQUEST_SIGN_IN -> {
                 val response: IdpResponse? = IdpResponse.fromResultIntent(data)
 
-                if (response?.errorCode != -1) {
+                if (response?.errorCode == -1) {
                     viewModel.requestInitUser()
                 } else {
                     showToast(response.toString())

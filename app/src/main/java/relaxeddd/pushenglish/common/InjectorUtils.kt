@@ -17,8 +17,9 @@ object InjectorUtils {
     }
 
     fun provideDictionaryViewModelFactory(context: Context): DictionaryViewModelFactory {
-        val repository = RepositoryFactory.getWordRepository(context)
-        return DictionaryViewModelFactory(repository)
+        val repositoryWord = RepositoryFactory.getWordRepository(context)
+        val repositoryUser = RepositoryFactory.getUserRepository(context)
+        return DictionaryViewModelFactory(repositoryWord, repositoryUser)
     }
 
     fun provideNotificationsViewModelFactory(context: Context): NotificationsViewModelFactory {

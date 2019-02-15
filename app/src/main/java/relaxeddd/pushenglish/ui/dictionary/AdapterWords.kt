@@ -12,32 +12,31 @@ import relaxeddd.pushenglish.common.Word
 import relaxeddd.pushenglish.common.animateDropdown
 import relaxeddd.pushenglish.databinding.ViewItemWordBinding
 
-class AdapterWords : ListAdapter<Word, AdapterWords.ViewHolder>(
-    WordDiffCallback()
-) {
+class AdapterWords : ListAdapter<Word, AdapterWords.ViewHolder>(WordDiffCallback()) {
+
+    var languageType = 0
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(
-            DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.view_item_word, parent, false)
-        )
+        return ViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.view_item_word, parent,
+            false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         getItem(position).let { word ->
             with(holder) {
                 itemView.tag = word.eng
-                bind(createOnClickListener(this, word), word)
+                bind(createOnClickListener(this), word, languageType)
             }
         }
     }
 
-    private fun createOnClickListener(holder: ViewHolder, word: Word): View.OnClickListener {
+    private fun createOnClickListener(holder: ViewHolder): View.OnClickListener {
         return View.OnClickListener {
-            animateDropdown(
-                it.findViewById(R.id.constraint_word_drop_dawn),
-                !holder.isOpen,
-                paddingDp = 16f
-            )
+            animateDropdown(it.findViewById(R.id.constraint_word_drop_dawn), !holder.isOpen, paddingDp = 16f)
             holder.isOpen = !holder.isOpen
         }
     }
@@ -46,11 +45,21 @@ class AdapterWords : ListAdapter<Word, AdapterWords.ViewHolder>(
 
         var isOpen = false
 
-        fun bind(listener: View.OnClickListener, word: Word) {
+        fun bind(listener: View.OnClickListener, word: Word, languageType: Int) {
             with(binding) {
                 clickListener = listener
                 this.word = word
                 executePendingBindings()
+                when (languageType) {
+                    0 -> {
+                        textWord.text = word.eng
+                        textWordTranscription.text = word.rus
+                    }
+                    1 -> {
+                        textWord.text = word.rus
+                        textWordTranscription.text = word.eng
+                    }
+                }
             }
         }
     }

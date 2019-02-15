@@ -27,26 +27,19 @@ abstract class AppDatabase : RoomDatabase() {
 
         fun getInstance(context: Context): AppDatabase {
             return instance ?: synchronized(this) {
-                instance
-                    ?: buildDatabase(context).also { instance = it }
+                instance ?: buildDatabase(context).also { instance = it }
             }
         }
 
         private fun buildDatabase(context: Context): AppDatabase {
-            return Room.databaseBuilder(context, AppDatabase::class.java,
-                DATABASE_TEST_APP
-            )
+            return Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_TEST_APP)
                 .fallbackToDestructiveMigration()
                 .addCallback(object : RoomDatabase.Callback() {
                     override fun onCreate(db: SupportSQLiteDatabase) {
                         super.onCreate(db)
 
                         ioScope.launch {
-                            addDefaultContent(
-                                getInstance(
-                                    context
-                                )
-                            )
+                            addDefaultContent(getInstance(context))
                         }
                     }
                 })
@@ -54,7 +47,7 @@ abstract class AppDatabase : RoomDatabase() {
         }
 
         private suspend fun addDefaultContent(db: AppDatabase) {
-            val tags: ArrayList<String> = arrayListOf("noun", "adjective", "verb", "top1", "irregular")
+            //val tags: ArrayList<String> = arrayListOf("noun", "adjective", "verb", "top1", "irregular")
 
             db.wordDao().insertAll(
                 Word(
@@ -77,12 +70,9 @@ abstract class AppDatabase : RoomDatabase() {
                     timestamp = 3
                 )
             )
-            db.userDao().insertAll(
-                User(
-                    USER_ID_TEST, "vadim25000@yandex.ru", true, 3,
-                    tags, arrayListOf("top1", "adjective")
-                )
-            )
+            /*db.userDao().insert(User(USER_ID_TEST, "vadim25000@yandex.ru", true, 3,
+                tags, arrayListOf("top1", "adjective"))
+            )*/
         }
     }
 }

@@ -7,6 +7,14 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'english'
+            keyPassword 'd9M8aek'
+            storeFile file('D:/project/keystore.jks')
+            storePassword 'm3nkb9'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "relaxeddd.pushenglish"
@@ -23,8 +31,10 @@ android {
     }
     buildTypes {
         release {
+            debuggable true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
         debug {
             minifyEnabled false
@@ -36,43 +46,35 @@ android {
 dependencies {
     def nav_version = "1.0.0-beta02"
     def room_version = "2.1.0-alpha04"
-
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha02'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha3'
     implementation 'com.google.android.material:material:1.1.0-alpha03'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
-
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
     implementation "android.arch.navigation:navigation-fragment:$nav_version"
     implementation "android.arch.navigation:navigation-ui:$nav_version"
-
     implementation 'androidx.multidex:multidex:2.0.1'
-
-    implementation"org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1"
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1'
-
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-coroutines:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
-
     //googleAuth
-    implementation 'com.google.android.gms:play-services-auth:12.0.1'
+    implementation 'com.google.android.gms:play-services-auth:16.0.1'
     //firebase
     implementation 'com.firebaseui:firebase-ui-auth:3.1.0'
-    implementation 'com.google.firebase:firebase-auth:12.0.1'
-    implementation 'com.google.firebase:firebase-firestore:12.0.1'
-    implementation 'com.google.firebase:firebase-messaging:12.0.1'
-
+    implementation 'com.google.firebase:firebase-auth:16.1.0'
+    implementation 'com.google.firebase:firebase-firestore:18.0.1'
+    implementation 'com.google.firebase:firebase-messaging:17.3.4'
     //Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.google.code.gson:gson:2.8.4'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
-
     implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2'
 }
 

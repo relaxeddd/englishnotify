@@ -14,7 +14,6 @@ import android.net.Uri
 import androidx.annotation.StringRes
 import androidx.fragment.app.FragmentActivity
 
-
 fun showToast(string: String) {
     Toast.makeText(App.context, string, Toast.LENGTH_SHORT).show()
 }
@@ -27,13 +26,11 @@ fun convertDpToPixel(dp: Float): Float {
     return dp * (App.context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
 }
 
-fun animateDropdown(view: ViewGroup, isOpen: Boolean, animBlock: AnimBlock = AnimBlock(
-    false
-), paddingDp: Float = 0f) {
+fun animateDropdown(view: ViewGroup, isOpen: Boolean, animBlock: AnimBlock = AnimBlock(false),
+                    paddingDp: Float = 0f) {
     if (animBlock.isAnimating || view.visibility == GONE && !isOpen || view.visibility == VISIBLE && isOpen) return
 
-    val widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(
-        App.context.resources.displayMetrics.widthPixels,
+    val widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(App.context.resources.displayMetrics.widthPixels,
                                                             View.MeasureSpec.AT_MOST)
     val heightMeasureSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
 

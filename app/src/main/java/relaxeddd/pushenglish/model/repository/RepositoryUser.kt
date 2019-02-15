@@ -1,5 +1,7 @@
 package relaxeddd.pushenglish.model.repository
 
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import relaxeddd.pushenglish.common.ERROR_NOT_AUTHORIZED
 import relaxeddd.pushenglish.common.USER_ID_TEST
 import relaxeddd.pushenglish.common.User
@@ -13,6 +15,8 @@ import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import relaxeddd.pushenglish.R
 
 class RepositoryUser private constructor(val userDao: UserDao) {
 
@@ -22,14 +26,34 @@ class RepositoryUser private constructor(val userDao: UserDao) {
 
         fun getInstance(userDao: UserDao) =
             instance ?: synchronized(this) {
-                instance
-                    ?: RepositoryUser(userDao).also { instance = it }
+                instance ?: RepositoryUser(userDao).also { instance = it }
             }
     }
 
-    var liveDataUser = userDao.findById(USER_ID_TEST)
+    private val userObserver = Observer<User?> { user ->
+        liveDataUser.postValue(user)
+    }
+
+    /*var liveDataUser = userDao.findById("oXkta2ZmBbPG84DONJaoyDyNzj23")
     var firebaseUser: FirebaseUser? = null
     var tokenId: String? = null
+    var userId: String = "oXkta2ZmBbPG84DONJaoyDyNzj23"*/
+
+    var firebaseUser: FirebaseUser? = null
+    var tokenId: String? = null
+    var userId: String = USER_ID_TEST
+        set(value) {
+            field = value
+            liveDataUserRoom.removeObserver(userObserver)
+            liveDataUserRoom = userDao.findById(value)
+            subscribeLiveDataUser()
+        }
+    private var liveDataUserRoom = userDao.findById(userId)
+    var liveDataUser = MutableLiveData<User>(liveDataUserRoom.value)
+
+    init {
+        subscribeLiveDataUser()
+    }
 
     fun isAuthorized() = FirebaseAuth.getInstance().currentUser != null
 
@@ -44,18 +68,30 @@ class RepositoryUser private constructor(val userDao: UserDao) {
         ApiHelper.initUserTokenId(firebaseUser) {
             if (it.isSuccess() && it.value != null) {
                 tokenId = it.value
-                CoroutineScope(Dispatchers.IO).launch {
+                CoroutineScope(Dispatchers.Main).launch {
                     val pushToken = FirebaseInstanceId.getInstance().token ?: ""
                     val answer = ApiHelper.requestInit(firebaseUser, tokenId, pushToken)
 
-                    if (answer.isSuccess() && answer.value != null) {
+                    if (answer.isSuccess() && answer.value != null && answer.value.user.id.isNotEmpty()) {
                         userDao.insert(answer.value.user)
+                        userId = answer.value.user.id
                     } else {
                         showToast(answer.errorStr)
                     }
                 }
             } else {
                 showToast(ERROR_NOT_AUTHORIZED)
+            }
+        }
+    }
+
+    suspend fun deleteUserInfo() {
+        val user = liveDataUserRoom.value
+        if (user != null) {
+            userDao.delete(user)
+            withContext(Dispatchers.Main) {
+                userId = ""
+                showToast(R.string.logout_success)
             }
         }
     }
@@ -82,6 +118,10 @@ class RepositoryUser private constructor(val userDao: UserDao) {
         val user = User(liveDataUser.value ?: return)
         user.tagsSelected = checkedTags
         updateUser(user, liveDataUser.value)
+    }
+
+    private fun subscribeLiveDataUser() {
+        liveDataUserRoom.observeForever(userObserver)
     }
 
     private suspend fun updateUser(user: User, oldUser: User?) {

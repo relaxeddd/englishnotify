@@ -65,4 +65,4 @@ data class Result(val code: Int = STATUS_UNDEFINED, val msg: String = "")
 
 data class PurchaseResult(val code: Int = STATUS_UNDEFINED)
 
-data class InitData(val code: Int = STATUS_UNDEFINED, val user: User)
+data class InitData(val result: Result, val user: User)

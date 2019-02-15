@@ -1,13 +1,19 @@
 package relaxeddd.pushenglish.ui.settings
 
+import com.firebase.ui.auth.AuthUI
 import relaxeddd.pushenglish.R
-import relaxeddd.pushenglish.common.BaseFragment
-import relaxeddd.pushenglish.common.InjectorUtils
-import relaxeddd.pushenglish.common.NAVIGATION_DIALOG_APP_ABOUT
+import relaxeddd.pushenglish.common.*
 import relaxeddd.pushenglish.databinding.FragmentSettingsBinding
 import relaxeddd.pushenglish.dialogs.DialogAppAbout
+import relaxeddd.pushenglish.dialogs.DialogConfirmLogout
 
 class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding>() {
+
+    private val listenerConfirmLogout: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
+        override fun onResult(result: Boolean) {
+            viewModel.onLogoutDialogResult(result)
+        }
+    }
 
     override fun getLayoutResId() = R.layout.fragment_settings
     override fun getToolbarTitleResId() = R.string.settings
@@ -24,6 +30,18 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
         when (eventId) {
             NAVIGATION_DIALOG_APP_ABOUT -> {
                 DialogAppAbout().show(this@FragmentSettings.childFragmentManager, "Learn Language Dialog")
+            }
+            NAVIGATION_DIALOG_CONFIRM_LOGOUT -> {
+                val dialog = DialogConfirmLogout()
+                dialog.setConfirmListener(listenerConfirmLogout)
+                dialog.show(this@FragmentSettings.childFragmentManager, "Confirm Logout Dialog")
+            }
+            NAVIGATION_GOOGLE_LOGOUT -> {
+                activity?.let {
+                    AuthUI.getInstance().signOut(it).addOnCompleteListener { resultTask ->
+                        viewModel.onLogoutResult(resultTask.isSuccessful)
+                    }
+                }
             }
         }
     }

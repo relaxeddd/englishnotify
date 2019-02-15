@@ -7,6 +7,7 @@ import relaxeddd.pushenglish.common.Word
 
 @Dao
 interface WordDao {
+
     @Query("SELECT * FROM $WORDS")
     fun getAll(): LiveData<List<Word>>
 

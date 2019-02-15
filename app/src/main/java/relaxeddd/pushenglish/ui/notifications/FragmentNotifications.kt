@@ -10,20 +10,17 @@ import relaxeddd.pushenglish.dialogs.DialogSelectRepeatTime
 
 class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotificationsBinding>() {
 
-    private val listenerLearnEnglish: ListenerResult<Int> = object:
-        ListenerResult<Int> {
+    private val listenerLearnEnglish: ListenerResult<Int> = object: ListenerResult<Int> {
         override fun onResult(result: Int) {
             viewModel.onDialogLearnLanguageResult(result)
         }
     }
-    private val listenerRepeatTime: ListenerResult<Int> = object:
-        ListenerResult<Int> {
+    private val listenerRepeatTime: ListenerResult<Int> = object: ListenerResult<Int> {
         override fun onResult(result: Int) {
             viewModel.onDialogRepeatTimeResult(result)
         }
     }
-    private val listenerCheckTags: ListenerResult<List<String>> = object:
-        ListenerResult<List<String>> {
+    private val listenerCheckTags: ListenerResult<List<String>> = object: ListenerResult<List<String>> {
         override fun onResult(result: List<String>) {
             viewModel.onDialogCheckTagsResult(result)
         }

@@ -32,7 +32,7 @@ abstract class ActivityBase<VM : ViewModelBase, B : ViewDataBinding> : AppCompat
         binding = DataBindingUtil.setContentView(this, getLayoutResId())
         viewModel = ViewModelProviders.of(this, factory).get(getViewModelClass())
         configureBinding()
-        binding.setLifecycleOwner(this)
+        binding.lifecycleOwner = this
         binding.executePendingBindings()
     }
 

@@ -1,2 +1,0 @@
-package relaxeddd.pushenglish.common
-

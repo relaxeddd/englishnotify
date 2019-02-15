@@ -8,14 +8,18 @@
     <string name="app_info">App info</string>
     <string name="app_language">App language</string>
     <string name="close">Close</string>
+    <string name="confirm">Confirm</string>
     <string name="confirm_and_continue">Confirm and continue</string>
     <string name="dictionary">Dictionary</string>
+    <string name="do_you_really_want_to_logout">Do you really want to exit?</string>
     <string name="enable_notifications">Enable notifications</string>
     <string name="english_at_russian">English at russian</string>
     <string name="error_update">Error update</string>
     <string name="filter">Filter</string>
     <string name="learn_language">Learn language</string>
     <string name="logout">Logout</string>
+    <string name="logout_error">Logout error</string>
+    <string name="logout_success">Logout success</string>
     <string name="network_not_available">Network is not available</string>
     <string name="no_words">No words</string>
     <string name="notification_categories">Notification categories</string>
@@ -32,6 +36,7 @@
     <string name="sort_by">Sort by</string>
     <string name="time_new">Time new</string>
     <string name="time_old">Time old</string>
+    <string name="you_sign_in_as">You sign in as: %s</string>
 
     <string name="label_fragment_dictionary">LabelFragmentDictionary</string>
     <string name="label_fragment_notifications">LabelFragmentNotifications</string>

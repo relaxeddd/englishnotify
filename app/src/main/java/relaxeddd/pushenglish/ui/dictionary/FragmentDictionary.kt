@@ -59,8 +59,10 @@ class FragmentDictionary : BaseFragment<ViewModelDictionary, FragmentDictionaryB
         binding.clickListenerCloseFilter = clickListenerCloseFilter
         viewModel.wordsFiltered.observe(viewLifecycleOwner, Observer { words ->
             binding.hasWords = (words != null && words.isNotEmpty())
-            if (words != null && words.isNotEmpty())
-                adapter.submitList(words)
+            if (words != null && words.isNotEmpty()) adapter.submitList(words)
+        })
+        viewModel.user.observe(viewLifecycleOwner, Observer { user ->
+            adapter.languageType = user?.learnLanguageType ?: 0
         })
     }
 

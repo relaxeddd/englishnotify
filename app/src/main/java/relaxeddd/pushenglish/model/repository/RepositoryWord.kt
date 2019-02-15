@@ -10,8 +10,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
 
         fun getInstance(wordDao: WordDao) =
             instance ?: synchronized(this) {
-                instance
-                    ?: RepositoryWord(wordDao).also { instance = it }
+                instance ?: RepositoryWord(wordDao).also { instance = it }
             }
     }
 

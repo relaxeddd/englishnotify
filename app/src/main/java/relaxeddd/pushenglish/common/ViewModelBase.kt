@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 
-open abstract class ViewModelBase : ViewModel() {
+abstract class ViewModelBase : ViewModel() {
 
     protected val navigateEvent = MutableLiveData<Event<Int>>()
     protected val uiScope = CoroutineScope(Dispatchers.Main)

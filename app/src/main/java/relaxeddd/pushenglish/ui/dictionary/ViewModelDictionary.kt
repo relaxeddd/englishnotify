@@ -5,10 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import relaxeddd.pushenglish.common.*
+import relaxeddd.pushenglish.model.repository.RepositoryUser
 import relaxeddd.pushenglish.model.repository.RepositoryWord
 
-class ViewModelDictionary(private val repositoryWord: RepositoryWord) : ViewModelBase() {
+class ViewModelDictionary(private val repositoryWord: RepositoryWord,
+                          private val repositoryUser: RepositoryUser) : ViewModelBase() {
 
+    val user: LiveData<User?> = repositoryUser.liveDataUser
     var sortByType = MutableLiveData<SortByType>(SortByType.ALPHABETICAL_NAME)
     val filterTags = MutableLiveData<HashSet<String>>()
     val tags = HashSet<String>()
@@ -41,7 +44,7 @@ class ViewModelDictionary(private val repositoryWord: RepositoryWord) : ViewMode
     }
 
     fun setFilterTags(tags: List<String>) {
-        if (!tags.containsAll(ViewModelDictionary@this.tags)) {
+        if (!tags.containsAll(this.tags)) {
             filterTags.value = tags.toHashSet()
         } else {
             filterTags.value = HashSet()
@@ -64,7 +67,9 @@ class ViewModelDictionary(private val repositoryWord: RepositoryWord) : ViewMode
         filteredItems.addAll(words.value ?: ArrayList())
 
         if (filterTags.value?.isNotEmpty() == true) {
-            filteredItems = filteredItems.filter { it.tags.intersect(filterTags.value ?: HashSet()).isNotEmpty() }.toHashSet()
+            filteredItems = filteredItems.filter {
+                it.tags.intersect(filterTags.value ?: HashSet()).isNotEmpty()
+            }.toHashSet()
         }
 
         if (searchText.isNotEmpty()) {

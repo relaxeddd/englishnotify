@@ -4,17 +4,17 @@
 
     <item android:id="@id/fragmentDictionary"
           android:title="@string/dictionary"
-          app:showAsAction="always"
+          app:showAsAction="ifRoom"
           android:icon="@drawable/ic_dictionary"/>
 
     <item android:id="@id/fragmentNotifications"
           android:title="@string/notifications"
-          app:showAsAction="always"
+          app:showAsAction="ifRoom"
           android:icon="@drawable/ic_notification"/>
 
     <item android:id="@id/fragmentSettings"
           android:title="@string/settings"
-          app:showAsAction="always"
+          app:showAsAction="ifRoom"
           android:icon="@drawable/ic_settings"/>
 
 </menu>

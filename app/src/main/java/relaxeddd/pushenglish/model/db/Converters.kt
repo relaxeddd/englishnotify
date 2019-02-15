@@ -3,6 +3,7 @@ package relaxeddd.pushenglish.model.db
 import androidx.room.TypeConverter
 
 class ConverterListStr {
+
     @TypeConverter
     fun fromString(content: String?): List<String> {
         return content?.split(";") ?: ArrayList()

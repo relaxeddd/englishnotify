@@ -20,15 +20,7 @@ object ApiHelper {
         val appVersion = BuildConfig.VERSION_CODE
 
         return if (tokenId?.isNotEmpty() == true) {
-            Resource(
-                status = STATUS_OK,
-                value = api.requestInit(
-                    tokenId,
-                    requestId,
-                    userId,
-                    appVersion,
-                    pushToken
-                )
+            Resource(status = STATUS_OK, value = api.requestInit(tokenId, requestId, userId, appVersion, pushToken)
             )
         } else {
             Resource(errorStr = ERROR_TOKEN_NOT_INIT)
@@ -59,8 +51,8 @@ object ApiHelper {
     fun initUserTokenId(firebaseUser: FirebaseUser?, resultListener: (tokenId: Resource<String>) -> Unit) {
         firebaseUser?.getIdToken(false)?.addOnCompleteListener {
             if (it.isSuccessful) {
-                val receivedTokenId = it.result.token ?: ""
-                resultListener(Resource(value = receivedTokenId))
+                val receivedTokenId = it.result?.token ?: ""
+                resultListener(Resource(status = STATUS_OK, value = receivedTokenId))
             } else {
                 resultListener(Resource(errorStr = ERROR_NOT_AUTHORIZED))
             }
@@ -90,18 +82,21 @@ object ApiHelper {
         }
 
         //--------------------------------------------------------------------------------------------------------------
-        suspend fun requestInit(tokenId: String, requestId: String, userId: String, appVersion: Int, pushToken: String) : InitData {
+        suspend fun requestInit(tokenId: String, requestId: String, userId: String, appVersion: Int, pushToken: String)
+                : InitData {
             return apiHelper.requestInit(tokenPrefix + tokenId, requestId, userId, appVersion, pushToken).await()
         }
 
-        suspend fun requestVerifyPurchase(tokenId: String, requestId: String, userId: String, purchaseTokenId: String, signature: String,
-                                  originalJson: String, itemType: String) : PurchaseResult {
-            return apiHelper.requestVerifyPurchase(tokenPrefix + tokenId, requestId, userId, purchaseTokenId, signature, originalJson, itemType).await()
+        suspend fun requestVerifyPurchase(tokenId: String, requestId: String, userId: String, purchaseTokenId: String,
+                                          signature: String, originalJson: String, itemType: String) : PurchaseResult {
+            return apiHelper.requestVerifyPurchase(tokenPrefix + tokenId, requestId, userId, purchaseTokenId,
+                                                   signature, originalJson, itemType).await()
         }
 
         suspend fun requestSendFeedback(tokenId: String, requestId: String, userId: String, message: String,
                                         contactInfo: String) : Result {
-            return apiHelper.requestSendFeedback(tokenPrefix + tokenId, requestId, userId, message, contactInfo).await()
+            return apiHelper.requestSendFeedback(tokenPrefix + tokenId, requestId, userId, message,
+                                                 contactInfo).await()
         }
     }
 }

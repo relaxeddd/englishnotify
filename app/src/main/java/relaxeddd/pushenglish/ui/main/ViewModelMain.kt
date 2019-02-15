@@ -24,10 +24,6 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
         navigateEvent.value =
                 Event(NAVIGATION_FRAGMENT_NOTIFICATIONS)
     }
-    val clickListenerWarningAuthorize = View.OnClickListener {
-        navigateEvent.value =
-                Event(NAVIGATION_FRAGMENT_SETTINGS)
-    }
     val clickListenerGoogleAuth = View.OnClickListener {
         if (!isNetworkAvailable()) {
             showToast(getString(R.string.network_not_available))
@@ -45,15 +41,21 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
         repositoryUser.liveDataUser.removeObserver(userObserver)
     }
 
-    fun onViewResume() {
+    fun onViewCreate() {
         val sPref = App.context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         val isConfirmed = sPref.getBoolean(PRIVACY_POLICY_CONFIRMED, false)
 
         if (isConfirmed) {
             requestInitUser()
-        } else {
-            navigateEvent.value =
-                    Event(NAVIGATION_DIALOG_PRIVACY_POLICY)
+        }
+    }
+
+    fun onViewResume() {
+        val sPref = App.context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        val isConfirmed = sPref.getBoolean(PRIVACY_POLICY_CONFIRMED, false)
+
+        if (!isConfirmed) {
+            navigateEvent.value = Event(NAVIGATION_DIALOG_PRIVACY_POLICY)
         }
     }
 

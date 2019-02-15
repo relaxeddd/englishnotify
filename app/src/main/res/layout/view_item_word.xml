@@ -25,10 +25,9 @@
                 android:padding="@dimen/size_12">
 
             <TextView
-                    android:text="@{word.eng}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/text_word_eng"
+                    android:id="@+id/text_word"
                     android:textColor="@color/black"
                     app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintEnd_toStartOf="@+id/text_word_transcription"
@@ -41,17 +40,17 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/text_word_transcription"
-                    app:layout_constraintStart_toEndOf="@+id/text_word_eng"
-                    app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/text_word_rus"
-                    app:layout_constraintTop_toTopOf="@+id/text_word_eng"
+                    app:layout_constraintStart_toEndOf="@+id/text_word"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintEnd_toStartOf="@+id/text_word_translation"
+                    app:layout_constraintTop_toTopOf="@+id/text_word"
                     android:ellipsize="end"
                     android:maxLines="1"/>
 
             <TextView
-                    android:text="@{word.rus}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/text_word_rus"
+                    android:id="@+id/text_word_translation"
                     app:layout_constraintStart_toEndOf="@+id/text_word_transcription"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/text_word_transcription"
@@ -63,7 +62,7 @@
                     android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/text_word_eng"
+                    app:layout_constraintTop_toBottomOf="@+id/text_word"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
                     android:orientation="vertical"

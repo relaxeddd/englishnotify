@@ -43,7 +43,7 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
 
         configureMenu()
         configureBinding()
-        binding.setLifecycleOwner(this)
+        binding.lifecycleOwner = this
         binding.executePendingBindings()
 
         return binding.root
