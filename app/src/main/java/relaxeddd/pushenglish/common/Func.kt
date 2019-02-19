@@ -88,3 +88,9 @@ fun openWebPrivacyPolicy(activity: FragmentActivity?) {
     browserIntent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
     activity?.startActivity(browserIntent)
 }
+
+fun openWebApplication(activity: FragmentActivity?) {
+    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://google.com"))
+    browserIntent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+    activity?.startActivity(browserIntent)
+}

@@ -79,8 +79,8 @@ class ViewModelDictionary(private val repositoryWord: RepositoryWord,
         }
 
         val sortList = when (sortByType.value) {
-            SortByType.ALPHABETICAL_NAME -> filteredItems.sortedBy{ it.eng }
-            SortByType.ALPHABETICAL_TRANSLATE -> filteredItems.sortedBy{ it.rus }
+            SortByType.ALPHABETICAL_NAME -> filteredItems.sortedBy{ it.eng.toLowerCase() }
+            SortByType.ALPHABETICAL_TRANSLATE -> filteredItems.sortedBy{ it.rus.toLowerCase() }
             SortByType.TIME_OLD -> filteredItems.sortedBy{ it.timestamp }
             else -> filteredItems.sortedByDescending{ it.timestamp }
         }

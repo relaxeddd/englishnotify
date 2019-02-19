@@ -23,6 +23,9 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     val clickListenerLogout = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_CONFIRM_LOGOUT)
     }
+    val clickListenerRate = View.OnClickListener {
+        navigateEvent.value = Event(NAVIGATION_WEB_PLAY_MARKET)
+    }
 
     fun onLogoutDialogResult(isConfirmed: Boolean) {
         if (isConfirmed) {

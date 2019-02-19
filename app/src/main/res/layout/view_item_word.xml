@@ -104,6 +104,17 @@
                         app:layout_constraintTop_toTopOf="parent"
                         android:layout_weight="1"/>
 
+                <TextView
+                        android:text=""
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:id="@+id/text_word_timestamp" app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="8dp"
+                        android:textSize="@dimen/font_10"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_weight="1"/>
+
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

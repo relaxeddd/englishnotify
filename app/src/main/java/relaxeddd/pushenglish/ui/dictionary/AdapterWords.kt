@@ -11,6 +11,8 @@ import relaxeddd.pushenglish.R
 import relaxeddd.pushenglish.common.Word
 import relaxeddd.pushenglish.common.animateDropdown
 import relaxeddd.pushenglish.databinding.ViewItemWordBinding
+import java.text.SimpleDateFormat
+import java.util.*
 
 class AdapterWords : ListAdapter<Word, AdapterWords.ViewHolder>(WordDiffCallback()) {
 
@@ -50,16 +52,21 @@ class AdapterWords : ListAdapter<Word, AdapterWords.ViewHolder>(WordDiffCallback
                 clickListener = listener
                 this.word = word
                 executePendingBindings()
+
                 when (languageType) {
                     0 -> {
                         textWord.text = word.eng
-                        textWordTranscription.text = word.rus
+                        textWordTranscription.text = word.transcription
+                        textWordTranslation.text = word.rus
                     }
                     1 -> {
                         textWord.text = word.rus
-                        textWordTranscription.text = word.eng
+                        textWordTranscription.text = word.transcription
+                        textWordTranslation.text = word.eng
                     }
                 }
+                val dateFormat = "hh:mm dd.MM"
+                textWordTimestamp.text = SimpleDateFormat(dateFormat, Locale.getDefault()).format(word.timestamp) ?: ""
             }
         }
     }

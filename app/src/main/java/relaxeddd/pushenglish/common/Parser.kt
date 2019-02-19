@@ -43,7 +43,8 @@ fun parseWord(notParsedData: MutableMap<String, String>) : Word {
     val sampleRus = if (notParsedData.containsKey(SAMPLE_RUS)) (notParsedData[SAMPLE_RUS] as String) else ""
     val v2 = if (notParsedData.containsKey(V2)) (notParsedData[V2] as String) else ""
     val v3 = if (notParsedData.containsKey(V3)) (notParsedData[V3] as String) else ""
-    val timestamp = if (notParsedData.containsKey(TIMESTAMP)) (notParsedData[TIMESTAMP]?.toLong()) ?: 0 else 0
+    //val timestamp = if (notParsedData.containsKey(TIMESTAMP)) (notParsedData[TIMESTAMP]?.toLong()) ?: 0 else 0
+    val timestamp = System.currentTimeMillis()
 
     return Word(eng, rus, transcription, tags, sampleEng, sampleRus, v2, v3, timestamp)
 }

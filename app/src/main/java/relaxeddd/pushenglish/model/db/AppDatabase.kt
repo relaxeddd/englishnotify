@@ -52,13 +52,13 @@ abstract class AppDatabase : RoomDatabase() {
             db.wordDao().insertAll(
                 Word(
                     "Dog", "Собака", "dog", arrayListOf("noun", "top1"),
-                    "The dog follows me wherever I go.", "Собака следует за мной, куда бы я ни шёл.", timestamp = 111
+                    "The dog follows me wherever I go.", "Собака следует за мной, куда бы я ни шёл.", timestamp = 1114535342342
                 ),
                 Word(
                     "Different", "Разные", "ˈdif(ə)rənt", arrayListOf("adjective", "top1"),
                     "These distinctions are important because different rules may apply to different types of securities.",
                     "Эти различия имеют важное значение, потому что к различным видам ценных бумаг могут применяться различные правила.",
-                    timestamp = 51257
+                    timestamp = 51257412342
                 ),
                 Word(
                     "Suspend",
@@ -67,7 +67,7 @@ abstract class AppDatabase : RoomDatabase() {
                     arrayListOf("verb"),
                     "The Committee should suspend its formal deliberations and complete its unfinished work.",
                     "Комитету следует приостановить свои официальные обсуждения и закончить свою незавершенную работу.",
-                    timestamp = 3
+                    timestamp = 32342345243
                 )
             )
             /*db.userDao().insert(User(USER_ID_TEST, "vadim25000@yandex.ru", true, 3,

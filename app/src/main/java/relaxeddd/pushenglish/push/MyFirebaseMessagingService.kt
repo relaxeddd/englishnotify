@@ -36,13 +36,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 }
                 notificationText += word.v2 + " - " + word.v3
             }
-
             if (word.rus.isNotEmpty()) {
                 notificationText += "\n"
                 notificationText += "\n"
                 notificationText += word.rus
             }
-
             if (word.sampleEng.isNotEmpty()) {
                 notificationText += "\n"
                 notificationText += "\n" + word.sampleEng

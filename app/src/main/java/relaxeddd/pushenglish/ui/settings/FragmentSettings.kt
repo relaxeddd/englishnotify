@@ -43,6 +43,9 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
                     }
                 }
             }
+            NAVIGATION_WEB_PLAY_MARKET -> {
+                openWebApplication(activity)
+            }
         }
     }
 }

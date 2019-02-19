@@ -156,6 +156,46 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_view_settings_rate"
+                android:layout_width="match_parent"
+                style="@style/StyleCardViewSettings"
+                android:onClick="@{viewModel.clickListenerRate}"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/card_view_settings_language"
+                app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <TextView
+                        android:id="@+id/text_settings_rate"
+                        android:text="@string/rate_us"
+                        android:layout_width="wrap_content"
+                        android:layout_height="18dp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/font_14"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageView3" android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"/>
+                <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" app:srcCompat="@drawable/ic_star"
+                        android:id="@+id/imageView3"
+                        app:layout_constraintTop_toTopOf="@+id/text_settings_rate"
+                        app:layout_constraintBottom_toBottomOf="@+id/text_settings_rate"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="16dp"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_view_settings_logout"
                 android:layout_width="match_parent"
                 style="@style/StyleCardViewSettings"
@@ -164,7 +204,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/card_view_settings_language"
+                app:layout_constraintTop_toBottomOf="@+id/card_view_settings_rate"
                 app:layout_constraintStart_toStartOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
