@@ -6,11 +6,9 @@
     <data>
 
         <import type="android.view.View"/>
-
         <variable
                 name="viewModel"
                 type="relaxeddd.pushenglish.ui.settings.ViewModelSettings" />
-
         <variable
                 name="listLanguages"
                 type="String[]" />
@@ -65,7 +63,8 @@
                 android:id="@+id/card_view_settings_send_feedback"
                 android:layout_width="match_parent"
                 style="@style/StyleCardViewSettings"
-                android:onClick="@{viewModel.clickListenerSendFeedback}"
+                android:onClick="@{viewModel.user != null ? viewModel.clickListenerSendFeedback : null}"
+                android:alpha="@{viewModel.user != null ? 1f : 0.5f}"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"

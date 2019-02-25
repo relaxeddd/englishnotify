@@ -54,8 +54,7 @@
                     app:layout_constraintStart_toEndOf="@+id/text_word_transcription"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/text_word_transcription"
-                    android:ellipsize="end"
-                    android:maxLines="1"/>
+                    android:ellipsize="end"/>
 
             <LinearLayout
                     android:id="@+id/constraint_word_drop_dawn"

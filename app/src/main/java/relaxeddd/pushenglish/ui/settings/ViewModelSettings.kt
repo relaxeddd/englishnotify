@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.launch
 import relaxeddd.pushenglish.R
 import relaxeddd.pushenglish.common.*
+import relaxeddd.pushenglish.model.repository.RepositoryCommon
 import relaxeddd.pushenglish.model.repository.RepositoryUser
 
 class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelBase() {
@@ -30,6 +31,12 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     fun onLogoutDialogResult(isConfirmed: Boolean) {
         if (isConfirmed) {
             navigateEvent.value = Event(NAVIGATION_GOOGLE_LOGOUT)
+        }
+    }
+
+    fun onFeedbackDialogResult(feedback: String) {
+        ioScope.launch {
+            RepositoryCommon.getInstance().sendFeedback(feedback)
         }
     }
 

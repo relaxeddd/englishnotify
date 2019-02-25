@@ -20,8 +20,18 @@ object ApiHelper {
         val appVersion = BuildConfig.VERSION_CODE
 
         return if (tokenId?.isNotEmpty() == true) {
-            Resource(status = STATUS_OK, value = api.requestInit(tokenId, requestId, userId, appVersion, pushToken)
-            )
+            Resource(status = STATUS_OK, value = api.requestInit(tokenId, requestId, userId, appVersion, pushToken))
+        } else {
+            Resource(errorStr = ERROR_TOKEN_NOT_INIT)
+        }
+    }
+
+    suspend fun requestSendFeedback(firebaseUser: FirebaseUser?, tokenId: String?, feedback: String) : Resource<Result> {
+        val requestId = UUID.randomUUID().toString()
+        val userId = firebaseUser?.uid ?: ""
+
+        return if (tokenId?.isNotEmpty() == true) {
+            Resource(status = STATUS_OK, value = api.requestSendFeedback(tokenId, requestId, userId, feedback))
         } else {
             Resource(errorStr = ERROR_TOKEN_NOT_INIT)
         }
@@ -93,10 +103,8 @@ object ApiHelper {
                                                    signature, originalJson, itemType).await()
         }
 
-        suspend fun requestSendFeedback(tokenId: String, requestId: String, userId: String, message: String,
-                                        contactInfo: String) : Result {
-            return apiHelper.requestSendFeedback(tokenPrefix + tokenId, requestId, userId, message,
-                                                 contactInfo).await()
+        suspend fun requestSendFeedback(tokenId: String, requestId: String, userId: String, message: String) : Result {
+            return apiHelper.requestSendFeedback(tokenPrefix + tokenId, requestId, userId, message).await()
         }
     }
 }

@@ -9,15 +9,33 @@ import relaxeddd.pushenglish.model.repository.RepositoryUser
 import kotlinx.coroutines.launch
 import relaxeddd.pushenglish.R
 import relaxeddd.pushenglish.common.*
+import relaxeddd.pushenglish.model.repository.RepositoryCommon
+import java.util.*
 
 class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase() {
+
     val user = repositoryUser.liveDataUser
     val isShowWarningNotifications = MutableLiveData<Boolean>(false)
     val isShowWarningAuthorize = MutableLiveData<Boolean>(false)
+    var authTimer: Timer? = null
 
     private val userObserver = Observer<User?> { user ->
-        isShowWarningNotifications.value = user == null || user.receiveNotifications == false
-        isShowWarningAuthorize.value = user == null || repositoryUser.firebaseUser == null
+        authTimer?.cancel()
+
+        if (user == null || RepositoryCommon.getInstance().firebaseUser == null) {
+            authTimer = Timer()
+            authTimer?.schedule(object: TimerTask() {
+                override fun run() {
+                    uiScope.launch {
+                        isShowWarningNotifications.value = user == null || user.receiveNotifications == false
+                        isShowWarningAuthorize.value = user == null || RepositoryCommon.getInstance().firebaseUser == null
+                    }
+                }
+            }, 5000)
+        } else {
+            isShowWarningNotifications.value = user.receiveNotifications == false
+            isShowWarningAuthorize.value = false
+        }
     }
 
     val clickListenerWarningNotifications = View.OnClickListener {

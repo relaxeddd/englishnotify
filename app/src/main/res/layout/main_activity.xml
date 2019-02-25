@@ -84,6 +84,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintEnd_toStartOf="@+id/image_main_waring_authorize"
+                    android:visibility="gone"
                     app:layout_constraintHorizontal_chainStyle="packed" android:layout_marginTop="16dp"/>
             <ImageView
                     android:layout_width="wrap_content"
@@ -93,18 +94,20 @@
                     app:layout_constraintStart_toEndOf="@+id/text_main_warning_authorize"
                     app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
                     app:layout_constraintBottom_toBottomOf="@+id/text_main_warning_authorize"
+                    android:visibility="gone"
                     app:layout_constraintTop_toTopOf="@+id/text_main_warning_authorize"/>
 
-            <com.google.android.gms.common.SignInButton android:layout_width="wrap_content"
-                                                        android:layout_height="wrap_content"
-                                                        app:buttonSize="wide"
-                                                        android:onClick="@{viewModel.clickListenerGoogleAuth}"
-                                                        app:layout_constraintTop_toBottomOf="@+id/text_main_warning_authorize"
-                                                        app:layout_constraintStart_toStartOf="parent"
-                                                        android:layout_marginStart="8dp"
-                                                        app:layout_constraintEnd_toEndOf="parent"
-                                                        android:layout_marginEnd="8dp"
-                                                        android:layout_marginTop="8dp"></com.google.android.gms.common.SignInButton>
+            <com.google.android.gms.common.SignInButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:buttonSize="wide"
+                    android:onClick="@{viewModel.clickListenerGoogleAuth}"
+                    app:layout_constraintTop_toBottomOf="@+id/text_main_warning_authorize"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="8dp"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -71,6 +71,7 @@ class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>() {
                 if (response?.errorCode == -1) {
                     viewModel.requestInitUser()
                 } else {
+                    AuthUI.getInstance().signOut(this).addOnCompleteListener {}
                     showToast(response.toString())
                 }
             }

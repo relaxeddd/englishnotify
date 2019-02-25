@@ -30,6 +30,5 @@ interface IApi {
     fun requestSendFeedback(@Header("Authorization") idToken: String,
                             @Query("requestId") requestId: String,
                             @Query("userId") userId: String,
-                            @Query("message") message: String,
-                            @Query("contactInfo") contactInfo: String) : Deferred<Result>
+                            @Query("message") message: String) : Deferred<Result>
 }

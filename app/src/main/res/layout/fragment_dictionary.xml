@@ -6,15 +6,12 @@
     <data>
 
         <import type="android.view.View" />
-
         <variable
                 name="hasWords"
                 type="boolean" />
-
         <variable
                 name="clickListenerCloseFilter"
                 type="android.view.View.OnClickListener"/>
-
         <variable
                 name="viewModel"
                 type="relaxeddd.pushenglish.ui.dictionary.ViewModelDictionary" />

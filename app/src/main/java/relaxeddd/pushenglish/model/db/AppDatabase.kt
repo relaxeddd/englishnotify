@@ -55,7 +55,7 @@ abstract class AppDatabase : RoomDatabase() {
                     "The dog follows me wherever I go.", "Собака следует за мной, куда бы я ни шёл.", timestamp = 1114535342342
                 ),
                 Word(
-                    "Different", "Разные", "ˈdif(ə)rənt", arrayListOf("adjective", "top1"),
+                    "Different", "Разные, test, next, sss", "ˈdif(ə)rənt", arrayListOf("adjective", "top1"),
                     "These distinctions are important because different rules may apply to different types of securities.",
                     "Эти различия имеют важное значение, потому что к различным видам ценных бумаг могут применяться различные правила.",
                     timestamp = 51257412342

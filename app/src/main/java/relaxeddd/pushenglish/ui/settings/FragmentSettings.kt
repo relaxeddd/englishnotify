@@ -6,12 +6,18 @@ import relaxeddd.pushenglish.common.*
 import relaxeddd.pushenglish.databinding.FragmentSettingsBinding
 import relaxeddd.pushenglish.dialogs.DialogAppAbout
 import relaxeddd.pushenglish.dialogs.DialogConfirmLogout
+import relaxeddd.pushenglish.dialogs.DialogSendFeedback
 
 class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding>() {
 
     private val listenerConfirmLogout: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
         override fun onResult(result: Boolean) {
             viewModel.onLogoutDialogResult(result)
+        }
+    }
+    private val listenerFeedbackDialog: ListenerResult<String> = object: ListenerResult<String> {
+        override fun onResult(result: String) {
+            viewModel.onFeedbackDialogResult(result)
         }
     }
 
@@ -45,6 +51,11 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
             }
             NAVIGATION_WEB_PLAY_MARKET -> {
                 openWebApplication(activity)
+            }
+            NAVIGATION_DIALOG_SEND_FEEDBACK -> {
+                val dialog = DialogSendFeedback()
+                dialog.setConfirmListener(listenerFeedbackDialog)
+                dialog.show(this@FragmentSettings.childFragmentManager, "Confirm Logout Dialog")
             }
         }
     }
