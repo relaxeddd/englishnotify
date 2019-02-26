@@ -2,6 +2,7 @@ package relaxeddd.pushenglish.model.http
 
 import androidx.annotation.Keep
 import kotlinx.coroutines.Deferred
+import org.json.JSONArray
 import relaxeddd.pushenglish.common.*
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -31,4 +32,13 @@ interface IApi {
                             @Query("requestId") requestId: String,
                             @Query("userId") userId: String,
                             @Query("message") message: String) : Deferred<Result>
+
+    @GET(FUNC_REQUEST_UPDATE_USER)
+    fun requestUpdateUser(@Header("Authorization") idToken: String,
+                          @Query("requestId") requestId: String,
+                          @Query("userId") userId: String,
+                          @Query("receiveNotifications") receiveNotifications: Boolean,
+                          @Query("notificationsTimeType") notificationsTimeType: Int,
+                          @Query("learnLanguageType") learnLanguageType: Int,
+                          @Query("tagsSelected") tagsSelected: JSONArray) : Deferred<UpdateUserResult>
 }

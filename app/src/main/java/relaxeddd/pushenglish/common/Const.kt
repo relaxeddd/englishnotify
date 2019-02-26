@@ -13,22 +13,24 @@ const val WORDS = "words"
 const val USERS = "users"
 
 const val FUNC_REQUEST_INIT = "requestInit/"
-const val FUNC_REQUEST_PLAY = "requestPlay/"
-const val FUNC_REQUEST_CHOOSE_FREE_SPINS = "requestChooseFreeSpins/"
 const val FUNC_REQUEST_VERIFY_PURCHASE = "requestVerifyPurchase/"
-const val FUNC_REQUEST_RECOVERY = "requestRecovery/"
-const val FUNC_REQUEST_BUY = "requestBuy/"
-const val FUNC_REQUEST_SET_NICKNAME = "requestSetNickname/"
 const val FUNC_REQUEST_SEND_FEEDBACK = "requestSendFeedback/"
-const val FUNC_REQUEST_ADD_PUSH_TOKEN = "requestAddPushToken/"
-const val FUNC_REQUEST_GET_REWARDS = "requestGetRewards/"
+const val FUNC_REQUEST_UPDATE_USER = "requestUpdateUser/"
 
 const val EMPTY_RES = -1
 
-const val STATUS_UNDEFINED = 0
-const val STATUS_OK = 400
-const val STATUS_ERROR = 500
-const val STATUS_ERROR_NETWORK = 501
+const val RESULT_ERROR_UNAUTHORIZED = 403
+const val RESULT_ERROR_USER_NOT_FOUND = 771
+const val RESULT_ERROR_APP_INIT = 774
+const val RESULT_ERROR_ADD_PUSH_TOKEN = 1501
+
+const val RESULT_UNDEFINED = 0
+const val RESULT_OK = 700
+const val RESULT_ERROR_UPDATE_USER = 1101
+const val RESULT_ERROR_SEND_FEEDBACK = 1601
+const val RESULT_ERROR_FEEDBACK_TOO_SHORT = 1602
+const val RESULT_LOCAL_ERROR = 5101
+const val RESULT_ERROR_NETWORK = 5102
 
 const val NAVIGATION_EXIT = 999
 const val NAVIGATION_DIALOG_REPEAT = 1000

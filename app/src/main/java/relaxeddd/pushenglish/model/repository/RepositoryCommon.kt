@@ -3,8 +3,7 @@ package relaxeddd.pushenglish.model.repository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import relaxeddd.pushenglish.R
-import relaxeddd.pushenglish.common.ERROR_NOT_AUTHORIZED
-import relaxeddd.pushenglish.common.showToast
+import relaxeddd.pushenglish.common.*
 import relaxeddd.pushenglish.model.http.ApiHelper
 
 class RepositoryCommon private constructor() {
@@ -21,7 +20,7 @@ class RepositoryCommon private constructor() {
 
     suspend fun initFirebase(initCallback: (isSuccess: Boolean) -> Unit) {
         if (FirebaseAuth.getInstance().currentUser == null) {
-            showToast(ERROR_NOT_AUTHORIZED)
+            showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
             initCallback(false)
             return
         }
@@ -33,7 +32,7 @@ class RepositoryCommon private constructor() {
                 tokenId = it.value
                 initCallback(true)
             } else {
-                showToast(ERROR_NOT_AUTHORIZED)
+                showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
                 initCallback(false)
             }
         }
@@ -41,11 +40,11 @@ class RepositoryCommon private constructor() {
 
     suspend fun sendFeedback(feedback: String) {
         if (FirebaseAuth.getInstance().currentUser == null) {
-            showToast(ERROR_NOT_AUTHORIZED)
+            showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
             return
         }
-        if (feedback.isEmpty()) {
-            showToast(R.string.feedback_is_empty)
+        if (feedback.isEmpty() || feedback.length < 6) {
+            showToast(getErrorString(RESULT_ERROR_FEEDBACK_TOO_SHORT))
             return
         }
 
@@ -54,7 +53,7 @@ class RepositoryCommon private constructor() {
         if (answer.isSuccess()) {
             showToast(R.string.thank_you)
         } else {
-            showToast(answer.errorStr)
+            showToast(getErrorString(answer))
         }
     }
 }

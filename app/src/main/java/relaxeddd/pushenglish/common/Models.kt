@@ -36,11 +36,11 @@ data class Word(
 
 data class Resource<T>(
 
-    val status: Int = STATUS_UNDEFINED,
+    val status: Int = RESULT_UNDEFINED,
     val errorStr: String = "",
     val value: T? = null
 ) {
-    fun isSuccess() = status == STATUS_OK
+    fun isSuccess() = status == RESULT_OK
 }
 
 open class Event<out T>(private val content: T) {
@@ -61,8 +61,12 @@ open class Event<out T>(private val content: T) {
 
 data class AnimBlock(var isAnimating: Boolean = false)
 
-data class Result(val code: Int = STATUS_UNDEFINED, val msg: String = "")
+data class Result(val code: Int = RESULT_UNDEFINED, val msg: String = "") {
+    fun isSuccess() = code == RESULT_OK
+}
 
-data class PurchaseResult(val code: Int = STATUS_UNDEFINED)
+data class UpdateUserResult(val result: Result, val user: User)
 
-data class InitData(val result: Result, val user: User)
+data class PurchaseResult(val code: Int = RESULT_UNDEFINED)
+
+data class InitData(val result: Result, val user: User, val isActualVersion: Boolean = true)

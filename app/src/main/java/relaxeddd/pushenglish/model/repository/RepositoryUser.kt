@@ -7,7 +7,6 @@ import relaxeddd.pushenglish.common.User
 import relaxeddd.pushenglish.common.showToast
 import relaxeddd.pushenglish.model.db.UserDao
 import relaxeddd.pushenglish.model.http.ApiHelper
-import relaxeddd.pushenglish.model.http.FirebaseStub
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.coroutines.CoroutineScope
@@ -15,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import relaxeddd.pushenglish.R
+import relaxeddd.pushenglish.common.getErrorString
 
 class RepositoryUser private constructor(val userDao: UserDao) {
 
@@ -28,11 +28,6 @@ class RepositoryUser private constructor(val userDao: UserDao) {
     private val userObserver = Observer<User?> { user ->
         liveDataUser.postValue(user)
     }
-
-    /*var liveDataUser = userDao.findById("oXkta2ZmBbPG84DONJaoyDyNzj23")
-    var firebaseUser: FirebaseUser? = null
-    var tokenId: String? = null
-    var userId: String = "oXkta2ZmBbPG84DONJaoyDyNzj23"*/
 
     var userId: String = USER_ID_TEST
         set(value) {
@@ -63,11 +58,11 @@ class RepositoryUser private constructor(val userDao: UserDao) {
                 val pushToken = FirebaseInstanceId.getInstance().token ?: ""
                 val answer = ApiHelper.requestInit(firebaseUser, tokenId, pushToken)
 
-                if (answer.isSuccess() && answer.value != null && answer.value.user.id.isNotEmpty()) {
-                    userDao.insert(answer.value.user)
-                    userId = answer.value.user.id
+                if (answer.result.isSuccess() && answer.user.id.isNotEmpty()) {
+                    userDao.insert(answer.user)
+                    userId = answer.user.id
                 } else {
-                    showToast(answer.errorStr)
+                    showToast(getErrorString(answer.result))
                 }
             }
         }
@@ -104,9 +99,13 @@ class RepositoryUser private constructor(val userDao: UserDao) {
     }
 
     suspend fun setCheckedTags(checkedTags: List<String>) {
-        val user = User(liveDataUser.value ?: return)
-        user.tagsSelected = checkedTags
-        updateUser(user, liveDataUser.value)
+        if (checkedTags.isNotEmpty()) {
+            val user = User(liveDataUser.value ?: return)
+            user.tagsSelected = checkedTags
+            updateUser(user, liveDataUser.value)
+        } else {
+            showToast(R.string.tags_should_not_be_empty)
+        }
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -116,10 +115,14 @@ class RepositoryUser private constructor(val userDao: UserDao) {
 
     private suspend fun updateUser(user: User, oldUser: User?) {
         userDao.insert(user)
-        val result = FirebaseStub.saveUser(user)
 
-        if (!result.isSuccess()) {
-            showToast(result.errorStr)
+        val firebaseUser = RepositoryCommon.getInstance().firebaseUser
+        val tokenId = RepositoryCommon.getInstance().tokenId
+        val updateResult = ApiHelper.requestUpdateUser(firebaseUser, tokenId, user)
+
+        print(updateResult)
+        if (!updateResult.result.isSuccess()) {
+            showToast(getErrorString(updateResult.result))
             userDao.insert(oldUser ?: return)
         }
     }

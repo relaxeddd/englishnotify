@@ -3,6 +3,7 @@ package relaxeddd.pushenglish.model.http
 import com.google.firebase.auth.FirebaseUser
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
+import org.json.JSONArray
 import relaxeddd.pushenglish.BuildConfig
 import relaxeddd.pushenglish.common.*
 import retrofit2.Retrofit
@@ -14,26 +15,46 @@ object ApiHelper {
 
     private val api: Api = Api()
 
-    suspend fun requestInit(firebaseUser: FirebaseUser?, tokenId: String?, pushToken: String) : Resource<InitData> {
+    suspend fun requestInit(firebaseUser: FirebaseUser?, tokenId: String?, pushToken: String) : InitData {
         val requestId = UUID.randomUUID().toString()
         val userId = firebaseUser?.uid ?: ""
         val appVersion = BuildConfig.VERSION_CODE
 
         return if (tokenId?.isNotEmpty() == true) {
-            Resource(status = STATUS_OK, value = api.requestInit(tokenId, requestId, userId, appVersion, pushToken))
+            api.requestInit(tokenId, requestId, userId, appVersion, pushToken)
         } else {
-            Resource(errorStr = ERROR_TOKEN_NOT_INIT)
+            InitData(Result(RESULT_ERROR_UNAUTHORIZED), User())
         }
     }
 
-    suspend fun requestSendFeedback(firebaseUser: FirebaseUser?, tokenId: String?, feedback: String) : Resource<Result> {
+    suspend fun requestSendFeedback(firebaseUser: FirebaseUser?, tokenId: String?, feedback: String) : Result {
         val requestId = UUID.randomUUID().toString()
         val userId = firebaseUser?.uid ?: ""
 
         return if (tokenId?.isNotEmpty() == true) {
-            Resource(status = STATUS_OK, value = api.requestSendFeedback(tokenId, requestId, userId, feedback))
+            api.requestSendFeedback(tokenId, requestId, userId, feedback)
         } else {
-            Resource(errorStr = ERROR_TOKEN_NOT_INIT)
+            Result(msg = ERROR_TOKEN_NOT_INIT)
+        }
+    }
+
+    suspend fun requestUpdateUser(firebaseUser: FirebaseUser?, tokenId: String?, user: User) : UpdateUserResult {
+        val requestId = UUID.randomUUID().toString()
+        val userId = firebaseUser?.uid ?: ""
+        val notificationsTimeType = user.notificationsTimeType
+        val receiveNotifications = user.receiveNotifications
+        val learnLanguageType = user.learnLanguageType
+        val tagsSelected = JSONArray()
+
+        for (tag in user.tagsSelected) {
+            tagsSelected.put(tag)
+        }
+
+        return if (tokenId?.isNotEmpty() == true) {
+            api.requestUpdateUser(tokenId, requestId, userId, notificationsTimeType, receiveNotifications,
+                learnLanguageType, tagsSelected)
+        } else {
+            UpdateUserResult(Result(RESULT_ERROR_UNAUTHORIZED), User())
         }
     }
 
@@ -45,16 +66,6 @@ object ApiHelper {
         return initUserTokenId(firebaseUser)
             .flatMap{ tokenId -> api.requestVerifyPurchase(tokenId, requestId, userId, purchaseTokenId, signature, originalJson, itemType) }
             .observeOn(AndroidSchedulers.mainThread())
-    }
-
-    fun getSendFeedbackObservable(message: String, contactInfo: String) : Single<Result> {
-        val requestId = UUID.randomUUID().toString()
-        val firebaseUser: FirebaseUser? = Cache.firebaseUser
-        val userId = firebaseUser?.uid ?: ""
-
-        return initUserTokenId(firebaseUser)
-            .flatMap{ tokenId -> api.requestSendFeedback(tokenId, requestId, userId, message, contactInfo) }
-            .observeOn(AndroidSchedulers.mainThread())
     }*/
 
     //------------------------------------------------------------------------------------------------------------------
@@ -62,7 +73,7 @@ object ApiHelper {
         firebaseUser?.getIdToken(false)?.addOnCompleteListener {
             if (it.isSuccessful) {
                 val receivedTokenId = it.result?.token ?: ""
-                resultListener(Resource(status = STATUS_OK, value = receivedTokenId))
+                resultListener(Resource(status = RESULT_OK, value = receivedTokenId))
             } else {
                 resultListener(Resource(errorStr = ERROR_NOT_AUTHORIZED))
             }
@@ -105,6 +116,13 @@ object ApiHelper {
 
         suspend fun requestSendFeedback(tokenId: String, requestId: String, userId: String, message: String) : Result {
             return apiHelper.requestSendFeedback(tokenPrefix + tokenId, requestId, userId, message).await()
+        }
+
+        suspend fun requestUpdateUser(tokenId: String, requestId: String, userId: String, notificationsTimeType: Int,
+                                      receiveNotifications: Boolean, learnLanguageType: Int,
+                                      tagsSelected: JSONArray): UpdateUserResult {
+            return apiHelper.requestUpdateUser(tokenPrefix + tokenId, requestId, userId,
+                receiveNotifications, notificationsTimeType, learnLanguageType, tagsSelected).await()
         }
     }
 }

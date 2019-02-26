@@ -13,6 +13,7 @@ import android.net.ConnectivityManager
 import android.net.Uri
 import androidx.annotation.StringRes
 import androidx.fragment.app.FragmentActivity
+import relaxeddd.pushenglish.R
 
 fun showToast(string: String) {
     Toast.makeText(App.context, string, Toast.LENGTH_SHORT).show()
@@ -93,4 +94,20 @@ fun openWebApplication(activity: FragmentActivity?) {
     val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://google.com"))
     browserIntent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
     activity?.startActivity(browserIntent)
+}
+
+fun getErrorString(code: Int) = getErrorString(Result(code, getString(R.string.undefined_error)))
+
+fun getErrorString(result: Result) = when (result.code) {
+    RESULT_UNDEFINED -> getString(R.string.undefined_error)
+    RESULT_ERROR_SEND_FEEDBACK -> getString(R.string.feedback_send_error)
+    RESULT_ERROR_FEEDBACK_TOO_SHORT -> getString(R.string.feedback_too_short)
+    RESULT_ERROR_NETWORK -> getString(R.string.network_not_available)
+    RESULT_LOCAL_ERROR -> getString(R.string.undefined_error)
+    RESULT_ERROR_UNAUTHORIZED -> getString(R.string.unauthorized_error)
+    RESULT_ERROR_USER_NOT_FOUND -> getString(R.string.user_not_found)
+    RESULT_ERROR_APP_INIT -> getString(R.string.error_initialization)
+    RESULT_ERROR_ADD_PUSH_TOKEN -> getString(R.string.error_push_token)
+    RESULT_ERROR_UPDATE_USER -> getString(R.string.error_update)
+    else -> result.msg
 }
