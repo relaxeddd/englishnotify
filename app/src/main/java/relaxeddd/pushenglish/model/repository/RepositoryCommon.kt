@@ -5,6 +5,7 @@ import com.google.firebase.auth.FirebaseUser
 import relaxeddd.pushenglish.R
 import relaxeddd.pushenglish.common.*
 import relaxeddd.pushenglish.model.http.ApiHelper
+import relaxeddd.pushenglish.push.MyFirebaseMessagingService
 
 class RepositoryCommon private constructor() {
 
@@ -29,8 +30,14 @@ class RepositoryCommon private constructor() {
 
         ApiHelper.initUserTokenId(firebaseUser) {
             if (it.isSuccess() && it.value != null) {
-                tokenId = it.value
-                initCallback(true)
+                ApiHelper.initPushTokenId { pushTokenAnswer ->
+                    if (pushTokenAnswer.isSuccess() && pushTokenAnswer.value != null) {
+                        MyFirebaseMessagingService.pushToken = pushTokenAnswer.value
+                    }
+                    tokenId = it.value
+                    initCallback(true)
+                }
+
             } else {
                 showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
                 initCallback(false)

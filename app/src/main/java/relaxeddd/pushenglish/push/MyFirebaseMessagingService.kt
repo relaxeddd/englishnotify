@@ -14,22 +14,36 @@ import android.text.SpannableString
 import android.text.style.StyleSpan
 import androidx.core.app.NotificationCompat
 import relaxeddd.pushenglish.R
-import relaxeddd.pushenglish.common.parseWord
 import relaxeddd.pushenglish.model.db.AppDatabase
 import relaxeddd.pushenglish.ui.main.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import java.util.*
+import relaxeddd.pushenglish.common.SharedHelper
+import relaxeddd.pushenglish.common.Word
+import relaxeddd.pushenglish.common.parseWords
+import kotlin.random.Random
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
+
+    companion object {
+        var pushToken: String = ""
+    }
+
+
+    override fun onNewToken(p0: String?) {
+        super.onNewToken(p0)
+        pushToken = p0 ?: ""
+    }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
         val data = remoteMessage?.data
 
         if (data != null) {
-            val word = parseWord(data)
+            val words = parseWords(data)
+            val word = chooseWord(words)
             var notificationText = word.transcription
 
+            AppDatabase.getInstance(this).wordDao().insertAll(word)
             if (word.v2.isNotEmpty() && word.v3.isNotEmpty()) {
                 if (notificationText.isNotEmpty()) {
                     notificationText += "\n"
@@ -84,6 +98,22 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             if (channel != null) notificationManager.createNotificationChannel(channel)
         }
 
-        notificationManager.notify(Random().nextInt(1000), notificationBuilder.build())
+        notificationManager.notify(Random.nextInt(1000), notificationBuilder.build())
+    }
+
+    private fun chooseWord(words: List<Word>) : Word {
+        val userTags = SharedHelper.getSelectedTags()
+        val wordsCount = words.size
+        val tagsCount = userTags.size
+        val tagIx = Random.nextInt(tagsCount)
+        val choosenTag = userTags.toList()[tagIx]
+
+        for (word in words) {
+            if (word.tags.contains(choosenTag)) {
+                return word
+            }
+        }
+
+        return words[Random.nextInt(wordsCount)]
     }
 }

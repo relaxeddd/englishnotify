@@ -2,19 +2,17 @@ package relaxeddd.pushenglish.model.repository
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import relaxeddd.pushenglish.common.USER_ID_TEST
-import relaxeddd.pushenglish.common.User
-import relaxeddd.pushenglish.common.showToast
 import relaxeddd.pushenglish.model.db.UserDao
 import relaxeddd.pushenglish.model.http.ApiHelper
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import relaxeddd.pushenglish.R
-import relaxeddd.pushenglish.common.getErrorString
+import relaxeddd.pushenglish.push.MyFirebaseMessagingService
+import relaxeddd.pushenglish.common.*
+
 
 class RepositoryUser private constructor(val userDao: UserDao) {
 
@@ -55,13 +53,14 @@ class RepositoryUser private constructor(val userDao: UserDao) {
             CoroutineScope(Dispatchers.Main).launch {
                 val firebaseUser = RepositoryCommon.getInstance().firebaseUser
                 val tokenId = RepositoryCommon.getInstance().tokenId
-                val pushToken = FirebaseInstanceId.getInstance().token ?: ""
+                val pushToken = MyFirebaseMessagingService.pushToken
                 val answer = ApiHelper.requestInit(firebaseUser, tokenId, pushToken)
 
-                if (answer.result.isSuccess() && answer.user.id.isNotEmpty()) {
+                if (answer.result != null && answer.result.isSuccess() && answer.user.id.isNotEmpty()) {
                     userDao.insert(answer.user)
                     userId = answer.user.id
-                } else {
+                    SharedHelper.setSelectedTags(answer.user.tagsSelected)
+                } else if (answer.result != null) {
                     showToast(getErrorString(answer.result))
                 }
             }
@@ -120,10 +119,11 @@ class RepositoryUser private constructor(val userDao: UserDao) {
         val tokenId = RepositoryCommon.getInstance().tokenId
         val updateResult = ApiHelper.requestUpdateUser(firebaseUser, tokenId, user)
 
-        print(updateResult)
         if (!updateResult.result.isSuccess()) {
             showToast(getErrorString(updateResult.result))
             userDao.insert(oldUser ?: return)
+        } else {
+            SharedHelper.setSelectedTags(user.tagsSelected)
         }
     }
 }

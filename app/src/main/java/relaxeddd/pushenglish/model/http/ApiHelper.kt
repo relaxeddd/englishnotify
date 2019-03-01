@@ -10,6 +10,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 import java.util.concurrent.TimeUnit
+import com.google.firebase.iid.InstanceIdResult
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.iid.FirebaseInstanceId
+
+
 
 object ApiHelper {
 
@@ -78,6 +83,17 @@ object ApiHelper {
                 resultListener(Resource(errorStr = ERROR_NOT_AUTHORIZED))
             }
         } ?: resultListener(Resource(errorStr = ERROR_NOT_AUTHORIZED))
+    }
+
+    fun initPushTokenId(resultListener: (tokenId: Resource<String>) -> Unit) {
+        FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener {
+            if (it.isSuccessful) {
+                val receivedTokenId = it.result?.token ?: ""
+                resultListener(Resource(status = RESULT_OK, value = receivedTokenId))
+            } else {
+                resultListener(Resource(errorStr = ERROR_NOT_AUTHORIZED))
+            }
+        }
     }
 
     private class Api {

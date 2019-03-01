@@ -1,10 +1,8 @@
 package relaxeddd.pushenglish.ui.main
 
-import android.content.Context
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import relaxeddd.pushenglish.App
 import relaxeddd.pushenglish.model.repository.RepositoryUser
 import kotlinx.coroutines.launch
 import relaxeddd.pushenglish.R
@@ -60,8 +58,7 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
     }
 
     fun onViewCreate() {
-        val sPref = App.context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        val isConfirmed = sPref.getBoolean(PRIVACY_POLICY_CONFIRMED, false)
+        val isConfirmed = SharedHelper.isPrivacyPolicyConfirmed()
 
         if (isConfirmed) {
             requestInitUser()
@@ -69,8 +66,7 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
     }
 
     fun onViewResume() {
-        val sPref = App.context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        val isConfirmed = sPref.getBoolean(PRIVACY_POLICY_CONFIRMED, false)
+        val isConfirmed = SharedHelper.isPrivacyPolicyConfirmed()
 
         if (!isConfirmed) {
             navigateEvent.value = Event(NAVIGATION_DIALOG_PRIVACY_POLICY)
@@ -79,8 +75,7 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
 
     fun onPrivacyPolicyConfirmedResult(isConfirmed: Boolean) {
         if (isConfirmed) {
-            val sPref = App.context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-            sPref.edit().putBoolean(PRIVACY_POLICY_CONFIRMED, true).apply()
+            SharedHelper.setPrivacyPolicyConfirmed(true)
             requestInitUser()
         } else {
             navigateEvent.value = Event(NAVIGATION_EXIT)
