@@ -23,10 +23,12 @@ class DialogCheckTags : DialogFragment() {
             checkedItemIxs = BooleanArray(itemsNames.size)
 
             for (checkedItem in checkedItems) {
-                checkedItemIxs[itemsNames.indexOf(checkedItem)] = true
+                if (itemsNames.indexOf(checkedItem) != -1) {
+                    checkedItemIxs[itemsNames.indexOf(checkedItem)] = true
+                }
             }
 
-            builder.setTitle(R.string.receive_notifications_time)
+            builder.setTitle(R.string.notification_categories)
                 .setMultiChoiceItems(itemsNames, checkedItemIxs) { _, which, isChecked ->
                     checkedItemIxs[which] = isChecked
                 }.setPositiveButton(android.R.string.ok) { _, _ ->

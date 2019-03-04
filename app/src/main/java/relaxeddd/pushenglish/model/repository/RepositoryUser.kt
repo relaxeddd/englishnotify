@@ -13,7 +13,6 @@ import relaxeddd.pushenglish.R
 import relaxeddd.pushenglish.push.MyFirebaseMessagingService
 import relaxeddd.pushenglish.common.*
 
-
 class RepositoryUser private constructor(val userDao: UserDao) {
 
     companion object {
@@ -54,14 +53,14 @@ class RepositoryUser private constructor(val userDao: UserDao) {
                 val firebaseUser = RepositoryCommon.getInstance().firebaseUser
                 val tokenId = RepositoryCommon.getInstance().tokenId
                 val pushToken = MyFirebaseMessagingService.pushToken
-                val answer = ApiHelper.requestInit(firebaseUser, tokenId, pushToken)
+                val answerInitData = ApiHelper.requestInit(firebaseUser, tokenId, pushToken)
 
-                if (answer.result != null && answer.result.isSuccess() && answer.user.id.isNotEmpty()) {
-                    userDao.insert(answer.user)
-                    userId = answer.user.id
-                    SharedHelper.setSelectedTags(answer.user.tagsSelected)
-                } else if (answer.result != null) {
-                    showToast(getErrorString(answer.result))
+                if (answerInitData.result != null && answerInitData.result.isSuccess() && answerInitData.user.id.isNotEmpty()) {
+                    userDao.insert(answerInitData.user)
+                    userId = answerInitData.user.id
+                    SharedHelper.setSelectedTags(answerInitData.user.tagsSelected)
+                } else if (answerInitData.result != null) {
+                    showToast(getErrorString(answerInitData.result))
                 }
             }
         }

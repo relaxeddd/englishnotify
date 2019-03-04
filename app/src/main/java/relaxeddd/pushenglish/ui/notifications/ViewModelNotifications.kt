@@ -37,8 +37,7 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
 
     val clickListenerLearnLanguage = View.OnClickListener {
         if (user.value != null) {
-            navigateEvent.value =
-                    Event(NAVIGATION_DIALOG_LEARN_ENGLISH)
+            navigateEvent.value = Event(NAVIGATION_DIALOG_LEARN_ENGLISH)
         } else {
             showToast(R.string.pleases_authorize)
         }
@@ -53,8 +52,7 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
     }
     val clickListenerCheckTags = View.OnClickListener {
         if (user.value != null) {
-            navigateEvent.value =
-                    Event(NAVIGATION_DIALOG_CHECK_TAGS)
+            navigateEvent.value = Event(NAVIGATION_DIALOG_CHECK_TAGS)
         } else {
             showToast(R.string.pleases_authorize)
         }
