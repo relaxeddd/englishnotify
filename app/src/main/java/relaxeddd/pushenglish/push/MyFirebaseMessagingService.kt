@@ -13,6 +13,7 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.StyleSpan
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import relaxeddd.pushenglish.R
 import relaxeddd.pushenglish.model.db.AppDatabase
 import relaxeddd.pushenglish.ui.main.MainActivity
@@ -41,9 +42,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         if (data != null) {
             val words = parseWords(data)
             val word = chooseWord(words)
-            var notificationText = word.transcription
-
             AppDatabase.getInstance(this).wordDao().insertAll(word)
+            var notificationText = "\n"
+
+            if (word.transcription.isNotEmpty()) {
+                notificationText += "[" + word.transcription + "]"
+            }
             if (word.v2.isNotEmpty() && word.v3.isNotEmpty()) {
                 if (notificationText.isNotEmpty()) {
                     notificationText += "\n"
@@ -80,13 +84,19 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val channelId = getString(R.string.default_notification_channel_id)
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(R.drawable.info)
             .setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.attention))
             .setStyle(NotificationCompat.BigTextStyle().bigText(text))
             .setContentTitle(spannableTitle)
             .setAutoCancel(true)
             .setSound(defaultSoundUri)
             .setContentIntent(pendingIntent)
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            notificationBuilder.setSmallIcon(R.drawable.info)
+            notificationBuilder.color = ContextCompat.getColor(this, R.color.colorPrimary)
+        } else {
+            notificationBuilder.setSmallIcon(R.drawable.info)
+        }
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 

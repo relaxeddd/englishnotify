@@ -8,6 +8,9 @@
                 name="clickListener"
                 type="android.view.View.OnClickListener"/>
         <variable
+                name="longClickListener"
+                type="android.view.View.OnLongClickListener"/>
+        <variable
                 name="word"
                 type="relaxeddd.pushenglish.common.Word"/>
     </data>
@@ -16,6 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="@{clickListener}"
+            android:onLongClick="@{longClickListener}"
             style="@style/StyleCardViewSettings"
             android:layout_marginBottom="5dp">
 
@@ -70,7 +74,8 @@
                 <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
                     <TextView
                             android:text="@{word.sampleEng}"

@@ -31,7 +31,8 @@ data class Word(
     val sampleRus: String = "",
     val v2: String = "",
     val v3: String = "",
-    val timestamp: Long = 0
+    val timestamp: Long = 0,
+    var isDeleted: Boolean = false
 )
 
 data class Resource<T>(
@@ -69,4 +70,4 @@ data class UpdateUserResult(val result: Result, val user: User)
 
 data class PurchaseResult(val code: Int = RESULT_UNDEFINED)
 
-data class InitData(val result: Result, val user: User, val isActualVersion: Boolean = true)
+data class InitData(val result: Result?, val user: User, val isActualVersion: Boolean = true)

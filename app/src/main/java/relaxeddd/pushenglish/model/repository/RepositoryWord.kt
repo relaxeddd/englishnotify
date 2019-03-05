@@ -1,5 +1,6 @@
 package relaxeddd.pushenglish.model.repository
 
+import relaxeddd.pushenglish.common.Word
 import relaxeddd.pushenglish.model.db.WordDao
 
 class RepositoryWord private constructor(private val wordDao: WordDao) {
@@ -12,4 +13,8 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
     }
 
     var words = wordDao.getAll()
+
+    fun updateWord(word : Word) {
+        wordDao.insertAll(word)
+    }
 }

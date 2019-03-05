@@ -42,7 +42,8 @@ captures/
 .idea/libraries
 .idea/caches
 .idea/navEditor.xml 
-.idea/codeStyles
+.idea/codeStyles/Project.xml
+.idea/misc.xml
 
 .gradle
 /local.properties

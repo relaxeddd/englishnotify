@@ -84,6 +84,12 @@ fun isNetworkAvailable(): Boolean {
 
 fun getString(@StringRes resId: Int) = App.context.getString(resId)
 
+fun getStringByResName(resName: String): String {
+    val packageName = App.context.packageName
+    val resId = App.context.resources.getIdentifier(resName, "string", packageName)
+    return if (resId != 0) getString(resId) else resName
+}
+
 fun openWebPrivacyPolicy(activity: FragmentActivity?) {
     val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://ratingslots2.com/privacyPolicy.html"))
     browserIntent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT

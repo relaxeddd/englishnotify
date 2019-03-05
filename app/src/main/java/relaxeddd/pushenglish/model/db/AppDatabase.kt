@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import relaxeddd.pushenglish.common.DATABASE_TEST_APP
 import relaxeddd.pushenglish.common.USER_ID_TEST
 
-@Database(entities = [User::class, Word::class], version = 3, exportSchema = false)
+@Database(entities = [User::class, Word::class], version = 4, exportSchema = false)
 @TypeConverters(ConverterListStr::class)
 abstract class AppDatabase : RoomDatabase() {
 
@@ -42,32 +42,20 @@ abstract class AppDatabase : RoomDatabase() {
                             addDefaultContent(getInstance(context))
                         }
                     }
-                })
-                .build()
+                }).build()
         }
 
         private suspend fun addDefaultContent(db: AppDatabase) {
             //val tags: ArrayList<String> = arrayListOf("noun", "adjective", "verb", "top1", "irregular")
 
             db.wordDao().insertAll(
-                Word(
-                    "Dog", "Собака", "dog", arrayListOf("noun", "top1"),
-                    "The dog follows me wherever I go.", "Собака следует за мной, куда бы я ни шёл.", timestamp = 1114535342342
+                Word("dog", "собака", "dog", arrayListOf("animals"), timestamp = System.currentTimeMillis()
                 ),
-                Word(
-                    "Different", "Разные, test, next, sss", "ˈdif(ə)rənt", arrayListOf("adjective", "top1"),
-                    "These distinctions are important because different rules may apply to different types of securities.",
-                    "Эти различия имеют важное значение, потому что к различным видам ценных бумаг могут применяться различные правила.",
-                    timestamp = 51257412342
+                Word("different", "разный", "ˈdif(ə)rənt", arrayListOf("frequent"),
+                    timestamp = System.currentTimeMillis() + 1
                 ),
-                Word(
-                    "Suspend",
-                    "Приостановить",
-                    "səˈspend",
-                    arrayListOf("verb"),
-                    "The Committee should suspend its formal deliberations and complete its unfinished work.",
-                    "Комитету следует приостановить свои официальные обсуждения и закончить свою незавершенную работу.",
-                    timestamp = 32342345243
+                Word("suspend", "Приостановить", "səˈspend", arrayListOf("work"),
+                    timestamp = System.currentTimeMillis() + 2
                 )
             )
             /*db.userDao().insert(User(USER_ID_TEST, "vadim25000@yandex.ru", true, 3,

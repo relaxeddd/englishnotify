@@ -8,10 +8,12 @@ import relaxeddd.pushenglish.R
 import relaxeddd.pushenglish.common.CHECKED_ITEMS
 import relaxeddd.pushenglish.common.ITEMS
 import relaxeddd.pushenglish.common.ListenerResult
+import relaxeddd.pushenglish.common.getStringByResName
 
 class DialogCheckTags : DialogFragment() {
 
-    private var itemsNames: Array<String> = arrayOf()
+    private var items: Array<String> = arrayOf()
+    private var itemsTitles: Array<String> = arrayOf()
     private var checkedItemIxs: BooleanArray = BooleanArray(0)
     var listener: ListenerResult<List<String>>? = null
 
@@ -19,24 +21,28 @@ class DialogCheckTags : DialogFragment() {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
             val checkedItems = arguments?.getStringArray(CHECKED_ITEMS) ?: arrayOf()
-            itemsNames = arguments?.getStringArray(ITEMS) ?: arrayOf()
-            checkedItemIxs = BooleanArray(itemsNames.size)
+            items = arguments?.getStringArray(ITEMS) ?: arrayOf()
+            checkedItemIxs = BooleanArray(items.size)
+            itemsTitles = Array(items.size) {""}
 
             for (checkedItem in checkedItems) {
-                if (itemsNames.indexOf(checkedItem) != -1) {
-                    checkedItemIxs[itemsNames.indexOf(checkedItem)] = true
+                if (items.indexOf(checkedItem) != -1) {
+                    checkedItemIxs[items.indexOf(checkedItem)] = true
                 }
+            }
+            for ((ix, item) in items.withIndex()) {
+                itemsTitles[ix] = getStringByResName(item)
             }
 
             builder.setTitle(R.string.notification_categories)
-                .setMultiChoiceItems(itemsNames, checkedItemIxs) { _, which, isChecked ->
+                .setMultiChoiceItems(itemsTitles, checkedItemIxs) { _, which, isChecked ->
                     checkedItemIxs[which] = isChecked
                 }.setPositiveButton(android.R.string.ok) { _, _ ->
                     val resultCheckedItems = ArrayList<String>()
 
                     for ((ix, isCheckedItemIx) in checkedItemIxs.withIndex()) {
                         if (isCheckedItemIx) {
-                            resultCheckedItems.add(itemsNames[ix])
+                            resultCheckedItems.add(items[ix])
                         }
                     }
 

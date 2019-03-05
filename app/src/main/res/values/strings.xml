@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TestApp</string>
+    <string name="app_name">Push English</string>
 
     <string name="about_app">About app</string>
     <string name="accept">Accept</string>
@@ -10,6 +10,7 @@
     <string name="close">Close</string>
     <string name="confirm">Confirm</string>
     <string name="confirm_and_continue">Confirm and continue</string>
+    <string name="delete">Delete</string>
     <string name="dictionary">Dictionary</string>
     <string name="do_you_really_want_to_logout">Do you really want to exit?</string>
     <string name="enable_notifications">Enable notifications</string>
@@ -57,6 +58,13 @@
     <string name="text_app_about">The application is about ...</string>
 
     <!-- =========================================================================================================== -->
+    <string name="irregular">Irregular verbs</string>
+    <string name="human_body">Human body</string>
+    <string name="colors">Colors</string>
+    <string name="time">Time</string>
+    <string name="phrases">Phrases</string>
+    <string name="animals">Animals</string>
+
     <string name="privacy_policy_text">Starting work in the application, you agree to our Privacy Policy</string>
     <string name="default_notification_channel_id">fcm_default_channel</string>
     <!--

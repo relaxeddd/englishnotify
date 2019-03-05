@@ -20,7 +20,7 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
     private val userObserver = Observer<User?> { user ->
         authTimer?.cancel()
 
-        if (user == null || RepositoryCommon.getInstance().firebaseUser == null) {
+        if (SharedHelper.isPrivacyPolicyConfirmed() && (user == null || RepositoryCommon.getInstance().firebaseUser == null)) {
             authTimer = Timer()
             authTimer?.schedule(object: TimerTask() {
                 override fun run() {
@@ -31,8 +31,8 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
                 }
             }, 5000)
         } else {
-            isShowWarningNotifications.value = user.receiveNotifications == false
-            isShowWarningAuthorize.value = false
+            isShowWarningNotifications.value = user == null || user.receiveNotifications == false
+            isShowWarningAuthorize.value = user == null || RepositoryCommon.getInstance().firebaseUser == null
         }
     }
 

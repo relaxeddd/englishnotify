@@ -4,6 +4,7 @@ import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import kotlinx.coroutines.launch
 import relaxeddd.pushenglish.common.*
 import relaxeddd.pushenglish.model.repository.RepositoryUser
 import relaxeddd.pushenglish.model.repository.RepositoryWord
@@ -62,6 +63,13 @@ class ViewModelDictionary(private val repositoryWord: RepositoryWord,
         updateFilteredWords(searchText)
     }
 
+    fun deleteWord(word: Word) {
+        ioScope.launch {
+            word.isDeleted = true
+            repositoryWord.updateWord(word)
+        }
+    }
+
     private fun updateFilteredWords(searchText: String = "") {
         var filteredItems = HashSet<Word>()
         filteredItems.addAll(words.value ?: ArrayList())
@@ -77,6 +85,8 @@ class ViewModelDictionary(private val repositoryWord: RepositoryWord,
                     || it.rus.toLowerCase().contains(searchText)
                     || it.transcription.toLowerCase().contains(searchText) }.toHashSet()
         }
+
+        filteredItems = filteredItems.filter { !it.isDeleted }.toHashSet()
 
         val sortList = when (sortByType.value) {
             SortByType.ALPHABETICAL_NAME -> filteredItems.sortedBy{ it.eng.toLowerCase() }

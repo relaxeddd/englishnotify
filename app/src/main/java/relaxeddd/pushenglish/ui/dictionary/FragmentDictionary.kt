@@ -13,8 +13,8 @@ import relaxeddd.pushenglish.databinding.FragmentDictionaryBinding
 
 class FragmentDictionary : BaseFragment<ViewModelDictionary, FragmentDictionaryBinding>() {
 
-    var adapter: AdapterWords = AdapterWords()
-    var animBlock: AnimBlock = AnimBlock(false)
+    private lateinit var adapter: AdapterWords
+    private var animBlock: AnimBlock = AnimBlock(false)
 
     private val listenerCheckTags: ListenerResult<List<String>> = object:
         ListenerResult<List<String>> {
@@ -54,6 +54,7 @@ class FragmentDictionary : BaseFragment<ViewModelDictionary, FragmentDictionaryB
 
     override fun configureBinding() {
         super.configureBinding()
+        adapter = AdapterWords(viewModel)
         binding.viewModel = viewModel
         binding.recyclerViewDictionary.adapter = adapter
         binding.clickListenerCloseFilter = clickListenerCloseFilter

@@ -1,5 +1,6 @@
 package relaxeddd.pushenglish.ui.dictionary
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +14,11 @@ import relaxeddd.pushenglish.common.animateDropdown
 import relaxeddd.pushenglish.databinding.ViewItemWordBinding
 import java.text.SimpleDateFormat
 import java.util.*
+import androidx.appcompat.widget.PopupMenu
+import androidx.appcompat.view.menu.MenuBuilder
+import androidx.appcompat.view.menu.MenuPopupHelper
 
-class AdapterWords : ListAdapter<Word, AdapterWords.ViewHolder>(WordDiffCallback()) {
+class AdapterWords(val viewModel: ViewModelDictionary) : ListAdapter<Word, AdapterWords.ViewHolder>(WordDiffCallback()) {
 
     var languageType = 0
         set(value) {
@@ -31,8 +35,15 @@ class AdapterWords : ListAdapter<Word, AdapterWords.ViewHolder>(WordDiffCallback
         getItem(position).let { word ->
             with(holder) {
                 itemView.tag = word.eng
-                bind(createOnClickListener(this), word, languageType)
+                bind(createOnClickListener(this), createOnLongClickListener(this, word), word, languageType)
             }
+        }
+    }
+
+    private fun createOnLongClickListener(holder: ViewHolder, word: Word): View.OnLongClickListener {
+        return View.OnLongClickListener {
+            showPopupWord(holder.itemView, word)
+            true
         }
     }
 
@@ -47,9 +58,10 @@ class AdapterWords : ListAdapter<Word, AdapterWords.ViewHolder>(WordDiffCallback
 
         var isOpen = false
 
-        fun bind(listener: View.OnClickListener, word: Word, languageType: Int) {
+        fun bind(listener: View.OnClickListener, longListener: View.OnLongClickListener, word: Word, languageType: Int) {
             with(binding) {
                 clickListener = listener
+                longClickListener = longListener
                 this.word = word
                 executePendingBindings()
 
@@ -69,6 +81,23 @@ class AdapterWords : ListAdapter<Word, AdapterWords.ViewHolder>(WordDiffCallback
                 textWordTimestamp.text = SimpleDateFormat(dateFormat, Locale.getDefault()).format(word.timestamp) ?: ""
             }
         }
+    }
+
+    @SuppressLint("RestrictedApi")
+    private fun showPopupWord(view: View, word: Word) {
+        val popupMenu = PopupMenu(view.context, view)
+
+        popupMenu.inflate(R.menu.menu_popup_word)
+        popupMenu.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.item_menu_delete -> viewModel.deleteWord(word)
+            }
+            true
+        }
+
+        val menuHelper = MenuPopupHelper(view.context, popupMenu.menu as MenuBuilder, view)
+        menuHelper.setForceShowIcon(true)
+        menuHelper.show()
     }
 }
 
