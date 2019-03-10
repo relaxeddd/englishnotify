@@ -19,10 +19,11 @@ object ApiHelper {
     suspend fun requestInit(firebaseUser: FirebaseUser?, tokenId: String?, pushToken: String) : InitData {
         val requestId = UUID.randomUUID().toString()
         val userId = firebaseUser?.uid ?: ""
+        val email = firebaseUser?.email ?: ""
         val appVersion = BuildConfig.VERSION_CODE
 
         return if (tokenId?.isNotEmpty() == true) {
-            api.requestInit(tokenId, requestId, userId, appVersion, pushToken)
+            api.requestInit(tokenId, requestId, userId, appVersion, pushToken, email)
         } else {
             InitData(Result(RESULT_ERROR_UNAUTHORIZED), User())
         }
@@ -115,9 +116,10 @@ object ApiHelper {
         }
 
         //--------------------------------------------------------------------------------------------------------------
-        suspend fun requestInit(tokenId: String, requestId: String, userId: String, appVersion: Int, pushToken: String)
-                : InitData {
-            return apiHelper.requestInit(tokenPrefix + tokenId, requestId, userId, appVersion, pushToken).await()
+        suspend fun requestInit(tokenId: String, requestId: String, userId: String, appVersion: Int, pushToken: String,
+                                email: String) : InitData {
+            return apiHelper.requestInit(tokenPrefix + tokenId, requestId, userId, appVersion, pushToken,
+                email).await()
         }
 
         suspend fun requestVerifyPurchase(tokenId: String, requestId: String, userId: String, purchaseTokenId: String,

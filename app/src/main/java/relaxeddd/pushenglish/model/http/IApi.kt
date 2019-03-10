@@ -16,7 +16,8 @@ interface IApi {
                     @Query("requestId") requestId: String,
                     @Query("userId") userId: String,
                     @Query("appVersion") appVersion: Int,
-                    @Query("pushToken") pushToken: String) : Deferred<InitData>
+                    @Query("pushToken") pushToken: String,
+                    @Query("email") email: String) : Deferred<InitData>
 
     @GET(FUNC_REQUEST_VERIFY_PURCHASE)
     fun requestVerifyPurchase(@Header("Authorization") idToken: String,

@@ -1,13 +1,15 @@
 package relaxeddd.pushenglish.common
 
+import androidx.annotation.Keep
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = USERS)
+@Keep
 data class User(
 
     @PrimaryKey
-    val id: String = "",
+    val userId: String = "",
     val email: String = "",
     var receiveNotifications: Boolean = true,
     var notificationsTimeType: Int = 1,
@@ -15,11 +17,12 @@ data class User(
     var tagsSelected: List<String> = ArrayList(),
     var learnLanguageType: Int = 0
 ) {
-    constructor(user: User) : this(user.id, user.email, user.receiveNotifications, user.notificationsTimeType,
+    constructor(user: User) : this(user.userId, user.email, user.receiveNotifications, user.notificationsTimeType,
         user.tagsAvailable, user.tagsSelected, user.learnLanguageType)
 }
 
 @Entity(tableName = WORDS)
+@Keep
 data class Word(
 
     @PrimaryKey
@@ -35,6 +38,7 @@ data class Word(
     var isDeleted: Boolean = false
 )
 
+@Keep
 data class Resource<T>(
 
     val status: Int = RESULT_UNDEFINED,
@@ -44,6 +48,7 @@ data class Resource<T>(
     fun isSuccess() = status == RESULT_OK
 }
 
+@Keep
 open class Event<out T>(private val content: T) {
     var hasBeenHandled = false
         private set
@@ -60,14 +65,19 @@ open class Event<out T>(private val content: T) {
     fun peekContent(): T = content
 }
 
+@Keep
 data class AnimBlock(var isAnimating: Boolean = false)
 
+@Keep
 data class Result(val code: Int = RESULT_UNDEFINED, val msg: String = "") {
     fun isSuccess() = code == RESULT_OK
 }
 
+@Keep
 data class UpdateUserResult(val result: Result, val user: User)
 
+@Keep
 data class PurchaseResult(val code: Int = RESULT_UNDEFINED)
 
+@Keep
 data class InitData(val result: Result?, val user: User, val isActualVersion: Boolean = true)

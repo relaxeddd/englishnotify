@@ -55,9 +55,9 @@ class RepositoryUser private constructor(val userDao: UserDao) {
                 val pushToken = MyFirebaseMessagingService.pushToken
                 val answerInitData = ApiHelper.requestInit(firebaseUser, tokenId, pushToken)
 
-                if (answerInitData.result != null && answerInitData.result.isSuccess() && answerInitData.user.id.isNotEmpty()) {
+                if (answerInitData.result != null && answerInitData.result.isSuccess() && answerInitData.user.userId.isNotEmpty()) {
                     userDao.insert(answerInitData.user)
-                    userId = answerInitData.user.id
+                    userId = answerInitData.user.userId
                     SharedHelper.setSelectedTags(answerInitData.user.tagsSelected)
                 } else if (answerInitData.result != null) {
                     showToast(getErrorString(answerInitData.result))

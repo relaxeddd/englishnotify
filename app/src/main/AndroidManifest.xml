@@ -9,7 +9,7 @@
     <application
             android:name="relaxeddd.pushenglish.App"
             android:allowBackup="true"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/info"
             android:label="@string/app_name"
             android:roundIcon="@drawable/info"
             android:supportsRtl="true"

@@ -12,8 +12,8 @@ interface UserDao {
     @Query("SELECT * FROM $USERS")
     fun getAll(): LiveData<List<User?>>
 
-    @Query("SELECT * FROM $USERS WHERE id LIKE :id LIMIT 1")
-    fun findById(id: String): LiveData<User?>
+    @Query("SELECT * FROM $USERS WHERE userId LIKE :userId LIMIT 1")
+    fun findById(userId: String): LiveData<User?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(vararg users: User)
