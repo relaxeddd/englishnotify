@@ -171,7 +171,7 @@
 
                 <TextView
                         android:id="@+id/text_settings_rate"
-                        android:text="@string/rate_us"
+                        android:text="@string/rate_app"
                         android:layout_width="wrap_content"
                         android:layout_height="18dp"
                         android:textColor="@color/black"

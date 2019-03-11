@@ -4,6 +4,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.view.View"/>
         <variable
                 name="clickListener"
                 type="android.view.View.OnClickListener"/>
@@ -61,15 +62,15 @@
                     android:ellipsize="end"/>
 
             <LinearLayout
-                    android:id="@+id/constraint_word_drop_dawn"
-                    android:visibility="gone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/text_word"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
-                    android:orientation="vertical"
-                    android:paddingTop="@dimen/size_8">
+                android:id="@+id/constraint_word_drop_dawn"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/text_word"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/size_8">
 
                 <LinearLayout
                         android:layout_width="match_parent"
@@ -99,13 +100,32 @@
                 </LinearLayout>
 
                 <TextView
+                    android:text="@{`v2: ` + word.v2.toString()}"
+                    android:visibility="@{word.v2.isEmpty() ? View.GONE : View.VISIBLE}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="italic"
+                    android:id="@+id/text_word_v2"
+                    android:layout_marginTop="8dp"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:text="@{`v3: ` + word.v3.toString()}"
+                    android:visibility="@{word.v3.isEmpty() ? View.GONE : View.VISIBLE}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="italic"
+                    android:id="@+id/text_word_v3"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1"/>
+
+                <TextView
                         android:text="@{word.tags.toString()}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textStyle="italic"
-                        android:id="@+id/text_word_tags" app:layout_constraintStart_toStartOf="parent"
+                        android:id="@+id/text_word_tags"
                         android:layout_marginTop="8dp"
-                        app:layout_constraintTop_toTopOf="parent"
                         android:layout_weight="1"/>
 
                 <TextView
@@ -113,10 +133,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="end"
-                        android:id="@+id/text_word_timestamp" app:layout_constraintStart_toStartOf="parent"
+                        android:id="@+id/text_word_timestamp"
                         android:layout_marginTop="8dp"
                         android:textSize="@dimen/font_10"
-                        app:layout_constraintTop_toTopOf="parent"
                         android:layout_weight="1"/>
 
             </LinearLayout>

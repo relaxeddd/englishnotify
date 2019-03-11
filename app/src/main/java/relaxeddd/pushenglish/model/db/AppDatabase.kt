@@ -54,7 +54,7 @@ abstract class AppDatabase : RoomDatabase() {
                 Word("different", "разный", "ˈdif(ə)rənt", arrayListOf("frequent"),
                     timestamp = System.currentTimeMillis() + 1
                 ),
-                Word("suspend", "Приостановить", "səˈspend", arrayListOf("work"),
+                Word("suspend", "приостановить", "səˈspend", arrayListOf("work"),
                     timestamp = System.currentTimeMillis() + 2
                 )
             )

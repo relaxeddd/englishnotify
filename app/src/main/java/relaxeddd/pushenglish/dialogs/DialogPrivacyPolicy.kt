@@ -50,7 +50,7 @@ class DialogPrivacyPolicy : DialogFragment() {
             }
         }
 
-        setClickableSubstring(privacyPolicy, spannablePrivacyPolicy, getString(R.string.privacy_policy), clickablePrivacyPolicy)
+        setClickableSubstring(privacyPolicy, spannablePrivacyPolicy, getString(R.string.privacy_policy_in_sentence), clickablePrivacyPolicy)
 
         textView.text = spannablePrivacyPolicy
         textView.movementMethod = LinkMovementMethod.getInstance()

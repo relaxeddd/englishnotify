@@ -35,7 +35,8 @@
     <string name="notifications">Notifications</string>
     <string name="pleases_authorize">Please, sign in</string>
     <string name="privacy_policy">Privacy Policy</string>
-    <string name="rate_us">Rate us</string>
+    <string name="privacy_policy_in_sentence">Privacy Policy</string>
+    <string name="rate_app">Rate app</string>
     <string name="receive_notifications_time">Receive notifications time</string>
     <string name="russian_at_english">Russian at english</string>
     <string name="search_words">Search words</string>
@@ -51,9 +52,9 @@
     <string name="user_not_found">User not found</string>
     <string name="you_sign_in_as">You sign in as: %s</string>
 
-    <string name="label_fragment_dictionary">LabelFragmentDictionary</string>
-    <string name="label_fragment_notifications">LabelFragmentNotifications</string>
-    <string name="label_fragment_settings">LabelFragmentSettings</string>
+    <string name="label_fragment_dictionary" translatable="false">LabelFragmentDictionary</string>
+    <string name="label_fragment_notifications" translatable="false">LabelFragmentNotifications</string>
+    <string name="label_fragment_settings" translatable="false">LabelFragmentSettings</string>
 
     <string name="text_app_about">The application is about ...</string>
 
@@ -64,12 +65,17 @@
     <string name="time">Time</string>
     <string name="phrases">Phrases</string>
     <string name="animals">Animals</string>
+    <string name="family">Family</string>
+    <string name="human_qualities">Human qualities</string>
+    <string name="feelings">Feelings</string>
+    <string name="emotions">Emotions</string>
 
     <string name="privacy_policy_text">Starting work in the application, you agree to our Privacy Policy</string>
-    <string name="default_notification_channel_id">fcm_default_channel</string>
+
     <!--
         This is the name that users will see when interacting with this channel.
         It should describe the category of notifications that will be sent through this channel
      -->
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
 
 </resources>

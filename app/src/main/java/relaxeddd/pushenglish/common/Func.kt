@@ -91,7 +91,7 @@ fun getStringByResName(resName: String): String {
 }
 
 fun openWebPrivacyPolicy(activity: FragmentActivity?) {
-    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://ratingslots2.com/privacyPolicy.html"))
+    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://sites.google.com/view/pushenglish"))
     browserIntent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
     activity?.startActivity(browserIntent)
 }

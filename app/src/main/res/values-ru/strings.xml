@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Push English</string>
+
+    <string name="about_app">О приложении</string>
+    <string name="accept">Принять</string>
+    <string name="alphabetical_name">Алфавитный</string>
+    <string name="alphabetical_translate">Алфавитный (перевод)</string>
+    <string name="app_info">О приложении</string>
+    <string name="app_language">Язык приложения</string>
+    <string name="close">Закрыть</string>
+    <string name="confirm">Подтвердить</string>
+    <string name="confirm_and_continue">Подтвердить и продолжить</string>
+    <string name="delete">Удалить</string>
+    <string name="dictionary">Словарь</string>
+    <string name="do_you_really_want_to_logout">Вы действительно хотите выйти из аккаунта?</string>
+    <string name="enable_notifications">Включить уведомления</string>
+    <string name="english_at_russian">С английского на русский</string>
+    <string name="error_initialization">Ошибка инициализации</string>
+    <string name="error_push_token">Ошибка пушей</string>
+    <string name="error_update">Ошибка обновления</string>
+    <string name="feedback_is_empty">Отзыв пуст</string>
+    <string name="feedback_send_error">Ошибка отправки отзыва</string>
+    <string name="feedback_too_short">Отзыв слишком короткий</string>
+    <string name="filter">Фильтр</string>
+    <string name="input_your_message">Введите сообщение</string>
+    <string name="learn_language">Изучаемый язык</string>
+    <string name="logout">Выход из аккаунта</string>
+    <string name="logout_error">Ошибка выхода из аккаунта</string>
+    <string name="logout_success">Вы вышли из аккаунта</string>
+    <string name="network_not_available">Ошибка интернет соединения</string>
+    <string name="no_words">Словарь пуст</string>
+    <string name="notification_categories">Выбор категорий слов</string>
+    <string name="notifications_not_receiving_enable">Уведомления не приходят, их нужно включить</string>
+    <string name="notifications_not_receiving_authorize">Уведомления не приходят, авторизируйтесь</string>
+    <string name="notifications">Уведомления</string>
+    <string name="pleases_authorize">Необходимо войти в систему</string>
+    <string name="privacy_policy">Политика конфиденциальности</string>
+    <string name="privacy_policy_in_sentence">Политикой конфиденциальности</string>
+    <string name="rate_app">Оценить приложение</string>
+    <string name="receive_notifications_time">Период получения уведомлений</string>
+    <string name="russian_at_english">С руссокого на английский</string>
+    <string name="search_words">Искать слова</string>
+    <string name="send_feedback">Отправить отзыв</string>
+    <string name="settings">Настройки</string>
+    <string name="sort_by">Сортировать по</string>
+    <string name="thank_you">Спасибо!</string>
+    <string name="tags_should_not_be_empty">Вы должны выбрать как минимум 1 категорию</string>
+    <string name="time_new">Сначала новые</string>
+    <string name="time_old">Сначала старые</string>
+    <string name="undefined_error">Неизвестная ошибка</string>
+    <string name="unauthorized_error">Ошибка авторизации</string>
+    <string name="user_not_found">Пользователь не найден</string>
+    <string name="you_sign_in_as">Вы вошли как: %s</string>
+
+    <string name="text_app_about">Приложение предназначено для ...</string>
+
+    <!-- =========================================================================================================== -->
+    <string name="irregular">Неправильные глаголы</string>
+    <string name="human_body">Строение человека</string>
+    <string name="colors">Цвета</string>
+    <string name="time">Время</string>
+    <string name="phrases">Фразы</string>
+    <string name="animals">Животные</string>
+    <string name="family">Семья</string>
+    <string name="human_qualities">Характер</string>
+    <string name="feelings">Чувства</string>
+    <string name="emotions">Эмоции</string>
+
+    <string name="privacy_policy_text">Начиная работу с приложением, вы соглашаетесь с нашей Политикой конфиденциальности</string>
+    <!--
+        This is the name that users will see when interacting with this channel.
+        It should describe the category of notifications that will be sent through this channel
+     -->
+
+</resources>

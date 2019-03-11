@@ -5,7 +5,7 @@
         <item>Every 1 hour</item>
         <item>Every 2 hours</item>
         <item>Every 4 hours</item>
-        <item>Every 12 hours</item>
+        <item>Every 8 hours</item>
     </string-array>
 
     <string-array name="array_sort_by">
