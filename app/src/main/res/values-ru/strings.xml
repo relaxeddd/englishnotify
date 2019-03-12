@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Push English</string>
+    <string name="app_name">Английские слова через уведомления</string>
 
     <string name="about_app">О приложении</string>
     <string name="accept">Принять</string>
@@ -39,7 +39,7 @@
     <string name="privacy_policy">Политика конфиденциальности</string>
     <string name="privacy_policy_in_sentence">Политикой конфиденциальности</string>
     <string name="rate_app">Оценить приложение</string>
-    <string name="receive_notifications_time">Период получения уведомлений</string>
+    <string name="receive_notifications_time">Получать уведомления</string>
     <string name="russian_at_english">С руссокого на английский</string>
     <string name="search_words">Искать слова</string>
     <string name="send_feedback">Отправить отзыв</string>

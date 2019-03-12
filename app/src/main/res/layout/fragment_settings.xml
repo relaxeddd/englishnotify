@@ -8,7 +8,7 @@
         <import type="android.view.View"/>
         <variable
                 name="viewModel"
-                type="relaxeddd.pushenglish.ui.settings.ViewModelSettings" />
+                type="relaxeddd.englishnotify.ui.settings.ViewModelSettings" />
         <variable
                 name="listLanguages"
                 type="String[]" />

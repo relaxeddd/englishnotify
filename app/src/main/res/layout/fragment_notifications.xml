@@ -8,7 +8,7 @@
         <import type="android.view.View"/>
         <variable
                 name="viewModel"
-                type="relaxeddd.pushenglish.ui.notifications.ViewModelNotifications" />
+                type="relaxeddd.englishnotify.ui.notifications.ViewModelNotifications" />
         <variable
                 name="listRepeatTime"
                 type="String[]" />

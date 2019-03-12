@@ -5,16 +5,16 @@
             app:startDestination="@id/fragmentDictionary">
 
     <fragment android:id="@+id/fragmentDictionary"
-              android:name="relaxeddd.pushenglish.ui.dictionary.FragmentDictionary"
+              android:name="relaxeddd.englishnotify.ui.dictionary.FragmentDictionary"
               android:label="@string/label_fragment_dictionary"
               tools:layout="@layout/fragment_dictionary"/>
 
     <fragment android:id="@+id/fragmentNotifications"
-              android:name="relaxeddd.pushenglish.ui.notifications.FragmentNotifications"
+              android:name="relaxeddd.englishnotify.ui.notifications.FragmentNotifications"
               android:label="@string/label_fragment_notifications"/>
 
     <fragment android:id="@+id/fragmentSettings"
-              android:name="relaxeddd.pushenglish.ui.settings.FragmentSettings"
+              android:name="relaxeddd.englishnotify.ui.settings.FragmentSettings"
               android:label="@string/label_fragment_settings"/>
 
 </navigation>

@@ -17,10 +17,10 @@ android {
     }
     compileSdkVersion 28
     defaultConfig {
-        applicationId "relaxeddd.pushenglish"
+        applicationId 'relaxeddd.englishnotify'
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 2
+        versionCode 3
         versionName "0.0.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
@@ -40,6 +40,8 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    productFlavors {
     }
 }
 

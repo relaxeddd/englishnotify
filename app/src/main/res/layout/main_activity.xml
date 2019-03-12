@@ -9,7 +9,7 @@
 
         <variable
                 name="viewModel"
-                type="relaxeddd.pushenglish.ui.main.ViewModelMain" />
+                type="relaxeddd.englishnotify.ui.main.ViewModelMain" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

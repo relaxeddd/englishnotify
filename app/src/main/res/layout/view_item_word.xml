@@ -13,7 +13,7 @@
                 type="android.view.View.OnLongClickListener"/>
         <variable
                 name="word"
-                type="relaxeddd.pushenglish.common.Word"/>
+                type="relaxeddd.englishnotify.common.Word"/>
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -41,7 +41,7 @@
                     android:ellipsize="end"/>
 
             <TextView
-                    android:text="@{'[' + word.transcription + ']'}"
+                    android:text=""
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/text_word_transcription"
@@ -79,7 +79,7 @@
                         android:visibility="gone">
 
                     <TextView
-                            android:text="@{word.sampleEng}"
+                            android:text=""
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -88,7 +88,7 @@
                             app:layout_constraintTop_toTopOf="parent"/>
 
                     <TextView
-                            android:text="@{word.sampleRus}"
+                            android:text=""
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
