@@ -17,10 +17,8 @@ class RepositoryUser private constructor(val userDao: UserDao) {
 
     companion object {
         @Volatile private var instance: RepositoryUser? = null
-        fun getInstance(userDao: UserDao) = instance
-            ?: synchronized(this) {
-            instance
-                ?: RepositoryUser(userDao).also { instance = it }
+        fun getInstance(userDao: UserDao) = instance ?: synchronized(this) {
+            instance ?: RepositoryUser(userDao).also { instance = it }
         }
     }
 
@@ -62,11 +60,7 @@ class RepositoryUser private constructor(val userDao: UserDao) {
                     userId = answerInitData.user.userId
                     SharedHelper.setSelectedTags(answerInitData.user.tagsSelected)
                 } else if (answerInitData.result != null) {
-                    showToast(
-                        getErrorString(
-                            answerInitData.result
-                        )
-                    )
+                    showToast(getErrorString(answerInitData.result))
                 }
             }
         }

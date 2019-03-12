@@ -40,7 +40,6 @@ class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>() {
 
     override fun configureBinding() {
         super.configureBinding()
-
         binding.viewModel = viewModel
     }
 

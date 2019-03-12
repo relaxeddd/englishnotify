@@ -37,16 +37,14 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
     }
 
     val clickListenerWarningNotifications = View.OnClickListener {
-        navigateEvent.value =
-                Event(NAVIGATION_FRAGMENT_NOTIFICATIONS)
+        navigateEvent.value = Event(NAVIGATION_FRAGMENT_NOTIFICATIONS)
     }
     val clickListenerGoogleAuth = View.OnClickListener {
         if (!isNetworkAvailable()) {
             showToast(getString(R.string.network_not_available))
             return@OnClickListener
         }
-        navigateEvent.value =
-                Event(NAVIGATION_GOOGLE_AUTH)
+        navigateEvent.value = Event(NAVIGATION_GOOGLE_AUTH)
     }
 
     init {
@@ -70,8 +68,7 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
         val isConfirmed = SharedHelper.isPrivacyPolicyConfirmed()
 
         if (!isConfirmed) {
-            navigateEvent.value =
-                    Event(NAVIGATION_DIALOG_PRIVACY_POLICY)
+            navigateEvent.value = Event(NAVIGATION_DIALOG_PRIVACY_POLICY)
         }
     }
 

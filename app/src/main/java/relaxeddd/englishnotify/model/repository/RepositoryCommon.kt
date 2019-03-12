@@ -41,7 +41,6 @@ class RepositoryCommon private constructor() {
                     tokenId = it.value
                     initCallback(true)
                 }
-
             } else {
                 showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
                 initCallback(false)

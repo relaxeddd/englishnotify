@@ -42,10 +42,7 @@ class FragmentDictionary : BaseFragment<ViewModelDictionary, FragmentDictionaryB
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.item_menu_filter -> {
-                animateDropdown(
-                    card_view_dictionary_filter, card_view_dictionary_filter.visibility == View.GONE,
-                    animBlock
-                )
+                animateDropdown(card_view_dictionary_filter, card_view_dictionary_filter.visibility == View.GONE, animBlock)
                 return true
             }
             else -> return super.onOptionsItemSelected(item)

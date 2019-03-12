@@ -16,26 +16,21 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
 
     val clickListenerLanguage = View.OnClickListener {}
     val clickListenerAppInfo = View.OnClickListener {
-        navigateEvent.value =
-                Event(NAVIGATION_DIALOG_APP_ABOUT)
+        navigateEvent.value = Event(NAVIGATION_DIALOG_APP_ABOUT)
     }
     val clickListenerSendFeedback = View.OnClickListener {
-        navigateEvent.value =
-                Event(NAVIGATION_DIALOG_SEND_FEEDBACK)
+        navigateEvent.value = Event(NAVIGATION_DIALOG_SEND_FEEDBACK)
     }
     val clickListenerLogout = View.OnClickListener {
-        navigateEvent.value =
-                Event(NAVIGATION_DIALOG_CONFIRM_LOGOUT)
+        navigateEvent.value = Event(NAVIGATION_DIALOG_CONFIRM_LOGOUT)
     }
     val clickListenerRate = View.OnClickListener {
-        navigateEvent.value =
-                Event(NAVIGATION_WEB_PLAY_MARKET)
+        navigateEvent.value = Event(NAVIGATION_WEB_PLAY_MARKET)
     }
 
     fun onLogoutDialogResult(isConfirmed: Boolean) {
         if (isConfirmed) {
-            navigateEvent.value =
-                    Event(NAVIGATION_GOOGLE_LOGOUT)
+            navigateEvent.value = Event(NAVIGATION_GOOGLE_LOGOUT)
         }
     }
 

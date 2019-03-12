@@ -9,9 +9,7 @@ import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.repository.RepositoryUser
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 
-class ViewModelDictionary(private val repositoryWord: RepositoryWord,
-                          private val repositoryUser: RepositoryUser
-) : ViewModelBase() {
+class ViewModelDictionary(private val repositoryWord: RepositoryWord, private val repositoryUser: RepositoryUser) : ViewModelBase() {
 
     val user: LiveData<User?> = repositoryUser.liveDataUser
     var sortByType = MutableLiveData<SortByType>(SortByType.ALPHABETICAL_NAME)
@@ -38,12 +36,10 @@ class ViewModelDictionary(private val repositoryWord: RepositoryWord,
     }
 
     val clickListenerFilterTags = View.OnClickListener {
-        navigateEvent.value =
-                Event(NAVIGATION_DIALOG_CHECK_TAGS)
+        navigateEvent.value = Event(NAVIGATION_DIALOG_CHECK_TAGS)
     }
     val clickListenerSortBy = View.OnClickListener {
-        navigateEvent.value =
-                Event(NAVIGATION_DIALOG_SORT_BY)
+        navigateEvent.value = Event(NAVIGATION_DIALOG_SORT_BY)
     }
 
     fun setFilterTags(tags: List<String>) {

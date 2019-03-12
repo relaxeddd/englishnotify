@@ -55,8 +55,7 @@ abstract class ActivityBase<VM : ViewModelBase, B : ViewDataBinding> : AppCompat
         })
     }
 
-    fun configureMenu(isShowHomeMenuButton: Boolean = false, homeMenuButtonIconResId: Int,
-                      clickListener: () -> Unit) {
+    fun configureMenu(isShowHomeMenuButton: Boolean = false, homeMenuButtonIconResId: Int, clickListener: () -> Unit) {
         supportActionBar?.setDisplayHomeAsUpEnabled(isShowHomeMenuButton)
         supportActionBar?.setHomeAsUpIndicator(homeMenuButtonIconResId)
         listenerHomeMenuButton = clickListener

@@ -14,8 +14,7 @@ import com.google.firebase.iid.FirebaseInstanceId
 
 object ApiHelper {
 
-    private val api: Api =
-        Api()
+    private val api: Api = Api()
 
     suspend fun requestInit(firebaseUser: FirebaseUser?, tokenId: String?, pushToken: String) : InitData {
         val requestId = UUID.randomUUID().toString()
@@ -26,10 +25,7 @@ object ApiHelper {
         return if (tokenId?.isNotEmpty() == true) {
             api.requestInit(tokenId, requestId, userId, appVersion, pushToken, email)
         } else {
-            InitData(
-                Result(RESULT_ERROR_UNAUTHORIZED),
-                User()
-            )
+            InitData(Result(RESULT_ERROR_UNAUTHORIZED), User())
         }
     }
 
@@ -60,10 +56,7 @@ object ApiHelper {
             api.requestUpdateUser(tokenId, requestId, userId, notificationsTimeType, receiveNotifications,
                 learnLanguageType, tagsSelected)
         } else {
-            UpdateUserResult(
-                Result(RESULT_ERROR_UNAUTHORIZED),
-                User()
-            )
+            UpdateUserResult(Result(RESULT_ERROR_UNAUTHORIZED), User())
         }
     }
 
@@ -82,12 +75,7 @@ object ApiHelper {
         firebaseUser?.getIdToken(false)?.addOnCompleteListener {
             if (it.isSuccessful) {
                 val receivedTokenId = it.result?.token ?: ""
-                resultListener(
-                    Resource(
-                        status = RESULT_OK,
-                        value = receivedTokenId
-                    )
-                )
+                resultListener(Resource(status = RESULT_OK, value = receivedTokenId))
             } else {
                 resultListener(Resource(errorStr = ERROR_NOT_AUTHORIZED))
             }
@@ -98,12 +86,7 @@ object ApiHelper {
         FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener {
             if (it.isSuccessful) {
                 val receivedTokenId = it.result?.token ?: ""
-                resultListener(
-                    Resource(
-                        status = RESULT_OK,
-                        value = receivedTokenId
-                    )
-                )
+                resultListener(Resource(status = RESULT_OK, value = receivedTokenId))
             } else {
                 resultListener(Resource(errorStr = ERROR_NOT_AUTHORIZED))
             }

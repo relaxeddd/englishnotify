@@ -29,10 +29,7 @@ class AdapterWords(val viewModel: ViewModelDictionary) : ListAdapter<Word, Adapt
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            DataBindingUtil.inflate(
-                LayoutInflater.from(parent.context), R.layout.view_item_word, parent,
-                false
-            )
+            DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.view_item_word, parent, false)
         )
     }
 
@@ -54,11 +51,7 @@ class AdapterWords(val viewModel: ViewModelDictionary) : ListAdapter<Word, Adapt
 
     private fun createOnClickListener(holder: ViewHolder): View.OnClickListener {
         return View.OnClickListener {
-            animateDropdown(
-                it.findViewById(R.id.constraint_word_drop_dawn),
-                !holder.isOpen,
-                paddingDp = 16f
-            )
+            animateDropdown(it.findViewById(R.id.constraint_word_drop_dawn), !holder.isOpen, paddingDp = 16f)
             holder.isOpen = !holder.isOpen
         }
     }

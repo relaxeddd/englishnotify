@@ -27,9 +27,7 @@ fun convertDpToPixel(dp: Float): Float {
     return dp * (App.context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
 }
 
-fun animateDropdown(view: ViewGroup, isOpen: Boolean, animBlock: AnimBlock = AnimBlock(
-    false
-),
+fun animateDropdown(view: ViewGroup, isOpen: Boolean, animBlock: AnimBlock = AnimBlock(false),
                     paddingDp: Float = 0f) {
     if (animBlock.isAnimating || view.visibility == GONE && !isOpen || view.visibility == VISIBLE && isOpen) return
 
@@ -105,12 +103,7 @@ fun openWebApplication(activity: FragmentActivity?) {
     activity?.startActivity(browserIntent)
 }
 
-fun getErrorString(code: Int) = getErrorString(
-    Result(
-        code,
-        getString(R.string.undefined_error)
-    )
-)
+fun getErrorString(code: Int) = getErrorString(Result(code, getString(R.string.undefined_error)))
 
 fun getErrorString(result: Result) = when (result.code) {
     RESULT_UNDEFINED -> getString(R.string.undefined_error)
