@@ -17,6 +17,7 @@
     <string name="enable_notifications">Enable notifications</string>
     <string name="english_at_russian">English at russian</string>
     <string name="error_initialization">Initialization error</string>
+    <string name="error_purchase">Purchase error, write to for.gamer.develop@gmail.com</string>
     <string name="error_push_token">Push token error</string>
     <string name="error_update">Error update</string>
     <string name="feedback_is_empty">Feedback is empty</string>
@@ -46,6 +47,7 @@
     <string name="settings">Settings</string>
     <string name="sort_by">Sort by</string>
     <string name="subscription_days">Subscription days: %s</string>
+    <string name="subscription_time_error">Subscription time is up, renew it</string>
     <string name="thank_you">Thank you!</string>
     <string name="tags_should_not_be_empty">Tags should not be empty</string>
     <string name="time_new">Time new</string>

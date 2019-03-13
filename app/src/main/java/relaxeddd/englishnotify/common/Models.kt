@@ -19,7 +19,7 @@ data class User(
     var subscriptionTime: Long = 0
 ) {
     constructor(user: User) : this(user.userId, user.email, user.receiveNotifications, user.notificationsTimeType,
-        user.tagsAvailable, user.tagsSelected, user.learnLanguageType)
+        user.tagsAvailable, user.tagsSelected, user.learnLanguageType, user.subscriptionTime)
 }
 
 @Entity(tableName = WORDS)

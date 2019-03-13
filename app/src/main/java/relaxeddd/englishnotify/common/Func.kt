@@ -116,5 +116,8 @@ fun getErrorString(result: Result) = when (result.code) {
     RESULT_ERROR_APP_INIT -> getString(R.string.error_initialization)
     RESULT_ERROR_ADD_PUSH_TOKEN -> getString(R.string.error_push_token)
     RESULT_ERROR_UPDATE_USER -> getString(R.string.error_update)
+    RESULT_PURCHASE_NOT_VERIFIED -> getString(R.string.error_purchase)
+    RESULT_PURCHASE_VERIFIED_ERROR -> getString(R.string.error_purchase)
+    RESULT_PURCHASE_ALREADY_RECEIVED -> getString(R.string.error_purchase)
     else -> result.msg
 }
