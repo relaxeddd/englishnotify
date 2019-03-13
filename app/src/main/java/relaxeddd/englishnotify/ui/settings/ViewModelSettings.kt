@@ -13,10 +13,20 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
 
     val user: LiveData<User?> = repositoryUser.liveDataUser
     val appLanguageType = MutableLiveData(0)
+    val subscriptionDays: String
+        get() {
+            var subTime = user.value?.subscriptionTime ?: System.currentTimeMillis()
+            subTime -= System.currentTimeMillis()
+            if (subTime < 0) subTime = 0
+            return (subTime / 1000 / 60 / 60 / 24).toString()
+        }
 
     val clickListenerLanguage = View.OnClickListener {}
     val clickListenerAppInfo = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_APP_ABOUT)
+    }
+    val clickListenerSubscription = View.OnClickListener {
+        navigateEvent.value = Event(NAVIGATION_DIALOG_SUBSCRIPTION)
     }
     val clickListenerSendFeedback = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_SEND_FEEDBACK)
@@ -32,6 +42,10 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
         if (isConfirmed) {
             navigateEvent.value = Event(NAVIGATION_GOOGLE_LOGOUT)
         }
+    }
+
+    fun onDialogSubscriptionResult(subscription: Int) {
+
     }
 
     fun onFeedbackDialogResult(feedback: String) {

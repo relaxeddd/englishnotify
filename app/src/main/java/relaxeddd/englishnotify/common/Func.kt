@@ -98,7 +98,7 @@ fun openWebPrivacyPolicy(activity: FragmentActivity?) {
 }
 
 fun openWebApplication(activity: FragmentActivity?) {
-    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://google.com"))
+    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=relaxeddd.englishnotify"))
     browserIntent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
     activity?.startActivity(browserIntent)
 }

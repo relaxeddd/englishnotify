@@ -15,7 +15,8 @@ data class User(
     var notificationsTimeType: Int = 1,
     val tagsAvailable: List<String> = ArrayList(),
     var tagsSelected: List<String> = ArrayList(),
-    var learnLanguageType: Int = 0
+    var learnLanguageType: Int = 0,
+    var subscriptionTime: Long = 0
 ) {
     constructor(user: User) : this(user.userId, user.email, user.receiveNotifications, user.notificationsTimeType,
         user.tagsAvailable, user.tagsSelected, user.learnLanguageType)

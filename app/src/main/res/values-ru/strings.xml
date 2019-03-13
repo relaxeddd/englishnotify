@@ -40,11 +40,13 @@
     <string name="privacy_policy_in_sentence">Политикой конфиденциальности</string>
     <string name="rate_app">Оценить приложение</string>
     <string name="receive_notifications_time">Получать уведомления</string>
+    <string name="renew_subscription">Продлить подписку</string>
     <string name="russian_at_english">С руссокого на английский</string>
     <string name="search_words">Искать слова</string>
     <string name="send_feedback">Отправить отзыв</string>
     <string name="settings">Настройки</string>
     <string name="sort_by">Сортировать по</string>
+    <string name="subscription_days">Дней подписки: %s</string>
     <string name="thank_you">Спасибо!</string>
     <string name="tags_should_not_be_empty">Вы должны выбрать как минимум 1 категорию</string>
     <string name="time_new">Сначала новые</string>
@@ -54,7 +56,8 @@
     <string name="user_not_found">Пользователь не найден</string>
     <string name="you_sign_in_as">Вы вошли как: %s</string>
 
-    <string name="text_app_about">Приложение предназначено для ...</string>
+    <string name="text_app_about">Выберите категории английских слов, которые хотите изучить, установите период получения уведомлений
+        и вам будут приходить английские слова в виде пуш-уведомлений. \nСписок категорий постоянно растет и обновляется без необходимости обновления приложения.</string>
 
     <!-- =========================================================================================================== -->
     <string name="irregular">Неправильные глаголы</string>
@@ -67,6 +70,9 @@
     <string name="human_qualities">Характер</string>
     <string name="feelings">Чувства</string>
     <string name="emotions">Эмоции</string>
+    <string name="work">Работа</string>
+    <string name="movement">Движения и действия</string>
+    <string name="professions">Профессии</string>
 
     <string name="privacy_policy_text">Начиная работу с приложением, вы соглашаетесь с нашей Политикой конфиденциальности</string>
     <!--

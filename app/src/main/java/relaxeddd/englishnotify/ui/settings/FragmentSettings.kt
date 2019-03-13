@@ -7,6 +7,7 @@ import relaxeddd.englishnotify.databinding.FragmentSettingsBinding
 import relaxeddd.englishnotify.dialogs.DialogAppAbout
 import relaxeddd.englishnotify.dialogs.DialogConfirmLogout
 import relaxeddd.englishnotify.dialogs.DialogSendFeedback
+import relaxeddd.englishnotify.dialogs.DialogSubscription
 
 class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding>() {
 
@@ -20,6 +21,12 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
         ListenerResult<String> {
         override fun onResult(result: String) {
             viewModel.onFeedbackDialogResult(result)
+        }
+    }
+    private val listenerSubscription: ListenerResult<Int> = object:
+        ListenerResult<Int> {
+        override fun onResult(result: Int) {
+            viewModel.onDialogSubscriptionResult(result)
         }
     }
 
@@ -57,7 +64,12 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
             NAVIGATION_DIALOG_SEND_FEEDBACK -> {
                 val dialog = DialogSendFeedback()
                 dialog.setConfirmListener(listenerFeedbackDialog)
-                dialog.show(this@FragmentSettings.childFragmentManager, "Confirm Logout Dialog")
+                dialog.show(this@FragmentSettings.childFragmentManager, "Send feedback Dialog")
+            }
+            NAVIGATION_DIALOG_SUBSCRIPTION -> {
+                val dialog = DialogSubscription()
+                dialog.listener = listenerSubscription
+                dialog.show(this@FragmentSettings.childFragmentManager, "Subscription Dialog")
             }
         }
     }

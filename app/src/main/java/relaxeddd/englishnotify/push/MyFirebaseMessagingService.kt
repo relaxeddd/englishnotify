@@ -92,10 +92,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             .setContentIntent(pendingIntent)
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            notificationBuilder.setSmallIcon(R.drawable.info)
+            notificationBuilder.setSmallIcon(R.drawable.app_icon)
             notificationBuilder.color = ContextCompat.getColor(this, R.color.colorPrimary)
         } else {
-            notificationBuilder.setSmallIcon(R.drawable.info)
+            notificationBuilder.setSmallIcon(R.drawable.app_icon)
         }
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
