@@ -25,6 +25,7 @@
     <string name="feedback_send_error">Ошибка отправки отзыва</string>
     <string name="feedback_too_short">Отзыв слишком короткий</string>
     <string name="filter">Фильтр</string>
+    <string name="i_know_it">Я знаю это</string>
     <string name="input_your_message">Введите сообщение</string>
     <string name="learn_language">Изучаемый язык</string>
     <string name="logout">Выход из аккаунта</string>

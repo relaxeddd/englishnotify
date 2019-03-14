@@ -33,9 +33,16 @@
 
         <meta-data
                 android:name="com.google.firebase.messaging.default_notification_icon"
-                android:resource="@drawable/attention" />
+                android:resource="@drawable/app_icon_push" />
         <meta-data android:name="com.google.firebase.messaging.default_notification_color"
                    android:resource="@color/colorPrimary" />
+
+        <receiver android:name=".push.PushBroadcastReceiver"  android:exported="true">
+            <intent-filter>
+                <action android:name="relaxeddd.englishnotify.KNOW"/>
+                <action android:name="relaxeddd.englishnotify.ANSWER" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

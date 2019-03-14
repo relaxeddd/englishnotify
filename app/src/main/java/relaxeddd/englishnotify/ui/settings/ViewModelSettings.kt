@@ -3,6 +3,7 @@ package relaxeddd.englishnotify.ui.settings
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
@@ -11,17 +12,20 @@ import relaxeddd.englishnotify.model.repository.RepositoryUser
 
 class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelBase() {
 
+    private val userObserver = Observer<User?> { user ->
+        var subTime = user?.subscriptionTime ?: System.currentTimeMillis()
+        subTime -= System.currentTimeMillis()
+        if (subTime < 0) subTime = 0
+        liveDataSubDays.value = (subTime / 1000 / 60 / 60 / 24).toString()
+    }
+
     val user: LiveData<User?> = repositoryUser.liveDataUser
     val appLanguageType = MutableLiveData(0)
-    val subscriptionDays: String
-        get() {
-            var subTime = user.value?.subscriptionTime ?: System.currentTimeMillis()
-            subTime -= System.currentTimeMillis()
-            if (subTime < 0) subTime = 0
-            return (subTime / 1000 / 60 / 60 / 24).toString()
-        }
+    val liveDataSubDays = MutableLiveData("")
 
-    val clickListenerLanguage = View.OnClickListener {}
+    val clickListenerLanguage = View.OnClickListener {
+        navigateEvent.value = Event(NAVIGATION_DIALOG_LEARN_ENGLISH)
+    }
     val clickListenerAppInfo = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_APP_ABOUT)
     }
@@ -36,6 +40,15 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     }
     val clickListenerRate = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_WEB_PLAY_MARKET)
+    }
+
+    init {
+        user.observeForever(userObserver)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        user.removeObserver(userObserver)
     }
 
     fun onLogoutDialogResult(isConfirmed: Boolean) {

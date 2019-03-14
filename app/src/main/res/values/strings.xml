@@ -24,6 +24,7 @@
     <string name="feedback_send_error">Feedback send error</string>
     <string name="feedback_too_short">Feedback too short</string>
     <string name="filter">Filter</string>
+    <string name="i_know_it">I know it</string>
     <string name="input_your_message">Input your message</string>
     <string name="learn_language">Learn language</string>
     <string name="logout">Logout</string>

@@ -19,9 +19,7 @@ import relaxeddd.englishnotify.model.db.AppDatabase
 import relaxeddd.englishnotify.ui.main.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import relaxeddd.englishnotify.common.SharedHelper
-import relaxeddd.englishnotify.common.Word
-import relaxeddd.englishnotify.common.parseWords
+import relaxeddd.englishnotify.common.*
 import kotlin.random.Random
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
@@ -74,12 +72,20 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     fun showNotification(text: String, title: String = getString(R.string.app_name)) {
+        val notificationId = Random.nextInt(1000)
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
 
         val spannableTitle = SpannableString(title)
         spannableTitle.setSpan(StyleSpan(Typeface.BOLD), 0, spannableTitle.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        val knowIntent = Intent(this, PushBroadcastReceiver::class.java).apply {
+            action = PushBroadcastReceiver.ACTION_KNOW
+            putExtra(WORD_ID, title)
+            putExtra(NOTIFICATION_ID, notificationId)
+        }
+        val knowPendingIntent: PendingIntent = PendingIntent.getBroadcast(this, Random.nextInt(1000), knowIntent, 0)
 
         val channelId = getString(R.string.default_notification_channel_id)
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
@@ -90,12 +96,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             .setAutoCancel(true)
             .setSound(defaultSoundUri)
             .setContentIntent(pendingIntent)
+            .addAction(R.drawable.ic_accept, getString(R.string.i_know_it), knowPendingIntent)
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            notificationBuilder.setSmallIcon(R.drawable.app_icon)
+            notificationBuilder.setSmallIcon(R.drawable.app_icon_push)
             notificationBuilder.color = ContextCompat.getColor(this, R.color.colorPrimary)
         } else {
-            notificationBuilder.setSmallIcon(R.drawable.app_icon)
+            notificationBuilder.setSmallIcon(R.drawable.app_icon_push)
         }
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -108,7 +115,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             if (channel != null) notificationManager.createNotificationChannel(channel)
         }
 
-        notificationManager.notify(Random.nextInt(1000), notificationBuilder.build())
+        notificationManager.notify(notificationId, notificationBuilder.build())
     }
 
     private fun chooseWord(words: List<Word>) : Word {

@@ -71,6 +71,8 @@ const val NOTIFICATIONS_TIME_TYPE = "notificationsTimeType"
 const val TAGS_AVAILABLE = "tagsAvailable"
 const val TAGS_SELECTED = "tagsSelected"
 const val LEARN_LANGUAGE_TYPE = "learnLanguageType"
+const val WORD_ID = "wordId"
+const val NOTIFICATION_ID = "notificationId"
 
 const val ERROR_TOKEN_NOT_INIT = "User token not init"
 const val ERROR_NOT_AUTHORIZED = "User not authorized"

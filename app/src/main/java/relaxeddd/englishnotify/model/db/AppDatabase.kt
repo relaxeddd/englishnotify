@@ -13,7 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.common.DATABASE_TEST_APP
 
-@Database(entities = [User::class, Word::class], version = 4, exportSchema = false)
+@Database(entities = [User::class, Word::class], version = 5, exportSchema = false)
 @TypeConverters(ConverterListStr::class)
 abstract class AppDatabase : RoomDatabase() {
 

@@ -49,7 +49,6 @@ class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>() {
         initChannelNotifications(this)
         navController = Navigation.findNavController(this, R.id.fragment_navigation_host)
 
-        navController.navigate(R.id.fragmentDictionary)
         NavigationUI.setupWithNavController(navigation_view_main, navController)
         viewModel.onViewCreate()
     }

@@ -36,7 +36,8 @@ data class Word(
     val v2: String = "",
     val v3: String = "",
     val timestamp: Long = 0,
-    var isDeleted: Boolean = false
+    var isDeleted: Boolean = false,
+    var isLearned: Boolean = false
 )
 
 @Keep

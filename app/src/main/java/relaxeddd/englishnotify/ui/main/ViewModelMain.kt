@@ -87,10 +87,10 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
     }
 
     fun requestInitUser() {
-        isShowWarningNotifications.value = false
-        isShowWarningAuthorize.value = false
-        isShowWarningSubscription.value = false
         if (repositoryUser.isAuthorized()) {
+            isShowWarningNotifications.value = false
+            isShowWarningAuthorize.value = false
+            isShowWarningSubscription.value = false
             ioScope.launch {
                 repositoryUser.initUser()
             }
