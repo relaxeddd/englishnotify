@@ -8,25 +8,27 @@ import relaxeddd.englishnotify.dialogs.DialogAppAbout
 import relaxeddd.englishnotify.dialogs.DialogConfirmLogout
 import relaxeddd.englishnotify.dialogs.DialogSendFeedback
 import relaxeddd.englishnotify.dialogs.DialogSubscription
+import relaxeddd.englishnotify.donate.ActivityBilling
 
 class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding>() {
 
-    private val listenerConfirmLogout: ListenerResult<Boolean> = object:
-        ListenerResult<Boolean> {
+    private val listenerConfirmLogout: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
         override fun onResult(result: Boolean) {
             viewModel.onLogoutDialogResult(result)
         }
     }
-    private val listenerFeedbackDialog: ListenerResult<String> = object:
-        ListenerResult<String> {
+    private val listenerFeedbackDialog: ListenerResult<String> = object: ListenerResult<String> {
         override fun onResult(result: String) {
             viewModel.onFeedbackDialogResult(result)
         }
     }
-    private val listenerSubscription: ListenerResult<Int> = object:
-        ListenerResult<Int> {
+    private val listenerSubscription: ListenerResult<Int> = object: ListenerResult<Int> {
         override fun onResult(result: Int) {
-            viewModel.onDialogSubscriptionResult(result)
+            val activity = activity
+
+            if (activity is ActivityBilling<*, *>) {
+                activity.onChooseSub(result)
+            }
         }
     }
 
@@ -67,9 +69,21 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
                 dialog.show(this@FragmentSettings.childFragmentManager, "Send feedback Dialog")
             }
             NAVIGATION_DIALOG_SUBSCRIPTION -> {
-                val dialog = DialogSubscription()
-                dialog.listener = listenerSubscription
-                dialog.show(this@FragmentSettings.childFragmentManager, "Subscription Dialog")
+                val activity = activity
+
+                if (activity is ActivityBilling<*, *>) {
+                    activity.initBilling(object: ListenerResult<Boolean> {
+                        override fun onResult(result: Boolean) {
+                            if (result) {
+                                val dialog = DialogSubscription()
+                                dialog.listener = listenerSubscription
+                                dialog.show(this@FragmentSettings.childFragmentManager, "Subscription Dialog")
+                            } else {
+                                showToast(R.string.error_purchase)
+                            }
+                        }
+                    })
+                }
             }
         }
     }

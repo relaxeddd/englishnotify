@@ -57,10 +57,6 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
         }
     }
 
-    fun onDialogSubscriptionResult(subscription: Int) {
-
-    }
-
     fun onFeedbackDialogResult(feedback: String) {
         uiScope.launch {
             RepositoryCommon.getInstance().sendFeedback(feedback)

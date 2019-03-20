@@ -14,10 +14,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.MainActivityBinding
+import relaxeddd.englishnotify.donate.ActivityBilling
 import relaxeddd.englishnotify.push.PushTokenHelper.initChannelNotifications
 import java.util.*
 
-class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>() {
+class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
 
     companion object {
         const val REQUEST_SIGN_IN = 1312

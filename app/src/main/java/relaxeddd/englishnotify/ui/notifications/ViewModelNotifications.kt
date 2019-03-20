@@ -9,7 +9,6 @@ import relaxeddd.englishnotify.model.repository.RepositoryUser
 import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.*
 
 class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewModelBase() {
 
@@ -32,7 +31,7 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
 
     val clickListenerEnableNotifications = View.OnClickListener {
         if (user.value == null) {
-            showToast(R.string.pleases_authorize)
+            showToast(R.string.please_authorize)
         }
     }
 
@@ -40,21 +39,21 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
         if (user.value != null) {
             navigateEvent.value = Event(NAVIGATION_DIALOG_LEARN_ENGLISH)
         } else {
-            showToast(R.string.pleases_authorize)
+            showToast(R.string.please_authorize)
         }
     }
     val clickListenerRepeatTime = View.OnClickListener {
         if (user.value != null) {
             navigateEvent.value = Event(NAVIGATION_DIALOG_REPEAT)
         } else {
-            showToast(R.string.pleases_authorize)
+            showToast(R.string.please_authorize)
         }
     }
     val clickListenerCheckTags = View.OnClickListener {
         if (user.value != null) {
             navigateEvent.value = Event(NAVIGATION_DIALOG_CHECK_TAGS)
         } else {
-            showToast(R.string.pleases_authorize)
+            showToast(R.string.please_authorize)
         }
     }
 

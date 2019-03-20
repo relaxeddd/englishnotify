@@ -60,15 +60,17 @@ object ApiHelper {
         }
     }
 
-    /*fun getVerifyPurchaseObservable(purchaseTokenId: String, signature: String, originalJson: String, itemType: String) : Single<PurchaseResult> {
+    suspend fun requestVerifyPurchase(firebaseUser: FirebaseUser?, tokenId: String?, purchaseTokenId: String,
+                                      signature: String, originalJson: String, itemType: String) : PurchaseResult {
         val requestId = UUID.randomUUID().toString()
-        val firebaseUser: FirebaseUser? = Cache.firebaseUser
         val userId = firebaseUser?.uid ?: ""
 
-        return initUserTokenId(firebaseUser)
-            .flatMap{ tokenId -> api.requestVerifyPurchase(tokenId, requestId, userId, purchaseTokenId, signature, originalJson, itemType) }
-            .observeOn(AndroidSchedulers.mainThread())
-    }*/
+        return if (tokenId?.isNotEmpty() == true) {
+            api.requestVerifyPurchase(tokenId, requestId, userId, purchaseTokenId, signature, originalJson, itemType)
+        } else {
+            PurchaseResult(Result(RESULT_PURCHASE_VERIFIED_ERROR))
+        }
+    }
 
     //------------------------------------------------------------------------------------------------------------------
     fun initUserTokenId(firebaseUser: FirebaseUser?, resultListener: (tokenId: Resource<String>) -> Unit) {

@@ -79,7 +79,14 @@ data class Result(val code: Int = RESULT_UNDEFINED, val msg: String = "") {
 data class UpdateUserResult(val result: Result, val user: User)
 
 @Keep
-data class PurchaseResult(val code: Int = RESULT_UNDEFINED)
+data class PurchaseResult(val result: Result, val purchase: PurchaseObject? = null)
+
+@Keep
+data class PurchaseObject(val userId: String, val tokenId: String, val itemType: String, val refillInfo: RefillInfo,
+                          val isObtained: Boolean = false)
+
+@Keep
+data class RefillInfo(val subscriptionTime: Long = 0)
 
 @Keep
 data class InitData(val result: Result?, val user: User, val isActualVersion: Boolean = true)

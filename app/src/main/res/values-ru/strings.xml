@@ -7,6 +7,7 @@
     <string name="accept">Принять</string>
     <string name="alphabetical_name">Алфавитный</string>
     <string name="alphabetical_translate">Алфавитный (перевод)</string>
+    <string name="another_operation">Другая операция</string>
     <string name="app_info">О приложении</string>
     <string name="app_language">Язык приложения</string>
     <string name="close">Закрыть</string>
@@ -28,6 +29,7 @@
     <string name="i_know_it">Я знаю это</string>
     <string name="input_your_message">Введите сообщение</string>
     <string name="learn_language">Изучаемый язык</string>
+    <string name="loading">Загрузка</string>
     <string name="logout">Выход из аккаунта</string>
     <string name="logout_error">Ошибка выхода из аккаунта</string>
     <string name="logout_success">Вы вышли из аккаунта</string>
@@ -37,7 +39,8 @@
     <string name="notifications_not_receiving_enable">Уведомления не приходят, их нужно включить</string>
     <string name="notifications_not_receiving_authorize">Уведомления не приходят, авторизируйтесь</string>
     <string name="notifications">Уведомления</string>
-    <string name="pleases_authorize">Необходимо войти в систему</string>
+    <string name="please_authorize">Необходимо войти в систему</string>
+    <string name="please_wait">Пожалуйста, подождите</string>
     <string name="privacy_policy">Политика конфиденциальности</string>
     <string name="privacy_policy_in_sentence">Политикой конфиденциальности</string>
     <string name="rate_app">Оценить приложение</string>

@@ -6,6 +6,7 @@
     <string name="accept">Accept</string>
     <string name="alphabetical_name">Alphabetical name</string>
     <string name="alphabetical_translate">Alphabetical translate</string>
+    <string name="another_operation">Another operation</string>
     <string name="app_info">App info</string>
     <string name="app_language">App language</string>
     <string name="close">Close</string>
@@ -27,6 +28,7 @@
     <string name="i_know_it">I know it</string>
     <string name="input_your_message">Input your message</string>
     <string name="learn_language">Learn language</string>
+    <string name="loading">Loading</string>
     <string name="logout">Logout</string>
     <string name="logout_error">Logout error</string>
     <string name="logout_success">Logout success</string>
@@ -36,7 +38,8 @@
     <string name="notifications_not_receiving_enable">Notifications is not receiving, please enable it</string>
     <string name="notifications_not_receiving_authorize">Notifications is not receiving, please sign in</string>
     <string name="notifications">Notifications</string>
-    <string name="pleases_authorize">Please, sign in</string>
+    <string name="please_authorize">Please, sign in</string>
+    <string name="please_wait">Please, wait</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="privacy_policy_in_sentence">Privacy Policy</string>
     <string name="rate_app">Rate app</string>
