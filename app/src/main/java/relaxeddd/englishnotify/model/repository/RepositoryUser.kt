@@ -59,6 +59,7 @@ class RepositoryUser private constructor(val userDao: UserDao) {
                     userDao.insert(answerInitData.user)
                     userId = answerInitData.user.userId
                     SharedHelper.setSelectedTags(answerInitData.user.tagsSelected)
+                    SharedHelper.setLearnLanguageType(answerInitData.user.learnLanguageType)
                 } else if (answerInitData.result != null) {
                     showToast(getErrorString(answerInitData.result))
                 }
@@ -123,6 +124,7 @@ class RepositoryUser private constructor(val userDao: UserDao) {
             userDao.insert(oldUser ?: return)
         } else {
             SharedHelper.setSelectedTags(user.tagsSelected)
+            SharedHelper.setLearnLanguageType(user.learnLanguageType)
         }
     }
 }

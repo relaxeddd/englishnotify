@@ -54,6 +54,9 @@ const val NAVIGATION_DIALOG_CONFIRM_LOGOUT = 1011
 const val NAVIGATION_WEB_PLAY_MARKET = 1012
 const val NAVIGATION_DIALOG_SUBSCRIPTION = 1013
 
+const val TYPE_PUSH_ENGLISH = 0
+const val TYPE_PUSH_RUSSIAN = 1
+
 const val ENG = "eng"
 const val RUS = "rus"
 const val V2 = "v2"
@@ -131,6 +134,7 @@ const val WIN = "win"
 const val LOGIN_DATA = "loginData"
 const val SELECTED_TAGS = "selectedTags"
 const val PRIVACY_POLICY_CONFIRMED = "privacyPolicyConfirmed"
+const val PUSH_LANGUAGE = "pushLanguage"
 const val COUNT = "count"
 const val GOAL = "goal"
 const val MESSAGE = "message"

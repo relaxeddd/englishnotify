@@ -11,7 +11,7 @@ android {
         config {
             keyAlias 'english'
             keyPassword 'd9M8aek'
-            storeFile file('D:/Android/keystore.jks')
+            storeFile file('D:/project/keystore.jks')
             storePassword 'm3nkb9'
         }
     }
@@ -20,8 +20,8 @@ android {
         applicationId 'relaxeddd.englishnotify'
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 5
-        versionName "0.0.5"
+        versionCode 6
+        versionName "0.1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true

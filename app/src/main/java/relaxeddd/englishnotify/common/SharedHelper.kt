@@ -24,4 +24,14 @@ object SharedHelper {
         val sPref = App.context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         sPref.edit().putStringSet(SELECTED_TAGS, HashSet(selectedTags)).apply()
     }
+
+    fun getLearnLanguageType() : Int {
+        val sPref = App.context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getInt(PUSH_LANGUAGE, TYPE_PUSH_ENGLISH)
+    }
+
+    fun setLearnLanguageType(type : Int) {
+        val sPref = App.context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putInt(PUSH_LANGUAGE, type).apply()
+    }
 }

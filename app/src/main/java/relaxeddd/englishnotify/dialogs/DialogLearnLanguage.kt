@@ -18,7 +18,7 @@ class DialogLearnLanguage : DialogFragment() {
             val builder = AlertDialog.Builder(it)
             selectedItemIx = arguments?.getInt(SELECTED_ITEM, 0) ?: 0
 
-            builder.setTitle(R.string.learn_language)
+            builder.setTitle(R.string.notifications_language)
                 .setSingleChoiceItems(R.array.array_learn_language, selectedItemIx) { _, which ->
                     selectedItemIx = which
                 }.setPositiveButton(android.R.string.ok) { _, _ ->

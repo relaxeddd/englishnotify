@@ -35,6 +35,7 @@
     <string name="network_not_available">Network error</string>
     <string name="no_words">No words</string>
     <string name="notification_categories">Notification categories</string>
+    <string name="notifications_language">Notifications language</string>
     <string name="notifications_not_receiving_enable">Notifications is not receiving, please enable it</string>
     <string name="notifications_not_receiving_authorize">Notifications is not receiving, please sign in</string>
     <string name="notifications">Notifications</string>
@@ -82,6 +83,7 @@
     <string name="work">Work</string>
     <string name="movement">Movements and actions</string>
     <string name="professions">Professions</string>
+    <string name="frequent">Frequent</string>
 
     <string name="privacy_policy_text">Starting work in the application, you agree to our Privacy Policy</string>
 

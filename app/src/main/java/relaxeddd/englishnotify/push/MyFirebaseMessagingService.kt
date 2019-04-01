@@ -38,8 +38,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val data = remoteMessage?.data
 
         if (data != null) {
+            val languageType = SharedHelper.getLearnLanguageType()
             val words = parseWords(data)
             val word = chooseWord(words)
+            val title = if (languageType == TYPE_PUSH_ENGLISH) word.eng else word.rus
+
             AppDatabase.getInstance(this).wordDao().insertAll(word)
             var notificationText = "\n"
 
@@ -52,10 +55,14 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 }
                 notificationText += word.v2 + " - " + word.v3
             }
-            if (word.rus.isNotEmpty()) {
+            if (languageType == TYPE_PUSH_ENGLISH && word.rus.isNotEmpty()) {
                 notificationText += "\n"
                 notificationText += "\n"
                 notificationText += word.rus
+            } else if (languageType == TYPE_PUSH_RUSSIAN && word.eng.isNotEmpty()) {
+                notificationText += "\n"
+                notificationText += "\n"
+                notificationText += word.eng
             }
             if (word.sampleEng.isNotEmpty()) {
                 notificationText += "\n"
@@ -67,7 +74,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             }
 
             AppDatabase.getInstance(this).wordDao().insertAll(word)
-            showNotification(notificationText, word.eng)
+            showNotification(notificationText, title)
         }
     }
 

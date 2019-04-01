@@ -22,8 +22,8 @@
     </string-array>
 
     <string-array name="array_learn_language">
-        <item>English at russian</item>
-        <item>Russian at english</item>
+        <item>English-russian</item>
+        <item>Russian-english</item>
     </string-array>
 
     <string-array name="array_languages">

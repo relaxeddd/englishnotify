@@ -27,6 +27,7 @@
     <string name="feedback_too_short">Отзыв слишком короткий</string>
     <string name="filter">Фильтр</string>
     <string name="i_know_it">Я знаю это</string>
+    <string name="i_dont_know">Я не знаю</string>
     <string name="input_your_message">Введите сообщение</string>
     <string name="learn_language">Изучаемый язык</string>
     <string name="loading">Загрузка</string>
@@ -36,6 +37,7 @@
     <string name="network_not_available">Ошибка интернет соединения</string>
     <string name="no_words">Словарь пуст</string>
     <string name="notification_categories">Выбор категорий слов</string>
+    <string name="notifications_language">Язык уведомлений</string>
     <string name="notifications_not_receiving_enable">Уведомления не приходят, их нужно включить</string>
     <string name="notifications_not_receiving_authorize">Уведомления не приходят, авторизируйтесь</string>
     <string name="notifications">Уведомления</string>
@@ -79,6 +81,7 @@
     <string name="work">Работа</string>
     <string name="movement">Движения и действия</string>
     <string name="professions">Профессии</string>
+    <string name="frequent">Часто используемые</string>
 
     <string name="privacy_policy_text">Начиная работу с приложением, вы соглашаетесь с нашей Политикой конфиденциальности</string>
     <!--
