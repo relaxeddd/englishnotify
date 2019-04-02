@@ -10,6 +10,8 @@
     <string name="another_operation">Другая операция</string>
     <string name="app_info">О приложении</string>
     <string name="app_language">Язык приложения</string>
+    <string name="answer_correct">Правильный ответ</string>
+    <string name="answer_incorrect">Неправильный ответ</string>
     <string name="close">Закрыть</string>
     <string name="confirm">Подтвердить</string>
     <string name="confirm_and_continue">Подтвердить и продолжить</string>
@@ -18,6 +20,7 @@
     <string name="do_you_really_want_to_logout">Вы действительно хотите выйти из аккаунта?</string>
     <string name="enable_notifications">Включить уведомления</string>
     <string name="english_at_russian">С английского на русский</string>
+    <string name="enter_translation">Ввести перевод</string>
     <string name="error_initialization">Ошибка инициализации</string>
     <string name="error_purchase">Ошибка покупки, напишите на почту for.gamer.develop@gmail.com</string>
     <string name="error_push_token">Ошибка пушей</string>
@@ -26,8 +29,8 @@
     <string name="feedback_send_error">Ошибка отправки отзыва</string>
     <string name="feedback_too_short">Отзыв слишком короткий</string>
     <string name="filter">Фильтр</string>
+    <string name="i_dont_know_it">Я не знаю</string>
     <string name="i_know_it">Я знаю это</string>
-    <string name="i_dont_know">Я не знаю</string>
     <string name="input_your_message">Введите сообщение</string>
     <string name="learn_language">Изучаемый язык</string>
     <string name="loading">Загрузка</string>

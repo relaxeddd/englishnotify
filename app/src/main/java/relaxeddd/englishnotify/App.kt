@@ -1,11 +1,10 @@
 package relaxeddd.englishnotify
 
-import android.app.Application
 import android.content.Context
-import androidx.multidex.MultiDex
+import androidx.multidex.MultiDexApplication
 import com.google.firebase.FirebaseApp
 
-class App : Application() {
+class App : MultiDexApplication() {
 
     companion object {
         lateinit var context: Context
@@ -15,6 +14,5 @@ class App : Application() {
         super.onCreate()
         context = this
         FirebaseApp.initializeApp(this)
-        MultiDex.install(this)
     }
 }

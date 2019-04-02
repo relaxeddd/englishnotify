@@ -26,26 +26,19 @@ abstract class AppDatabase : RoomDatabase() {
 
         fun getInstance(context: Context): AppDatabase {
             return instance ?: synchronized(this) {
-                instance
-                    ?: buildDatabase(context).also { instance = it }
+                instance ?: buildDatabase(context).also { instance = it }
             }
         }
 
         private fun buildDatabase(context: Context): AppDatabase {
-            return Room.databaseBuilder(context, AppDatabase::class.java,
-                DATABASE_TEST_APP
-            )
+            return Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_TEST_APP)
                 .fallbackToDestructiveMigration()
                 .addCallback(object : RoomDatabase.Callback() {
                     override fun onCreate(db: SupportSQLiteDatabase) {
                         super.onCreate(db)
 
                         ioScope.launch {
-                            addDefaultContent(
-                                getInstance(
-                                    context
-                                )
-                            )
+                            addDefaultContent(getInstance(context))
                         }
                     }
                 }).build()
