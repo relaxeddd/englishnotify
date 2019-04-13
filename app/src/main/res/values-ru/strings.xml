@@ -32,12 +32,14 @@
     <string name="i_dont_know_it">Я не знаю</string>
     <string name="i_know_it">Я знаю это</string>
     <string name="input_your_message">Введите сообщение</string>
+    <string name="later">Позднее</string>
     <string name="learn_language">Изучаемый язык</string>
     <string name="loading">Загрузка</string>
     <string name="logout">Выход из аккаунта</string>
     <string name="logout_error">Ошибка выхода из аккаунта</string>
     <string name="logout_success">Вы вышли из аккаунта</string>
     <string name="network_not_available">Ошибка интернет соединения</string>
+    <string name="no_thanks">Нет, спасибо / уже</string>
     <string name="no_words">Словарь пуст</string>
     <string name="notification_categories">Выбор категорий слов</string>
     <string name="notifications_language">Язык уведомлений</string>
@@ -48,7 +50,9 @@
     <string name="please_wait">Пожалуйста, подождите</string>
     <string name="privacy_policy">Политика конфиденциальности</string>
     <string name="privacy_policy_in_sentence">Политикой конфиденциальности</string>
+    <string name="rate">Оценить</string>
     <string name="rate_app">Оценить приложение</string>
+    <string name="rate_app_pls">Оцените пожалуйста приложение</string>
     <string name="receive_notifications_time">Получать уведомления</string>
     <string name="renew_subscription">Продлить подписку</string>
     <string name="russian_at_english">С руссокого на английский</string>
@@ -67,6 +71,7 @@
     <string name="user_not_found">Пользователь не найден</string>
     <string name="you_sign_in_as">Вы вошли как: %s</string>
 
+    <string name="text_rate_app">В комментариях пишите, что можно улучшить, какие новые категории слов нужно добавить</string>
     <string name="text_app_about">Выберите категории английских слов, которые хотите изучить, установите период получения уведомлений
         и вам будут приходить английские слова в виде пуш-уведомлений. \nСписок категорий постоянно растет и обновляется без необходимости обновления приложения.</string>
 

@@ -3,6 +3,7 @@ package relaxeddd.englishnotify
 import android.content.Context
 import androidx.multidex.MultiDexApplication
 import com.google.firebase.FirebaseApp
+import relaxeddd.englishnotify.common.SharedHelper
 
 class App : MultiDexApplication() {
 
@@ -14,5 +15,6 @@ class App : MultiDexApplication() {
         super.onCreate()
         context = this
         FirebaseApp.initializeApp(this)
+        SharedHelper.setLaunchCount(SharedHelper.getLaunchCount() + 1)
     }
 }

@@ -38,13 +38,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             spannableTitle.setSpan(StyleSpan(Typeface.BOLD), 0, spannableTitle.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
             val channelId = getString(R.string.default_notification_channel_id)
-            val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
             val notificationBuilder = NotificationCompat.Builder(ctx, channelId)
                 .setLargeIcon(BitmapFactory.decodeResource(ctx.resources, R.drawable.attention))
                 .setStyle(NotificationCompat.BigTextStyle().bigText(text))
                 .setContentTitle(spannableTitle)
                 .setAutoCancel(true)
-                .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent)
 
             if (withButtons) {
@@ -147,6 +145,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onNewToken(p0: String?) {
         super.onNewToken(p0)
         pushToken = p0 ?: ""
+        if (p0 != null && p0.isNotEmpty()) {
+            SharedHelper.setPushToken(p0)
+        }
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {

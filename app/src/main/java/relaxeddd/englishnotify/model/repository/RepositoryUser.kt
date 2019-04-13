@@ -52,7 +52,12 @@ class RepositoryUser private constructor(val userDao: UserDao) {
             CoroutineScope(Dispatchers.Main).launch {
                 val firebaseUser = RepositoryCommon.getInstance().firebaseUser
                 val tokenId = RepositoryCommon.getInstance().tokenId
-                val pushToken = MyFirebaseMessagingService.pushToken
+                var pushToken = MyFirebaseMessagingService.pushToken
+
+                if (pushToken.isEmpty()) {
+                    pushToken = SharedHelper.getPushToken()
+                }
+
                 val answerInitData = ApiHelper.requestInit(firebaseUser, tokenId, pushToken)
 
                 if (answerInitData.result != null && answerInitData.result.isSuccess() && answerInitData.user.userId.isNotEmpty()) {

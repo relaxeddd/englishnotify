@@ -14,6 +14,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.MainActivityBinding
+import relaxeddd.englishnotify.dialogs.DialogRateApp
 import relaxeddd.englishnotify.donate.ActivityBilling
 import relaxeddd.englishnotify.push.PushTokenHelper.initChannelNotifications
 import java.util.*
@@ -92,6 +93,10 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
                 val dialog = DialogPrivacyPolicy()
                 dialog.setConfirmListener(listenerPrivacyPolicy)
                 dialog.show(this@MainActivity.supportFragmentManager, "Learn Language Dialog")
+            }
+            NAVIGATION_DIALOG_RATE_APP -> {
+                val dialog = DialogRateApp()
+                dialog.show(this@MainActivity.supportFragmentManager, "Rate app Dialog")
             }
             NAVIGATION_EXIT -> {
                 finishAffinity()

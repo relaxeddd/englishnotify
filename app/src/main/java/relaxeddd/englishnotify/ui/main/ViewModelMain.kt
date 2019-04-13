@@ -17,6 +17,7 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
     val isShowWarningAuthorize = MutableLiveData<Boolean>(false)
     val isShowWarningSubscription = MutableLiveData<Boolean>(false)
     var authTimer: Timer? = null
+    var isRateDialogShown = false
 
     private val userObserver = Observer<User?> { user ->
         authTimer?.cancel()
@@ -28,6 +29,12 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
                     uiScope.launch {
                         isShowWarningAuthorize.value = user == null || RepositoryCommon.getInstance().firebaseUser == null
                         isShowWarningNotifications.value = isShowWarningAuthorize.value == false && (user == null || user.receiveNotifications == false)
+
+                        val launchCount = SharedHelper.getLaunchCount()
+                        if (user != null && !isRateDialogShown && !SharedHelper.isCancelledRateDialog() && launchCount % 3 == 0) {
+                            isRateDialogShown = true
+                            navigateEvent.value = Event(NAVIGATION_DIALOG_RATE_APP)
+                        }
                     }
                 }
             }, 5000)
@@ -35,6 +42,12 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
             isShowWarningAuthorize.value = user == null || RepositoryCommon.getInstance().firebaseUser == null
             isShowWarningNotifications.value = isShowWarningAuthorize.value == false && (user == null || user.receiveNotifications == false)
             isShowWarningSubscription.value = user != null && user.subscriptionTime <= System.currentTimeMillis()
+
+            val launchCount = SharedHelper.getLaunchCount()
+            if (user != null && !isRateDialogShown && !SharedHelper.isCancelledRateDialog() && launchCount % 3 == 0) {
+                isRateDialogShown = true
+                navigateEvent.value = Event(NAVIGATION_DIALOG_RATE_APP)
+            }
         }
     }
 

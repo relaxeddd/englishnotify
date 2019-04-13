@@ -13,5 +13,12 @@ enum class SortByType(@StringRes val nameResId: Int) {
 
     companion object {
         fun getNamesArray() = Array<String>(values().size) { App.context.getString(values()[it].nameResId) }
+
+        fun getByName(name: String) = when(name) {
+            ALPHABETICAL_TRANSLATE.name -> ALPHABETICAL_TRANSLATE
+            TIME_NEW.name -> TIME_NEW
+            TIME_OLD.name -> TIME_OLD
+            else -> ALPHABETICAL_NAME
+        }
     }
 }
