@@ -6,6 +6,7 @@ import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.databinding.FragmentNotificationsBinding
 import relaxeddd.englishnotify.dialogs.DialogCheckTags
 import relaxeddd.englishnotify.dialogs.DialogLearnLanguage
+import relaxeddd.englishnotify.dialogs.DialogNotificationsView
 import relaxeddd.englishnotify.dialogs.DialogSelectRepeatTime
 
 class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotificationsBinding>() {
@@ -28,6 +29,12 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
             viewModel.onDialogCheckTagsResult(result)
         }
     }
+    private val listenerNotificationsView: ListenerResult<Int> = object:
+        ListenerResult<Int> {
+        override fun onResult(result: Int) {
+            viewModel.onDialogNotificationsViewResult(result)
+        }
+    }
 
     override fun getLayoutResId() = R.layout.fragment_notifications
     override fun getToolbarTitleResId() = R.string.notifications
@@ -39,6 +46,7 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
         binding.viewModel = viewModel
         binding.listRepeatTime = resources.getStringArray(R.array.array_time_repeat)
         binding.listLearnLanguage = resources.getStringArray(R.array.array_learn_language)
+        binding.listNotificationsView = resources.getStringArray(R.array.array_notifications_view)
     }
 
     override fun onNavigationEvent(eventId: Int) {
@@ -67,6 +75,14 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
                 dialog.arguments = args
                 dialog.listener = listenerCheckTags
                 dialog.show(this@FragmentNotifications.childFragmentManager, "Check tags Dialog")
+            }
+            NAVIGATION_DIALOG_NOTIFICATIONS_VIEW -> {
+                val dialog = DialogNotificationsView()
+                val args = Bundle()
+                args.putInt(SELECTED_ITEM, SharedHelper.getNotificationsView())
+                dialog.arguments = args
+                dialog.listener = listenerNotificationsView
+                dialog.show(this@FragmentNotifications.childFragmentManager, "Learn Language Dialog")
             }
         }
     }

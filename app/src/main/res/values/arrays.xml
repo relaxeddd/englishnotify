@@ -31,4 +31,9 @@
         <item>Russian</item>
     </string-array>
 
+    <string-array name="array_notifications_view">
+        <item>With translation in notification</item>
+        <item>Enter translation</item>
+    </string-array>
+
 </resources>

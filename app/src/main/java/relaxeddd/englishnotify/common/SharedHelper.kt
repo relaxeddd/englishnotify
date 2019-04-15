@@ -5,6 +5,9 @@ import relaxeddd.englishnotify.App
 
 object SharedHelper {
 
+    const val NOTIFICATIONS_VIEW_WITH_TRANSLATE = 0
+    const val NOTIFICATIONS_VIEW_WITH_QUESTION = 1
+
     fun isPrivacyPolicyConfirmed() : Boolean {
         val sPref = App.context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         return sPref.getBoolean(PRIVACY_POLICY_CONFIRMED, false)
@@ -73,5 +76,15 @@ object SharedHelper {
     fun setLaunchCount(count : Int) {
         val sPref = App.context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         sPref.edit().putInt(LAUNCH_COUNT, count).apply()
+    }
+
+    fun getNotificationsView() : Int {
+        val sPref = App.context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getInt(NOTIFICATIONS_VIEW, 0)
+    }
+
+    fun setNotificationsView(viewType : Int) {
+        val sPref = App.context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putInt(NOTIFICATIONS_VIEW, viewType).apply()
     }
 }
