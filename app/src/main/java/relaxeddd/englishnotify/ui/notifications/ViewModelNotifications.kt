@@ -14,6 +14,7 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
 
     val user: LiveData<User?> = repositoryUser.liveDataUser
     val isEnableNotificationsClickable = MutableLiveData<Boolean>(false)
+    val notificationsViewType = MutableLiveData<Int>(SharedHelper.getNotificationsView())
 
     private val userObserver = Observer<User?> { user ->
         isEnableNotificationsClickable.value = user != null
@@ -56,6 +57,13 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
             showToast(R.string.please_authorize)
         }
     }
+    val clickListenerNotificationsView = View.OnClickListener {
+        if (user.value != null) {
+            navigateEvent.value = Event(NAVIGATION_DIALOG_NOTIFICATIONS_VIEW)
+        } else {
+            showToast(R.string.please_authorize)
+        }
+    }
 
     init {
         repositoryUser.liveDataUser.observeForever(userObserver)
@@ -88,5 +96,10 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
                 repositoryUser.setCheckedTags(checkedItems)
             }
         }
+    }
+
+    fun onDialogNotificationsViewResult(result: Int) {
+        notificationsViewType.value = result
+        SharedHelper.setNotificationsView(result)
     }
 }

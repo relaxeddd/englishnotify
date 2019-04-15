@@ -52,7 +52,7 @@ class PushBroadcastReceiver : BroadcastReceiver() {
                         val fullText = MyFirebaseMessagingService.getFullNotificationText(word, languageType)
 
                         showToast(R.string.answer_incorrect)
-                        MyFirebaseMessagingService.showNotification(context, wordId, fullText, title, false)
+                        MyFirebaseMessagingService.showNotificationWord(context, wordId, fullText, title, false)
                     }
                 } else {
                     word.isLearned = true
@@ -62,7 +62,7 @@ class PushBroadcastReceiver : BroadcastReceiver() {
                 val title = if (languageType == TYPE_PUSH_ENGLISH) word.eng else word.rus
                 val fullText = MyFirebaseMessagingService.getFullNotificationText(word, languageType)
                 withContext(Dispatchers.Main) {
-                    MyFirebaseMessagingService.showNotification(context, wordId, fullText, title, false)
+                    MyFirebaseMessagingService.showNotificationWord(context, wordId, fullText, title, false)
                 }
             }
             if (notificationId != -1) {

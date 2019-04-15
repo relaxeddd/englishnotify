@@ -50,6 +50,11 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
             }
         }
     }
+    private val actualVersionObserver = Observer<Boolean> { isActualVersion ->
+        if (!isActualVersion) {
+            navigateEvent.value = Event(NAVIGATION_DIALOG_NEW_VERSION)
+        }
+    }
 
     val clickListenerWarningNotifications = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_FRAGMENT_NOTIFICATIONS)
@@ -67,6 +72,7 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
 
     init {
         repositoryUser.liveDataUser.observeForever(userObserver)
+        repositoryUser.liveDataIsActualVersion.observeForever(actualVersionObserver)
     }
 
     override fun onCleared() {

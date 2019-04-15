@@ -9,30 +9,43 @@ import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.dialogs.DialogPrivacyPolicy
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
 import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.MainActivityBinding
+import relaxeddd.englishnotify.dialogs.DialogNewVersion
 import relaxeddd.englishnotify.dialogs.DialogRateApp
 import relaxeddd.englishnotify.donate.ActivityBilling
-import relaxeddd.englishnotify.push.PushTokenHelper.initChannelNotifications
+import relaxeddd.englishnotify.push.PushTokenHelper
 import java.util.*
 
 class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
 
     companion object {
         const val REQUEST_SIGN_IN = 1312
+        const val REQUEST_PLAY_SERVICES_RESULT = 7245
     }
 
     private val uiScope = CoroutineScope(Dispatchers.Main)
     lateinit var navController: NavController
     private val providers: List<AuthUI.IdpConfig> = Arrays.asList(AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build())
+    private var dialogNewVersion: DialogNewVersion? = null
 
-    private val listenerPrivacyPolicy: ListenerResult<Boolean> = object:
-        ListenerResult<Boolean> {
+    private val listenerPrivacyPolicy: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
         override fun onResult(result: Boolean) {
             viewModel.onPrivacyPolicyConfirmedResult(result)
+        }
+    }
+
+    private val listenerNewVersion: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
+        override fun onResult(result: Boolean) {
+            if (result) {
+                openWebApplication(this@MainActivity)
+            }
+            finish()
         }
     }
 
@@ -48,7 +61,9 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        initChannelNotifications(this)
+        PushTokenHelper.initChannelNotifications(this)
+        initGooglePlayServices()
+
         navController = Navigation.findNavController(this, R.id.fragment_navigation_host)
 
         NavigationUI.setupWithNavController(navigation_view_main, navController)
@@ -61,8 +76,6 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
         when(requestCode) {
             REQUEST_SIGN_IN -> {
                 val response: IdpResponse? = IdpResponse.fromResultIntent(data)
@@ -73,6 +86,12 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
                     AuthUI.getInstance().signOut(this).addOnCompleteListener {}
                     showToast(response.toString())
                 }
+            }
+            REQUEST_PLAY_SERVICES_RESULT -> {
+                finish()
+            }
+            else -> {
+                super.onActivityResult(requestCode, resultCode, data)
             }
         }
     }
@@ -111,7 +130,29 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
                     REQUEST_SIGN_IN
                 )
             }
+            NAVIGATION_DIALOG_NEW_VERSION -> {
+                if (dialogNewVersion == null) {
+                    dialogNewVersion = DialogNewVersion()
+                    dialogNewVersion?.confirmListener = listenerNewVersion
+                    dialogNewVersion?.show(this@MainActivity.supportFragmentManager, "New version Dialog")
+                }
+            }
             else -> super.onNavigationEvent(eventId)
+        }
+    }
+
+    private fun initGooglePlayServices() {
+        val googleApiAvailability = GoogleApiAvailability.getInstance()
+        val status = googleApiAvailability.isGooglePlayServicesAvailable(this)
+
+        if (status != ConnectionResult.SUCCESS) {
+            if (googleApiAvailability.isUserResolvableError(status)) {
+                val dialog = googleApiAvailability.getErrorDialog(this, status, REQUEST_PLAY_SERVICES_RESULT)
+                dialog.setOnCancelListener { finish() }
+                dialog.show()
+            }
+        } else {
+            GoogleApiAvailability.getInstance().makeGooglePlayServicesAvailable(this)
         }
     }
 }

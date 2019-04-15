@@ -35,6 +35,7 @@ class RepositoryUser private constructor(val userDao: UserDao) {
         }
     private var liveDataUserRoom = userDao.findById(userId)
     var liveDataUser = MutableLiveData<User>(liveDataUserRoom.value)
+    val liveDataIsActualVersion = MutableLiveData<Boolean>(true)
 
     init {
         subscribeLiveDataUser()
@@ -65,6 +66,10 @@ class RepositoryUser private constructor(val userDao: UserDao) {
                     userId = answerInitData.user.userId
                     SharedHelper.setSelectedTags(answerInitData.user.tagsSelected)
                     SharedHelper.setLearnLanguageType(answerInitData.user.learnLanguageType)
+
+                    if (!answerInitData.isActualVersion) {
+                        liveDataIsActualVersion.value = answerInitData.isActualVersion
+                    }
                 } else if (answerInitData.result != null) {
                     showToast(getErrorString(answerInitData.result))
                 }

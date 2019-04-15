@@ -39,11 +39,12 @@
     <string name="logout_success">Logout success</string>
     <string name="network_not_available">Network error</string>
     <string name="no_thanks">No, thanks / already</string>
-    <string name="no_words">No words</string>
+    <string name="no_words">Notifications with new words have not received yet. Please, wait… (With default settings wait 1 hour)</string>
     <string name="notification_categories">Notification categories</string>
     <string name="notifications_language">Notifications language</string>
     <string name="notifications_not_receiving_enable">Notifications is not receiving, please enable it</string>
     <string name="notifications_not_receiving_authorize">Notifications is not receiving, please sign in</string>
+    <string name="notifications_view">Notifications view</string>
     <string name="notifications">Notifications</string>
     <string name="please_authorize">Please, sign in</string>
     <string name="please_wait">Please, wait</string>
@@ -67,6 +68,9 @@
     <string name="time_old">Time old</string>
     <string name="undefined_error">Undefined error</string>
     <string name="unauthorized_error">Unauthorized error</string>
+    <string name="update">Update</string>
+    <string name="update_verb">Update</string>
+    <string name="update_text">New app version is available. Please, update</string>
     <string name="user_not_found">User not found</string>
     <string name="you_sign_in_as">You sign in as: %s</string>
 

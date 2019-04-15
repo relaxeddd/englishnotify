@@ -5,7 +5,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
 import relaxeddd.englishnotify.R
-import com.google.android.gms.common.GoogleApiAvailability
 
 object PushTokenHelper {
 
@@ -19,6 +18,5 @@ object PushTokenHelper {
             channel.setSound(null, null)
             notificationManager?.createNotificationChannel(channel)
         }
-        GoogleApiAvailability.getInstance().makeGooglePlayServicesAvailable(activity)
     }
 }

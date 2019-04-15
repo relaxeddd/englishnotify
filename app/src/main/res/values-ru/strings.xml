@@ -40,11 +40,12 @@
     <string name="logout_success">Вы вышли из аккаунта</string>
     <string name="network_not_available">Ошибка интернет соединения</string>
     <string name="no_thanks">Нет, спасибо / уже</string>
-    <string name="no_words">Словарь пуст</string>
+    <string name="no_words">Уведомления с новыми словами пока еще не пришли. Придется подождать… (Со стандартными настройками один час)</string>
     <string name="notification_categories">Выбор категорий слов</string>
     <string name="notifications_language">Язык уведомлений</string>
     <string name="notifications_not_receiving_enable">Уведомления не приходят, их нужно включить</string>
     <string name="notifications_not_receiving_authorize">Уведомления не приходят, авторизируйтесь</string>
+    <string name="notifications_view">Показ уведомлений</string>
     <string name="notifications">Уведомления</string>
     <string name="please_authorize">Необходимо войти в систему</string>
     <string name="please_wait">Пожалуйста, подождите</string>
@@ -68,6 +69,9 @@
     <string name="time_old">Сначала старые</string>
     <string name="undefined_error">Неизвестная ошибка</string>
     <string name="unauthorized_error">Ошибка авторизации</string>
+    <string name="update">Обновление</string>
+    <string name="update_verb">Обновить</string>
+    <string name="update_text">Доступна новая версия приложение. Пожалуйста, обновите</string>
     <string name="user_not_found">Пользователь не найден</string>
     <string name="you_sign_in_as">Вы вошли как: %s</string>
 
