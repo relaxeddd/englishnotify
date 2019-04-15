@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Английские слова через уведомления</string>
+
+    <string name="about_app">О приложении</string>
+    <string name="accept">Принять</string>
+    <string name="alphabetical_name">Алфавитный</string>
+    <string name="alphabetical_translate">Алфавитный (перевод)</string>
+    <string name="another_operation">Другая операция</string>
+    <string name="app_info">О приложении</string>
+    <string name="app_language">Язык приложения</string>
+    <string name="answer_correct">Правильный ответ</string>
+    <string name="answer_incorrect">Неправильный ответ</string>
+    <string name="close">Закрыть</string>
+    <string name="confirm">Подтвердить</string>
+    <string name="confirm_and_continue">Подтвердить и продолжить</string>
+    <string name="delete">Удалить</string>
+    <string name="dictionary">Словарь</string>
+    <string name="do_you_really_want_to_logout">Вы действительно хотите выйти из аккаунта?</string>
+    <string name="enable_notifications">Включить уведомления</string>
+    <string name="english_at_russian">С английского на русский</string>
+    <string name="enter_translation">Ввести перевод</string>
+    <string name="error_initialization">Ошибка инициализации</string>
+    <string name="error_purchase">Ошибка покупки, напишите на почту for.gamer.develop@gmail.com</string>
+    <string name="error_push_token">Ошибка пушей</string>
+    <string name="error_update">Ошибка обновления</string>
+    <string name="feedback_is_empty">Отзыв пуст</string>
+    <string name="feedback_send_error">Ошибка отправки отзыва</string>
+    <string name="feedback_too_short">Отзыв слишком короткий</string>
+    <string name="filter">Фильтр</string>
+    <string name="i_dont_know_it">Я не знаю</string>
+    <string name="i_know_it">Я знаю это</string>
+    <string name="input_your_message">Введите сообщение</string>
+    <string name="later">Позднее</string>
+    <string name="learn_language">Изучаемый язык</string>
+    <string name="loading">Загрузка</string>
+    <string name="logout">Выход из аккаунта</string>
+    <string name="logout_error">Ошибка выхода из аккаунта</string>
+    <string name="logout_success">Вы вышли из аккаунта</string>
+    <string name="network_not_available">Ошибка интернет соединения</string>
+    <string name="no_thanks">Нет, спасибо / уже</string>
+    <string name="no_words">Словарь пуст</string>
+    <string name="notification_categories">Выбор категорий слов</string>
+    <string name="notifications_language">Язык уведомлений</string>
+    <string name="notifications_not_receiving_enable">Уведомления не приходят, их нужно включить</string>
+    <string name="notifications_not_receiving_authorize">Уведомления не приходят, авторизируйтесь</string>
+    <string name="notifications">Уведомления</string>
+    <string name="please_authorize">Необходимо войти в систему</string>
+    <string name="please_wait">Пожалуйста, подождите</string>
+    <string name="privacy_policy">Политика конфиденциальности</string>
+    <string name="privacy_policy_in_sentence">Политикой конфиденциальности</string>
+    <string name="rate">Оценить</string>
+    <string name="rate_app">Оценить приложение</string>
+    <string name="rate_app_pls">Оцените пожалуйста приложение</string>
+    <string name="receive_notifications_time">Получать уведомления</string>
+    <string name="renew_subscription">Продлить подписку</string>
+    <string name="russian_at_english">С руссокого на английский</string>
+    <string name="search_words">Искать слова</string>
+    <string name="send_feedback">Отправить отзыв</string>
+    <string name="settings">Настройки</string>
+    <string name="sort_by">Сортировать по</string>
+    <string name="subscription_days">Дней подписки: %s</string>
+    <string name="subscription_time_error">Время подписки истекло, необходимо её продлить</string>
+    <string name="thank_you">Спасибо!</string>
+    <string name="tags_should_not_be_empty">Вы должны выбрать как минимум 1 категорию</string>
+    <string name="time_new">Сначала новые</string>
+    <string name="time_old">Сначала старые</string>
+    <string name="undefined_error">Неизвестная ошибка</string>
+    <string name="unauthorized_error">Ошибка авторизации</string>
+    <string name="user_not_found">Пользователь не найден</string>
+    <string name="you_sign_in_as">Вы вошли как: %s</string>
+
+    <string name="text_rate_app">В комментариях пишите, что можно улучшить, какие новые категории слов нужно добавить</string>
+    <string name="text_app_about">Выберите категории английских слов, которые хотите изучить, установите период получения уведомлений
+        и вам будут приходить английские слова в виде пуш-уведомлений. \nСписок категорий постоянно растет и обновляется без необходимости обновления приложения.</string>
+
+    <!-- =========================================================================================================== -->
+    <string name="irregular">Неправильные глаголы</string>
+    <string name="human_body">Строение человека</string>
+    <string name="colors">Цвета</string>
+    <string name="time">Время</string>
+    <string name="phrases">Фразы</string>
+    <string name="animals">Животные</string>
+    <string name="family">Семья</string>
+    <string name="human_qualities">Характер</string>
+    <string name="feelings">Чувства</string>
+    <string name="emotions">Эмоции</string>
+    <string name="work">Работа</string>
+    <string name="movement">Движения и действия</string>
+    <string name="professions">Профессии</string>
+    <string name="frequent">Часто используемые</string>
+
+    <string name="privacy_policy_text">Начиная работу с приложением, вы соглашаетесь с нашей Политикой конфиденциальности</string>
+    <!--
+        This is the name that users will see when interacting with this channel.
+        It should describe the category of notifications that will be sent through this channel
+     -->
+
+</resources>

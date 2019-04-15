@@ -9,7 +9,7 @@
 
         <variable
                 name="viewModel"
-                type="com.example.vchechin.testapp.ui.main.ViewModelMain" />
+                type="relaxeddd.englishnotify.ui.main.ViewModelMain" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,7 +26,7 @@
             app:layout_constraintTop_toTopOf="parent" android:id="@+id/image_main_avatar"/>
 
         <TextView
-            android:text="@{viewModel.email}"
+            android:text="@{viewModel.user.email}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/text_main_email"

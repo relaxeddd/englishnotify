@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View"/>
+        <variable
+                name="viewModel"
+                type="relaxeddd.englishnotify.ui.settings.ViewModelSettings" />
+        <variable
+                name="listLanguages"
+                type="String[]" />
+
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_view_settings_app_info"
+                android:layout_width="match_parent"
+                style="@style/StyleCardViewSettings"
+                android:onClick="@{viewModel.clickListenerAppInfo}"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/text_settings_app_info"
+                        android:text="@string/app_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/font_14"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/image_settings_app_info"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" app:srcCompat="@drawable/ic_info"
+                        android:id="@+id/image_settings_app_info" app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintTop_toTopOf="@+id/text_settings_app_info"
+                        android:scaleType="centerInside"
+                        app:layout_constraintBottom_toBottomOf="@+id/text_settings_app_info"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_view_settings_subscribe"
+                android:layout_width="match_parent"
+                style="@style/StyleCardViewSettings"
+                android:onClick="@{viewModel.user != null ? viewModel.clickListenerSubscription : null}"
+                android:alpha="@{viewModel.user != null ? 1f : 0.5f}"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/card_view_settings_app_info"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/text_settings_subscribe"
+                        android:text="@string/renew_subscription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/font_14"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/image_settings_subscribe"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        app:layout_constraintVertical_bias="0.0"/>
+
+                    <TextView
+                        android:text="@{@string/subscription_days(viewModel.liveDataSubDays)}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/text_settings_sub_time"
+                        android:textSize="@dimen/font_12"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:visibility="@{(viewModel.user == null || viewModel.user.email.isEmpty()) ? View.GONE : View.VISIBLE}"
+                        app:layout_constraintTop_toBottomOf="@+id/text_settings_subscribe"
+                        app:layout_constraintStart_toStartOf="@+id/text_settings_subscribe"
+                        android:layout_marginBottom="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" app:srcCompat="@drawable/ic_sub"
+                        android:id="@+id/image_settings_subscribe" app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:scaleType="centerInside"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_view_settings_send_feedback"
+                android:layout_width="match_parent"
+                style="@style/StyleCardViewSettings"
+                android:onClick="@{viewModel.user != null ? viewModel.clickListenerSendFeedback : null}"
+                android:alpha="@{viewModel.user != null ? 1f : 0.5f}"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/card_view_settings_subscribe"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/text_settings_send_feedback"
+                        android:text="@string/send_feedback"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/font_14"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/image_settings_send_feedback"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" app:srcCompat="@drawable/ic_feedback"
+                        android:id="@+id/image_settings_send_feedback" app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintTop_toTopOf="@+id/text_settings_send_feedback"
+                        android:scaleType="centerInside"
+                        app:layout_constraintBottom_toBottomOf="@+id/text_settings_send_feedback"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_view_settings_language"
+                android:layout_width="match_parent"
+                style="@style/StyleCardViewSettings"
+                android:onClick="@{viewModel.clickListenerLanguage}"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/card_view_settings_send_feedback">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                            android:id="@+id/text_settings_language"
+                            android:text="@string/app_language"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/font_14"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginStart="16dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/imageView" android:layout_marginTop="16dp"
+                            android:layout_marginBottom="16dp"/>
+
+                    <TextView
+                        android:text="@{listLanguages[safeUnbox(viewModel.appLanguageType)]}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/blue"
+                        android:id="@+id/text_settings_language_value" android:layout_marginEnd="32dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/text_settings_language"
+                        app:layout_constraintBottom_toBottomOf="@+id/text_settings_language"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" app:srcCompat="@drawable/ic_language"
+                        android:id="@+id/imageView" app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintTop_toTopOf="@+id/text_settings_language"
+                        android:scaleType="centerInside"
+                        app:layout_constraintBottom_toBottomOf="@+id/text_settings_language"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_view_settings_rate"
+                android:layout_width="match_parent"
+                style="@style/StyleCardViewSettings"
+                android:onClick="@{viewModel.clickListenerRate}"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/card_view_settings_language"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/text_settings_rate"
+                        android:text="@string/rate_app"
+                        android:layout_width="wrap_content"
+                        android:layout_height="18dp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/font_14"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageView3" android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" app:srcCompat="@drawable/ic_star"
+                        android:id="@+id/imageView3"
+                        app:layout_constraintTop_toTopOf="@+id/text_settings_rate"
+                        app:layout_constraintBottom_toBottomOf="@+id/text_settings_rate"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="16dp"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_view_settings_logout"
+                android:layout_width="match_parent"
+                style="@style/StyleCardViewSettings"
+                android:onClick="@{viewModel.user != null ? viewModel.clickListenerLogout : null}"
+                android:alpha="@{viewModel.user != null ? 1f : 0.5f}"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/card_view_settings_rate"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/text_settings_logout"
+                        android:text="@string/logout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/font_14"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageView2"
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintVertical_bias="0.0"
+                        android:layout_marginBottom="16dp"/>
+
+                    <TextView
+                        android:text="@{@string/you_sign_in_as(viewModel.user.email)}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/text_settings_login_email"
+                        android:textSize="@dimen/font_12"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:visibility="@{(viewModel.user == null || viewModel.user.email.isEmpty()) ? View.GONE : View.VISIBLE}"
+                        app:layout_constraintTop_toBottomOf="@+id/text_settings_logout"
+                        app:layout_constraintStart_toStartOf="@+id/text_settings_logout"
+                        android:layout_marginBottom="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/ic_logout"
+                        android:id="@+id/imageView2"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <View android:layout_width="match_parent"
+                  android:layout_height="@dimen/size_16"
+                  android:layout_marginBottom="@dimen/size_8"
+                  app:layout_constraintBottom_toBottomOf="parent"
+                  app:layout_constraintTop_toBottomOf="@+id/card_view_settings_logout"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</layout>

@@ -1,6 +1,105 @@
 <resources>
-    <string name="app_name">TestApp</string>
 
+    <string name="app_name">English Words Notifications</string>
+
+    <string name="about_app">About app</string>
+    <string name="accept">Accept</string>
+    <string name="alphabetical_name">Alphabetical name</string>
+    <string name="alphabetical_translate">Alphabetical translate</string>
+    <string name="another_operation">Another operation</string>
+    <string name="app_info">App info</string>
+    <string name="app_language">App language</string>
+    <string name="answer_correct">Correct answer</string>
+    <string name="answer_incorrect">Incorrect answer</string>
+    <string name="close">Close</string>
+    <string name="confirm">Confirm</string>
+    <string name="confirm_and_continue">Confirm and continue</string>
+    <string name="delete">Delete</string>
     <string name="dictionary">Dictionary</string>
+    <string name="do_you_really_want_to_logout">Do you really want to exit?</string>
+    <string name="enable_notifications">Enable notifications</string>
+    <string name="english_at_russian">English at russian</string>
+    <string name="enter_translation">Enter translation</string>
+    <string name="error_initialization">Initialization error</string>
+    <string name="error_purchase">Purchase error, write to for.gamer.develop@gmail.com</string>
+    <string name="error_push_token">Push token error</string>
+    <string name="error_update">Error update</string>
+    <string name="feedback_is_empty">Feedback is empty</string>
+    <string name="feedback_send_error">Feedback send error</string>
+    <string name="feedback_too_short">Feedback too short</string>
+    <string name="filter">Filter</string>
+    <string name="i_dont_know_it">I don`t know</string>
+    <string name="i_know_it">I know it</string>
+    <string name="input_your_message">Input your message</string>
+    <string name="later">Later</string>
+    <string name="learn_language">Learn language</string>
+    <string name="loading">Loading</string>
+    <string name="logout">Logout</string>
+    <string name="logout_error">Logout error</string>
+    <string name="logout_success">Logout success</string>
+    <string name="network_not_available">Network error</string>
+    <string name="no_thanks">No, thanks / already</string>
+    <string name="no_words">No words</string>
+    <string name="notification_categories">Notification categories</string>
+    <string name="notifications_language">Notifications language</string>
+    <string name="notifications_not_receiving_enable">Notifications is not receiving, please enable it</string>
+    <string name="notifications_not_receiving_authorize">Notifications is not receiving, please sign in</string>
     <string name="notifications">Notifications</string>
+    <string name="please_authorize">Please, sign in</string>
+    <string name="please_wait">Please, wait</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="privacy_policy_in_sentence">Privacy Policy</string>
+    <string name="rate_app">Rate app</string>
+    <string name="rate_app_pls">Rate app, please</string>
+    <string name="rate">Rate</string>
+    <string name="receive_notifications_time">Receive notifications time</string>
+    <string name="renew_subscription">Renew subscription</string>
+    <string name="russian_at_english">Russian at english</string>
+    <string name="search_words">Search words</string>
+    <string name="send_feedback">Send feedback</string>
+    <string name="settings">Settings</string>
+    <string name="sort_by">Sort by</string>
+    <string name="subscription_days">Subscription days: %s</string>
+    <string name="subscription_time_error">Subscription time is up, renew it</string>
+    <string name="thank_you">Thank you!</string>
+    <string name="tags_should_not_be_empty">Tags should not be empty</string>
+    <string name="time_new">Time new</string>
+    <string name="time_old">Time old</string>
+    <string name="undefined_error">Undefined error</string>
+    <string name="unauthorized_error">Unauthorized error</string>
+    <string name="user_not_found">User not found</string>
+    <string name="you_sign_in_as">You sign in as: %s</string>
+
+    <string name="label_fragment_dictionary" translatable="false">LabelFragmentDictionary</string>
+    <string name="label_fragment_notifications" translatable="false">LabelFragmentNotifications</string>
+    <string name="label_fragment_settings" translatable="false">LabelFragmentSettings</string>
+
+    <string name="text_rate_app">Write comments and suggestions. What you want to see in the app</string>
+    <string name="text_app_about">Select categories of words which you want to learn and you will receive English words in push notifications.
+        Categories of words adding without app update.</string>
+
+    <!-- =========================================================================================================== -->
+    <string name="irregular">Irregular verbs</string>
+    <string name="human_body">Human body</string>
+    <string name="colors">Colors</string>
+    <string name="time">Time</string>
+    <string name="phrases">Phrases</string>
+    <string name="animals">Animals</string>
+    <string name="family">Family</string>
+    <string name="human_qualities">Human qualities</string>
+    <string name="feelings">Feelings</string>
+    <string name="emotions">Emotions</string>
+    <string name="work">Work</string>
+    <string name="movement">Movements and actions</string>
+    <string name="professions">Professions</string>
+    <string name="frequent">Frequent</string>
+
+    <string name="privacy_policy_text">Starting work in the application, you agree to our Privacy Policy</string>
+
+    <!--
+        This is the name that users will see when interacting with this channel.
+        It should describe the category of notifications that will be sent through this channel
+     -->
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+
 </resources>

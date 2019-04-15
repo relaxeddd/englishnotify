@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="array_time_repeat">
+        <item>Every 1 hour</item>
+        <item>Every 2 hours</item>
+        <item>Every 4 hours</item>
+        <item>Every 8 hours</item>
+    </string-array>
+
+    <string-array name="array_renew_subscription">
+        <item>For 1 month</item>
+        <item>For 3 month (-30%)</item>
+        <item>For 6 month (-50%)</item>
+    </string-array>
+
+    <string-array name="array_sort_by">
+        <item>Alphabetical name</item>
+        <item>Time new</item>
+        <item>Time old</item>
+        <item>Alphabetical translate</item>
+    </string-array>
+
+    <string-array name="array_learn_language">
+        <item>English-russian</item>
+        <item>Russian-english</item>
+    </string-array>
+
+    <string-array name="array_languages">
+        <item>English</item>
+        <item>Russian</item>
+    </string-array>
+
+</resources>
