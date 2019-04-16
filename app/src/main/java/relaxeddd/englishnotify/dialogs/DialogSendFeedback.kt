@@ -24,7 +24,6 @@ class DialogSendFeedback : DialogFragment() {
                         confirmListener?.onResult(editTextFeedback?.text.toString())
                     }
                 }
-                .setNegativeButton(android.R.string.cancel) { _, _ ->  }
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
     }

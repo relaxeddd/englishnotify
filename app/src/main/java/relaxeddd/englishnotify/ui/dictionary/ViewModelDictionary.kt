@@ -62,7 +62,7 @@ class ViewModelDictionary(private val repositoryWord: RepositoryWord, private va
     }
 
     fun onDialogSortByType(type: Int) {
-        val newSortByType = if (type > 0 && type < SortByType.values().size) SortByType.values()[type] else SortByType.TIME_NEW
+        val newSortByType = if (type >= 0 && type < SortByType.values().size) SortByType.values()[type] else SortByType.TIME_NEW
         sortByType.value = newSortByType
         updateFilteredWords()
     }
