@@ -2,6 +2,7 @@ package relaxeddd.englishnotify.common
 
 import android.content.Context
 import relaxeddd.englishnotify.App
+import relaxeddd.englishnotify.BuildConfig
 
 object SharedHelper {
 
@@ -86,5 +87,15 @@ object SharedHelper {
     fun setNotificationsView(viewType : Int) {
         val sPref = App.context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         sPref.edit().putInt(NOTIFICATIONS_VIEW, viewType).apply()
+    }
+
+    fun isPatchNotesViewed() : Boolean {
+        val sPref = App.context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getBoolean(BuildConfig.VERSION_NAME, false)
+    }
+
+    fun setPatchNotesViewed() {
+        val sPref = App.context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putBoolean(BuildConfig.VERSION_NAME, true).apply()
     }
 }

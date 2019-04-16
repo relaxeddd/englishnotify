@@ -9,6 +9,7 @@ import relaxeddd.englishnotify.dialogs.DialogConfirmLogout
 import relaxeddd.englishnotify.dialogs.DialogSendFeedback
 import relaxeddd.englishnotify.dialogs.DialogSubscription
 import relaxeddd.englishnotify.donate.ActivityBilling
+import relaxeddd.englishnotify.ui.main.MainActivity
 
 class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding>() {
 
@@ -71,9 +72,11 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
             NAVIGATION_DIALOG_SUBSCRIPTION -> {
                 val activity = activity
 
-                if (activity is ActivityBilling<*, *>) {
+                if (activity is MainActivity) {
+                    activity.setLoadingVisible(true)
                     activity.initBilling(object: ListenerResult<Boolean> {
                         override fun onResult(result: Boolean) {
+                            activity.setLoadingVisible(false)
                             if (result) {
                                 val dialog = DialogSubscription()
                                 dialog.listener = listenerSubscription

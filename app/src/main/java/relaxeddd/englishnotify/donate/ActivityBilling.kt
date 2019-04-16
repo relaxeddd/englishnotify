@@ -12,6 +12,7 @@ import relaxeddd.englishnotify.model.db.AppDatabase
 import relaxeddd.englishnotify.model.http.ApiHelper
 import relaxeddd.englishnotify.model.repository.RepositoryCommon
 import relaxeddd.englishnotify.model.repository.RepositoryUser
+import relaxeddd.englishnotify.ui.main.MainActivity
 
 abstract class ActivityBilling<VM : ViewModelBase, B : ViewDataBinding> : ActivityBase<VM, B>(),
     PurchasesUpdatedListener {
@@ -22,11 +23,11 @@ abstract class ActivityBilling<VM : ViewModelBase, B : ViewDataBinding> : Activi
         @BillingClient.SkuType private const val SUB_3 = "sub_3"
 
         private const val REQUEST_PURCHASE = 10002
+        var listSkuDetails: List<SkuDetails> = ArrayList()
     }
 
     private var billingClient: BillingClient? = null
     private var isBillingServiceConnected = false
-    private var listSkuDetails: List<SkuDetails> = ArrayList()
 
     private var mProgressDialog: ProgressDialog? = null
 
@@ -85,6 +86,11 @@ abstract class ActivityBilling<VM : ViewModelBase, B : ViewDataBinding> : Activi
                 if (billingResponseCode == BillingClient.BillingResponse.OK) {
                     isBillingServiceConnected = true
                     requestSkuDetails(resultListener)
+                } else if (billingResponseCode == BillingClient.BillingResponse.BILLING_UNAVAILABLE) {
+                    showToast("Billing unavailable")
+                    resultListener.onResult(false)
+                } else {
+                    resultListener.onResult(false)
                 }
             }
             override fun onBillingServiceDisconnected() {
@@ -118,9 +124,16 @@ abstract class ActivityBilling<VM : ViewModelBase, B : ViewDataBinding> : Activi
             val firebaseUser = RepositoryCommon.getInstance().firebaseUser
             val tokenId = RepositoryCommon.getInstance().tokenId
 
+            if (this@ActivityBilling is MainActivity) {
+                setLoadingVisible(true)
+            }
+
             val purchaseResult = ApiHelper.requestVerifyPurchase(firebaseUser, tokenId, purchase.purchaseToken,
                 purchase.signature, purchase.originalJson, purchase.sku)
 
+            if (this@ActivityBilling is MainActivity) {
+                setLoadingVisible(false)
+            }
             if (purchaseResult.result.isSuccess()) {
                 onPurchaseResultSuccess(purchaseResult)
             } else if (purchaseResult.result.code == RESULT_PURCHASE_ALREADY_RECEIVED) {

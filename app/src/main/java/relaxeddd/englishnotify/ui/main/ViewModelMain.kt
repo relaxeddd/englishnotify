@@ -16,6 +16,7 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
     val isShowWarningNotifications = MutableLiveData<Boolean>(false)
     val isShowWarningAuthorize = MutableLiveData<Boolean>(false)
     val isShowWarningSubscription = MutableLiveData<Boolean>(false)
+    val isShowLoading = MutableLiveData<Boolean>(false)
     var authTimer: Timer? = null
     var isRateDialogShown = false
 
@@ -69,6 +70,7 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
         }
         navigateEvent.value = Event(NAVIGATION_GOOGLE_AUTH)
     }
+    val clickListenerLoading = View.OnClickListener {}
 
     init {
         repositoryUser.liveDataUser.observeForever(userObserver)
@@ -85,6 +87,10 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
 
         if (isConfirmed) {
             requestInitUser()
+        }
+        if (!SharedHelper.isPatchNotesViewed()) {
+            navigateEvent.value = Event(NAVIGATION_DIALOG_PATCH_NOTES)
+            SharedHelper.setPatchNotesViewed()
         }
     }
 

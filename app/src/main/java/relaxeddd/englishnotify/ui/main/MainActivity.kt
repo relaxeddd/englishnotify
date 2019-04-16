@@ -17,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.MainActivityBinding
 import relaxeddd.englishnotify.dialogs.DialogNewVersion
+import relaxeddd.englishnotify.dialogs.DialogPatchNotes
 import relaxeddd.englishnotify.dialogs.DialogRateApp
 import relaxeddd.englishnotify.donate.ActivityBilling
 import relaxeddd.englishnotify.push.PushTokenHelper
@@ -111,7 +112,7 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
             NAVIGATION_DIALOG_PRIVACY_POLICY -> {
                 val dialog = DialogPrivacyPolicy()
                 dialog.setConfirmListener(listenerPrivacyPolicy)
-                dialog.show(this@MainActivity.supportFragmentManager, "Learn Language Dialog")
+                dialog.show(this@MainActivity.supportFragmentManager, "Privacy Policy Dialog")
             }
             NAVIGATION_DIALOG_RATE_APP -> {
                 val dialog = DialogRateApp()
@@ -137,8 +138,16 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
                     dialogNewVersion?.show(this@MainActivity.supportFragmentManager, "New version Dialog")
                 }
             }
+            NAVIGATION_DIALOG_PATCH_NOTES -> {
+                val dialog = DialogPatchNotes()
+                dialog.show(this@MainActivity.supportFragmentManager, "Patch Notes Dialog")
+            }
             else -> super.onNavigationEvent(eventId)
         }
+    }
+
+    fun setLoadingVisible(isVisible: Boolean) {
+        viewModel.isShowLoading.value = isVisible
     }
 
     private fun initGooglePlayServices() {

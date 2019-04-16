@@ -18,9 +18,15 @@ class DialogSubscription : DialogFragment() {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
             selectedItemIx = arguments?.getInt(SELECTED_ITEM, 0) ?: 0
+            val subsNames = resources.getStringArray(R.array.array_renew_subscription)
+            val subsNamesWithPrice = if (ActivityBilling.listSkuDetails.size == subsNames.size) {
+                Array(subsNames.size) { ix -> subsNames[ix] + ActivityBilling.listSkuDetails[ix].price }
+            } else {
+                subsNames
+            }
 
             builder.setTitle(R.string.renew_subscription)
-                .setSingleChoiceItems(R.array.array_renew_subscription, selectedItemIx) { _, which ->
+                .setSingleChoiceItems(subsNamesWithPrice, selectedItemIx) { _, which ->
                     selectedItemIx = which
                 }.setPositiveButton(android.R.string.ok) { _, _ ->
                     listener?.onResult(selectedItemIx)
