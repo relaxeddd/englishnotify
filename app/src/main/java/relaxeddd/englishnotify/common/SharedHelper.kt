@@ -98,4 +98,24 @@ object SharedHelper {
         val sPref = App.context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         sPref.edit().putBoolean(BuildConfig.VERSION_NAME, true).apply()
     }
+
+    fun getStartHour() : Int {
+        val sPref = App.context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getInt(START_HOUR_OFF, 0)
+    }
+
+    fun setStartHour(count : Int) {
+        val sPref = App.context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putInt(START_HOUR_OFF, count).apply()
+    }
+
+    fun getDurationHours() : Int {
+        val sPref = App.context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getInt(DURATION_HOURS_OFF, 0)
+    }
+
+    fun setDurationHours(count : Int) {
+        val sPref = App.context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putInt(DURATION_HOURS_OFF, count).apply()
+    }
 }

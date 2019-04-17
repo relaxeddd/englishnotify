@@ -4,35 +4,33 @@ import android.os.Bundle
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.databinding.FragmentNotificationsBinding
-import relaxeddd.englishnotify.dialogs.DialogCheckTags
-import relaxeddd.englishnotify.dialogs.DialogLearnLanguage
-import relaxeddd.englishnotify.dialogs.DialogNotificationsView
-import relaxeddd.englishnotify.dialogs.DialogSelectRepeatTime
+import relaxeddd.englishnotify.dialogs.*
 
 class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotificationsBinding>() {
 
-    private val listenerLearnEnglish: ListenerResult<Int> = object:
-        ListenerResult<Int> {
+    private val listenerLearnEnglish: ListenerResult<Int> = object: ListenerResult<Int> {
         override fun onResult(result: Int) {
             viewModel.onDialogLearnLanguageResult(result)
         }
     }
-    private val listenerRepeatTime: ListenerResult<Int> = object:
-        ListenerResult<Int> {
+    private val listenerRepeatTime: ListenerResult<Int> = object: ListenerResult<Int> {
         override fun onResult(result: Int) {
             viewModel.onDialogRepeatTimeResult(result)
         }
     }
-    private val listenerCheckTags: ListenerResult<List<String>> = object:
-        ListenerResult<List<String>> {
+    private val listenerCheckTags: ListenerResult<List<String>> = object: ListenerResult<List<String>> {
         override fun onResult(result: List<String>) {
             viewModel.onDialogCheckTagsResult(result)
         }
     }
-    private val listenerNotificationsView: ListenerResult<Int> = object:
-        ListenerResult<Int> {
+    private val listenerNotificationsView: ListenerResult<Int> = object: ListenerResult<Int> {
         override fun onResult(result: Int) {
             viewModel.onDialogNotificationsViewResult(result)
+        }
+    }
+    private val listenerNightTime: ListenerResult<Pair<Int, Int>> = object: ListenerResult<Pair<Int, Int>> {
+        override fun onResult(result: Pair<Int, Int>) {
+            viewModel.onDialogPushOffTimeResult(result)
         }
     }
 
@@ -83,6 +81,15 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
                 dialog.arguments = args
                 dialog.listener = listenerNotificationsView
                 dialog.show(this@FragmentNotifications.childFragmentManager, "Learn Language Dialog")
+            }
+            NAVIGATION_DIALOG_NIGHT_TIME -> {
+                val dialog = DialogPushOffTime()
+                val args = Bundle()
+                args.putInt(START_HOUR, SharedHelper.getStartHour())
+                args.putInt(DURATION_HOURS, SharedHelper.getDurationHours())
+                dialog.arguments = args
+                dialog.confirmListener = listenerNightTime
+                dialog.show(this@FragmentNotifications.childFragmentManager, "Night Time Dialog")
             }
         }
     }
