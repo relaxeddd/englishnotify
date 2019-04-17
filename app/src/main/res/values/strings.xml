@@ -94,6 +94,8 @@
         \n- Added prices of subscribtions in dialog
         \n- The button "Cancel" was removed from send feedback dialog</string>
 
+    <string name="patch_notes_1_0_0">- Added new notifications setting "night time" - you don`t receive notifications in selected time period</string>
+
     <!-- =========================================================================================================== -->
     <string name="irregular">Irregular verbs</string>
     <string name="human_body">Human body</string>

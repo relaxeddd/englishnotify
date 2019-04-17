@@ -8,7 +8,6 @@ import relaxeddd.englishnotify.dialogs.DialogAppAbout
 import relaxeddd.englishnotify.dialogs.DialogConfirmLogout
 import relaxeddd.englishnotify.dialogs.DialogSendFeedback
 import relaxeddd.englishnotify.dialogs.DialogSubscription
-import relaxeddd.englishnotify.donate.ActivityBilling
 import relaxeddd.englishnotify.ui.main.MainActivity
 
 class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding>() {
@@ -27,7 +26,7 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
         override fun onResult(result: Int) {
             val activity = activity
 
-            if (activity is ActivityBilling<*, *>) {
+            if (activity != null && activity is MainActivity) {
                 activity.onChooseSub(result)
             }
         }
@@ -76,13 +75,17 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
                     activity.setLoadingVisible(true)
                     activity.initBilling(object: ListenerResult<Boolean> {
                         override fun onResult(result: Boolean) {
-                            activity.setLoadingVisible(false)
-                            if (result) {
-                                val dialog = DialogSubscription()
-                                dialog.listener = listenerSubscription
-                                dialog.show(this@FragmentSettings.childFragmentManager, "Subscription Dialog")
-                            } else {
-                                showToast(R.string.error_purchase)
+                            val freshActivity = this@FragmentSettings.activity
+
+                            if (freshActivity != null && freshActivity is MainActivity) {
+                                activity.setLoadingVisible(false)
+                                if (result) {
+                                    val dialog = DialogSubscription()
+                                    dialog.listener = listenerSubscription
+                                    dialog.show(this@FragmentSettings.childFragmentManager, "Subscription Dialog")
+                                } else {
+                                    showToast(R.string.error_purchase)
+                                }
                             }
                         }
                     })
