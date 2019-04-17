@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/size_16">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/font_16"
+        android:textColor="@color/black"
+        android:text="@string/not_show_notifications"/>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/edit_text_push_off_time_start_hour"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:digits="0123456789"
+        android:inputType="number"
+        android:hint="@string/hours"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/duration_not_show"
+        android:textSize="@dimen/font_16"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/size_12"/>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/edit_text_push_off_time_duration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:digits="0123456789"
+        android:inputType="number"
+        android:hint="@string/hours"/>
+
+</LinearLayout>

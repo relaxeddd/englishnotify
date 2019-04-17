@@ -20,6 +20,7 @@ import relaxeddd.englishnotify.ui.main.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import relaxeddd.englishnotify.common.*
+import java.util.*
 import kotlin.random.Random
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
@@ -193,6 +194,17 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     showNotification(this, title, text)
                 }
                 else -> {
+                    val startHour = SharedHelper.getStartHour()
+                    val durationHours = SharedHelper.getDurationHours()
+                    val endHour = if (startHour + durationHours >= 24) startHour + durationHours - 24 else startHour + durationHours
+                    val calendar = Calendar.getInstance()
+                    val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
+
+                    if (durationHours != 0 && ((currentHour in startHour..(endHour - 1))
+                                || (startHour + durationHours >= 24 && currentHour < endHour) )) {
+                        return
+                    }
+
                     val words = parseWords(data)
                     if (words.isNotEmpty()) {
                         handleWordsNotification(words)

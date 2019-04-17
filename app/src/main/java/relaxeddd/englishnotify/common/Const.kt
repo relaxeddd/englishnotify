@@ -57,6 +57,7 @@ const val NAVIGATION_DIALOG_RATE_APP = 1020
 const val NAVIGATION_DIALOG_NOTIFICATIONS_VIEW = 1030
 const val NAVIGATION_DIALOG_NEW_VERSION = 1040
 const val NAVIGATION_DIALOG_PATCH_NOTES = 1050
+const val NAVIGATION_DIALOG_NIGHT_TIME = 1060
 
 const val TYPE_PUSH_ENGLISH = 0
 const val TYPE_PUSH_RUSSIAN = 1
@@ -80,6 +81,12 @@ const val TAGS_SELECTED = "tagsSelected"
 const val LEARN_LANGUAGE_TYPE = "learnLanguageType"
 const val WORD_ID = "wordId"
 const val NOTIFICATION_ID = "notificationId"
+
+const val START_HOUR = "startHour"
+const val DURATION_HOURS = "durationHours"
+
+const val START_HOUR_OFF = "startHourOff"
+const val DURATION_HOURS_OFF = "durationHoursOff"
 
 const val ERROR_TOKEN_NOT_INIT = "User token not init"
 const val ERROR_NOT_AUTHORIZED = "User not authorized"

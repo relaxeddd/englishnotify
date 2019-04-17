@@ -18,17 +18,20 @@
     <string name="delete">Удалить</string>
     <string name="dictionary">Словарь</string>
     <string name="do_you_really_want_to_logout">Вы действительно хотите выйти из аккаунта?</string>
+    <string name="duration_not_show">продолжительностью</string>
     <string name="enable_notifications">Включить уведомления</string>
     <string name="english_at_russian">С английского на русский</string>
     <string name="enter_translation">Ввести перевод</string>
     <string name="error_initialization">Ошибка инициализации</string>
     <string name="error_purchase">Ошибка покупки, напишите на почту for.gamer.develop@gmail.com</string>
     <string name="error_push_token">Ошибка пушей</string>
+    <string name="error_text_time">Неверное время</string>
     <string name="error_update">Ошибка обновления</string>
     <string name="feedback_is_empty">Отзыв пуст</string>
     <string name="feedback_send_error">Ошибка отправки отзыва</string>
     <string name="feedback_too_short">Отзыв слишком короткий</string>
     <string name="filter">Фильтр</string>
+    <string name="hours">Часов</string>
     <string name="i_dont_know_it">Я не знаю</string>
     <string name="i_know_it">Я знаю это</string>
     <string name="input_your_message">Введите сообщение</string>
@@ -40,8 +43,11 @@
     <string name="logout_success">Вы вышли из аккаунта</string>
     <string name="new_version">Новая версия %s</string>
     <string name="network_not_available">Ошибка интернет соединения</string>
+    <string name="night_time">Ночное время</string>
+    <string name="night_time_value">С %s до %s</string>
     <string name="no_thanks">Нет, спасибо / уже</string>
     <string name="no_words">Уведомления с новыми словами пока еще не пришли. Придется подождать… (Со стандартными настройками один час)</string>
+    <string name="not_show_notifications">Не показывать уведомления начиная с (24-часовой формат)</string>
     <string name="notification_categories">Выбор категорий слов</string>
     <string name="notifications_language">Язык уведомлений</string>
     <string name="notifications_not_receiving_enable">Уведомления не приходят, их нужно включить</string>
@@ -72,7 +78,7 @@
     <string name="unauthorized_error">Ошибка авторизации</string>
     <string name="update">Обновление</string>
     <string name="update_verb">Обновить</string>
-    <string name="update_text">Доступна новая версия приложение. Пожалуйста, обновите</string>
+    <string name="update_text">Доступна новая версия приложения. Пожалуйста, обновите</string>
     <string name="user_not_found">Пользователь не найден</string>
     <string name="you_sign_in_as">Вы вошли как: %s</string>
 
