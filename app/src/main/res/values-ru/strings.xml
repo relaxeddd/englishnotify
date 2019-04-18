@@ -24,7 +24,7 @@
     <string name="enter_translation">Ввести перевод</string>
     <string name="error_initialization">Ошибка инициализации</string>
     <string name="error_purchase">Ошибка покупки, напишите на почту for.gamer.develop@gmail.com</string>
-    <string name="error_push_token">Ошибка пушей</string>
+    <string name="error_push_token">Ошибка пушей, пожалуйста, попробуйте перезайти в приложение</string>
     <string name="error_text_time">Неверное время</string>
     <string name="error_update">Ошибка обновления</string>
     <string name="feedback_is_empty">Отзыв пуст</string>

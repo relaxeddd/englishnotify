@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer
 import relaxeddd.englishnotify.model.db.UserDao
 import relaxeddd.englishnotify.model.http.ApiHelper
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -57,6 +58,13 @@ class RepositoryUser private constructor(val userDao: UserDao) {
 
                 if (pushToken.isEmpty()) {
                     pushToken = SharedHelper.getPushToken()
+                }
+                if (pushToken.isEmpty()) {
+                    pushToken = FirebaseInstanceId.getInstance().token ?: ""
+                }
+                if (pushToken.isEmpty()) {
+                    showToast(R.string.error_push_token)
+                    return@launch
                 }
 
                 val answerInitData = ApiHelper.requestInit(firebaseUser, tokenId, pushToken)
