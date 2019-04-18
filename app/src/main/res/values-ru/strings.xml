@@ -24,7 +24,7 @@
     <string name="enter_translation">Ввести перевод</string>
     <string name="error_initialization">Ошибка инициализации</string>
     <string name="error_purchase">Ошибка покупки, напишите на почту for.gamer.develop@gmail.com</string>
-    <string name="error_push_token">Ошибка пушей</string>
+    <string name="error_push_token">Ошибка пушей, пожалуйста, попробуйте перезайти в приложение</string>
     <string name="error_text_time">Неверное время</string>
     <string name="error_update">Ошибка обновления</string>
     <string name="feedback_is_empty">Отзыв пуст</string>
@@ -90,6 +90,8 @@
         \n- Исправлен баг, когда нельзя было выбрать алфавитную сортировку повторно
         \n- Добавлены цены на подписки в диалоговом окне подписок
         \n- Убрана кнопка "Cancel" в диалоге отправки фидбека</string>
+
+    <string name="patch_notes_1_0_0">- Добавлена новая настройка уведомлений "ночное время" - можно не получать уведомления в указанные помежуток времени</string>
 
     <!-- =========================================================================================================== -->
     <string name="irregular">Неправильные глаголы</string>

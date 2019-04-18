@@ -23,7 +23,7 @@
     <string name="enter_translation">Enter translation</string>
     <string name="error_initialization">Initialization error</string>
     <string name="error_purchase">Purchase error, write to for.gamer.develop@gmail.com</string>
-    <string name="error_push_token">Push token error</string>
+    <string name="error_push_token">Push token error, please, try to restart app</string>
     <string name="error_text_time">Wrong time</string>
     <string name="error_update">Error update</string>
     <string name="feedback_is_empty">Feedback is empty</string>
@@ -93,6 +93,8 @@
         \n- Fixed bug with alphabetical sort by in dictionary
         \n- Added prices of subscribtions in dialog
         \n- The button "Cancel" was removed from send feedback dialog</string>
+
+    <string name="patch_notes_1_0_0">- Added new notifications setting "night time" - you don`t receive notifications in selected time period</string>
 
     <!-- =========================================================================================================== -->
     <string name="irregular">Irregular verbs</string>
