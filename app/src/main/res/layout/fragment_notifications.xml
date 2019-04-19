@@ -103,14 +103,14 @@
                         app:layout_constraintVertical_bias="0.0"/>
 
                     <TextView
-                        android:text="@{viewModel.user.tagsSelected.toString()}"
+                        android:text="@{viewModel.selectedTagLiveData}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/text_notifications_categories_value"
                         android:textSize="@dimen/font_10"
                         android:maxLines="1"
                         android:ellipsize="end"
-                        android:visibility="@{viewModel.user.tagsSelected.size() == 0 ? View.GONE : View.VISIBLE}"
+                        android:visibility="@{viewModel.user.selectedTag.isEmpty() ? View.GONE : View.VISIBLE}"
                         app:layout_constraintTop_toBottomOf="@+id/text_categories_categories"
                         app:layout_constraintStart_toStartOf="@+id/text_categories_categories"
                         android:layout_marginBottom="16dp"

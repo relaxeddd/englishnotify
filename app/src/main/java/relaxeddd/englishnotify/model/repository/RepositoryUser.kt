@@ -125,6 +125,16 @@ class RepositoryUser private constructor(val userDao: UserDao) {
         }
     }
 
+    suspend fun setSelectedTag(selectedTag: String) {
+        if (selectedTag.isNotEmpty()) {
+            val user = User(liveDataUser.value ?: return)
+            user.selectedTag = selectedTag
+            updateUser(user, liveDataUser.value)
+        } else {
+            showToast(R.string.tags_should_not_be_empty)
+        }
+    }
+
     //------------------------------------------------------------------------------------------------------------------
     private fun subscribeLiveDataUser() {
         liveDataUserRoom.observeForever(userObserver)

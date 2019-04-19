@@ -18,9 +18,9 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
             viewModel.onDialogRepeatTimeResult(result)
         }
     }
-    private val listenerCheckTags: ListenerResult<List<String>> = object: ListenerResult<List<String>> {
-        override fun onResult(result: List<String>) {
-            viewModel.onDialogCheckTagsResult(result)
+    private val listenerCheckTags: ListenerResult<String> = object: ListenerResult<String> {
+        override fun onResult(result: String) {
+            viewModel.onDialogSelectTagResult(result)
         }
     }
     private val listenerNotificationsView: ListenerResult<Int> = object: ListenerResult<Int> {
@@ -66,13 +66,13 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
                 dialog.show(this@FragmentNotifications.childFragmentManager, "Repeat Dialog")
             }
             NAVIGATION_DIALOG_CHECK_TAGS -> {
-                val dialog = DialogCheckTags()
+                val dialog = DialogSelectTag()
                 val args = Bundle()
                 args.putStringArray(ITEMS, (viewModel.user.value?.tagsAvailable ?: ArrayList()).toTypedArray())
-                args.putStringArray(CHECKED_ITEMS, (viewModel.user.value?.tagsSelected ?: ArrayList()).toTypedArray())
+                args.putString(CHECKED_ITEM, (viewModel.user.value?.selectedTag ?: ""))
                 dialog.arguments = args
                 dialog.listener = listenerCheckTags
-                dialog.show(this@FragmentNotifications.childFragmentManager, "Check tags Dialog")
+                dialog.show(this@FragmentNotifications.childFragmentManager, "Select tag Dialog")
             }
             NAVIGATION_DIALOG_NOTIFICATIONS_VIEW -> {
                 val dialog = DialogNotificationsView()

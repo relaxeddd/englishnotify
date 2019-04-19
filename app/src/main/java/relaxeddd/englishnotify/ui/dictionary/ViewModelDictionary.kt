@@ -12,7 +12,7 @@ import relaxeddd.englishnotify.model.repository.RepositoryWord
 class ViewModelDictionary(private val repositoryWord: RepositoryWord, private val repositoryUser: RepositoryUser) : ViewModelBase() {
 
     val user: LiveData<User?> = repositoryUser.liveDataUser
-    val sortByType = MutableLiveData<SortByType>(SortByType.ALPHABETICAL_NAME)
+    val sortByType = MutableLiveData<SortByType>(SortByType.getByName(SharedHelper.getSortByType()))
     val filterTags = MutableLiveData<HashSet<String>>()
     val tags = HashSet<String>()
     val wordsFiltered = MutableLiveData<List<Word>>(ArrayList())
@@ -31,12 +31,6 @@ class ViewModelDictionary(private val repositoryWord: RepositoryWord, private va
 
     init {
         repositoryWord.words.observeForever(wordsObserver)
-
-        var sort = SharedHelper.getSortByType()
-
-        if (sort.isNotEmpty()) {
-            sortByType.value = SortByType.getByName(sort)
-        }
         sortByType.observeForever(sortObserver)
     }
 

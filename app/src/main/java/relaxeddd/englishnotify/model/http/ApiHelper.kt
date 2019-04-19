@@ -46,6 +46,7 @@ object ApiHelper {
         val notificationsTimeType = user.notificationsTimeType
         val receiveNotifications = user.receiveNotifications
         val learnLanguageType = user.learnLanguageType
+        val selectedTag = user.selectedTag
         val tagsSelected = JSONArray()
 
         for (tag in user.tagsSelected) {
@@ -54,7 +55,7 @@ object ApiHelper {
 
         return if (tokenId?.isNotEmpty() == true) {
             api.requestUpdateUser(tokenId, requestId, userId, notificationsTimeType, receiveNotifications,
-                learnLanguageType, tagsSelected)
+                learnLanguageType, selectedTag)
         } else {
             UpdateUserResult(Result(RESULT_ERROR_UNAUTHORIZED), User())
         }
@@ -136,9 +137,9 @@ object ApiHelper {
 
         suspend fun requestUpdateUser(tokenId: String, requestId: String, userId: String, notificationsTimeType: Int,
                                       receiveNotifications: Boolean, learnLanguageType: Int,
-                                      tagsSelected: JSONArray): UpdateUserResult {
+                                      selectedTag: String): UpdateUserResult {
             return apiHelper.requestUpdateUser(tokenPrefix + tokenId, requestId, userId,
-                receiveNotifications, notificationsTimeType, learnLanguageType, tagsSelected).await()
+                receiveNotifications, notificationsTimeType, learnLanguageType, selectedTag).await()
         }
     }
 }

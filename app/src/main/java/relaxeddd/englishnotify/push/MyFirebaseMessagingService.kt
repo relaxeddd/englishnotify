@@ -19,6 +19,7 @@ import relaxeddd.englishnotify.model.db.AppDatabase
 import relaxeddd.englishnotify.ui.main.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import org.json.JSONObject
 import relaxeddd.englishnotify.common.*
 import java.util.*
 import kotlin.random.Random
@@ -205,51 +206,27 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                         return
                     }
 
-                    val words = parseWords(data)
-                    if (words.isNotEmpty()) {
-                        handleWordsNotification(words)
+                    if (data.containsKey(CONTENT) && data[CONTENT] != null) {
+                        val word = parseWord(JSONObject(data[CONTENT]))
+                        handleWordNotification(word)
                     }
                 }
             }
         }
     }
 
-    private fun handleWordsNotification(words : List<Word>) {
+    private fun handleWordNotification(word: Word) {
         val languageType = SharedHelper.getLearnLanguageType()
-        val word = chooseWord(words)
+        val title = if (languageType == TYPE_PUSH_ENGLISH) word.eng else word.rus
+        val isShowButtons = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+                && SharedHelper.getNotificationsView() == SharedHelper.NOTIFICATIONS_VIEW_WITH_QUESTION
+        val notificationText = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP
+            || SharedHelper.getNotificationsView() == SharedHelper.NOTIFICATIONS_VIEW_WITH_TRANSLATE) {
+            getFullNotificationText(word, languageType)
+        } else "\n"
 
-        if (word != null) {
-            val title = if (languageType == TYPE_PUSH_ENGLISH) word.eng else word.rus
-            val isShowButtons = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
-                    && SharedHelper.getNotificationsView() == SharedHelper.NOTIFICATIONS_VIEW_WITH_QUESTION
-            val notificationText = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP
-                || SharedHelper.getNotificationsView() == SharedHelper.NOTIFICATIONS_VIEW_WITH_TRANSLATE) {
-                getFullNotificationText(word, languageType)
-            } else ""
+        AppDatabase.getInstance(this).wordDao().insertAll(word)
 
-            AppDatabase.getInstance(this).wordDao().insertAll(word)
-
-            showNotificationWord(this, word.eng, notificationText, title, isShowButtons)
-        }
-    }
-
-    private fun chooseWord(words: List<Word>) : Word? {
-        if (words.isEmpty()) {
-            return null
-        }
-
-        val userTags = SharedHelper.getSelectedTags()
-        val wordsCount = words.size
-        val tagsCount = userTags.size
-        val tagIx = Random.nextInt(tagsCount)
-        val choosenTag = userTags.toList()[tagIx]
-
-        for (word in words) {
-            if (word.tags.contains(choosenTag)) {
-                return word
-            }
-        }
-
-        return words[Random.nextInt(wordsCount)]
+        showNotificationWord(this, word.eng, notificationText, title, isShowButtons)
     }
 }

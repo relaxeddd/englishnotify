@@ -31,7 +31,7 @@
     <string name="feedback_send_error">Ошибка отправки отзыва</string>
     <string name="feedback_too_short">Отзыв слишком короткий</string>
     <string name="filter">Фильтр</string>
-    <string name="hours">Часов</string>
+    <string name="hours_off_time">Часов (0–23)</string>
     <string name="i_dont_know_it">Я не знаю</string>
     <string name="i_know_it">Я знаю это</string>
     <string name="input_your_message">Введите сообщение</string>
@@ -47,7 +47,7 @@
     <string name="night_time_value">С %s до %s</string>
     <string name="no_thanks">Нет, спасибо / уже</string>
     <string name="no_words">Уведомления с новыми словами пока еще не пришли. Придется подождать… (Со стандартными настройками один час)</string>
-    <string name="not_show_notifications">Не показывать уведомления начиная с (24-часовой формат)</string>
+    <string name="not_show_notifications">Не показывать уведомления начиная с (24-часовой формат, число от 0 до 23)</string>
     <string name="notification_categories">Выбор категорий слов</string>
     <string name="notifications_language">Язык уведомлений</string>
     <string name="notifications_not_receiving_enable">Уведомления не приходят, их нужно включить</string>
@@ -93,6 +93,10 @@
 
     <string name="patch_notes_1_0_0">- Добавлена новая настройка уведомлений "ночное время" - можно не получать уведомления в указанные помежуток времени</string>
 
+    <string name="patch_notes_1_1_0">- Теперь можно выбрать только одну категорию слов, уведомления из которой будут приходить на телефон. Это нужно для последующего расширения списка категорий. Спасибо за понимание
+    \n- Добавлена новая категория - фразы в английском языке
+    \n- В новой категории помимо слов, также присутствуют примеры использования в предложениях и диалогах</string>
+
     <!-- =========================================================================================================== -->
     <string name="irregular">Неправильные глаголы</string>
     <string name="human_body">Строение человека</string>
@@ -108,6 +112,7 @@
     <string name="movement">Движения и действия</string>
     <string name="professions">Профессии</string>
     <string name="frequent">Часто используемые</string>
+    <string name="hard">Сложные</string>
 
     <string name="privacy_policy_text">Начиная работу с приложением, вы соглашаетесь с нашей Политикой конфиденциальности</string>
     <!--

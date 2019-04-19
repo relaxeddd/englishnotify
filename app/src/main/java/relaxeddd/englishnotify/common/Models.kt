@@ -16,7 +16,8 @@ data class User(
     val tagsAvailable: List<String> = ArrayList(),
     var tagsSelected: List<String> = ArrayList(),
     var learnLanguageType: Int = 0,
-    var subscriptionTime: Long = 0
+    var subscriptionTime: Long = 0,
+    var selectedTag: String = "irregular"
 ) {
     constructor(user: User) : this(user.userId, user.email, user.receiveNotifications, user.notificationsTimeType,
         user.tagsAvailable, user.tagsSelected, user.learnLanguageType, user.subscriptionTime)
