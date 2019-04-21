@@ -42,7 +42,7 @@
     <string name="logout_success">Logout success</string>
     <string name="new_version">New version %s</string>
     <string name="network_not_available">Network error</string>
-    <string name="night_time">Night time</string>
+    <string name="night_time">Night time (without notifications)</string>
     <string name="night_time_value">From %s to %s</string>
     <string name="no_thanks">No, thanks / already</string>
     <string name="no_words">Notifications with new words have not received yet. Please, wait… (With default settings wait 1 hour)</string>
@@ -99,6 +99,11 @@
     <string name="patch_notes_1_1_0">- Now you can select only one words category. It needed to expand word categories. Thank you for understanding
         \n- Added new category - phrases
         \n- There are samples of use in new words category. Try it</string>
+
+    <string name="patch_notes_1_1_1">- Now you can select only one words category. It needed to expand word categories. Thank you for understanding
+        \n- Added new category - phrases
+        \n- There are samples of use in new words category. Try it
+        \n- From 1.1.0 to 1.1.1 - fix when selected category reset after restart</string>
 
     <!-- =========================================================================================================== -->
     <string name="irregular">Irregular verbs</string>

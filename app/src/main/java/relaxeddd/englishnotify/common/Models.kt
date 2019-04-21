@@ -20,7 +20,7 @@ data class User(
     var selectedTag: String = "irregular"
 ) {
     constructor(user: User) : this(user.userId, user.email, user.receiveNotifications, user.notificationsTimeType,
-        user.tagsAvailable, user.tagsSelected, user.learnLanguageType, user.subscriptionTime)
+        user.tagsAvailable, user.tagsSelected, user.learnLanguageType, user.subscriptionTime, user.selectedTag)
 }
 
 @Entity(tableName = WORDS)
