@@ -40,7 +40,7 @@
     <string name="logout">Logout</string>
     <string name="logout_error">Logout error</string>
     <string name="logout_success">Logout success</string>
-    <string name="new_version">New version %s</string>
+    <string name="new_version">New version</string>
     <string name="network_not_available">Network error</string>
     <string name="night_time">Night time (without notifications)</string>
     <string name="night_time_value">From %s to %s</string>
@@ -103,7 +103,7 @@
     <string name="patch_notes_1_1_1">- Now you can select only one words category. It needed to expand word categories. Thank you for understanding
         \n- Added new category - phrases
         \n- There are samples of use in new words category. Try it
-        \n- From 1.1.0 to 1.1.1 - fix when selected category reset after restart</string>
+    </string>
 
     <!-- =========================================================================================================== -->
     <string name="irregular">Irregular verbs</string>
@@ -121,6 +121,7 @@
     <string name="professions">Professions</string>
     <string name="frequent">Frequent</string>
     <string name="hard">Hard</string>
+    <string name="all_app_words">All app words</string>
 
     <string name="privacy_policy_text">Starting work in the application, you agree to our Privacy Policy</string>
 

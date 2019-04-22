@@ -105,19 +105,25 @@ fun openWebApplication(activity: FragmentActivity?) {
 
 fun getErrorString(code: Int) = getErrorString(Result(code, getString(R.string.undefined_error)))
 
-fun getErrorString(result: Result) = when (result.code) {
-    RESULT_UNDEFINED -> getString(R.string.undefined_error)
-    RESULT_ERROR_SEND_FEEDBACK -> getString(R.string.feedback_send_error)
-    RESULT_ERROR_FEEDBACK_TOO_SHORT -> getString(R.string.feedback_too_short)
-    RESULT_ERROR_NETWORK -> getString(R.string.network_not_available)
-    RESULT_LOCAL_ERROR -> getString(R.string.undefined_error)
-    RESULT_ERROR_UNAUTHORIZED -> getString(R.string.unauthorized_error)
-    RESULT_ERROR_USER_NOT_FOUND -> getString(R.string.user_not_found)
-    RESULT_ERROR_APP_INIT -> getString(R.string.error_initialization)
-    RESULT_ERROR_ADD_PUSH_TOKEN -> getString(R.string.error_push_token)
-    RESULT_ERROR_UPDATE_USER -> getString(R.string.error_update)
-    RESULT_PURCHASE_NOT_VERIFIED -> getString(R.string.error_purchase)
-    RESULT_PURCHASE_VERIFIED_ERROR -> getString(R.string.error_purchase)
-    RESULT_PURCHASE_ALREADY_RECEIVED -> getString(R.string.error_purchase)
-    else -> result.msg
+fun getErrorString(result: Result?) : String {
+    if (result == null) {
+        return getString(R.string.undefined_error)
+    }
+
+    return when (result.code) {
+        RESULT_UNDEFINED -> getString(R.string.undefined_error)
+        RESULT_ERROR_SEND_FEEDBACK -> getString(R.string.feedback_send_error)
+        RESULT_ERROR_FEEDBACK_TOO_SHORT -> getString(R.string.feedback_too_short)
+        RESULT_ERROR_NETWORK -> getString(R.string.network_not_available)
+        RESULT_LOCAL_ERROR -> getString(R.string.undefined_error)
+        RESULT_ERROR_UNAUTHORIZED -> getString(R.string.unauthorized_error)
+        RESULT_ERROR_USER_NOT_FOUND -> getString(R.string.user_not_found)
+        RESULT_ERROR_APP_INIT -> getString(R.string.error_initialization)
+        RESULT_ERROR_ADD_PUSH_TOKEN -> getString(R.string.error_push_token)
+        RESULT_ERROR_UPDATE_USER -> getString(R.string.error_update)
+        RESULT_PURCHASE_NOT_VERIFIED -> getString(R.string.error_purchase)
+        RESULT_PURCHASE_VERIFIED_ERROR -> getString(R.string.error_purchase)
+        RESULT_PURCHASE_ALREADY_RECEIVED -> getString(R.string.error_purchase)
+        else -> result.msg
+    }
 }

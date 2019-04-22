@@ -1,6 +1,5 @@
 package relaxeddd.englishnotify.donate
 
-import android.app.ProgressDialog
 import androidx.databinding.ViewDataBinding
 import com.android.billingclient.api.*
 import kotlinx.coroutines.CoroutineScope
@@ -22,14 +21,11 @@ abstract class ActivityBilling<VM : ViewModelBase, B : ViewDataBinding> : Activi
         @BillingClient.SkuType private const val SUB_2 = "sub_2"
         @BillingClient.SkuType private const val SUB_3 = "sub_3"
 
-        private const val REQUEST_PURCHASE = 10002
         var listSkuDetails: List<SkuDetails> = ArrayList()
     }
 
     private var billingClient: BillingClient? = null
     private var isBillingServiceConnected = false
-
-    private var mProgressDialog: ProgressDialog? = null
 
     //------------------------------------------------------------------------------------------------------------------
     override fun onPurchasesUpdated(responseCode: Int, purchases: MutableList<Purchase>?) {
@@ -134,16 +130,16 @@ abstract class ActivityBilling<VM : ViewModelBase, B : ViewDataBinding> : Activi
             if (this@ActivityBilling is MainActivity) {
                 setLoadingVisible(false)
             }
-            if (purchaseResult.result.isSuccess()) {
+            if (purchaseResult?.result?.isSuccess() == true) {
                 onPurchaseResultSuccess(purchaseResult)
-            } else if (purchaseResult.result.code == RESULT_PURCHASE_ALREADY_RECEIVED) {
+            } else if (purchaseResult?.result?.code == RESULT_PURCHASE_ALREADY_RECEIVED) {
                 consumePurchase(purchaseResult)
             }
         }
     }
 
     private fun consumePurchase(purchaseResult: PurchaseResult) {
-        billingClient?.consumeAsync(purchaseResult.tokenId) { responseCode, outToken ->
+        billingClient?.consumeAsync(purchaseResult.tokenId) { responseCode, _ ->
             if (responseCode == BillingClient.BillingResponse.OK) {
                 showToast("Purchase consumed")
             } else {
@@ -165,22 +161,6 @@ abstract class ActivityBilling<VM : ViewModelBase, B : ViewDataBinding> : Activi
     }
 
     //------------------------------------------------------------------------------------------------------------------
-    private fun showProgressDialog() {
-        val progressDialog = ProgressDialog(this, R.style.Base_Theme_AppCompat_Light_Dialog_Alert)
-
-        mProgressDialog = progressDialog
-        progressDialog.isIndeterminate = true
-        progressDialog.setCancelable(false)
-        progressDialog.setMessage(getString(R.string.please_wait))
-        progressDialog.show()
-    }
-
-    private fun dismissProgressDialog() {
-        if (mProgressDialog?.isShowing == true) {
-            mProgressDialog?.dismiss()
-        }
-    }
-
     private fun getProductId(type: Int) = when(type) {
         0 -> SUB_1
         1 -> SUB_2

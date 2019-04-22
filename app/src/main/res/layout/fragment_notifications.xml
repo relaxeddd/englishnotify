@@ -107,7 +107,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/text_notifications_categories_value"
-                        android:textSize="@dimen/font_10"
+                        android:textSize="@dimen/font_12"
                         android:maxLines="1"
                         android:ellipsize="end"
                         android:visibility="@{viewModel.user.selectedTag.isEmpty() ? View.GONE : View.VISIBLE}"

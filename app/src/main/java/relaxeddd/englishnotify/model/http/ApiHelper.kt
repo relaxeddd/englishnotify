@@ -16,7 +16,7 @@ object ApiHelper {
 
     private val api: Api = Api()
 
-    suspend fun requestInit(firebaseUser: FirebaseUser?, tokenId: String?, pushToken: String) : InitData {
+    suspend fun requestInit(firebaseUser: FirebaseUser?, tokenId: String?, pushToken: String) : InitData? {
         val requestId = UUID.randomUUID().toString()
         val userId = firebaseUser?.uid ?: ""
         val email = firebaseUser?.email ?: ""
@@ -29,7 +29,7 @@ object ApiHelper {
         }
     }
 
-    suspend fun requestSendFeedback(firebaseUser: FirebaseUser?, tokenId: String?, feedback: String) : Result {
+    suspend fun requestSendFeedback(firebaseUser: FirebaseUser?, tokenId: String?, feedback: String) : Result? {
         val requestId = UUID.randomUUID().toString()
         val userId = firebaseUser?.uid ?: ""
 
@@ -40,18 +40,13 @@ object ApiHelper {
         }
     }
 
-    suspend fun requestUpdateUser(firebaseUser: FirebaseUser?, tokenId: String?, user: User) : UpdateUserResult {
+    suspend fun requestUpdateUser(firebaseUser: FirebaseUser?, tokenId: String?, user: User) : UpdateUserResult? {
         val requestId = UUID.randomUUID().toString()
         val userId = firebaseUser?.uid ?: ""
         val notificationsTimeType = user.notificationsTimeType
         val receiveNotifications = user.receiveNotifications
         val learnLanguageType = user.learnLanguageType
         val selectedTag = user.selectedTag
-        val tagsSelected = JSONArray()
-
-        for (tag in user.tagsSelected) {
-            tagsSelected.put(tag)
-        }
 
         return if (tokenId?.isNotEmpty() == true) {
             api.requestUpdateUser(tokenId, requestId, userId, notificationsTimeType, receiveNotifications,
@@ -62,7 +57,7 @@ object ApiHelper {
     }
 
     suspend fun requestVerifyPurchase(firebaseUser: FirebaseUser?, tokenId: String?, purchaseTokenId: String,
-                                      signature: String, originalJson: String, itemType: String) : PurchaseResult {
+                                      signature: String, originalJson: String, itemType: String) : PurchaseResult? {
         val requestId = UUID.randomUUID().toString()
         val userId = firebaseUser?.uid ?: ""
 
@@ -120,24 +115,24 @@ object ApiHelper {
 
         //--------------------------------------------------------------------------------------------------------------
         suspend fun requestInit(tokenId: String, requestId: String, userId: String, appVersion: Int, pushToken: String,
-                                email: String) : InitData {
+                                email: String) : InitData? {
             return apiHelper.requestInit(tokenPrefix + tokenId, requestId, userId, appVersion, pushToken,
                 email).await()
         }
 
         suspend fun requestVerifyPurchase(tokenId: String, requestId: String, userId: String, purchaseTokenId: String,
-                                          signature: String, originalJson: String, itemType: String) : PurchaseResult {
+                                          signature: String, originalJson: String, itemType: String) : PurchaseResult? {
             return apiHelper.requestVerifyPurchase(tokenPrefix + tokenId, requestId, userId, purchaseTokenId,
                                                    signature, originalJson, itemType).await()
         }
 
-        suspend fun requestSendFeedback(tokenId: String, requestId: String, userId: String, message: String) : Result {
+        suspend fun requestSendFeedback(tokenId: String, requestId: String, userId: String, message: String) : Result? {
             return apiHelper.requestSendFeedback(tokenPrefix + tokenId, requestId, userId, message).await()
         }
 
         suspend fun requestUpdateUser(tokenId: String, requestId: String, userId: String, notificationsTimeType: Int,
                                       receiveNotifications: Boolean, learnLanguageType: Int,
-                                      selectedTag: String): UpdateUserResult {
+                                      selectedTag: String): UpdateUserResult? {
             return apiHelper.requestUpdateUser(tokenPrefix + tokenId, requestId, userId,
                 receiveNotifications, notificationsTimeType, learnLanguageType, selectedTag).await()
         }

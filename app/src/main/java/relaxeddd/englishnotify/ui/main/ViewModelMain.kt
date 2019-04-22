@@ -7,6 +7,7 @@ import relaxeddd.englishnotify.model.repository.RepositoryUser
 import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
+import relaxeddd.englishnotify.dialogs.DialogPatchNotes
 import relaxeddd.englishnotify.model.repository.RepositoryCommon
 import java.util.*
 
@@ -88,9 +89,9 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
         if (isConfirmed) {
             requestInitUser()
         }
-        if (!SharedHelper.isPatchNotesViewed()) {
+        if (!SharedHelper.isPatchNotesViewed(DialogPatchNotes.VERSION)) {
             navigateEvent.value = Event(NAVIGATION_DIALOG_PATCH_NOTES)
-            SharedHelper.setPatchNotesViewed()
+            SharedHelper.setPatchNotesViewed(DialogPatchNotes.VERSION)
         }
     }
 

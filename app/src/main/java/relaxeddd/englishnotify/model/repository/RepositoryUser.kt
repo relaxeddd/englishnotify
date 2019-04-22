@@ -17,7 +17,8 @@ import relaxeddd.englishnotify.push.MyFirebaseMessagingService
 class RepositoryUser private constructor(val userDao: UserDao) {
 
     companion object {
-        @Volatile private var instance: RepositoryUser? = null
+        @Volatile
+        private var instance: RepositoryUser? = null
         fun getInstance(userDao: UserDao) = instance ?: synchronized(this) {
             instance ?: RepositoryUser(userDao).also { instance = it }
         }
@@ -69,17 +70,18 @@ class RepositoryUser private constructor(val userDao: UserDao) {
 
                 val answerInitData = ApiHelper.requestInit(firebaseUser, tokenId, pushToken)
 
-                if (answerInitData.result != null && answerInitData.result.isSuccess() && answerInitData.user.userId.isNotEmpty()) {
+                if (answerInitData?.result != null && answerInitData.result.isSuccess() && answerInitData.user?.userId?.isNotEmpty() == true) {
                     userDao.insert(answerInitData.user)
                     userId = answerInitData.user.userId
-                    SharedHelper.setSelectedTags(answerInitData.user.tagsSelected)
                     SharedHelper.setLearnLanguageType(answerInitData.user.learnLanguageType)
 
                     if (!answerInitData.isActualVersion) {
                         liveDataIsActualVersion.value = answerInitData.isActualVersion
                     }
-                } else if (answerInitData.result != null) {
+                } else if (answerInitData?.result != null) {
                     showToast(getErrorString(answerInitData.result))
+                } else {
+                    showToast(R.string.error_initialization)
                 }
             }
         }
@@ -115,16 +117,6 @@ class RepositoryUser private constructor(val userDao: UserDao) {
         updateUser(user, liveDataUser.value)
     }
 
-    suspend fun setCheckedTags(checkedTags: List<String>) {
-        if (checkedTags.isNotEmpty()) {
-            val user = User(liveDataUser.value ?: return)
-            user.tagsSelected = checkedTags
-            updateUser(user, liveDataUser.value)
-        } else {
-            showToast(R.string.tags_should_not_be_empty)
-        }
-    }
-
     suspend fun setSelectedTag(selectedTag: String) {
         if (selectedTag.isNotEmpty()) {
             val user = User(liveDataUser.value ?: return)
@@ -147,12 +139,13 @@ class RepositoryUser private constructor(val userDao: UserDao) {
         val tokenId = RepositoryCommon.getInstance().tokenId
         val updateResult = ApiHelper.requestUpdateUser(firebaseUser, tokenId, user)
 
-        if (!updateResult.result.isSuccess()) {
+        if (updateResult != null && updateResult.result !== null && !updateResult.result.isSuccess()) {
             showToast(getErrorString(updateResult.result))
             userDao.insert(oldUser ?: return)
-        } else {
-            SharedHelper.setSelectedTags(user.tagsSelected)
+        } else if (updateResult != null && updateResult.result !== null) {
             SharedHelper.setLearnLanguageType(user.learnLanguageType)
+        } else {
+            showToast(R.string.error_update)
         }
     }
 }
