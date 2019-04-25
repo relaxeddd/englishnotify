@@ -105,6 +105,11 @@
         \n- There are samples of use in new words category. Try it
     </string>
 
+    <string name="patch_notes_1_1_3">- Add categories translation
+        \n- New app icon
+        \n- Fixes
+    </string>
+
     <!-- =========================================================================================================== -->
     <string name="irregular">Irregular verbs</string>
     <string name="hard">Hard</string>
