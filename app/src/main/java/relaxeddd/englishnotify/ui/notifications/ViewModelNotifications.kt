@@ -18,9 +18,11 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
     val timeDurationOffValue = MutableLiveData<Int>(SharedHelper.getDurationHours())
     val timeStartOff = MutableLiveData<String>("20:00")
     val timeEndOff = MutableLiveData<String>("07:00")
+    val selectedTagLiveData = MutableLiveData<String>("")
 
     private val userObserver = Observer<User?> { user ->
         isEnableNotificationsClickable.value = user != null
+        selectedTagLiveData.value = if (user != null) getStringByResName(user.selectedTag) else ""
     }
 
     var checkedChangeListenerEnableNotifications = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
@@ -109,10 +111,11 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
         }
     }
 
-    fun onDialogCheckTagsResult(checkedItems: List<String>) {
-        if (!checkedItems.equalsIgnoreOrder(repositoryUser.liveDataUser.value?.tagsSelected)) {
+    fun onDialogSelectTagResult(selectedItem: String) {
+        selectedTagLiveData.value = getStringByResName(selectedItem)
+        if (!selectedItem.equals(repositoryUser.liveDataUser.value?.selectedTag, true)) {
             uiScope.launch {
-                repositoryUser.setCheckedTags(checkedItems)
+                repositoryUser.setSelectedTag(selectedItem)
             }
         }
     }

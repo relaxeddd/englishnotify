@@ -20,7 +20,7 @@ class DialogSubscription : DialogFragment() {
             selectedItemIx = arguments?.getInt(SELECTED_ITEM, 0) ?: 0
             val subsNames = resources.getStringArray(R.array.array_renew_subscription)
             val subsNamesWithPrice = if (ActivityBilling.listSkuDetails.size == subsNames.size) {
-                Array(subsNames.size) { ix -> subsNames[ix] + ActivityBilling.listSkuDetails[ix].price }
+                Array(subsNames.size) { ix -> subsNames[ix] + " - " + ActivityBilling.listSkuDetails[ix].price }
             } else {
                 subsNames
             }

@@ -66,7 +66,7 @@ class AdapterWords(val viewModel: ViewModelDictionary) : ListAdapter<Word, Adapt
                 longClickListener = longListener
                 this.word = word
                 executePendingBindings()
-                val transcription = "[" + word.transcription + "]"
+                val transcription = if (word.transcription.isNotEmpty()) "[" + word.transcription + "]" else ""
 
                 when (languageType) {
                     0 -> {
@@ -81,6 +81,8 @@ class AdapterWords(val viewModel: ViewModelDictionary) : ListAdapter<Word, Adapt
                     }
                 }
                 val dateFormat = "hh:mm dd.MM"
+                textWordSampleEng.text = word.sampleEng
+                textWordSampleRus.text = word.sampleRus
                 textWordTimestamp.text = SimpleDateFormat(dateFormat, Locale.getDefault()).format(word.timestamp) ?: ""
             }
         }

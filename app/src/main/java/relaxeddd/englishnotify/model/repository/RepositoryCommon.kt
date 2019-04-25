@@ -60,7 +60,7 @@ class RepositoryCommon private constructor() {
 
         val answer = ApiHelper.requestSendFeedback(firebaseUser, tokenId, feedback)
 
-        if (answer.isSuccess()) {
+        if (answer?.isSuccess() == true) {
             showToast(R.string.thank_you)
         } else {
             showToast(getErrorString(answer))

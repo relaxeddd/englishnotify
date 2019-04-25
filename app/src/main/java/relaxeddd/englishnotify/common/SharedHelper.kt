@@ -19,16 +19,6 @@ object SharedHelper {
         sPref.edit().putBoolean(PRIVACY_POLICY_CONFIRMED, isConfirmed).apply()
     }
 
-    fun getSelectedTags() : Set<String> {
-        val sPref = App.context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        return HashSet(sPref.getStringSet(SELECTED_TAGS, HashSet<String>()))
-    }
-
-    fun setSelectedTags(selectedTags : List<String>) {
-        val sPref = App.context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        sPref.edit().putStringSet(SELECTED_TAGS, HashSet(selectedTags)).apply()
-    }
-
     fun getLearnLanguageType() : Int {
         val sPref = App.context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         return sPref.getInt(PUSH_LANGUAGE, TYPE_PUSH_ENGLISH)
@@ -89,14 +79,14 @@ object SharedHelper {
         sPref.edit().putInt(NOTIFICATIONS_VIEW, viewType).apply()
     }
 
-    fun isPatchNotesViewed() : Boolean {
+    fun isPatchNotesViewed(version: String) : Boolean {
         val sPref = App.context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        return sPref.getBoolean(BuildConfig.VERSION_NAME, false)
+        return sPref.getBoolean(version, false)
     }
 
-    fun setPatchNotesViewed() {
+    fun setPatchNotesViewed(version: String) {
         val sPref = App.context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        sPref.edit().putBoolean(BuildConfig.VERSION_NAME, true).apply()
+        sPref.edit().putBoolean(version, true).apply()
     }
 
     fun getStartHour() : Int {

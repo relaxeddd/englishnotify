@@ -31,7 +31,7 @@
     <string name="feedback_send_error">Ошибка отправки отзыва</string>
     <string name="feedback_too_short">Отзыв слишком короткий</string>
     <string name="filter">Фильтр</string>
-    <string name="hours">Часов</string>
+    <string name="hours_off_time">Часов (0–23)</string>
     <string name="i_dont_know_it">Я не знаю</string>
     <string name="i_know_it">Я знаю это</string>
     <string name="input_your_message">Введите сообщение</string>
@@ -41,13 +41,13 @@
     <string name="logout">Выход из аккаунта</string>
     <string name="logout_error">Ошибка выхода из аккаунта</string>
     <string name="logout_success">Вы вышли из аккаунта</string>
-    <string name="new_version">Новая версия %s</string>
+    <string name="new_version">Новая версия</string>
     <string name="network_not_available">Ошибка интернет соединения</string>
-    <string name="night_time">Ночное время</string>
+    <string name="night_time">Ночное время (без уведомлений)</string>
     <string name="night_time_value">С %s до %s</string>
     <string name="no_thanks">Нет, спасибо / уже</string>
     <string name="no_words">Уведомления с новыми словами пока еще не пришли. Придется подождать… (Со стандартными настройками один час)</string>
-    <string name="not_show_notifications">Не показывать уведомления начиная с (24-часовой формат)</string>
+    <string name="not_show_notifications">Не показывать уведомления начиная с (24-часовой формат, число от 0 до 23)</string>
     <string name="notification_categories">Выбор категорий слов</string>
     <string name="notifications_language">Язык уведомлений</string>
     <string name="notifications_not_receiving_enable">Уведомления не приходят, их нужно включить</string>
@@ -93,21 +93,63 @@
 
     <string name="patch_notes_1_0_0">- Добавлена новая настройка уведомлений "ночное время" - можно не получать уведомления в указанные помежуток времени</string>
 
+    <string name="patch_notes_1_1_0">- Теперь можно выбрать только одну категорию слов, уведомления из которой будут приходить на телефон. Это нужно для последующего расширения списка категорий. Спасибо за понимание
+    \n- Добавлена новая категория - фразы в английском языке
+    \n- В новой категории помимо слов, также присутствуют примеры использования в предложениях и диалогах</string>
+
+    <string name="patch_notes_1_1_1">- Теперь можно выбрать только одну категорию слов, уведомления из которой будут приходить на телефон. Это нужно для последующего расширения списка категорий. Спасибо за понимание
+        \n- Добавлена новая категория - фразы в английском языке
+        \n- В новой категории помимо слов, также присутствуют примеры использования в предложениях и диалогах</string>
+
     <!-- =========================================================================================================== -->
     <string name="irregular">Неправильные глаголы</string>
+    <string name="hard">Сложные</string>
+    <string name="all_app_words">Все слова приложения</string>
+    <string name="all_app_words_without_simple">Все слова (уровень 2)</string>
+
     <string name="human_body">Строение человека</string>
+    <string name="human_body_5">Строение человека</string>
     <string name="colors">Цвета</string>
+    <string name="colors_5">Цвета</string>
     <string name="time">Время</string>
+    <string name="time_5">Время</string>
     <string name="phrases">Фразы</string>
+    <string name="phrases_5">Фразы</string>
     <string name="animals">Животные</string>
+    <string name="animals_5">Животные</string>
     <string name="family">Семья</string>
+    <string name="family_5">Семья</string>
     <string name="human_qualities">Характер</string>
+    <string name="human_qualities_5">Характер</string>
     <string name="feelings">Чувства</string>
+    <string name="feelings_5">Чувства</string>
     <string name="emotions">Эмоции</string>
+    <string name="emotions_5">Эмоции</string>
     <string name="work">Работа</string>
+    <string name="work_5">Работа</string>
     <string name="movement">Движения и действия</string>
+    <string name="movement_5">Движения и действия</string>
     <string name="professions">Профессии</string>
+    <string name="professions_5">Профессии</string>
     <string name="frequent">Часто используемые</string>
+    <string name="frequent_5">Часто используемые</string>
+    <string name="education">Образование</string>
+    <string name="education_5">Образование (level 2)</string>
+    <string name="food">Еда</string>
+    <string name="food_5">Еда (level 2)</string>
+    <string name="weather">Погода</string>
+    <string name="weather_5">Погода (level 2)</string>
+    <string name="house">Дом</string>
+    <string name="house_5">Дом (level 2)</string>
+    <string name="geography">География</string>
+    <string name="geography_5">География (level 2)</string>
+    <string name="entertainment">Развлечения</string>
+    <string name="entertainment_5">Развлечения (level 2)</string>
+    <string name="sport">Спорт</string>
+    <string name="sport_5">Спорт (level 2)</string>
+    <string name="auto">Авто</string>
+    <string name="auto_5">Авто (level 2)</string>
+
 
     <string name="privacy_policy_text">Начиная работу с приложением, вы соглашаетесь с нашей Политикой конфиденциальности</string>
     <!--
