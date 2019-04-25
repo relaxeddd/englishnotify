@@ -103,21 +103,53 @@
 
     <!-- =========================================================================================================== -->
     <string name="irregular">Неправильные глаголы</string>
-    <string name="human_body">Строение человека</string>
-    <string name="colors">Цвета</string>
-    <string name="time">Время</string>
-    <string name="phrases">Фразы</string>
-    <string name="animals">Животные</string>
-    <string name="family">Семья</string>
-    <string name="human_qualities">Характер</string>
-    <string name="feelings">Чувства</string>
-    <string name="emotions">Эмоции</string>
-    <string name="work">Работа</string>
-    <string name="movement">Движения и действия</string>
-    <string name="professions">Профессии</string>
-    <string name="frequent">Часто используемые</string>
     <string name="hard">Сложные</string>
     <string name="all_app_words">Все слова приложения</string>
+    <string name="all_app_words_without_simple">Все слова (уровень 2)</string>
+
+    <string name="human_body">Строение человека</string>
+    <string name="human_body_5">Строение человека</string>
+    <string name="colors">Цвета</string>
+    <string name="colors_5">Цвета</string>
+    <string name="time">Время</string>
+    <string name="time_5">Время</string>
+    <string name="phrases">Фразы</string>
+    <string name="phrases_5">Фразы</string>
+    <string name="animals">Животные</string>
+    <string name="animals_5">Животные</string>
+    <string name="family">Семья</string>
+    <string name="family_5">Семья</string>
+    <string name="human_qualities">Характер</string>
+    <string name="human_qualities_5">Характер</string>
+    <string name="feelings">Чувства</string>
+    <string name="feelings_5">Чувства</string>
+    <string name="emotions">Эмоции</string>
+    <string name="emotions_5">Эмоции</string>
+    <string name="work">Работа</string>
+    <string name="work_5">Работа</string>
+    <string name="movement">Движения и действия</string>
+    <string name="movement_5">Движения и действия</string>
+    <string name="professions">Профессии</string>
+    <string name="professions_5">Профессии</string>
+    <string name="frequent">Часто используемые</string>
+    <string name="frequent_5">Часто используемые</string>
+    <string name="education">Образование</string>
+    <string name="education_5">Образование (level 2)</string>
+    <string name="food">Еда</string>
+    <string name="food_5">Еда (level 2)</string>
+    <string name="weather">Погода</string>
+    <string name="weather_5">Погода (level 2)</string>
+    <string name="house">Дом</string>
+    <string name="house_5">Дом (level 2)</string>
+    <string name="geography">География</string>
+    <string name="geography_5">География (level 2)</string>
+    <string name="entertainment">Развлечения</string>
+    <string name="entertainment_5">Развлечения (level 2)</string>
+    <string name="sport">Спорт</string>
+    <string name="sport_5">Спорт (level 2)</string>
+    <string name="auto">Авто</string>
+    <string name="auto_5">Авто (level 2)</string>
+
 
     <string name="privacy_policy_text">Начиная работу с приложением, вы соглашаетесь с нашей Политикой конфиденциальности</string>
     <!--
