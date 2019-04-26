@@ -40,6 +40,17 @@ object ApiHelper {
         }
     }
 
+    suspend fun requestSendTestNotification(firebaseUser: FirebaseUser?, tokenId: String?) : UpdateUserResult? {
+        val requestId = UUID.randomUUID().toString()
+        val userId = firebaseUser?.uid ?: ""
+
+        return if (tokenId?.isNotEmpty() == true) {
+            api.requestSendTestNotfication(tokenId, requestId, userId)
+        } else {
+            UpdateUserResult(Result(RESULT_ERROR_UNAUTHORIZED), User())
+        }
+    }
+
     suspend fun requestUpdateUser(firebaseUser: FirebaseUser?, tokenId: String?, user: User) : UpdateUserResult? {
         val requestId = UUID.randomUUID().toString()
         val userId = firebaseUser?.uid ?: ""
@@ -128,6 +139,10 @@ object ApiHelper {
 
         suspend fun requestSendFeedback(tokenId: String, requestId: String, userId: String, message: String) : Result? {
             return apiHelper.requestSendFeedback(tokenPrefix + tokenId, requestId, userId, message).await()
+        }
+
+        suspend fun requestSendTestNotfication(tokenId: String, requestId: String, userId: String) : UpdateUserResult? {
+            return apiHelper.requestSendTestNotification(tokenPrefix + tokenId, requestId, userId).await()
         }
 
         suspend fun requestUpdateUser(tokenId: String, requestId: String, userId: String, notificationsTimeType: Int,

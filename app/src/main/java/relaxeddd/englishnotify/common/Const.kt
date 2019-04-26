@@ -17,6 +17,7 @@ const val FUNC_REQUEST_INIT = "requestInitNew/"
 const val FUNC_REQUEST_VERIFY_PURCHASE = "requestVerifyPurchase/"
 const val FUNC_REQUEST_SEND_FEEDBACK = "requestSendFeedback/"
 const val FUNC_REQUEST_UPDATE_USER = "requestUpdateUser/"
+const val FUNC_REQUEST_SEND_TEST_NOTIFICATION = "requestSendTestNotification/"
 
 const val EMPTY_RES = -1
 
@@ -59,6 +60,7 @@ const val NAVIGATION_DIALOG_NOTIFICATIONS_VIEW = 1030
 const val NAVIGATION_DIALOG_NEW_VERSION = 1040
 const val NAVIGATION_DIALOG_PATCH_NOTES = 1050
 const val NAVIGATION_DIALOG_NIGHT_TIME = 1060
+const val NAVIGATION_DIALOG_TEST_NOTIFICATIONS = 1070
 
 const val TYPE_PUSH_ENGLISH = 0
 const val TYPE_PUSH_RUSSIAN = 1

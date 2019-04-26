@@ -127,6 +127,27 @@ class RepositoryUser private constructor(val userDao: UserDao) {
         }
     }
 
+    suspend fun sendTestNotification() {
+        if (FirebaseAuth.getInstance().currentUser == null) {
+            showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
+            return
+        }
+
+        val firebaseUser = RepositoryCommon.getInstance().firebaseUser
+        val tokenId = RepositoryCommon.getInstance().tokenId
+
+        val answer = ApiHelper.requestSendTestNotification(firebaseUser, tokenId)
+
+        if (answer?.result?.isSuccess() == true) {
+            showToast(R.string.test_notification_sent)
+            userDao.insert(answer.user ?: return)
+        } else if (answer?.result != null) {
+            showToast(getErrorString(answer.result))
+        } else {
+            showToast(R.string.error_request)
+        }
+    }
+
     //------------------------------------------------------------------------------------------------------------------
     private fun subscribeLiveDataUser() {
         liveDataUserRoom.observeForever(userObserver)
