@@ -399,10 +399,10 @@
             </com.google.android.material.card.MaterialCardView>
 
             <View android:layout_width="match_parent"
-                  android:layout_height="@dimen/size_16"
+                  android:layout_height="@dimen/size_46"
                   android:layout_marginBottom="@dimen/size_8"
                   app:layout_constraintBottom_toBottomOf="parent"
-                  app:layout_constraintTop_toBottomOf="@+id/card_view_notifications_night_time"/>
+                  app:layout_constraintTop_toBottomOf="@+id/card_view_notifications_test"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

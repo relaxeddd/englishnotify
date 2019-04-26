@@ -33,7 +33,7 @@
 
     <string-array name="array_notifications_view">
         <item>With translation in notification</item>
-        <item>Enter translation</item>
+        <item>Enter translation (from Android 7.0) or show not right away</item>
     </string-array>
 
 </resources>

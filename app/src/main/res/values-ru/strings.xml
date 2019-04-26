@@ -26,8 +26,10 @@
     <string name="error_purchase">Ошибка покупки, напишите на почту for.gamer.develop@gmail.com</string>
     <string name="error_push_token">Ошибка пушей, пожалуйста, попробуйте перезайти в приложение</string>
     <string name="error_request">Ошибка отправки запроса, пожалуйста, проверьте авторизацию и Интернет-соединение</string>
+    <string name="error_test_notification">Ошибка запроса тестового уведомления</string>
     <string name="error_text_time">Неверное время</string>
     <string name="error_update">Ошибка обновления</string>
+    <string name="expand_to_see_buttons">Разверните для показа кнопок</string>
     <string name="feedback_is_empty">Отзыв пуст</string>
     <string name="feedback_send_error">Ошибка отправки отзыва</string>
     <string name="feedback_too_short">Отзыв слишком короткий</string>
@@ -48,7 +50,7 @@
     <string name="night_time_value">С %s до %s</string>
     <string name="no_thanks">Нет, спасибо / уже</string>
     <string name="no_words">Уведомления с новыми словами пока еще не пришли. Придется подождать… (Со стандартными настройками один час)</string>
-    <string name="no_test_notifications">У вас не соталось тестовых уведомлений</string>
+    <string name="no_test_notifications">У вас не осталось тестовых уведомлений</string>
     <string name="not_show_notifications">Не показывать уведомления начиная с (24-часовой формат, число от 0 до 23)</string>
     <string name="notification_categories">Выбор категорий слов</string>
     <string name="notifications_language">Язык уведомлений</string>
@@ -66,7 +68,7 @@
     <string name="receive_notifications_time">Получать уведомления</string>
     <string name="renew_subscription">Продлить подписку</string>
     <string name="russian_at_english">С руссокого на английский</string>
-    <string name="show_translation">Показать перевод</string>
+    <string name="show_translation">Перевод</string>
     <string name="search_words">Искать слова</string>
     <string name="send_feedback">Отправить отзыв</string>
     <string name="send_test_notification">Отправить тестовое уведомление? (Осталось: %s)</string>
@@ -111,6 +113,9 @@
     <string name="patch_notes_1_1_3">- Добавлены переводы новых категорий слов
         \n- Новая иконка приложения
         \n- Фиксы</string>
+
+    <string name="patch_notes_1_2_0">- Добавлена новая функция в разделе уведомления - отправить тестовое уведомление.
+        \n- Правки отображения уведомлений</string>
 
     <!-- =========================================================================================================== -->
     <string name="irregular">Неправильные глаголы</string>

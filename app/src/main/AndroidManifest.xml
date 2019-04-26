@@ -19,7 +19,7 @@
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name="relaxeddd.englishnotify.ui.main.MainActivity" android:launchMode="singleInstance">
+        <activity android:name="relaxeddd.englishnotify.ui.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -27,7 +27,8 @@
             </intent-filter>
         </activity>
 
-        <service android:name="relaxeddd.englishnotify.push.MyFirebaseMessagingService">
+        <service android:name="relaxeddd.englishnotify.push.MyFirebaseMessagingService"
+                 android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

@@ -40,6 +40,8 @@ const val RESULT_ERROR_FEEDBACK_TOO_SHORT = 1602
 const val RESULT_LOCAL_ERROR = 5101
 const val RESULT_ERROR_NETWORK = 5102
 
+const val RESULT_ERROR_TEST_NOTIFICATION = 6100
+
 const val NAVIGATION_EXIT = 999
 const val NAVIGATION_DIALOG_REPEAT = 1000
 const val NAVIGATION_DIALOG_CHECK_TAGS = 1001
@@ -97,6 +99,7 @@ const val ERROR_USER_NOT_FOUND = "User not found"
 const val ERROR_REWARDS_NOT_FOUND = "Rewards not found"
 const val ERROR_ACHIEVEMENTS_NOT_FOUND = "Achievements not found"
 const val ERROR_APP_INFO = "App info not found"
+const val ERROR_SEND_TEST_NOTIFICATION = "Error send test notification"
 
 const val COLLECTION_USERS = "users"
 const val COLLECTION_MESSAGES = "messages"

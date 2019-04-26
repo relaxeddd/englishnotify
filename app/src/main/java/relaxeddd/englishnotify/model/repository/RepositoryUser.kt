@@ -138,13 +138,15 @@ class RepositoryUser private constructor(val userDao: UserDao) {
 
         val answer = ApiHelper.requestSendTestNotification(firebaseUser, tokenId)
 
-        if (answer?.result?.isSuccess() == true) {
-            showToast(R.string.test_notification_sent)
-            userDao.insert(answer.user ?: return)
-        } else if (answer?.result != null) {
-            showToast(getErrorString(answer.result))
+        if (answer?.isSuccess() == true) {
+            showToastLong(R.string.test_notification_sent)
+            val user = User(liveDataUser.value ?: return)
+            user.testCount -= 1
+            userDao.insert(user)
+        } else if (answer != null) {
+            showToast(getErrorString(answer))
         } else {
-            showToast(R.string.error_request)
+            showToastLong(R.string.error_request)
         }
     }
 

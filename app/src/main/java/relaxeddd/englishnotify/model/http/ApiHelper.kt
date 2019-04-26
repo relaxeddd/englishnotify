@@ -40,14 +40,14 @@ object ApiHelper {
         }
     }
 
-    suspend fun requestSendTestNotification(firebaseUser: FirebaseUser?, tokenId: String?) : UpdateUserResult? {
+    suspend fun requestSendTestNotification(firebaseUser: FirebaseUser?, tokenId: String?) : Result? {
         val requestId = UUID.randomUUID().toString()
         val userId = firebaseUser?.uid ?: ""
 
         return if (tokenId?.isNotEmpty() == true) {
             api.requestSendTestNotfication(tokenId, requestId, userId)
         } else {
-            UpdateUserResult(Result(RESULT_ERROR_UNAUTHORIZED), User())
+            Result(msg = ERROR_SEND_TEST_NOTIFICATION)
         }
     }
 
@@ -141,7 +141,7 @@ object ApiHelper {
             return apiHelper.requestSendFeedback(tokenPrefix + tokenId, requestId, userId, message).await()
         }
 
-        suspend fun requestSendTestNotfication(tokenId: String, requestId: String, userId: String) : UpdateUserResult? {
+        suspend fun requestSendTestNotfication(tokenId: String, requestId: String, userId: String) : Result? {
             return apiHelper.requestSendTestNotification(tokenPrefix + tokenId, requestId, userId).await()
         }
 
