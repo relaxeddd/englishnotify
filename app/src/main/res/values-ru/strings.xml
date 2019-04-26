@@ -66,6 +66,7 @@
     <string name="receive_notifications_time">Получать уведомления</string>
     <string name="renew_subscription">Продлить подписку</string>
     <string name="russian_at_english">С руссокого на английский</string>
+    <string name="show_translation">Показать перевод</string>
     <string name="search_words">Искать слова</string>
     <string name="send_feedback">Отправить отзыв</string>
     <string name="send_test_notification">Отправить тестовое уведомление? (Осталось: %s)</string>

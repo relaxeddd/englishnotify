@@ -80,7 +80,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
                 val dontKnowPendingIntent: PendingIntent =
                     PendingIntent.getBroadcast(ctx, Random.nextInt(1000), dontKnowIntent, 0)
-                notificationBuilder.addAction(R.drawable.ic_close, getString(R.string.i_dont_know_it), dontKnowPendingIntent)
+                notificationBuilder.addAction(R.drawable.ic_close, getString(R.string.show_translation), dontKnowPendingIntent)
             }
 
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

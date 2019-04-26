@@ -65,6 +65,7 @@
     <string name="receive_notifications_time">Receive notifications time</string>
     <string name="renew_subscription">Renew subscription</string>
     <string name="russian_at_english">Russian at english</string>
+    <string name="show_translation">Show translation</string>
     <string name="search_words">Search words</string>
     <string name="send_feedback">Send feedback</string>
     <string name="send_test_notification">Send test notification? (%s notifications left)</string>
