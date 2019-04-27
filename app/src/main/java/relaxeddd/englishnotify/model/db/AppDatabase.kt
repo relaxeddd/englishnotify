@@ -1,6 +1,7 @@
 package relaxeddd.englishnotify.model.db
 
 import android.content.Context
+import android.database.sqlite.SQLiteException
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -11,7 +12,7 @@ import relaxeddd.englishnotify.common.User
 import relaxeddd.englishnotify.common.Word
 import relaxeddd.englishnotify.common.DATABASE_TEST_APP
 
-@Database(entities = [User::class, Word::class], version = 6, exportSchema = false)
+@Database(entities = [User::class, Word::class], version = 7, exportSchema = false)
 @TypeConverters(ConverterListStr::class)
 abstract class AppDatabase : RoomDatabase() {
 
@@ -43,7 +44,9 @@ abstract class AppDatabase : RoomDatabase() {
 
         val MIGRATION_6_7 = object : Migration(6, 7) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                database.execSQL("ALTER TABLE users ADD COLUMN testCount INTEGER DEFAULT 0 NOT NULL")
+                try {
+                    database.execSQL("ALTER TABLE users ADD COLUMN testCount INTEGER DEFAULT 0 NOT NULL")
+                } catch (e: SQLiteException) {}
             }
         }
     }
