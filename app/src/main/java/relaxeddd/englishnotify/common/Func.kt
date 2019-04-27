@@ -23,6 +23,10 @@ fun showToast(@StringRes resId: Int) {
     Toast.makeText(App.context, resId, Toast.LENGTH_SHORT).show()
 }
 
+fun showToastLong(@StringRes resId: Int) {
+    Toast.makeText(App.context, resId, Toast.LENGTH_LONG).show()
+}
+
 fun convertDpToPixel(dp: Float): Float {
     return dp * (App.context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
 }
@@ -124,6 +128,7 @@ fun getErrorString(result: Result?) : String {
         RESULT_PURCHASE_NOT_VERIFIED -> getString(R.string.error_purchase)
         RESULT_PURCHASE_VERIFIED_ERROR -> getString(R.string.error_purchase)
         RESULT_PURCHASE_ALREADY_RECEIVED -> getString(R.string.error_purchase)
+        RESULT_ERROR_TEST_NOTIFICATION -> getString(R.string.error_test_notification)
         else -> result.msg
     }
 }

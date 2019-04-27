@@ -24,8 +24,11 @@
     <string name="error_initialization">Initialization error</string>
     <string name="error_purchase">Purchase error, write to for.gamer.develop@gmail.com</string>
     <string name="error_push_token">Push token error, please, try to restart app</string>
+    <string name="error_request">Error send request, please, check authorization and Internet connection</string>
+    <string name="error_test_notification">Error request test notification</string>
     <string name="error_text_time">Wrong time</string>
     <string name="error_update">Error update</string>
+    <string name="expand_to_see_buttons">Expand to see buttons</string>
     <string name="feedback_is_empty">Feedback is empty</string>
     <string name="feedback_send_error">Feedback send error</string>
     <string name="feedback_too_short">Feedback too short</string>
@@ -46,6 +49,7 @@
     <string name="night_time_value">From %s to %s</string>
     <string name="no_thanks">No, thanks / already</string>
     <string name="no_words">Notifications with new words have not received yet. Please, wait… (With default settings wait 1 hour)</string>
+    <string name="no_test_notifications">There are no test notifications</string>
     <string name="not_show_notifications">Don`t show notifications beginning with (24-hour clock, the number from 0 to 23)</string>
     <string name="notification_categories">Notification categories</string>
     <string name="notifications_language">Notifications language</string>
@@ -63,14 +67,19 @@
     <string name="receive_notifications_time">Receive notifications time</string>
     <string name="renew_subscription">Renew subscription</string>
     <string name="russian_at_english">Russian at english</string>
+    <string name="show_translation">Translation</string>
     <string name="search_words">Search words</string>
     <string name="send_feedback">Send feedback</string>
+    <string name="send_test_notification">Send test notification? (%s notifications left)</string>
     <string name="settings">Settings</string>
     <string name="sort_by">Sort by</string>
     <string name="subscription_days">Subscription days: %s</string>
     <string name="subscription_time_error">Subscription time is up, renew it</string>
     <string name="thank_you">Thank you!</string>
     <string name="tags_should_not_be_empty">Tags should not be empty</string>
+    <string name="test_notification_sent">Test notifications has been sent. If there are no notification after 3 minutes, please, send feedback in settings</string>
+    <string name="test_notifications_left">%s test notifications left</string>
+    <string name="test_notifications_text">Receive test notification</string>
     <string name="time_new">Time new</string>
     <string name="time_old">Time old</string>
     <string name="undefined_error">Undefined error</string>
@@ -79,7 +88,7 @@
     <string name="update_verb">Update</string>
     <string name="update_text">New app version is available. Please, update</string>
     <string name="user_not_found">User not found</string>
-    <string name="you_sign_in_as">You sign in as: %s</string>
+    <string name="you_sign_in_as">You signed in as: %s</string>
 
     <string name="label_fragment_dictionary" translatable="false">LabelFragmentDictionary</string>
     <string name="label_fragment_notifications" translatable="false">LabelFragmentNotifications</string>
@@ -109,6 +118,9 @@
         \n- New app icon
         \n- Fixes
     </string>
+
+    <string name="patch_notes_1_2_0">- Add new function - send test notification in notifications tab
+        \n- Display notification fixes </string>
 
     <!-- =========================================================================================================== -->
     <string name="irregular">Irregular verbs</string>

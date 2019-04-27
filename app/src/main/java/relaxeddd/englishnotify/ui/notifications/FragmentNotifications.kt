@@ -33,6 +33,11 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
             viewModel.onDialogPushOffTimeResult(result)
         }
     }
+    private val listenerTestNotifications: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
+        override fun onResult(result: Boolean) {
+            viewModel.onDialogTestNotificationsResult(result)
+        }
+    }
 
     override fun getLayoutResId() = R.layout.fragment_notifications
     override fun getToolbarTitleResId() = R.string.notifications
@@ -90,6 +95,14 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
                 dialog.arguments = args
                 dialog.confirmListener = listenerNightTime
                 dialog.show(this@FragmentNotifications.childFragmentManager, "Night Time Dialog")
+            }
+            NAVIGATION_DIALOG_TEST_NOTIFICATIONS -> {
+                val dialog = DialogTestNotifications()
+                val args = Bundle()
+                args.putInt(COUNT, viewModel.user.value?.testCount ?: 0)
+                dialog.arguments = args
+                dialog.confirmListener = listenerTestNotifications
+                dialog.show(this@FragmentNotifications.childFragmentManager, "Test Notifications Dialog")
             }
         }
     }

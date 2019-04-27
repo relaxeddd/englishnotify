@@ -11,7 +11,7 @@ android {
         config {
             keyAlias 'english'
             keyPassword 'd9M8aek'
-            storeFile file('D:/project/keystore.jks')
+            storeFile file('D:/Android/keystore.jks')
             storePassword 'm3nkb9'
         }
     }
@@ -21,7 +21,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 28
         versionCode 18
-        versionName "1.1.4"
+        versionName "1.2.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true

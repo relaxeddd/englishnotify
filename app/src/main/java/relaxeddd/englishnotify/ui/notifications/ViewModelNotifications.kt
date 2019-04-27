@@ -76,6 +76,19 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
             showToast(R.string.please_authorize)
         }
     }
+    val clickListenerTestNotifications = View.OnClickListener {
+        val userValue = user.value
+
+        if (userValue == null) {
+            showToast(R.string.please_authorize)
+        } else if (!userValue.receiveNotifications) {
+            showToast(R.string.enable_notifications)
+        } else if (userValue.testCount <= 0) {
+            showToast(R.string.no_test_notifications)
+        } else {
+            navigateEvent.value = Event(NAVIGATION_DIALOG_TEST_NOTIFICATIONS)
+        }
+    }
 
     init {
         repositoryUser.liveDataUser.observeForever(userObserver)
@@ -135,5 +148,13 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
     fun onDialogNotificationsViewResult(result: Int) {
         notificationsViewType.value = result
         SharedHelper.setNotificationsView(result)
+    }
+
+    fun onDialogTestNotificationsResult(result: Boolean) {
+        if (result) {
+            uiScope.launch {
+                repositoryUser.sendTestNotification()
+            }
+        }
     }
 }

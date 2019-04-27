@@ -1,16 +1,12 @@
 package relaxeddd.englishnotify.push
 
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
-import android.graphics.Typeface
 import android.os.Build
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.StyleSpan
 import androidx.core.app.NotificationCompat
 import androidx.core.app.RemoteInput
 import androidx.core.content.ContextCompat
@@ -35,15 +31,14 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             val pendingIntent = PendingIntent.getActivity(ctx, 0, intent, PendingIntent.FLAG_ONE_SHOT)
 
-            val spannableTitle = SpannableString(title)
-            spannableTitle.setSpan(StyleSpan(Typeface.BOLD), 0, spannableTitle.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-
             val channelId = getString(R.string.default_notification_channel_id)
             val notificationBuilder = NotificationCompat.Builder(ctx, channelId)
+                .setContentTitle(title)
+                .setContentText(text)
                 .setStyle(NotificationCompat.BigTextStyle().bigText(text))
-                .setContentTitle(spannableTitle)
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
+                .setPriority(Notification.PRIORITY_MAX)
 
             if (withButtons && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 val knowIntent = Intent(ctx, PushBroadcastReceiver::class.java).apply {
@@ -72,15 +67,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                             .addRemoteInput(remoteInput)
                             .build()
                     notificationBuilder.addAction(action)
-                } else {
-                    val knowPendingIntent: PendingIntent =
-                        PendingIntent.getBroadcast(ctx, Random.nextInt(1000), knowIntent, 0)
-                    notificationBuilder.addAction(R.drawable.ic_accept, getString(R.string.i_know_it), knowPendingIntent)
                 }
 
                 val dontKnowPendingIntent: PendingIntent =
                     PendingIntent.getBroadcast(ctx, Random.nextInt(1000), dontKnowIntent, 0)
-                notificationBuilder.addAction(R.drawable.ic_close, getString(R.string.i_dont_know_it), dontKnowPendingIntent)
+                notificationBuilder.addAction(R.drawable.ic_close, getString(R.string.show_translation), dontKnowPendingIntent)
             }
 
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -94,7 +85,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val channel = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    NotificationChannel(channelId, title, NotificationManager.IMPORTANCE_DEFAULT)
+                    NotificationChannel(channelId, title, NotificationManager.IMPORTANCE_HIGH)
                 } else null
 
                 if (channel != null) notificationManager.createNotificationChannel(channel)
@@ -109,16 +100,14 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             val pendingIntent = PendingIntent.getActivity(ctx, 0, intent, PendingIntent.FLAG_ONE_SHOT)
 
-            val spannableTitle = SpannableString(title)
-            spannableTitle.setSpan(StyleSpan(Typeface.BOLD), 0, spannableTitle.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-
             val channelId = getString(R.string.default_notification_channel_id)
             val notificationBuilder = NotificationCompat.Builder(ctx, channelId)
-                .setLargeIcon(BitmapFactory.decodeResource(ctx.resources, R.drawable.attention))
+                .setContentTitle(title)
+                .setContentText(text)
                 .setStyle(NotificationCompat.BigTextStyle().bigText(text))
-                .setContentTitle(spannableTitle)
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
+                .setPriority(Notification.PRIORITY_MAX)
 
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 notificationBuilder.setSmallIcon(R.drawable.ic_stat_onesignal_default)
@@ -131,7 +120,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val channel = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    NotificationChannel(channelId, title, NotificationManager.IMPORTANCE_DEFAULT)
+                    NotificationChannel(channelId, title, NotificationManager.IMPORTANCE_HIGH)
                 } else null
 
                 if (channel != null) notificationManager.createNotificationChannel(channel)
@@ -223,7 +212,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val notificationText = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP
             || SharedHelper.getNotificationsView() == SharedHelper.NOTIFICATIONS_VIEW_WITH_TRANSLATE) {
             getFullNotificationText(word, languageType)
-        } else "\n"
+        } else getString(R.string.expand_to_see_buttons)
 
         AppDatabase.getInstance(this).wordDao().insertAll(word)
 

@@ -17,6 +17,7 @@ const val FUNC_REQUEST_INIT = "requestInitNew/"
 const val FUNC_REQUEST_VERIFY_PURCHASE = "requestVerifyPurchase/"
 const val FUNC_REQUEST_SEND_FEEDBACK = "requestSendFeedback/"
 const val FUNC_REQUEST_UPDATE_USER = "requestUpdateUser/"
+const val FUNC_REQUEST_SEND_TEST_NOTIFICATION = "requestSendTestNotification/"
 
 const val EMPTY_RES = -1
 
@@ -39,6 +40,8 @@ const val RESULT_ERROR_FEEDBACK_TOO_SHORT = 1602
 const val RESULT_LOCAL_ERROR = 5101
 const val RESULT_ERROR_NETWORK = 5102
 
+const val RESULT_ERROR_TEST_NOTIFICATION = 6100
+
 const val NAVIGATION_EXIT = 999
 const val NAVIGATION_DIALOG_REPEAT = 1000
 const val NAVIGATION_DIALOG_CHECK_TAGS = 1001
@@ -59,6 +62,7 @@ const val NAVIGATION_DIALOG_NOTIFICATIONS_VIEW = 1030
 const val NAVIGATION_DIALOG_NEW_VERSION = 1040
 const val NAVIGATION_DIALOG_PATCH_NOTES = 1050
 const val NAVIGATION_DIALOG_NIGHT_TIME = 1060
+const val NAVIGATION_DIALOG_TEST_NOTIFICATIONS = 1070
 
 const val TYPE_PUSH_ENGLISH = 0
 const val TYPE_PUSH_RUSSIAN = 1
@@ -95,6 +99,7 @@ const val ERROR_USER_NOT_FOUND = "User not found"
 const val ERROR_REWARDS_NOT_FOUND = "Rewards not found"
 const val ERROR_ACHIEVEMENTS_NOT_FOUND = "Achievements not found"
 const val ERROR_APP_INFO = "App info not found"
+const val ERROR_SEND_TEST_NOTIFICATION = "Error send test notification"
 
 const val COLLECTION_USERS = "users"
 const val COLLECTION_MESSAGES = "messages"

@@ -40,6 +40,17 @@ object ApiHelper {
         }
     }
 
+    suspend fun requestSendTestNotification(firebaseUser: FirebaseUser?, tokenId: String?) : Result? {
+        val requestId = UUID.randomUUID().toString()
+        val userId = firebaseUser?.uid ?: ""
+
+        return if (tokenId?.isNotEmpty() == true) {
+            api.requestSendTestNotfication(tokenId, requestId, userId)
+        } else {
+            Result(msg = ERROR_SEND_TEST_NOTIFICATION)
+        }
+    }
+
     suspend fun requestUpdateUser(firebaseUser: FirebaseUser?, tokenId: String?, user: User) : UpdateUserResult? {
         val requestId = UUID.randomUUID().toString()
         val userId = firebaseUser?.uid ?: ""
@@ -128,6 +139,10 @@ object ApiHelper {
 
         suspend fun requestSendFeedback(tokenId: String, requestId: String, userId: String, message: String) : Result? {
             return apiHelper.requestSendFeedback(tokenPrefix + tokenId, requestId, userId, message).await()
+        }
+
+        suspend fun requestSendTestNotfication(tokenId: String, requestId: String, userId: String) : Result? {
+            return apiHelper.requestSendTestNotification(tokenPrefix + tokenId, requestId, userId).await()
         }
 
         suspend fun requestUpdateUser(tokenId: String, requestId: String, userId: String, notificationsTimeType: Int,

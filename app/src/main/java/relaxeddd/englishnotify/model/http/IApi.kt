@@ -33,6 +33,11 @@ interface IApi {
                             @Query("userId") userId: String,
                             @Query("message") message: String) : Deferred<Result?>
 
+    @GET(FUNC_REQUEST_SEND_TEST_NOTIFICATION)
+    fun requestSendTestNotification(@Header("Authorization") idToken: String,
+                            @Query("requestId") requestId: String,
+                            @Query("userId") userId: String) : Deferred<Result?>
+
     @GET(FUNC_REQUEST_UPDATE_USER)
     fun requestUpdateUser(@Header("Authorization") idToken: String,
                           @Query("requestId") requestId: String,
