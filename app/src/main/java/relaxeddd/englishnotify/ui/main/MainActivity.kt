@@ -110,11 +110,9 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
                 }
             }
             NAVIGATION_DIALOG_PRIVACY_POLICY -> {
-                if (isMyResumed) {
-                    val dialog = DialogPrivacyPolicy()
-                    dialog.setConfirmListener(listenerPrivacyPolicy)
-                    dialog.show(this@MainActivity.supportFragmentManager, "Privacy Policy Dialog")
-                }
+                val dialog = DialogPrivacyPolicy()
+                dialog.setConfirmListener(listenerPrivacyPolicy)
+                dialog.show(this@MainActivity.supportFragmentManager, "Privacy Policy Dialog")
             }
             NAVIGATION_DIALOG_RATE_APP -> {
                 if (isMyResumed) {
@@ -136,17 +134,15 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
                 )
             }
             NAVIGATION_DIALOG_NEW_VERSION -> {
-                if (dialogNewVersion == null && isMyResumed) {
+                if (dialogNewVersion == null) {
                     dialogNewVersion = DialogNewVersion()
                     dialogNewVersion?.confirmListener = listenerNewVersion
                     dialogNewVersion?.show(this@MainActivity.supportFragmentManager, "New version Dialog")
                 }
             }
             NAVIGATION_DIALOG_PATCH_NOTES -> {
-                if (isMyResumed) {
-                    val dialog = DialogPatchNotes()
-                    dialog.show(this@MainActivity.supportFragmentManager, "Patch Notes Dialog")
-                }
+                val dialog = DialogPatchNotes()
+                dialog.show(this@MainActivity.supportFragmentManager, "Patch Notes Dialog")
             }
             NAVIGATION_INIT_BILLING -> {
                 if (isMyResumed) {

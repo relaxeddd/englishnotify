@@ -80,8 +80,7 @@ object ApiHelper {
 
         try {
             return if (tokenId?.isNotEmpty() == true) {
-                api.requestUpdateUser(
-                    tokenId, requestId, userId, notificationsTimeType, receiveNotifications,
+                api.requestUpdateUser(tokenId, requestId, userId, notificationsTimeType, receiveNotifications,
                     learnLanguageType, selectedTag)
             } else {
                 UpdateUserResult(Result(RESULT_ERROR_UNAUTHORIZED), User())

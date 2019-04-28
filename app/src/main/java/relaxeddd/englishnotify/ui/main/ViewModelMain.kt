@@ -53,8 +53,8 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
             }
             if (user != null) {
                 navigateEvent.value = Event(NAVIGATION_INIT_BILLING)
+                isFirstLoad = false
             }
-            isFirstLoad = false
         }
     }
     private val actualVersionObserver = Observer<Boolean> { isActualVersion ->

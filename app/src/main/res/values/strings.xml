@@ -126,6 +126,10 @@
     <string name="patch_notes_1_2_0">- Add new function - send test notification in notifications tab
         \n- Display notification fixes </string>
 
+    <string name="patch_notes_1_2_2">- Add new function - send test notification in notifications tab
+        \n- Added function of selecting words in dictionary
+        \n- Display notification fixes </string>
+
     <!-- =========================================================================================================== -->
     <string name="irregular">Irregular verbs</string>
     <string name="hard">Hard</string>
