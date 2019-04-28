@@ -78,13 +78,11 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
                 val activity = activity
 
                 if (isResumed && activity is MainActivity) {
-                    activity.setLoadingVisible(true)
                     activity.initBilling(object: ListenerResult<Boolean> {
                         override fun onResult(result: Boolean) {
                             val freshActivity = this@FragmentSettings.activity
 
                             if (freshActivity != null && freshActivity is MainActivity) {
-                                activity.setLoadingVisible(false)
                                 if (result) {
                                     val dialog = DialogSubscription()
                                     dialog.listener = listenerSubscription

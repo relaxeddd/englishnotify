@@ -148,6 +148,11 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
                     dialog.show(this@MainActivity.supportFragmentManager, "Patch Notes Dialog")
                 }
             }
+            NAVIGATION_INIT_BILLING -> {
+                if (isMyResumed) {
+                    initBilling()
+                }
+            }
             else -> super.onNavigationEvent(eventId)
         }
     }

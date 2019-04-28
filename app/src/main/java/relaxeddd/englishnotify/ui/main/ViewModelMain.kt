@@ -50,6 +50,9 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
                 isRateDialogShown = true
                 navigateEvent.value = Event(NAVIGATION_DIALOG_RATE_APP)
             }
+            if (user != null) {
+                navigateEvent.value = Event(NAVIGATION_INIT_BILLING)
+            }
         }
     }
     private val actualVersionObserver = Observer<Boolean> { isActualVersion ->
