@@ -110,13 +110,17 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
                 }
             }
             NAVIGATION_DIALOG_PRIVACY_POLICY -> {
-                val dialog = DialogPrivacyPolicy()
-                dialog.setConfirmListener(listenerPrivacyPolicy)
-                dialog.show(this@MainActivity.supportFragmentManager, "Privacy Policy Dialog")
+                if (isMyResumed) {
+                    val dialog = DialogPrivacyPolicy()
+                    dialog.setConfirmListener(listenerPrivacyPolicy)
+                    dialog.show(this@MainActivity.supportFragmentManager, "Privacy Policy Dialog")
+                }
             }
             NAVIGATION_DIALOG_RATE_APP -> {
-                val dialog = DialogRateApp()
-                dialog.show(this@MainActivity.supportFragmentManager, "Rate app Dialog")
+                if (isMyResumed) {
+                    val dialog = DialogRateApp()
+                    dialog.show(this@MainActivity.supportFragmentManager, "Rate app Dialog")
+                }
             }
             NAVIGATION_EXIT -> {
                 finishAffinity()
@@ -132,15 +136,17 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
                 )
             }
             NAVIGATION_DIALOG_NEW_VERSION -> {
-                if (dialogNewVersion == null) {
+                if (dialogNewVersion == null && isMyResumed) {
                     dialogNewVersion = DialogNewVersion()
                     dialogNewVersion?.confirmListener = listenerNewVersion
                     dialogNewVersion?.show(this@MainActivity.supportFragmentManager, "New version Dialog")
                 }
             }
             NAVIGATION_DIALOG_PATCH_NOTES -> {
-                val dialog = DialogPatchNotes()
-                dialog.show(this@MainActivity.supportFragmentManager, "Patch Notes Dialog")
+                if (isMyResumed) {
+                    val dialog = DialogPatchNotes()
+                    dialog.show(this@MainActivity.supportFragmentManager, "Patch Notes Dialog")
+                }
             }
             else -> super.onNavigationEvent(eventId)
         }

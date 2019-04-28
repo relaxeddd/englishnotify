@@ -17,6 +17,7 @@ abstract class ActivityBase<VM : ViewModelBase, B : ViewDataBinding> : AppCompat
     private var listenerHomeMenuButton: () -> Unit = {}
     protected lateinit var binding: B
     protected lateinit var viewModel: VM
+    protected var isMyResumed = false
 
     @LayoutRes
     abstract fun getLayoutResId() : Int
@@ -34,6 +35,16 @@ abstract class ActivityBase<VM : ViewModelBase, B : ViewDataBinding> : AppCompat
         configureBinding()
         binding.lifecycleOwner = this
         binding.executePendingBindings()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        isMyResumed = true
+    }
+
+    override fun onPause() {
+        super.onPause()
+        isMyResumed = false
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
