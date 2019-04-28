@@ -40,7 +40,6 @@
                     android:ellipsize="end"/>
 
             <TextView
-                    android:text=""
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/text_word_transcription"
@@ -56,9 +55,18 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/text_word_translation"
                     app:layout_constraintStart_toEndOf="@+id/text_word_transcription"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/check_box_word_select"
                     app:layout_constraintTop_toTopOf="@+id/text_word_transcription"
                     android:ellipsize="end"/>
+
+            <CheckBox
+                    android:layout_width="@dimen/size_34"
+                    android:layout_height="@dimen/size_34"
+                    android:id="@+id/check_box_word_select"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toEndOf="@+id/text_word_translation"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/text_word_translation"/>
 
             <LinearLayout
                 android:id="@+id/constraint_word_drop_dawn"

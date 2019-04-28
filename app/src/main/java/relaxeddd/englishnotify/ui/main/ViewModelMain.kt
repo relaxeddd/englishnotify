@@ -20,11 +20,12 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
     val isShowLoading = MutableLiveData<Boolean>(false)
     var authTimer: Timer? = null
     var isRateDialogShown = false
+    var isFirstLoad = true
 
     private val userObserver = Observer<User?> { user ->
         authTimer?.cancel()
 
-        if (SharedHelper.isPrivacyPolicyConfirmed() && (user == null || RepositoryCommon.getInstance().firebaseUser == null)) {
+        if (isFirstLoad && SharedHelper.isPrivacyPolicyConfirmed() && (user == null || RepositoryCommon.getInstance().firebaseUser == null)) {
             authTimer = Timer()
             authTimer?.schedule(object: TimerTask() {
                 override fun run() {
@@ -49,6 +50,10 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
             if (user != null && !isRateDialogShown && !SharedHelper.isCancelledRateDialog() && launchCount % 3 == 0) {
                 isRateDialogShown = true
                 navigateEvent.value = Event(NAVIGATION_DIALOG_RATE_APP)
+            }
+            if (user != null) {
+                navigateEvent.value = Event(NAVIGATION_INIT_BILLING)
+                isFirstLoad = false
             }
         }
     }

@@ -46,12 +46,16 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
     override fun onNavigationEvent(eventId: Int) {
         when (eventId) {
             NAVIGATION_DIALOG_APP_ABOUT -> {
-                DialogAppAbout().show(this@FragmentSettings.childFragmentManager, "Learn Language Dialog")
+                if (isResumed) {
+                    DialogAppAbout().show(this@FragmentSettings.childFragmentManager, "Learn Language Dialog")
+                }
             }
             NAVIGATION_DIALOG_CONFIRM_LOGOUT -> {
-                val dialog = DialogConfirmLogout()
-                dialog.setConfirmListener(listenerConfirmLogout)
-                dialog.show(this@FragmentSettings.childFragmentManager, "Confirm Logout Dialog")
+                if (isResumed) {
+                    val dialog = DialogConfirmLogout()
+                    dialog.setConfirmListener(listenerConfirmLogout)
+                    dialog.show(this@FragmentSettings.childFragmentManager, "Confirm Logout Dialog")
+                }
             }
             NAVIGATION_GOOGLE_LOGOUT -> {
                 activity?.let {
@@ -64,21 +68,21 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
                 openWebApplication(activity)
             }
             NAVIGATION_DIALOG_SEND_FEEDBACK -> {
-                val dialog = DialogSendFeedback()
-                dialog.setConfirmListener(listenerFeedbackDialog)
-                dialog.show(this@FragmentSettings.childFragmentManager, "Send feedback Dialog")
+                if (isResumed) {
+                    val dialog = DialogSendFeedback()
+                    dialog.setConfirmListener(listenerFeedbackDialog)
+                    dialog.show(this@FragmentSettings.childFragmentManager, "Send feedback Dialog")
+                }
             }
             NAVIGATION_DIALOG_SUBSCRIPTION -> {
                 val activity = activity
 
-                if (activity is MainActivity) {
-                    activity.setLoadingVisible(true)
+                if (isResumed && activity is MainActivity) {
                     activity.initBilling(object: ListenerResult<Boolean> {
                         override fun onResult(result: Boolean) {
                             val freshActivity = this@FragmentSettings.activity
 
                             if (freshActivity != null && freshActivity is MainActivity) {
-                                activity.setLoadingVisible(false)
                                 if (result) {
                                     val dialog = DialogSubscription()
                                     dialog.listener = listenerSubscription

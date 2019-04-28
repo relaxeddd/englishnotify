@@ -1,9 +1,7 @@
 package relaxeddd.englishnotify.model.http
 
 import com.google.firebase.auth.FirebaseUser
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
-import org.json.JSONArray
 import relaxeddd.englishnotify.BuildConfig
 import relaxeddd.englishnotify.common.*
 import retrofit2.Retrofit
@@ -11,6 +9,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 import java.util.concurrent.TimeUnit
 import com.google.firebase.iid.FirebaseInstanceId
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 
 object ApiHelper {
 
@@ -22,10 +23,16 @@ object ApiHelper {
         val email = firebaseUser?.email ?: ""
         val appVersion = BuildConfig.VERSION_CODE
 
-        return if (tokenId?.isNotEmpty() == true) {
-            api.requestInit(tokenId, requestId, userId, appVersion, pushToken, email)
-        } else {
-            InitData(Result(RESULT_ERROR_UNAUTHORIZED), User())
+        try {
+            return if (tokenId?.isNotEmpty() == true) {
+                api.requestInit(tokenId, requestId, userId, appVersion, pushToken, email)
+            } else {
+                InitData(Result(RESULT_ERROR_UNAUTHORIZED), User())
+            }
+        } catch (e: UnknownHostException) {
+            return InitData(Result(RESULT_ERROR_INTERNET), User())
+        } catch (e: SocketTimeoutException) {
+            return InitData(Result(RESULT_ERROR_INTERNET), User())
         }
     }
 
@@ -33,10 +40,16 @@ object ApiHelper {
         val requestId = UUID.randomUUID().toString()
         val userId = firebaseUser?.uid ?: ""
 
-        return if (tokenId?.isNotEmpty() == true) {
-            api.requestSendFeedback(tokenId, requestId, userId, feedback)
-        } else {
-            Result(msg = ERROR_TOKEN_NOT_INIT)
+        try {
+            return if (tokenId?.isNotEmpty() == true) {
+                api.requestSendFeedback(tokenId, requestId, userId, feedback)
+            } else {
+                Result(msg = ERROR_TOKEN_NOT_INIT)
+            }
+        } catch (e: UnknownHostException) {
+            return Result(RESULT_ERROR_INTERNET)
+        } catch (e: SocketTimeoutException) {
+            return Result(RESULT_ERROR_INTERNET)
         }
     }
 
@@ -44,10 +57,16 @@ object ApiHelper {
         val requestId = UUID.randomUUID().toString()
         val userId = firebaseUser?.uid ?: ""
 
-        return if (tokenId?.isNotEmpty() == true) {
-            api.requestSendTestNotfication(tokenId, requestId, userId)
-        } else {
-            Result(msg = ERROR_SEND_TEST_NOTIFICATION)
+        try {
+            return if (tokenId?.isNotEmpty() == true) {
+                api.requestSendTestNotfication(tokenId, requestId, userId)
+            } else {
+                Result(msg = ERROR_SEND_TEST_NOTIFICATION)
+            }
+        } catch (e: UnknownHostException) {
+            return Result(RESULT_ERROR_INTERNET)
+        } catch (e: SocketTimeoutException) {
+            return Result(RESULT_ERROR_INTERNET)
         }
     }
 
@@ -59,11 +78,17 @@ object ApiHelper {
         val learnLanguageType = user.learnLanguageType
         val selectedTag = user.selectedTag
 
-        return if (tokenId?.isNotEmpty() == true) {
-            api.requestUpdateUser(tokenId, requestId, userId, notificationsTimeType, receiveNotifications,
-                learnLanguageType, selectedTag)
-        } else {
-            UpdateUserResult(Result(RESULT_ERROR_UNAUTHORIZED), User())
+        try {
+            return if (tokenId?.isNotEmpty() == true) {
+                api.requestUpdateUser(tokenId, requestId, userId, notificationsTimeType, receiveNotifications,
+                    learnLanguageType, selectedTag)
+            } else {
+                UpdateUserResult(Result(RESULT_ERROR_UNAUTHORIZED), User())
+            }
+        } catch (e: UnknownHostException) {
+            return UpdateUserResult(Result(RESULT_ERROR_INTERNET), User())
+        } catch (e: SocketTimeoutException) {
+            return UpdateUserResult(Result(RESULT_ERROR_INTERNET), User())
         }
     }
 
@@ -72,10 +97,16 @@ object ApiHelper {
         val requestId = UUID.randomUUID().toString()
         val userId = firebaseUser?.uid ?: ""
 
-        return if (tokenId?.isNotEmpty() == true) {
-            api.requestVerifyPurchase(tokenId, requestId, userId, purchaseTokenId, signature, originalJson, itemType)
-        } else {
-            PurchaseResult(Result(RESULT_PURCHASE_VERIFIED_ERROR))
+        try {
+            return if (tokenId?.isNotEmpty() == true) {
+                api.requestVerifyPurchase(tokenId, requestId, userId, purchaseTokenId, signature, originalJson, itemType)
+            } else {
+                PurchaseResult(Result(RESULT_PURCHASE_VERIFIED_ERROR))
+            }
+        } catch (e: UnknownHostException) {
+            return PurchaseResult(Result(RESULT_ERROR_INTERNET))
+        } catch (e: SocketTimeoutException) {
+            return PurchaseResult(Result(RESULT_ERROR_INTERNET))
         }
     }
 

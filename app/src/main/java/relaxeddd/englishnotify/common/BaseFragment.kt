@@ -23,6 +23,7 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
         }
     protected lateinit var viewModel: VM
     protected lateinit var binding: B
+    protected var menu: Menu? = null
 
     @LayoutRes
     abstract fun getLayoutResId() : Int
@@ -56,6 +57,7 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
+        this.menu = menu
         if (getMenuResId() != EMPTY_RES) {
             inflater.inflate(getMenuResId(), menu)
         }

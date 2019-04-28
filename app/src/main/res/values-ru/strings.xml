@@ -12,12 +12,15 @@
     <string name="app_language">Язык приложения</string>
     <string name="answer_correct">Правильный ответ</string>
     <string name="answer_incorrect">Неправильный ответ</string>
+    <string name="cancel_check">Отменить выбранное</string>
+    <string name="check_all">Выбрать все</string>
     <string name="close">Закрыть</string>
     <string name="confirm">Подтвердить</string>
     <string name="confirm_and_continue">Подтвердить и продолжить</string>
     <string name="delete">Удалить</string>
     <string name="dictionary">Словарь</string>
     <string name="do_you_really_want_to_logout">Вы действительно хотите выйти из аккаунта?</string>
+    <string name="do_you_really_want_to_delete_words">Вы действительно хотите удалить выбранные слова?</string>
     <string name="duration_not_show">продолжительностью</string>
     <string name="enable_notifications">Включить уведомления</string>
     <string name="english_at_russian">С английского на русский</string>
@@ -72,6 +75,7 @@
     <string name="search_words">Искать слова</string>
     <string name="send_feedback">Отправить отзыв</string>
     <string name="send_test_notification">Отправить тестовое уведомление? (Осталось: %s)</string>
+    <string name="select">Выбрать</string>
     <string name="settings">Настройки</string>
     <string name="sort_by">Сортировать по</string>
     <string name="subscription_days">Дней подписки: %s</string>
@@ -115,6 +119,10 @@
         \n- Фиксы</string>
 
     <string name="patch_notes_1_2_0">- Добавлена новая функция в разделе уведомления - отправить тестовое уведомление.
+        \n- Правки отображения уведомлений</string>
+
+    <string name="patch_notes_1_2_2">- Добавлена новая функция в разделе уведомления - отправить тестовое уведомление.
+        \n- В словаре добавлена функция выделения нескольких слов
         \n- Правки отображения уведомлений</string>
 
     <!-- =========================================================================================================== -->

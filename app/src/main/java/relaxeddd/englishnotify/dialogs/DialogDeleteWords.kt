@@ -5,20 +5,19 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import relaxeddd.englishnotify.R
+import relaxeddd.englishnotify.common.ListenerResult
 
-class DialogPatchNotes : DialogFragment() {
+class DialogDeleteWords : DialogFragment() {
 
-    companion object {
-        const val VERSION = "1.2.2"
-    }
+    var confirmListener: ListenerResult<Boolean>? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
 
-            builder.setTitle(getString(R.string.new_version))
-                .setMessage(getString(R.string.patch_notes_1_2_2))
-                .setPositiveButton(android.R.string.ok) { _, _ -> }
+            builder.setMessage(R.string.do_you_really_want_to_delete_words)
+                .setPositiveButton(android.R.string.yes) { _, _ -> confirmListener?.onResult(true) }
+                .setNegativeButton(android.R.string.no) { _, _ -> confirmListener?.onResult(false) }
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
     }

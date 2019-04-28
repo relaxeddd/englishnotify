@@ -26,6 +26,7 @@ abstract class ActivityBilling<VM : ViewModelBase, B : ViewDataBinding> : Activi
 
     private var billingClient: BillingClient? = null
     private var isBillingServiceConnected = false
+    private var attemptConnect = 0
 
     //------------------------------------------------------------------------------------------------------------------
     override fun onPurchasesUpdated(responseCode: Int, purchases: MutableList<Purchase>?) {
@@ -40,7 +41,7 @@ abstract class ActivityBilling<VM : ViewModelBase, B : ViewDataBinding> : Activi
         }
     }
 
-    private fun requestSkuDetails(resultListener: ListenerResult<Boolean>) {
+    private fun requestSkuDetails(resultListener: ListenerResult<Boolean>?) {
         val purchasesInfo = billingClient?.queryPurchases(BillingClient.SkuType.INAPP)
 
         if (purchasesInfo?.purchasesList?.isNotEmpty() == true) {
@@ -49,7 +50,7 @@ abstract class ActivityBilling<VM : ViewModelBase, B : ViewDataBinding> : Activi
             }
         }
         if (listSkuDetails.isNotEmpty()) {
-            resultListener.onResult(true)
+            resultListener?.onResult(true)
             return
         }
 
@@ -64,11 +65,11 @@ abstract class ActivityBilling<VM : ViewModelBase, B : ViewDataBinding> : Activi
             if (responseCode == BillingClient.BillingResponse.OK) {
                 listSkuDetails = skuDetailsList
             }
-            resultListener.onResult(responseCode == BillingClient.BillingResponse.OK)
+            resultListener?.onResult(responseCode == BillingClient.BillingResponse.OK)
         }
     }
 
-    fun initBilling(resultListener: ListenerResult<Boolean>) {
+    fun initBilling(resultListener: ListenerResult<Boolean>? = null) {
         if (billingClient == null) {
             billingClient = BillingClient.newBuilder(this).setListener(this).build()
         }
@@ -84,14 +85,21 @@ abstract class ActivityBilling<VM : ViewModelBase, B : ViewDataBinding> : Activi
                     requestSkuDetails(resultListener)
                 } else if (billingResponseCode == BillingClient.BillingResponse.BILLING_UNAVAILABLE) {
                     showToast("Billing unavailable")
-                    resultListener.onResult(false)
+                    resultListener?.onResult(false)
+                } else if (billingResponseCode == BillingClient.BillingResponse.DEVELOPER_ERROR) {
+                    if (attemptConnect <= 3) {
+                        showToast(R.string.loading)
+                        attemptConnect++
+                    } else {
+                        resultListener?.onResult(false)
+                    }
                 } else {
-                    resultListener.onResult(false)
+                    resultListener?.onResult(false)
                 }
             }
             override fun onBillingServiceDisconnected() {
                 isBillingServiceConnected = false
-                resultListener.onResult(false)
+                resultListener?.onResult(false)
             }
         })
     }
@@ -151,12 +159,12 @@ abstract class ActivityBilling<VM : ViewModelBase, B : ViewDataBinding> : Activi
     private suspend fun onPurchaseResultSuccess(purchaseResult: PurchaseResult) {
         consumePurchase(purchaseResult)
 
-        val user: User? = RepositoryUser.getInstance(AppDatabase.getInstance(this).userDao()).liveDataUser.value
+        val user: User? = RepositoryUser.getInstance().liveDataUser.value
         val newSubTime = purchaseResult.refillInfo.subscriptionTime
 
         if (newSubTime != 0L && user != null) {
             user.subscriptionTime = newSubTime
-            AppDatabase.getInstance(this).userDao().insert(user)
+            RepositoryUser.getInstance().liveDataUser.postValue(user)
         }
     }
 

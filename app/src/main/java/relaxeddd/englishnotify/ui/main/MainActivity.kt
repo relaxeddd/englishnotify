@@ -115,8 +115,10 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
                 dialog.show(this@MainActivity.supportFragmentManager, "Privacy Policy Dialog")
             }
             NAVIGATION_DIALOG_RATE_APP -> {
-                val dialog = DialogRateApp()
-                dialog.show(this@MainActivity.supportFragmentManager, "Rate app Dialog")
+                if (isMyResumed) {
+                    val dialog = DialogRateApp()
+                    dialog.show(this@MainActivity.supportFragmentManager, "Rate app Dialog")
+                }
             }
             NAVIGATION_EXIT -> {
                 finishAffinity()
@@ -141,6 +143,11 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
             NAVIGATION_DIALOG_PATCH_NOTES -> {
                 val dialog = DialogPatchNotes()
                 dialog.show(this@MainActivity.supportFragmentManager, "Patch Notes Dialog")
+            }
+            NAVIGATION_INIT_BILLING -> {
+                if (isMyResumed) {
+                    initBilling()
+                }
             }
             else -> super.onNavigationEvent(eventId)
         }

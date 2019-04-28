@@ -1,8 +1,6 @@
 package relaxeddd.englishnotify.model.repository
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import relaxeddd.englishnotify.model.db.UserDao
 import relaxeddd.englishnotify.model.http.ApiHelper
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
@@ -14,34 +12,18 @@ import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.push.MyFirebaseMessagingService
 
-class RepositoryUser private constructor(val userDao: UserDao) {
+class RepositoryUser private constructor() {
 
     companion object {
         @Volatile
         private var instance: RepositoryUser? = null
-        fun getInstance(userDao: UserDao) = instance ?: synchronized(this) {
-            instance ?: RepositoryUser(userDao).also { instance = it }
+        fun getInstance() = instance ?: synchronized(this) {
+            instance ?: RepositoryUser().also { instance = it }
         }
     }
 
-    private val userObserver = Observer<User?> { user ->
-        liveDataUser.postValue(user)
-    }
-
-    var userId: String = USER_ID_TEST
-        set(value) {
-            field = value
-            liveDataUserRoom.removeObserver(userObserver)
-            liveDataUserRoom = userDao.findById(value)
-            subscribeLiveDataUser()
-        }
-    private var liveDataUserRoom = userDao.findById(userId)
-    var liveDataUser = MutableLiveData<User>(liveDataUserRoom.value)
+    var liveDataUser = MutableLiveData<User>(null)
     val liveDataIsActualVersion = MutableLiveData<Boolean>(true)
-
-    init {
-        subscribeLiveDataUser()
-    }
 
     fun isAuthorized() = FirebaseAuth.getInstance().currentUser != null
 
@@ -71,8 +53,7 @@ class RepositoryUser private constructor(val userDao: UserDao) {
                 val answerInitData = ApiHelper.requestInit(firebaseUser, tokenId, pushToken)
 
                 if (answerInitData?.result != null && answerInitData.result.isSuccess() && answerInitData.user?.userId?.isNotEmpty() == true) {
-                    userDao.insert(answerInitData.user)
-                    userId = answerInitData.user.userId
+                    liveDataUser.value = answerInitData.user
                     SharedHelper.setLearnLanguageType(answerInitData.user.learnLanguageType)
 
                     if (!answerInitData.isActualVersion) {
@@ -88,13 +69,9 @@ class RepositoryUser private constructor(val userDao: UserDao) {
     }
 
     suspend fun deleteUserInfo() {
-        val user = liveDataUserRoom.value
-        if (user != null) {
-            userDao.delete(user)
-            withContext(Dispatchers.Main) {
-                userId = ""
-                showToast(R.string.logout_success)
-            }
+        withContext(Dispatchers.Main) {
+            liveDataUser.postValue(null)
+            showToast(R.string.logout_success)
         }
     }
 
@@ -142,7 +119,7 @@ class RepositoryUser private constructor(val userDao: UserDao) {
             showToastLong(R.string.test_notification_sent)
             val user = User(liveDataUser.value ?: return)
             user.testCount -= 1
-            userDao.insert(user)
+            liveDataUser.postValue(user)
         } else if (answer != null) {
             showToast(getErrorString(answer))
         } else {
@@ -151,12 +128,8 @@ class RepositoryUser private constructor(val userDao: UserDao) {
     }
 
     //------------------------------------------------------------------------------------------------------------------
-    private fun subscribeLiveDataUser() {
-        liveDataUserRoom.observeForever(userObserver)
-    }
-
     private suspend fun updateUser(user: User, oldUser: User?) {
-        userDao.insert(user)
+        liveDataUser.postValue(user)
 
         val firebaseUser = RepositoryCommon.getInstance().firebaseUser
         val tokenId = RepositoryCommon.getInstance().tokenId
@@ -164,7 +137,7 @@ class RepositoryUser private constructor(val userDao: UserDao) {
 
         if (updateResult != null && updateResult.result !== null && !updateResult.result.isSuccess()) {
             showToast(getErrorString(updateResult.result))
-            userDao.insert(oldUser ?: return)
+            liveDataUser.postValue(oldUser)
         } else if (updateResult != null && updateResult.result !== null) {
             SharedHelper.setLearnLanguageType(user.learnLanguageType)
         } else {
