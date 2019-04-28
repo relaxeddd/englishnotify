@@ -17,4 +17,8 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
     fun updateWord(word : Word) {
         wordDao.insertAll(word)
     }
+
+    fun deleteWord(word : Word) {
+        wordDao.delete(word)
+    }
 }

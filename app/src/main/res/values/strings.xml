@@ -11,12 +11,15 @@
     <string name="app_language">App language</string>
     <string name="answer_correct">Correct answer</string>
     <string name="answer_incorrect">Incorrect answer</string>
+    <string name="cancel_check">Cancel check</string>
+    <string name="check_all">Check all</string>
     <string name="close">Close</string>
     <string name="confirm">Confirm</string>
     <string name="confirm_and_continue">Confirm and continue</string>
     <string name="delete">Delete</string>
     <string name="dictionary">Dictionary</string>
     <string name="do_you_really_want_to_logout">Do you really want to exit?</string>
+    <string name="do_you_really_want_to_delete_words">Do you really want to delete words?</string>
     <string name="duration_not_show">with duration</string>
     <string name="enable_notifications">Enable notifications</string>
     <string name="english_at_russian">English at russian</string>
@@ -71,6 +74,7 @@
     <string name="search_words">Search words</string>
     <string name="send_feedback">Send feedback</string>
     <string name="send_test_notification">Send test notification? (%s notifications left)</string>
+    <string name="select">Select</string>
     <string name="settings">Settings</string>
     <string name="sort_by">Sort by</string>
     <string name="subscription_days">Subscription days: %s</string>

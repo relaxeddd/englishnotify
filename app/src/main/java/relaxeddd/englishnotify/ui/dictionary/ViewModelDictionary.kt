@@ -67,8 +67,13 @@ class ViewModelDictionary(private val repositoryWord: RepositoryWord, private va
 
     fun deleteWord(word: Word) {
         ioScope.launch {
-            word.isDeleted = true
-            repositoryWord.updateWord(word)
+            repositoryWord.deleteWord(word)
+        }
+    }
+
+    fun deleteWords(words: Collection<Word>) {
+        ioScope.launch {
+            words.forEach { repositoryWord.deleteWord(it) }
         }
     }
 

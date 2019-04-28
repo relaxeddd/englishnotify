@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CompoundButton
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -17,15 +18,23 @@ import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuPopupHelper
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.HashSet
 
 class AdapterWords(val viewModel: ViewModelDictionary) : ListAdapter<Word, AdapterWords.ViewHolder>(
     WordDiffCallback()) {
 
+    var isSelectState = false
+        set(value) {
+            field = value
+            if (!value) checkList.clear()
+            notifyDataSetChanged()
+        }
     var languageType = 0
         set(value) {
             field = value
             notifyDataSetChanged()
         }
+    var checkList = HashSet<Word>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -37,9 +46,25 @@ class AdapterWords(val viewModel: ViewModelDictionary) : ListAdapter<Word, Adapt
         getItem(position).let { word ->
             with(holder) {
                 itemView.tag = word.eng
-                bind(createOnClickListener(this), createOnLongClickListener(this, word), word, languageType)
+                bind(createOnClickListener(this), createOnLongClickListener(this, word), word, languageType,
+                    isSelectState, checkList, CompoundButton.OnCheckedChangeListener { _, isChecked ->
+                        if (isChecked) {
+                            checkList.add(word)
+                        } else {
+                            checkList.remove(word)
+                        }
+                    })
             }
         }
+    }
+
+    fun checkAll() {
+        if (checkList.size != currentList.size) {
+            checkList.addAll(currentList)
+        } else {
+            checkList.clear()
+        }
+        notifyDataSetChanged()
     }
 
     private fun createOnLongClickListener(holder: ViewHolder, word: Word): View.OnLongClickListener {
@@ -60,7 +85,8 @@ class AdapterWords(val viewModel: ViewModelDictionary) : ListAdapter<Word, Adapt
 
         var isOpen = false
 
-        fun bind(listener: View.OnClickListener, longListener: View.OnLongClickListener, word: Word, languageType: Int) {
+        fun bind(listener: View.OnClickListener, longListener: View.OnLongClickListener, word: Word, languageType: Int,
+                 isSelectState: Boolean, checkList: HashSet<Word>, checkedChangeListener: CompoundButton.OnCheckedChangeListener?) {
             with(binding) {
                 clickListener = listener
                 longClickListener = longListener
@@ -84,6 +110,14 @@ class AdapterWords(val viewModel: ViewModelDictionary) : ListAdapter<Word, Adapt
                 textWordSampleEng.text = word.sampleEng
                 textWordSampleRus.text = word.sampleRus
                 textWordTimestamp.text = SimpleDateFormat(dateFormat, Locale.getDefault()).format(word.timestamp) ?: ""
+                if (isSelectState) {
+                    checkBoxWordSelect.visibility = View.VISIBLE
+                    checkBoxWordSelect.isChecked = checkList.contains(word)
+                    checkBoxWordSelect.setOnCheckedChangeListener(checkedChangeListener)
+                } else {
+                    checkBoxWordSelect.visibility = View.GONE
+                    checkBoxWordSelect.isChecked = false
+                }
             }
         }
     }

@@ -10,6 +10,7 @@ import relaxeddd.englishnotify.dialogs.DialogSortBy
 import kotlinx.android.synthetic.main.fragment_dictionary.*
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.FragmentDictionaryBinding
+import relaxeddd.englishnotify.dialogs.DialogDeleteWords
 
 class FragmentDictionary : BaseFragment<ViewModelDictionary, FragmentDictionaryBinding>() {
 
@@ -37,12 +38,38 @@ class FragmentDictionary : BaseFragment<ViewModelDictionary, FragmentDictionaryB
     override fun getLayoutResId() = R.layout.fragment_dictionary
     override fun getViewModelFactory() = InjectorUtils.provideDictionaryViewModelFactory(requireContext())
     override fun getViewModelClass() = ViewModelDictionary::class.java
-    override fun getMenuResId() = R.menu.menu_filter_search
+    override fun getMenuResId() = R.menu.menu_fragment_dictionary
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.item_menu_filter -> {
                 animateDropdown(card_view_dictionary_filter, card_view_dictionary_filter.visibility == View.GONE, animBlock)
+                return true
+            }
+            R.id.item_menu_check -> {
+                setCkeckMode(true)
+                adapter.isSelectState = true
+                return true
+            }
+            R.id.item_menu_cancel_check -> {
+                setCkeckMode(false)
+                adapter.isSelectState = false
+                return true
+            }
+            R.id.item_menu_check_all -> {
+                adapter.checkAll()
+                return true
+            }
+            R.id.item_menu_delete -> {
+                val dialog = DialogDeleteWords()
+                dialog.confirmListener = object: ListenerResult<Boolean> {
+                    override fun onResult(result: Boolean) {
+                        viewModel.deleteWords(HashSet(adapter.checkList))
+                        setCkeckMode(false)
+                        adapter.isSelectState = false
+                    }
+                }
+                dialog.show(this@FragmentDictionary.childFragmentManager, "Confirm delete Dialog")
                 return true
             }
             else -> return super.onOptionsItemSelected(item)
@@ -97,5 +124,14 @@ class FragmentDictionary : BaseFragment<ViewModelDictionary, FragmentDictionaryB
     override fun onSearchTextChanged(searchText: String) {
         super.onSearchTextChanged(searchText)
         viewModel.applySearch(searchText)
+    }
+
+    private fun setCkeckMode(isCheckMode: Boolean) {
+        menu?.findItem(R.id.item_menu_check)?.isVisible = !isCheckMode
+        menu?.findItem(R.id.item_menu_search)?.isVisible = !isCheckMode
+        menu?.findItem(R.id.item_menu_filter)?.isVisible = !isCheckMode
+        menu?.findItem(R.id.item_menu_check_all)?.isVisible = isCheckMode
+        menu?.findItem(R.id.item_menu_cancel_check)?.isVisible = isCheckMode
+        menu?.findItem(R.id.item_menu_delete)?.isVisible = isCheckMode
     }
 }
