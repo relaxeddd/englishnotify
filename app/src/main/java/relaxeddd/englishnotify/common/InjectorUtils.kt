@@ -36,7 +36,7 @@ object InjectorUtils {
 object RepositoryFactory {
 
     internal fun getUserRepository(context: Context): RepositoryUser {
-        return RepositoryUser.getInstance(AppDatabase.getInstance(context.applicationContext).userDao())
+        return RepositoryUser.getInstance()
     }
 
     internal fun getWordRepository(context: Context): RepositoryWord {

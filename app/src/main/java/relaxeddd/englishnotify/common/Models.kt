@@ -4,11 +4,9 @@ import androidx.annotation.Keep
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = USERS)
 @Keep
 data class User(
 
-    @PrimaryKey
     val userId: String = "",
     val email: String = "",
     var receiveNotifications: Boolean = true,

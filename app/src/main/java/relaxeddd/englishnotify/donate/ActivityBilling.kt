@@ -151,12 +151,12 @@ abstract class ActivityBilling<VM : ViewModelBase, B : ViewDataBinding> : Activi
     private suspend fun onPurchaseResultSuccess(purchaseResult: PurchaseResult) {
         consumePurchase(purchaseResult)
 
-        val user: User? = RepositoryUser.getInstance(AppDatabase.getInstance(this).userDao()).liveDataUser.value
+        val user: User? = RepositoryUser.getInstance().liveDataUser.value
         val newSubTime = purchaseResult.refillInfo.subscriptionTime
 
         if (newSubTime != 0L && user != null) {
             user.subscriptionTime = newSubTime
-            AppDatabase.getInstance(this).userDao().insert(user)
+            RepositoryUser.getInstance().liveDataUser.postValue(user)
         }
     }
 
