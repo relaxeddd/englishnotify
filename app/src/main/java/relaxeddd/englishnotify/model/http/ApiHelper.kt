@@ -1,5 +1,6 @@
 package relaxeddd.englishnotify.model.http
 
+import android.system.ErrnoException
 import com.google.firebase.auth.FirebaseUser
 import okhttp3.OkHttpClient
 import relaxeddd.englishnotify.BuildConfig
@@ -10,6 +11,9 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import com.google.firebase.iid.FirebaseInstanceId
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import okhttp3.internal.http2.StreamResetException
+import retrofit2.HttpException
+import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
@@ -33,6 +37,12 @@ object ApiHelper {
             return InitData(Result(RESULT_ERROR_INTERNET), User())
         } catch (e: SocketTimeoutException) {
             return InitData(Result(RESULT_ERROR_INTERNET), User())
+        } catch (e: StreamResetException) {
+            return InitData(Result(RESULT_ERROR_INTERNET), User())
+        } catch (e: HttpException) {
+            return InitData(Result(RESULT_ERROR_INTERNET), User())
+        } catch (e: ConnectException) {
+            return InitData(Result(RESULT_ERROR_INTERNET), User())
         }
     }
 
@@ -50,6 +60,12 @@ object ApiHelper {
             return Result(RESULT_ERROR_INTERNET)
         } catch (e: SocketTimeoutException) {
             return Result(RESULT_ERROR_INTERNET)
+        } catch (e: StreamResetException) {
+            return Result(RESULT_ERROR_INTERNET)
+        } catch (e: HttpException) {
+            return Result(RESULT_ERROR_INTERNET)
+        } catch (e: ConnectException) {
+            return Result(RESULT_ERROR_INTERNET)
         }
     }
 
@@ -66,6 +82,12 @@ object ApiHelper {
         } catch (e: UnknownHostException) {
             return Result(RESULT_ERROR_INTERNET)
         } catch (e: SocketTimeoutException) {
+            return Result(RESULT_ERROR_INTERNET)
+        } catch (e: StreamResetException) {
+            return Result(RESULT_ERROR_INTERNET)
+        } catch (e: HttpException) {
+            return Result(RESULT_ERROR_INTERNET)
+        } catch (e: ConnectException) {
             return Result(RESULT_ERROR_INTERNET)
         }
     }
@@ -89,6 +111,12 @@ object ApiHelper {
             return UpdateUserResult(Result(RESULT_ERROR_INTERNET), User())
         } catch (e: SocketTimeoutException) {
             return UpdateUserResult(Result(RESULT_ERROR_INTERNET), User())
+        } catch (e: StreamResetException) {
+            return UpdateUserResult(Result(RESULT_ERROR_INTERNET), User())
+        } catch (e: HttpException) {
+            return UpdateUserResult(Result(RESULT_ERROR_INTERNET), User())
+        } catch (e: ConnectException) {
+            return UpdateUserResult(Result(RESULT_ERROR_INTERNET), User())
         }
     }
 
@@ -106,6 +134,12 @@ object ApiHelper {
         } catch (e: UnknownHostException) {
             return PurchaseResult(Result(RESULT_ERROR_INTERNET))
         } catch (e: SocketTimeoutException) {
+            return PurchaseResult(Result(RESULT_ERROR_INTERNET))
+        } catch (e: StreamResetException) {
+            return PurchaseResult(Result(RESULT_ERROR_INTERNET))
+        } catch (e: HttpException) {
+            return PurchaseResult(Result(RESULT_ERROR_INTERNET))
+        } catch (e: ConnectException) {
             return PurchaseResult(Result(RESULT_ERROR_INTERNET))
         }
     }

@@ -1,5 +1,6 @@
 package relaxeddd.englishnotify.ui.notifications
 
+import android.os.Build
 import android.view.View
 import android.widget.CompoundButton
 import androidx.lifecycle.LiveData
@@ -19,6 +20,7 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
     val timeStartOff = MutableLiveData<String>("20:00")
     val timeEndOff = MutableLiveData<String>("07:00")
     val selectedTagLiveData = MutableLiveData<String>("")
+    val isVisibleNotificationsView = MutableLiveData<Boolean>(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
 
     private val userObserver = Observer<User?> { user ->
         isEnableNotificationsClickable.value = user != null

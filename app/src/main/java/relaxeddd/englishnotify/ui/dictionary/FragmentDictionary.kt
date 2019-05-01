@@ -61,15 +61,21 @@ class FragmentDictionary : BaseFragment<ViewModelDictionary, FragmentDictionaryB
                 return true
             }
             R.id.item_menu_delete -> {
-                val dialog = DialogDeleteWords()
-                dialog.confirmListener = object: ListenerResult<Boolean> {
-                    override fun onResult(result: Boolean) {
-                        viewModel.deleteWords(HashSet(adapter.checkList))
-                        setCkeckMode(false)
-                        adapter.isSelectState = false
+                val selectedWords = HashSet(adapter.checkList)
+
+                if (selectedWords.isNotEmpty()) {
+                    val dialog = DialogDeleteWords()
+                    dialog.confirmListener = object : ListenerResult<Boolean> {
+                        override fun onResult(result: Boolean) {
+                            viewModel.deleteWords(HashSet(adapter.checkList))
+                            setCkeckMode(false)
+                            adapter.isSelectState = false
+                        }
                     }
+                    dialog.show(this@FragmentDictionary.childFragmentManager, "Confirm delete Dialog")
+                } else {
+                    showToast(R.string.words_not_selected)
                 }
-                dialog.show(this@FragmentDictionary.childFragmentManager, "Confirm delete Dialog")
                 return true
             }
             else -> return super.onOptionsItemSelected(item)

@@ -44,8 +44,9 @@ captures/
 .idea/navEditor.xml 
 .idea/codeStyles/Project.xml
 .idea/codeStyles/CodeStyleConfig.xml
-.idea/misc.xml
 .idea/encodings.xml
+.idea/render.experimental.xml
+.idea/misc.xml
 
 .gradle
 /local.properties

@@ -18,10 +18,10 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId 'relaxeddd.englishnotify'
-        minSdkVersion 19
+        minSdkVersion 17
         targetSdkVersion 28
-        versionCode 20
-        versionName "1.2.2"
+        versionCode 21
+        versionName "1.3.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true

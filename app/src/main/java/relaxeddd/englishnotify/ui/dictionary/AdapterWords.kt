@@ -1,6 +1,7 @@
 package relaxeddd.englishnotify.ui.dictionary
 
 import android.annotation.SuppressLint
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -99,16 +100,22 @@ class AdapterWords(val viewModel: ViewModelDictionary) : ListAdapter<Word, Adapt
                         textWord.text = word.eng
                         textWordTranscription.text = transcription
                         textWordTranslation.text = word.rus
+                        textWordTranscription.visibility = View.VISIBLE
+                        textWordTranscriptionTranslation.visibility = View.GONE
                     }
                     1 -> {
                         textWord.text = word.rus
-                        textWordTranscription.text = transcription
+                        textWordTranscriptionTranslation.text = transcription
                         textWordTranslation.text = word.eng
+                        textWordTranscription.visibility = View.GONE
+                        textWordTranscriptionTranslation.visibility = View.VISIBLE
                     }
                 }
                 val dateFormat = "hh:mm dd.MM"
                 textWordSampleEng.text = word.sampleEng
                 textWordSampleRus.text = word.sampleRus
+                textWordSampleEng.visibility = if (word.sampleEng.isEmpty()) View.GONE else View.VISIBLE
+                textWordSampleRus.visibility = if (word.sampleRus.isEmpty()) View.GONE else View.VISIBLE
                 textWordTimestamp.text = SimpleDateFormat(dateFormat, Locale.getDefault()).format(word.timestamp) ?: ""
                 if (isSelectState) {
                     checkBoxWordSelect.visibility = View.VISIBLE

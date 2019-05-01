@@ -35,49 +35,63 @@
                     android:id="@+id/text_word"
                     android:textColor="@color/black"
                     app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintEnd_toStartOf="@+id/text_word_transcription"
+                    app:layout_constraintEnd_toStartOf="@+id/text_word_translation"
                     app:layout_constraintTop_toTopOf="parent"
                     android:ellipsize="end"/>
 
             <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/text_word_transcription"
-                    app:layout_constraintStart_toEndOf="@+id/text_word"
+                    android:id="@+id/text_word_translation"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintEnd_toStartOf="@+id/text_word_translation"
+                    app:layout_constraintStart_toEndOf="@+id/text_word"
+                    app:layout_constraintEnd_toStartOf="@+id/check_box_word_select"
                     app:layout_constraintTop_toTopOf="@+id/text_word"
-                    android:ellipsize="end"
-                    android:maxLines="1"/>
+                    android:ellipsize="end"/>
 
             <TextView
+                    android:textSize="@dimen/font_12"
+                    android:id="@+id/text_word_transcription"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/text_word_translation"
-                    app:layout_constraintStart_toEndOf="@+id/text_word_transcription"
-                    app:layout_constraintEnd_toEndOf="@+id/check_box_word_select"
-                    app:layout_constraintTop_toTopOf="@+id/text_word_transcription"
-                    android:ellipsize="end"/>
+                    app:layout_constraintStart_toStartOf="@+id/text_word"
+                    app:layout_constraintTop_toBottomOf="@+id/text_word"
+                    app:layout_constraintEnd_toStartOf="@+id/text_word_transcription_translation"/>
+
+            <TextView
+                    android:textSize="@dimen/font_12"
+                    android:id="@+id/text_word_transcription_translation"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toStartOf="@+id/check_box_word_select"
+                    app:layout_constraintStart_toStartOf="@+id/text_word_translation"
+                    app:layout_constraintTop_toBottomOf="@+id/text_word_translation"/>
+
+            <androidx.constraintlayout.widget.Barrier
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/barrier"
+                    app:barrierDirection="bottom"
+                    app:constraint_referenced_ids="text_word_transcription, text_word_transcription_translation" />
 
             <CheckBox
                     android:layout_width="@dimen/size_34"
                     android:layout_height="@dimen/size_34"
                     android:id="@+id/check_box_word_select"
-                    android:visibility="gone"
                     app:layout_constraintStart_toEndOf="@+id/text_word_translation"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/text_word_translation"/>
 
             <LinearLayout
-                android:id="@+id/constraint_word_drop_dawn"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/text_word"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
-                android:orientation="vertical"
-                android:paddingTop="@dimen/size_8">
+                    android:id="@+id/constraint_word_drop_dawn"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/barrier"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:orientation="vertical"
+                    android:paddingTop="@dimen/size_8">
 
                 <LinearLayout
                         android:layout_width="match_parent"
@@ -106,24 +120,24 @@
                 </LinearLayout>
 
                 <TextView
-                    android:text="@{`v2: ` + word.v2.toString()}"
-                    android:visibility="@{word.v2.isEmpty() ? View.GONE : View.VISIBLE}"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textStyle="italic"
-                    android:id="@+id/text_word_v2"
-                    android:layout_marginTop="8dp"
-                    android:layout_weight="1"/>
+                        android:text="@{`v2: ` + word.v2.toString()}"
+                        android:visibility="@{word.v2.isEmpty() ? View.GONE : View.VISIBLE}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="italic"
+                        android:id="@+id/text_word_v2"
+                        android:layout_marginTop="8dp"
+                        android:layout_weight="1"/>
 
                 <TextView
-                    android:text="@{`v3: ` + word.v3.toString()}"
-                    android:visibility="@{word.v3.isEmpty() ? View.GONE : View.VISIBLE}"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textStyle="italic"
-                    android:id="@+id/text_word_v3"
-                    android:layout_marginTop="4dp"
-                    android:layout_weight="1"/>
+                        android:text="@{`v3: ` + word.v3.toString()}"
+                        android:visibility="@{word.v3.isEmpty() ? View.GONE : View.VISIBLE}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="italic"
+                        android:id="@+id/text_word_v3"
+                        android:layout_marginTop="4dp"
+                        android:layout_weight="1"/>
 
                 <TextView
                         android:text="@{word.tags.toString()}"

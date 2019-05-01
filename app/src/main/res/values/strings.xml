@@ -92,6 +92,7 @@
     <string name="update_verb">Update</string>
     <string name="update_text">New app version is available. Please, update</string>
     <string name="user_not_found">User not found</string>
+    <string name="words_not_selected">Words not selected</string>
     <string name="you_sign_in_as">You signed in as: %s</string>
 
     <string name="label_fragment_dictionary" translatable="false">LabelFragmentDictionary</string>
@@ -131,6 +132,7 @@
         \n- Display notification fixes </string>
 
     <!-- =========================================================================================================== -->
+    <string name="own">Own (add yourself in dictionary)</string>
     <string name="irregular">Irregular verbs</string>
     <string name="hard">Hard</string>
     <string name="all_app_words">All app words</string>
