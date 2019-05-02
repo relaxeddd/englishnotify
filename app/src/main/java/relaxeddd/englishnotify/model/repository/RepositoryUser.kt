@@ -165,18 +165,18 @@ class RepositoryUser private constructor() {
         }
     }
 
-    suspend fun insertOwnWord(word: Word) {
+    suspend fun insertOwnWord(word: Word) : Boolean {
         if (FirebaseAuth.getInstance().currentUser == null) {
             withContext(Dispatchers.Main) {
                 showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
             }
-            return
+            return false
         }
         if (word.tags.contains(OWN)) {
             withContext(Dispatchers.Main) {
                 showToast(getErrorString(RESULT_ERROR_OWN_WORD_TYPE))
             }
-            return
+            return false
         }
 
         val firebaseUser = RepositoryCommon.getInstance().firebaseUser
@@ -200,14 +200,17 @@ class RepositoryUser private constructor() {
             word.tags = tags
             word.saveType = Word.OWN
             RepositoryWord.getInstance(AppDatabase.getInstance(App.context).wordDao()).updateWord(word)
+            return true
         } else if (answer != null) {
             withContext(Dispatchers.Main) {
                 showToast(getErrorString(answer))
             }
+            return false
         } else {
             withContext(Dispatchers.Main) {
                 showToastLong(R.string.error_request)
             }
+            return false
         }
     }
 
@@ -217,7 +220,9 @@ class RepositoryUser private constructor() {
 
     suspend fun deleteOwnWords(wordIds: List<String>) : Boolean {
         if (FirebaseAuth.getInstance().currentUser == null) {
-            showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
+            withContext(Dispatchers.Main) {
+                showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
+            }
             return false
         }
 

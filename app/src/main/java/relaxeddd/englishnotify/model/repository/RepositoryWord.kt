@@ -64,6 +64,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
             tags.remove(OWN)
             it.tags = tags
             it.saveType = Word.OWN
+            it.timestamp = System.currentTimeMillis()
 
             wordDao.insertAll(it)
         }
@@ -83,7 +84,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         return false
     }
 
-    private fun getOwnWords() : List<Word> {
+    fun getOwnWords() : List<Word> {
         val allWords = words.value
         val ownWords = ArrayList<Word>()
 

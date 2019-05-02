@@ -81,9 +81,11 @@ const val NAVIGATION_DIALOG_PATCH_NOTES = 1050
 const val NAVIGATION_DIALOG_NIGHT_TIME = 1060
 const val NAVIGATION_DIALOG_TEST_NOTIFICATIONS = 1070
 const val NAVIGATION_INIT_BILLING = 1080
+const val NAVIGATION_DIALOG_OWN_CATEGORY = 1091
 
 const val NAVIGATION_LOADING_SHOW = 801
-const val NAVIGATION_LOADING_HIDE = 82
+const val NAVIGATION_LOADING_HIDE = 802
+const val NAVIGATION_ACTIVITY_BACK = 790
 
 const val TYPE_PUSH_ENGLISH = 0
 const val TYPE_PUSH_RUSSIAN = 1
@@ -174,6 +176,8 @@ const val BET = "bet"
 const val WIN = "win"
 const val CANCELLED_RATE_DIALOG = "cancelleRateDialog"
 const val SYSTEM = "system"
+const val OWN_WORD = "ownWord"
+const val PUSH = "push"
 const val LOGIN_DATA = "loginData"
 const val SELECTED_TAGS = "selectedTags"
 const val PRIVACY_POLICY_CONFIRMED = "privacyPolicyConfirmed"

@@ -13,6 +13,9 @@
                 name="clickListenerCloseFilter"
                 type="android.view.View.OnClickListener"/>
         <variable
+                name="clickListenerAddOwnWord"
+                type="android.view.View.OnClickListener"/>
+        <variable
                 name="viewModel"
                 type="relaxeddd.englishnotify.ui.dictionary_own.ViewModelDictionaryOwn" />
 
@@ -22,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <FrameLayout
+        <RelativeLayout
                 android:id="@+id/container_dictionary_exclude_filter"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -38,9 +41,10 @@
 
             <TextView
                     android:id="@+id/text_dictionary_no_words"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:layout_centerInParent="true"
                     android:text="@string/no_words_own"
                     android:textSize="@dimen/font_16"
                     android:visibility="@{!hasWords ? View.VISIBLE : View.GONE}"/>
@@ -48,10 +52,22 @@
             <ProgressBar
                     android:layout_width="@dimen/size_36"
                     android:layout_height="@dimen/size_36"
-                    android:layout_gravity="center"
+                    android:layout_centerInParent="true"
                     android:visibility="@{viewModel.isVisibleLoadingView ? View.VISIBLE : View.GONE}"/>
 
-        </FrameLayout>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/button_dictionary_own_add_word"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:onClick="@{clickListenerAddOwnWord}"
+                    android:src="@drawable/ic_plus"
+                    app:tint="@color/white"
+                    android:layout_marginBottom="@dimen/size_32"
+                    android:layout_marginEnd="@dimen/size_24"/>
+
+        </RelativeLayout>
 
         <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_view_dictionary_filter"

@@ -10,6 +10,7 @@ import relaxeddd.englishnotify.model.repository.RepositoryUser
 import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
+import relaxeddd.englishnotify.model.repository.RepositoryWord
 
 class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewModelBase() {
 
@@ -127,6 +128,11 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
     }
 
     fun onDialogSelectTagResult(selectedItem: String) {
+        if (selectedItem == OWN && RepositoryWord.getInstance().getOwnWords().isEmpty()) {
+            showToastLong(R.string.category_own_not_selected)
+            return
+        }
+
         selectedTagLiveData.value = getStringByResName(selectedItem)
         if (!selectedItem.equals(repositoryUser.liveDataUser.value?.selectedTag, true)) {
             uiScope.launch {

@@ -14,6 +14,7 @@
     <string name="answer_correct">Correct answer</string>
     <string name="answer_incorrect">Incorrect answer</string>
     <string name="cancel_check">Cancel check</string>
+    <string name="category_own_not_selected">Category not selected. Firstly, add words to "Own category"</string>
     <string name="check_all">Check all</string>
     <string name="close">Close</string>
     <string name="confirm">Confirm</string>
@@ -86,18 +87,23 @@
     <string name="subscription_time_error">Subscription time is up, renew it</string>
     <string name="thank_you">Thank you!</string>
     <string name="tags_should_not_be_empty">Tags should not be empty</string>
-    <string name="test_notification_sent">Test notifications has been sent. If there are no notification after 3 minutes, please, send feedback in settings</string>
+    <string name="test_notification_sent">Test notifications has been sent</string>
     <string name="test_notifications_left">%s test notifications left</string>
     <string name="test_notifications_text">Receive test notification</string>
     <string name="time_new">Time new</string>
     <string name="time_old">Time old</string>
+    <string name="transcription">Transcription</string>
+    <string name="translation">Translation</string>
     <string name="undefined_error">Undefined error</string>
     <string name="unauthorized_error">Unauthorized error</string>
     <string name="update">Update</string>
     <string name="update_verb">Update</string>
     <string name="update_text">New app version is available. Please, update</string>
     <string name="user_not_found">User not found</string>
+    <string name="word">Word</string>
     <string name="word_added">Word has been added</string>
+    <string name="word_length_limit">The max length is 200 symbols</string>
+    <string name="word_should_not_be_empty">Word should not be empty</string>
     <string name="words_not_selected">Words not selected</string>
     <string name="words_removed_from_own">Words removed from own category</string>
     <string name="you_sign_in_as">You signed in as: %s</string>
@@ -106,10 +112,14 @@
     <string name="label_fragment_dictionary" translatable="false">LabelFragmentDictionary</string>
     <string name="label_fragment_notifications" translatable="false">LabelFragmentNotifications</string>
     <string name="label_fragment_settings" translatable="false">LabelFragmentSettings</string>
+    <string name="label_fragment_word" translatable="false">LabelFragmentWord</string>
 
     <string name="text_rate_app">Write comments and suggestions. What you want to see in the app</string>
     <string name="text_app_about">Select categories of words which you want to learn and you will receive English words in push notifications.
         Categories of words adding without app update.\n\nВерсия приложения: %s</string>
+    <string name="text_own_category">You will receive words from here if select "Own category" in notification settings
+        \n\nYou can add words here from dictionary (long tap on word) or input via plus button
+        \n\nMax words count - 200</string>
 
     <string name="patch_notes_0_1_4">- Added patch notes dialog (here it is)
         \n- Fixed bug with alphabetical sort by in dictionary
@@ -139,8 +149,13 @@
         \n- Added function of selecting words in dictionary
         \n- Display notification fixes </string>
 
+    <string name="patch_notes_1_3_0">- Added "own category". You can add words to own category from dictionary (long tap on word) or input your words at Own category tab in dictionary
+        \n- Improved words view in dictionary
+        \n- Fixed delete several words bug
+        \n- Hided notification view type button for Android from 4.4 and below</string>
+
     <!-- =========================================================================================================== -->
-    <string name="own">Own category (add yourself in dictionary)</string>
+    <string name="own">Own category (add words yourself in dictionary)</string>
     <string name="irregular">Irregular verbs</string>
     <string name="hard">Hard</string>
     <string name="all_app_words">All app words</string>

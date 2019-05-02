@@ -15,6 +15,7 @@
     <string name="answer_correct">Правильный ответ</string>
     <string name="answer_incorrect">Неправильный ответ</string>
     <string name="cancel_check">Отменить выбранное</string>
+    <string name="category_own_not_selected">Категоря не выбрана. Сначала добавьте слова в "Свою категорию"</string>
     <string name="check_all">Выбрать все</string>
     <string name="close">Закрыть</string>
     <string name="confirm">Подтвердить</string>
@@ -87,18 +88,23 @@
     <string name="subscription_time_error">Время подписки истекло, необходимо её продлить</string>
     <string name="thank_you">Спасибо!</string>
     <string name="tags_should_not_be_empty">Вы должны выбрать как минимум 1 категорию</string>
-    <string name="test_notification_sent">Тестовое уведомление отправлено. Если не придет в течение 3-х мин, пожалуйста, напишите фидбек в разделе "Настройки"</string>
+    <string name="test_notification_sent">Тестовое уведомление отправлено</string>
     <string name="test_notifications_left">Осталось %s тестовых уведомлений</string>
     <string name="test_notifications_text">Получить тестовое уведомление</string>
     <string name="time_new">Сначала новые</string>
     <string name="time_old">Сначала старые</string>
+    <string name="transcription">Транскрипция</string>
+    <string name="translation">Перевод</string>
     <string name="undefined_error">Неизвестная ошибка</string>
     <string name="unauthorized_error">Ошибка авторизации</string>
     <string name="update">Обновление</string>
     <string name="update_verb">Обновить</string>
     <string name="update_text">Доступна новая версия приложения. Пожалуйста, обновите</string>
     <string name="user_not_found">Пользователь не найден</string>
-    <string name="word_added">Слова добавлено</string>
+    <string name="word">Слово</string>
+    <string name="word_added">Слово добавлено</string>
+    <string name="word_length_limit">Длина не должна превышать 200 символов</string>
+    <string name="word_should_not_be_empty">Слово не должно быть пустым</string>
     <string name="words_not_selected">Слова не выбраны</string>
     <string name="words_removed_from_own">Слова удалены из своей категории</string>
     <string name="you_sign_in_as">Вы вошли как: %s</string>
@@ -106,6 +112,9 @@
     <string name="text_rate_app">В комментариях пишите, что можно улучшить, какие новые категории слов нужно добавить</string>
     <string name="text_app_about">Выберите категории английских слов, которые хотите изучить, установите период получения уведомлений
         и вам будут приходить английские слова в виде пуш-уведомлений. \nСписок категорий постоянно растет и обновляется без необходимости обновления приложения.\n\nВерсия приложения: %s</string>
+    <string name="text_own_category">Слова отсюда будут Вам приходить, если в настройках уведомлений выбрать "Своя категория".
+        \n\nСюда можно добавить слова долгим нажатием на слово из словаря или нажатием на плюсик в правом нижнем углу экрана.
+        \n\nМаксимальное количество слов - 200</string>
 
     <string name="patch_notes_0_1_4">- Добавлено окно с описанием изменений после обновления (вот это как раз)
         \n- Исправлен баг, когда нельзя было выбрать алфавитную сортировку повторно
@@ -133,8 +142,13 @@
         \n- В словаре добавлена функция выделения нескольких слов
         \n- Правки отображения уведомлений</string>
 
+    <string name="patch_notes_1_3_0">- Добавлена "Своя категория". Вы можете добавить в неё пришедшие слова из словаря (долгим нажатием на слово) или же внести собственные во вкладке "Своя категория" в словаре
+        \n- Улучшено отображение слов в словаре
+        \n- Исправлен баг удаления сразу нескольких слов
+        \n- Скрыта кнопка выбора отображения уведомлений для Android от 4.4 и ниже</string>
+
     <!-- =========================================================================================================== -->
-    <string name="own">Своя категория (добавлять самому в словаре)</string>
+    <string name="own">Своя категория (добавлять слова самому в словаре)</string>
     <string name="irregular">Неправильные глаголы</string>
     <string name="hard">Сложные</string>
     <string name="all_app_words">Все слова приложения</string>

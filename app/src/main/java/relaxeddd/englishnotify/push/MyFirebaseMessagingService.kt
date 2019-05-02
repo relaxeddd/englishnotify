@@ -17,6 +17,7 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import org.json.JSONObject
 import relaxeddd.englishnotify.common.*
+import relaxeddd.englishnotify.model.repository.RepositoryWord
 import java.util.*
 import kotlin.random.Random
 
@@ -183,15 +184,21 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
                     showNotification(this, title, text)
                 }
-                else -> {
-                    val startHour = SharedHelper.getStartHour()
-                    val durationHours = SharedHelper.getDurationHours()
-                    val endHour = if (startHour + durationHours >= 24) startHour + durationHours - 24 else startHour + durationHours
-                    val calendar = Calendar.getInstance()
-                    val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
+                OWN_WORD -> {
+                    if (isNightTime()) {
+                        return
+                    }
 
-                    if (durationHours != 0 && ((currentHour in startHour..(endHour - 1))
-                                || (startHour + durationHours >= 24 && currentHour < endHour) )) {
+                    val wordDao = AppDatabase.getInstance(this).wordDao()
+                    val words = RepositoryWord.getInstance(wordDao).getOwnWords()
+                    val wordIx = (0 until words.size).random()
+
+                    if (wordIx >= 0 && wordIx < words.size) {
+                        handleWordNotification(words[wordIx], false)
+                    }
+                }
+                PUSH -> {
+                    if (isNightTime()) {
                         return
                     }
 
@@ -204,7 +211,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
     }
 
-    private fun handleWordNotification(word: Word) {
+    private fun handleWordNotification(word: Word, isSave: Boolean = true) {
         val languageType = SharedHelper.getLearnLanguageType()
         val title = if (languageType == TYPE_PUSH_ENGLISH) word.eng else word.rus
         val isShowButtons = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
@@ -214,13 +221,26 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             getFullNotificationText(word, languageType)
         } else getString(R.string.expand_to_see_buttons)
 
-        val wordDao = AppDatabase.getInstance(this).wordDao()
-        val existsWord = wordDao.findWordById(word.eng)
+        if (isSave) {
+            val wordDao = AppDatabase.getInstance(this).wordDao()
+            val existsWord = wordDao.findWordById(word.eng)
 
-        if (existsWord == null || existsWord.saveType == Word.DICTIONARY) {
-            wordDao.insertAll(word)
+            if (existsWord == null || existsWord.saveType == Word.DICTIONARY) {
+                wordDao.insertAll(word)
+            }
         }
 
         showNotificationWord(this, word.eng, notificationText, title, isShowButtons)
+    }
+
+    private fun isNightTime() : Boolean {
+        val startHour = SharedHelper.getStartHour()
+        val durationHours = SharedHelper.getDurationHours()
+        val endHour = if (startHour + durationHours >= 24) startHour + durationHours - 24 else startHour + durationHours
+        val calendar = Calendar.getInstance()
+        val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
+
+        return durationHours != 0 && ((currentHour in startHour..(endHour - 1))
+                || (startHour + durationHours >= 24 && currentHour < endHour) )
     }
 }

@@ -17,7 +17,7 @@ abstract class ActivityBase<VM : ViewModelBase, B : ViewDataBinding> : AppCompat
     private var listenerHomeMenuButton: () -> Unit = {}
     protected lateinit var binding: B
     protected lateinit var viewModel: VM
-    protected var isMyResumed = false
+    var isMyResumed = false
 
     @LayoutRes
     abstract fun getLayoutResId() : Int

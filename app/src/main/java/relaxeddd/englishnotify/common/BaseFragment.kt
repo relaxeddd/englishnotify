@@ -97,6 +97,11 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
                     (activity as MainActivity).setLoadingVisible(false)
                 }
             }
+            NAVIGATION_ACTIVITY_BACK -> {
+                if (activity is MainActivity && (activity as MainActivity).isMyResumed) {
+                    activity?.onBackPressed()
+                }
+            }
         }
     }
 

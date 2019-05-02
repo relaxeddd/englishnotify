@@ -35,7 +35,7 @@ data class Word(
     val sampleRus: String = "",
     val v2: String = "",
     val v3: String = "",
-    val timestamp: Long = 0,
+    var timestamp: Long = 0,
     var isDeleted: Boolean = false,
     var isLearned: Boolean = false,
     var saveType: Int = DICTIONARY
@@ -43,7 +43,6 @@ data class Word(
     companion object {
         const val DICTIONARY = 0
         const val OWN = 1
-        const val DICT_OWN = 2
     }
 }
 
