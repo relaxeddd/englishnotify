@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import relaxeddd.englishnotify.R
+import relaxeddd.englishnotify.ui.main.MainActivity
 
 abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment() {
 
@@ -34,9 +35,9 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
     protected open fun getHomeMenuButtonIconResId() = R.drawable.ic_menu
     protected open fun getHomeMenuButtonListener() = {}
     protected open fun getMenuResId() = EMPTY_RES
-    protected open fun onNavigationEvent(eventId: Int) {}
     protected open fun onSearchTextChanged(searchText: String) {}
     protected open fun getSearchMenuItemId() = R.id.item_menu_search
+    protected open fun getToolbarElevation() = 4f
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, getLayoutResId(), null, false)
@@ -84,6 +85,21 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
         }
     }
 
+    protected open fun onNavigationEvent(eventId: Int) {
+        when (eventId) {
+            NAVIGATION_LOADING_SHOW -> {
+                if (activity is MainActivity) {
+                    (activity as MainActivity).setLoadingVisible(true)
+                }
+            }
+            NAVIGATION_LOADING_HIDE -> {
+                if (activity is MainActivity) {
+                    (activity as MainActivity).setLoadingVisible(false)
+                }
+            }
+        }
+    }
+
     @CallSuper
     protected open fun configureBinding() {
         viewModel.navigation.observe(this, Observer {
@@ -94,8 +110,8 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
     }
 
     private fun configureMenu() {
-        setHasOptionsMenu(getMenuResId() != EMPTY_RES)
+        setHasOptionsMenu(true)
         (activity as ActivityBase<*, *>).configureMenu(isHomeMenuButtonEnabled(), getHomeMenuButtonIconResId(),
-            getHomeMenuButtonListener())
+            getHomeMenuButtonListener(), getToolbarElevation())
     }
 }

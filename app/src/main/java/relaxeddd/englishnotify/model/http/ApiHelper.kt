@@ -12,6 +12,8 @@ import java.util.concurrent.TimeUnit
 import com.google.firebase.iid.FirebaseInstanceId
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.internal.http2.StreamResetException
+import org.json.JSONArray
+import org.json.JSONObject
 import retrofit2.HttpException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
@@ -144,6 +146,75 @@ object ApiHelper {
         }
     }
 
+    suspend fun requestInsertOwnWord(firebaseUser: FirebaseUser?, tokenId: String?, word: JSONObject) : Result? {
+        val requestId = UUID.randomUUID().toString()
+        val userId = firebaseUser?.uid ?: ""
+
+        try {
+            return if (tokenId?.isNotEmpty() == true) {
+                api.requestInsertOwnWord(tokenId, requestId, userId, word)
+            } else {
+                Result(RESULT_ERROR_OWN_WORD)
+            }
+        } catch (e: UnknownHostException) {
+            return Result(RESULT_ERROR_INTERNET)
+        } catch (e: SocketTimeoutException) {
+            return Result(RESULT_ERROR_INTERNET)
+        } catch (e: StreamResetException) {
+            return Result(RESULT_ERROR_INTERNET)
+        } catch (e: HttpException) {
+            return Result(RESULT_ERROR_INTERNET)
+        } catch (e: ConnectException) {
+            return Result(RESULT_ERROR_INTERNET)
+        }
+    }
+
+    suspend fun requestDeleteOwnWords(firebaseUser: FirebaseUser?, tokenId: String?, wordIds: JSONArray) : Result? {
+        val requestId = UUID.randomUUID().toString()
+        val userId = firebaseUser?.uid ?: ""
+
+        try {
+            return if (tokenId?.isNotEmpty() == true) {
+                api.requestDeleteOwnWords(tokenId, requestId, userId, wordIds)
+            } else {
+                Result(RESULT_ERROR_OWN_WORD)
+            }
+        } catch (e: UnknownHostException) {
+            return Result(RESULT_ERROR_INTERNET)
+        } catch (e: SocketTimeoutException) {
+            return Result(RESULT_ERROR_INTERNET)
+        } catch (e: StreamResetException) {
+            return Result(RESULT_ERROR_INTERNET)
+        } catch (e: HttpException) {
+            return Result(RESULT_ERROR_INTERNET)
+        } catch (e: ConnectException) {
+            return Result(RESULT_ERROR_INTERNET)
+        }
+    }
+
+    suspend fun requestOwnWords(firebaseUser: FirebaseUser?, tokenId: String?) : OwnWordsResult? {
+        val requestId = UUID.randomUUID().toString()
+        val userId = firebaseUser?.uid ?: ""
+
+        try {
+            return if (tokenId?.isNotEmpty() == true) {
+                api.requestOwnWords(tokenId, requestId, userId)
+            } else {
+                OwnWordsResult(Result(RESULT_ERROR_OWN_GET))
+            }
+        } catch (e: UnknownHostException) {
+            return OwnWordsResult(Result(RESULT_ERROR_INTERNET))
+        } catch (e: SocketTimeoutException) {
+            return OwnWordsResult(Result(RESULT_ERROR_INTERNET))
+        } catch (e: StreamResetException) {
+            return OwnWordsResult(Result(RESULT_ERROR_INTERNET))
+        } catch (e: HttpException) {
+            return OwnWordsResult(Result(RESULT_ERROR_INTERNET))
+        } catch (e: ConnectException) {
+            return OwnWordsResult(Result(RESULT_ERROR_INTERNET))
+        }
+    }
+
     //------------------------------------------------------------------------------------------------------------------
     fun initUserTokenId(firebaseUser: FirebaseUser?, resultListener: (tokenId: Resource<String>) -> Unit) {
         firebaseUser?.getIdToken(false)?.addOnCompleteListener {
@@ -215,6 +286,18 @@ object ApiHelper {
                                       selectedTag: String): UpdateUserResult? {
             return apiHelper.requestUpdateUser(tokenPrefix + tokenId, requestId, userId,
                 receiveNotifications, notificationsTimeType, learnLanguageType, selectedTag).await()
+        }
+
+        suspend fun requestInsertOwnWord(tokenId: String, requestId: String, userId: String, word: JSONObject) : Result? {
+            return apiHelper.requestInsertOwnWord(tokenPrefix + tokenId, requestId, userId, word).await()
+        }
+
+        suspend fun requestDeleteOwnWords(tokenId: String, requestId: String, userId: String, wordIds: JSONArray) : Result? {
+            return apiHelper.requestDeleteOwnWords(tokenPrefix + tokenId, requestId, userId, wordIds).await()
+        }
+
+        suspend fun requestOwnWords(tokenId: String, requestId: String, userId: String) : OwnWordsResult? {
+            return apiHelper.requestOwnWords(tokenPrefix + tokenId, requestId, userId).await()
         }
     }
 }

@@ -14,7 +14,7 @@
                 type="android.view.View.OnClickListener"/>
         <variable
                 name="viewModel"
-                type="relaxeddd.englishnotify.ui.dictionary.ViewModelDictionary" />
+                type="relaxeddd.englishnotify.ui.dictionary_all.ViewModelDictionaryAll" />
 
     </data>
 

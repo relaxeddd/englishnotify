@@ -104,6 +104,7 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
                 dialog.confirmListener = listenerTestNotifications
                 dialog.show(this@FragmentNotifications.childFragmentManager, "Test Notifications Dialog")
             }
+            else -> super.onNavigationEvent(eventId)
         }
     }
 }

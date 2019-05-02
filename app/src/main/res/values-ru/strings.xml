@@ -5,6 +5,8 @@
 
     <string name="about_app">О приложении</string>
     <string name="accept">Принять</string>
+    <string name="add_to_own_category">Добавить в свою категорию</string>
+    <string name="all_words">Все слова</string>
     <string name="alphabetical_name">Алфавитный</string>
     <string name="alphabetical_translate">Алфавитный (перевод)</string>
     <string name="another_operation">Другая операция</string>
@@ -53,6 +55,7 @@
     <string name="night_time_value">С %s до %s</string>
     <string name="no_thanks">Нет, спасибо / уже</string>
     <string name="no_words">Уведомления с новыми словами пока еще не пришли. Придется подождать… (Со стандартными настройками один час)</string>
+    <string name="no_words_own">Вы пока еще не добавили слова в свою категорию</string>
     <string name="no_test_notifications">У вас не осталось тестовых уведомлений</string>
     <string name="not_show_notifications">Не показывать уведомления начиная с (24-часовой формат, число от 0 до 23)</string>
     <string name="notification_categories">Выбор категорий слов</string>
@@ -61,6 +64,7 @@
     <string name="notifications_not_receiving_authorize">Уведомления не приходят, авторизируйтесь</string>
     <string name="notifications_view">Показ уведомлений</string>
     <string name="notifications">Уведомления</string>
+    <string name="own_category">Своя категория</string>
     <string name="please_authorize">Необходимо войти в систему</string>
     <string name="please_wait">Пожалуйста, подождите</string>
     <string name="privacy_policy">Политика конфиденциальности</string>
@@ -69,6 +73,7 @@
     <string name="rate_app">Оценить приложение</string>
     <string name="rate_app_pls">Оцените пожалуйста приложение</string>
     <string name="receive_notifications_time">Получать уведомления</string>
+    <string name="remove_from_own_category">Убрать из своей категории</string>
     <string name="renew_subscription">Продлить использование</string>
     <string name="russian_at_english">С руссокого на английский</string>
     <string name="show_translation">Перевод</string>
@@ -93,7 +98,9 @@
     <string name="update_verb">Обновить</string>
     <string name="update_text">Доступна новая версия приложения. Пожалуйста, обновите</string>
     <string name="user_not_found">Пользователь не найден</string>
+    <string name="word_added">Слова добавлено</string>
     <string name="words_not_selected">Слова не выбраны</string>
+    <string name="words_removed_from_own">Слова удалены из своей категории</string>
     <string name="you_sign_in_as">Вы вошли как: %s</string>
 
     <string name="text_rate_app">В комментариях пишите, что можно улучшить, какие новые категории слов нужно добавить</string>
@@ -127,7 +134,7 @@
         \n- Правки отображения уведомлений</string>
 
     <!-- =========================================================================================================== -->
-    <string name="own">Свои (добавлять самому в словаре)</string>
+    <string name="own">Своя категория (добавлять самому в словаре)</string>
     <string name="irregular">Неправильные глаголы</string>
     <string name="hard">Сложные</string>
     <string name="all_app_words">Все слова приложения</string>

@@ -2,6 +2,8 @@ package relaxeddd.englishnotify.model.http
 
 import androidx.annotation.Keep
 import kotlinx.coroutines.Deferred
+import org.json.JSONArray
+import org.json.JSONObject
 import relaxeddd.englishnotify.common.*
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -46,4 +48,21 @@ interface IApi {
                           @Query("notificationsTimeType") notificationsTimeType: Int,
                           @Query("learnLanguageType") learnLanguageType: Int,
                           @Query("selectedTag") selectedTag: String) : Deferred<UpdateUserResult?>
+
+    @GET(FUNC_REQUEST_INSERT_OWN_WORD)
+    fun requestInsertOwnWord(@Header("Authorization") idToken: String,
+                             @Query("requestId") requestId: String,
+                             @Query("userId") userId: String,
+                             @Query("word") word: JSONObject) : Deferred<Result?>
+
+    @GET(FUNC_REQUEST_DELETE_OWN_WORDS)
+    fun requestDeleteOwnWords(@Header("Authorization") idToken: String,
+                              @Query("requestId") requestId: String,
+                              @Query("userId") userId: String,
+                              @Query("wordIds") wordIds: JSONArray) : Deferred<Result?>
+
+    @GET(FUNC_REQUEST_GET_OWN_WORDS)
+    fun requestOwnWords(@Header("Authorization") idToken: String,
+                        @Query("requestId") requestId: String,
+                        @Query("userId") userId: String) : Deferred<OwnWordsResult?>
 }

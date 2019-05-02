@@ -214,7 +214,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             getFullNotificationText(word, languageType)
         } else getString(R.string.expand_to_see_buttons)
 
-        AppDatabase.getInstance(this).wordDao().insertAll(word)
+        val wordDao = AppDatabase.getInstance(this).wordDao()
+        val existsWord = wordDao.findWordById(word.eng)
+
+        if (existsWord == null || existsWord.saveType == Word.DICTIONARY) {
+            wordDao.insertAll(word)
+        }
 
         showNotificationWord(this, word.eng, notificationText, title, isShowButtons)
     }

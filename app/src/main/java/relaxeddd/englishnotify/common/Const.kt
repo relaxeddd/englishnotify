@@ -13,11 +13,16 @@ const val SELECTED_ITEM = "selected_item"
 const val WORDS = "words"
 const val USERS = "users"
 
+const val OWN = "own"
+
 const val FUNC_REQUEST_INIT = "requestInitNew/"
 const val FUNC_REQUEST_VERIFY_PURCHASE = "requestVerifyPurchase/"
 const val FUNC_REQUEST_SEND_FEEDBACK = "requestSendFeedback/"
 const val FUNC_REQUEST_UPDATE_USER = "requestUpdateUser/"
 const val FUNC_REQUEST_SEND_TEST_NOTIFICATION = "requestSendTestNotification/"
+const val FUNC_REQUEST_INSERT_OWN_WORD = "requestInsertOwnWord/"
+const val FUNC_REQUEST_DELETE_OWN_WORDS = "requestDeleteOwnWords/"
+const val FUNC_REQUEST_GET_OWN_WORDS = "requestOwnWords/"
 
 const val EMPTY_RES = -1
 
@@ -43,6 +48,17 @@ const val RESULT_ERROR_NETWORK = 5102
 
 const val RESULT_ERROR_TEST_NOTIFICATION = 6100
 
+const val RESULT_ERROR_OWN_WORD = 6301
+const val RESULT_ERROR_OWN_WORD_EXISTS = 6302
+const val RESULT_ERROR_OWN_WORD_LIMIT = 6303
+const val RESULT_ERROR_OWN_WORD_TYPE = 6307
+const val RESULT_ERROR_OWN_DELETE_NO_IDS = 6308
+const val RESULT_ERROR_OWN_DELETE_NO_WORDS = 6309
+const val RESULT_ERROR_OWN_DELETE = 6310
+const val RESULT_ERROR_OWN_GET = 6311
+
+const val RESULT_ERROR_NO_SUBSCRIPTION = 6401
+
 const val NAVIGATION_EXIT = 999
 const val NAVIGATION_DIALOG_REPEAT = 1000
 const val NAVIGATION_DIALOG_CHECK_TAGS = 1001
@@ -65,6 +81,9 @@ const val NAVIGATION_DIALOG_PATCH_NOTES = 1050
 const val NAVIGATION_DIALOG_NIGHT_TIME = 1060
 const val NAVIGATION_DIALOG_TEST_NOTIFICATIONS = 1070
 const val NAVIGATION_INIT_BILLING = 1080
+
+const val NAVIGATION_LOADING_SHOW = 801
+const val NAVIGATION_LOADING_HIDE = 82
 
 const val TYPE_PUSH_ENGLISH = 0
 const val TYPE_PUSH_RUSSIAN = 1

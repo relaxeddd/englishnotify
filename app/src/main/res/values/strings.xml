@@ -4,6 +4,8 @@
 
     <string name="about_app">About app</string>
     <string name="accept">Accept</string>
+    <string name="add_to_own_category">Add to own category</string>
+    <string name="all_words">All words</string>
     <string name="alphabetical_name">Alphabetical name</string>
     <string name="alphabetical_translate">Alphabetical translate</string>
     <string name="another_operation">Another operation</string>
@@ -52,6 +54,7 @@
     <string name="night_time_value">From %s to %s</string>
     <string name="no_thanks">No, thanks / already</string>
     <string name="no_words">Notifications with new words have not received yet. Please, wait… (With default settings wait 1 hour)</string>
+    <string name="no_words_own">You have not added words to your category yet</string>
     <string name="no_test_notifications">There are no test notifications</string>
     <string name="not_show_notifications">Don`t show notifications beginning with (24-hour clock, the number from 0 to 23)</string>
     <string name="notification_categories">Notification categories</string>
@@ -60,6 +63,7 @@
     <string name="notifications_not_receiving_authorize">Notifications is not receiving, please sign in</string>
     <string name="notifications_view">Notifications view</string>
     <string name="notifications">Notifications</string>
+    <string name="own_category">Own category</string>
     <string name="please_authorize">Please, sign in</string>
     <string name="please_wait">Please, wait</string>
     <string name="privacy_policy">Privacy Policy</string>
@@ -68,6 +72,7 @@
     <string name="rate_app_pls">Rate app, please</string>
     <string name="rate">Rate</string>
     <string name="receive_notifications_time">Receive notifications time</string>
+    <string name="remove_from_own_category">Remove from own category</string>
     <string name="renew_subscription">Renew subscription</string>
     <string name="russian_at_english">Russian at english</string>
     <string name="show_translation">Translation</string>
@@ -92,9 +97,12 @@
     <string name="update_verb">Update</string>
     <string name="update_text">New app version is available. Please, update</string>
     <string name="user_not_found">User not found</string>
+    <string name="word_added">Word has been added</string>
     <string name="words_not_selected">Words not selected</string>
+    <string name="words_removed_from_own">Words removed from own category</string>
     <string name="you_sign_in_as">You signed in as: %s</string>
 
+    <string name="label_fragment_dictionary_main" translatable="false">LabelFragmentDictionaryMain</string>
     <string name="label_fragment_dictionary" translatable="false">LabelFragmentDictionary</string>
     <string name="label_fragment_notifications" translatable="false">LabelFragmentNotifications</string>
     <string name="label_fragment_settings" translatable="false">LabelFragmentSettings</string>
@@ -132,7 +140,7 @@
         \n- Display notification fixes </string>
 
     <!-- =========================================================================================================== -->
-    <string name="own">Own (add yourself in dictionary)</string>
+    <string name="own">Own category (add yourself in dictionary)</string>
     <string name="irregular">Irregular verbs</string>
     <string name="hard">Hard</string>
     <string name="all_app_words">All app words</string>

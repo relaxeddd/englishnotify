@@ -2,12 +2,12 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/navigation_graph"
-            app:startDestination="@id/fragmentDictionary">
+            app:startDestination="@id/fragmentDictionaryMain">
 
-    <fragment android:id="@+id/fragmentDictionary"
-              android:name="relaxeddd.englishnotify.ui.dictionary.FragmentDictionary"
-              android:label="@string/label_fragment_dictionary"
-              tools:layout="@layout/fragment_dictionary"/>
+    <fragment android:id="@+id/fragmentDictionaryMain"
+              android:name="relaxeddd.englishnotify.ui.dictionary_main.FragmentDictionaryMain"
+              android:label="@string/label_fragment_dictionary_main"
+              tools:layout="@layout/fragment_dictionary_main"/>
 
     <fragment android:id="@+id/fragmentNotifications"
               android:name="relaxeddd.englishnotify.ui.notifications.FragmentNotifications"
