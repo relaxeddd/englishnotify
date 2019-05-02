@@ -95,6 +95,7 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
                     })
                 }
             }
+            else -> super.onNavigationEvent(eventId)
         }
     }
 }

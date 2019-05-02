@@ -9,6 +9,7 @@ import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.dialogs.DialogPatchNotes
 import relaxeddd.englishnotify.model.repository.RepositoryCommon
+import relaxeddd.englishnotify.model.repository.RepositoryWord
 import java.util.*
 
 class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase() {
@@ -53,6 +54,7 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
             }
             if (user != null) {
                 navigateEvent.value = Event(NAVIGATION_INIT_BILLING)
+                updateOwnWords()
                 isFirstLoad = false
             }
         }
@@ -124,6 +126,15 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
             isShowWarningSubscription.value = false
             ioScope.launch {
                 repositoryUser.initUser()
+            }
+        }
+    }
+
+    private fun updateOwnWords() {
+        ioScope.launch {
+            val words = RepositoryWord.getInstance().words.value
+            if (words?.isEmpty() == true) {
+                repositoryUser.requestOwnWords()
             }
         }
     }

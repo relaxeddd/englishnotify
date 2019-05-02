@@ -129,6 +129,13 @@ fun getErrorString(result: Result?) : String {
         RESULT_PURCHASE_VERIFIED_ERROR -> getString(R.string.error_purchase)
         RESULT_PURCHASE_ALREADY_RECEIVED -> getString(R.string.error_purchase)
         RESULT_ERROR_TEST_NOTIFICATION -> getString(R.string.error_test_notification)
+        RESULT_ERROR_OWN_WORD -> "Error add own word"
+        RESULT_ERROR_OWN_WORD_EXISTS -> "Error, word already in own"
+        RESULT_ERROR_OWN_WORD_LIMIT -> "Error, own words limit is 200"
+        RESULT_ERROR_OWN_WORD_TYPE -> "Error, incorrect word"
+        RESULT_ERROR_OWN_DELETE_NO_IDS -> "Error, no selected delete words"
+        RESULT_ERROR_OWN_DELETE_NO_WORDS -> "Error, no delete words"
+        RESULT_ERROR_OWN_DELETE -> "Error delete own word"
         else -> result.msg
     }
 }

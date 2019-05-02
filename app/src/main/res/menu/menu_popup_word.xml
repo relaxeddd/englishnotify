@@ -3,6 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item android:id="@+id/item_menu_add_own"
+          android:title="@string/add_to_own_category"
+          android:icon="@drawable/ic_own"
+          app:showAsAction="never"/>
+
+    <item android:id="@+id/item_menu_delete_own"
+          android:title="@string/remove_from_own_category"
+          android:icon="@drawable/ic_close_gray"
+          app:showAsAction="never"/>
+
     <item android:id="@+id/item_menu_delete"
           android:title="@string/delete"
           android:icon="@drawable/ic_delete"

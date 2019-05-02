@@ -4,12 +4,14 @@ import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.repository.RepositoryUser
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 
-class ViewModelDictionary(private val repositoryWord: RepositoryWord, private val repositoryUser: RepositoryUser) : ViewModelBase() {
+open class ViewModelDictionary(protected val repositoryWord: RepositoryWord, protected val repositoryUser: RepositoryUser) : ViewModelBase() {
 
     val user: LiveData<User?> = repositoryUser.liveDataUser
     val sortByType = MutableLiveData<SortByType>(SortByType.getByName(SharedHelper.getSortByType()))
@@ -65,16 +67,66 @@ class ViewModelDictionary(private val repositoryWord: RepositoryWord, private va
         updateFilteredWords(searchText)
     }
 
-    fun deleteWord(word: Word) {
+    fun addToOwn(word: Word) {
+        navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
         ioScope.launch {
-            repositoryWord.deleteWord(word)
+            repositoryUser.insertOwnWord(word)
+            withContext(Dispatchers.Main) {
+                navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
+            }
+        }
+    }
+
+    fun removeFromOwnDict(word: Word) {
+        navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
+        ioScope.launch {
+            repositoryUser.deleteOwnWord(word.eng)
+            withContext(Dispatchers.Main) {
+                navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
+            }
+        }
+    }
+
+    fun deleteWord(word: Word) {
+        if (word.saveType != Word.DICTIONARY) {
+            navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
+        }
+        ioScope.launch {
+            val deleteResult = repositoryUser.deleteOwnWord(word.eng)
+
+            if (deleteResult) {
+                repositoryWord.deleteWord(word)
+            }
+            withContext(Dispatchers.Main) {
+                navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
+            }
         }
     }
 
     fun deleteWords(words: Collection<Word>) {
-        ioScope.launch {
-            words.forEach { repositoryWord.deleteWord(it) }
+        for (word in words) {
+            if (word.saveType != Word.DICTIONARY) {
+                navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
+                break
+            }
         }
+        ioScope.launch {
+            val listIds = HashSet<String>()
+
+            words.forEach { if (it.saveType != Word.DICTIONARY) listIds.add(it.eng) }
+            val deleteResult = if (listIds.isNotEmpty()) repositoryUser.deleteOwnWords(listIds.toList()) else true
+
+            if (deleteResult) {
+                words.forEach { repositoryWord.deleteWord(it) }
+            }
+            withContext(Dispatchers.Main) {
+                navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
+            }
+        }
+    }
+
+    protected open fun filterWords(items: HashSet<Word>) : HashSet<Word> {
+        return items.filter { !it.isDeleted }.toHashSet()
     }
 
     private fun updateFilteredWords(searchText: String = "") {
@@ -93,7 +145,7 @@ class ViewModelDictionary(private val repositoryWord: RepositoryWord, private va
                     || it.transcription.toLowerCase().contains(searchText) }.toHashSet()
         }
 
-        filteredItems = filteredItems.filter { !it.isDeleted }.toHashSet()
+        filteredItems = filterWords(filteredItems)
 
         val sortList = when (sortByType.value) {
             SortByType.ALPHABETICAL_NAME -> filteredItems.sortedBy{ it.eng.toLowerCase() }

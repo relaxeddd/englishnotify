@@ -8,9 +8,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONArray
+import org.json.JSONObject
+import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
+import relaxeddd.englishnotify.model.db.AppDatabase
 import relaxeddd.englishnotify.push.MyFirebaseMessagingService
+import java.util.*
+import kotlin.collections.ArrayList
 
 class RepositoryUser private constructor() {
 
@@ -24,6 +30,7 @@ class RepositoryUser private constructor() {
 
     var liveDataUser = MutableLiveData<User>(null)
     val liveDataIsActualVersion = MutableLiveData<Boolean>(true)
+    var isOwnWordsRequested = false
 
     fun isAuthorized() = FirebaseAuth.getInstance().currentUser != null
 
@@ -124,6 +131,138 @@ class RepositoryUser private constructor() {
             showToast(getErrorString(answer))
         } else {
             showToastLong(R.string.error_request)
+        }
+    }
+
+    suspend fun requestOwnWords() {
+        if (FirebaseAuth.getInstance().currentUser == null) {
+            withContext(Dispatchers.Main) {
+                showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
+            }
+            return
+        }
+
+        if (isOwnWordsRequested) {
+            return
+        }
+
+        val firebaseUser = RepositoryCommon.getInstance().firebaseUser
+        val tokenId = RepositoryCommon.getInstance().tokenId
+
+        val answer = ApiHelper.requestOwnWords(firebaseUser, tokenId)
+
+        if (answer?.result?.isSuccess() == true && answer.words != null) {
+            RepositoryWord.getInstance(AppDatabase.getInstance(App.context).wordDao()).updateOwsWords(answer.words)
+            isOwnWordsRequested = true
+        } else if (answer?.result != null) {
+            withContext(Dispatchers.Main) {
+                showToast(getErrorString(answer.result))
+            }
+        } else {
+            withContext(Dispatchers.Main) {
+                showToastLong(R.string.error_request)
+            }
+        }
+    }
+
+    suspend fun insertOwnWord(word: Word) : Boolean {
+        if (FirebaseAuth.getInstance().currentUser == null) {
+            withContext(Dispatchers.Main) {
+                showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
+            }
+            return false
+        }
+        if (word.tags.contains(OWN)) {
+            withContext(Dispatchers.Main) {
+                showToast(getErrorString(RESULT_ERROR_OWN_WORD_TYPE))
+            }
+            return false
+        }
+
+        val firebaseUser = RepositoryCommon.getInstance().firebaseUser
+        val tokenId = RepositoryCommon.getInstance().tokenId
+        val wordJson = JSONObject()
+        val tags = ArrayList(word.tags)
+        val tagsJson = JSONArray()
+
+        tags.add(OWN)
+        for (tag in tags) {
+            tagsJson.put(tag)
+        }
+        wordJson.put("eng", word.eng)
+        wordJson.put("rus", word.rus)
+        wordJson.put("transcription", word.transcription)
+        wordJson.put("tags", tagsJson)
+
+        val answer = ApiHelper.requestInsertOwnWord(firebaseUser, tokenId, wordJson)
+
+        if (answer?.isSuccess() == true) {
+            word.tags = tags
+            word.saveType = Word.OWN
+            RepositoryWord.getInstance(AppDatabase.getInstance(App.context).wordDao()).updateWord(word)
+            return true
+        } else if (answer != null) {
+            withContext(Dispatchers.Main) {
+                showToast(getErrorString(answer))
+            }
+            return false
+        } else {
+            withContext(Dispatchers.Main) {
+                showToastLong(R.string.error_request)
+            }
+            return false
+        }
+    }
+
+    suspend fun deleteOwnWord(wordId: String) : Boolean {
+        return deleteOwnWords(Collections.singletonList(wordId))
+    }
+
+    suspend fun deleteOwnWords(wordIds: List<String>) : Boolean {
+        if (FirebaseAuth.getInstance().currentUser == null) {
+            withContext(Dispatchers.Main) {
+                showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
+            }
+            return false
+        }
+
+        val firebaseUser = RepositoryCommon.getInstance().firebaseUser
+        val tokenId = RepositoryCommon.getInstance().tokenId
+        val wordIdsJson = JSONArray()
+
+        for (wordId in wordIds) {
+            wordIdsJson.put(wordId)
+        }
+
+        val answer = ApiHelper.requestDeleteOwnWords(firebaseUser, tokenId, wordIdsJson)
+
+        if (answer?.isSuccess() == true) {
+            val wordDao = AppDatabase.getInstance(App.context).wordDao()
+
+            for (wordId in wordIds) {
+                val word = wordDao.findWordById(wordId)
+
+                if (word != null) {
+                    val tags = ArrayList(word.tags)
+
+                    tags.remove(OWN)
+                    word.saveType = Word.DICTIONARY
+                    word.tags = tags
+
+                    wordDao.insertAll(word)
+                }
+            }
+            return true
+        } else if (answer != null) {
+            withContext(Dispatchers.Main) {
+                showToast(getErrorString(answer))
+            }
+            return false
+        } else {
+            withContext(Dispatchers.Main) {
+                showToastLong(R.string.error_request)
+            }
+            return false
         }
     }
 

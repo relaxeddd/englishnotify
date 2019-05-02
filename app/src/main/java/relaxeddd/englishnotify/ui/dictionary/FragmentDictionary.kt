@@ -3,18 +3,17 @@ package relaxeddd.englishnotify.ui.dictionary
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import androidx.lifecycle.Observer
+import androidx.databinding.ViewDataBinding
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.dialogs.DialogCheckTags
 import relaxeddd.englishnotify.dialogs.DialogSortBy
-import kotlinx.android.synthetic.main.fragment_dictionary.*
+import kotlinx.android.synthetic.main.fragment_dictionary_all.*
 import relaxeddd.englishnotify.common.*
-import relaxeddd.englishnotify.databinding.FragmentDictionaryBinding
 import relaxeddd.englishnotify.dialogs.DialogDeleteWords
 
-class FragmentDictionary : BaseFragment<ViewModelDictionary, FragmentDictionaryBinding>() {
+abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding> : BaseFragment<VM, B>() {
 
-    private lateinit var adapter: AdapterWords
+    protected lateinit var adapter: AdapterWords
     private var animBlock: AnimBlock = AnimBlock(false)
 
     private val listenerCheckTags: ListenerResult<List<String>> = object:
@@ -30,15 +29,13 @@ class FragmentDictionary : BaseFragment<ViewModelDictionary, FragmentDictionaryB
             viewModel.onDialogSortByType(result)
         }
     }
-    private val clickListenerCloseFilter = View.OnClickListener {
+    protected val clickListenerCloseFilter = View.OnClickListener {
         animateDropdown(card_view_dictionary_filter, false, animBlock)
     }
 
     override fun getToolbarTitleResId() = R.string.dictionary
-    override fun getLayoutResId() = R.layout.fragment_dictionary
-    override fun getViewModelFactory() = InjectorUtils.provideDictionaryViewModelFactory(requireContext())
-    override fun getViewModelClass() = ViewModelDictionary::class.java
     override fun getMenuResId() = R.menu.menu_fragment_dictionary
+    override fun getToolbarElevation() = 0f
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -61,34 +58,27 @@ class FragmentDictionary : BaseFragment<ViewModelDictionary, FragmentDictionaryB
                 return true
             }
             R.id.item_menu_delete -> {
-                val dialog = DialogDeleteWords()
-                dialog.confirmListener = object: ListenerResult<Boolean> {
-                    override fun onResult(result: Boolean) {
-                        viewModel.deleteWords(HashSet(adapter.checkList))
-                        setCkeckMode(false)
-                        adapter.isSelectState = false
+                val selectedWords = HashSet(adapter.checkList)
+
+                if (selectedWords.isNotEmpty()) {
+                    val dialog = DialogDeleteWords()
+                    dialog.confirmListener = object : ListenerResult<Boolean> {
+                        override fun onResult(result: Boolean) {
+                            if (result) {
+                                viewModel.deleteWords(HashSet(adapter.checkList))
+                                setCkeckMode(false)
+                                adapter.isSelectState = false
+                            }
+                        }
                     }
+                    dialog.show(this@FragmentDictionary.childFragmentManager, "Confirm delete Dialog")
+                } else {
+                    showToast(R.string.words_not_selected)
                 }
-                dialog.show(this@FragmentDictionary.childFragmentManager, "Confirm delete Dialog")
                 return true
             }
             else -> return super.onOptionsItemSelected(item)
         }
-    }
-
-    override fun configureBinding() {
-        super.configureBinding()
-        adapter = AdapterWords(viewModel)
-        binding.viewModel = viewModel
-        binding.recyclerViewDictionary.adapter = adapter
-        binding.clickListenerCloseFilter = clickListenerCloseFilter
-        viewModel.wordsFiltered.observe(viewLifecycleOwner, Observer { words ->
-            binding.hasWords = (words != null && words.isNotEmpty())
-            if (words != null && words.isNotEmpty()) adapter.submitList(words)
-        })
-        viewModel.user.observe(viewLifecycleOwner, Observer { user ->
-            adapter.languageType = user?.learnLanguageType ?: 0
-        })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -118,6 +108,7 @@ class FragmentDictionary : BaseFragment<ViewModelDictionary, FragmentDictionaryB
                 dialog.listener = listenerSortBy
                 dialog.show(this@FragmentDictionary.childFragmentManager, "Repeat Dialog")
             }
+            else -> super.onNavigationEvent(eventId)
         }
     }
 
@@ -126,10 +117,18 @@ class FragmentDictionary : BaseFragment<ViewModelDictionary, FragmentDictionaryB
         viewModel.applySearch(searchText)
     }
 
+    open fun onFragmentSelected() {}
+
+    fun onFragmentDeselected() {
+        adapter.isSelectState = false
+        animateDropdown(card_view_dictionary_filter, false, animBlock)
+    }
+
     private fun setCkeckMode(isCheckMode: Boolean) {
         menu?.findItem(R.id.item_menu_check)?.isVisible = !isCheckMode
         menu?.findItem(R.id.item_menu_search)?.isVisible = !isCheckMode
         menu?.findItem(R.id.item_menu_filter)?.isVisible = !isCheckMode
+        menu?.findItem(R.id.item_menu_dialog_own)?.isVisible = !isCheckMode
         menu?.findItem(R.id.item_menu_check_all)?.isVisible = isCheckMode
         menu?.findItem(R.id.item_menu_cancel_check)?.isVisible = isCheckMode
         menu?.findItem(R.id.item_menu_delete)?.isVisible = isCheckMode

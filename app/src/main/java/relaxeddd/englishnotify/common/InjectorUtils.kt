@@ -1,10 +1,7 @@
 package relaxeddd.englishnotify.common
 
 import android.content.Context
-import relaxeddd.englishnotify.factories.DictionaryViewModelFactory
-import relaxeddd.englishnotify.factories.MainViewModelFactory
-import relaxeddd.englishnotify.factories.NotificationsViewModelFactory
-import relaxeddd.englishnotify.factories.SettingsViewModelFactory
+import relaxeddd.englishnotify.factories.*
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 import relaxeddd.englishnotify.model.db.AppDatabase
 import relaxeddd.englishnotify.model.repository.RepositoryUser
@@ -16,10 +13,16 @@ object InjectorUtils {
         return MainViewModelFactory(repository)
     }
 
-    fun provideDictionaryViewModelFactory(context: Context): DictionaryViewModelFactory {
+    fun provideDictionaryAllViewModelFactory(context: Context): DictionaryAllViewModelFactory {
         val repositoryWord = RepositoryFactory.getWordRepository(context)
         val repositoryUser = RepositoryFactory.getUserRepository(context)
-        return DictionaryViewModelFactory(repositoryWord, repositoryUser)
+        return DictionaryAllViewModelFactory(repositoryWord, repositoryUser)
+    }
+
+    fun provideDictionaryOwnViewModelFactory(context: Context): DictionaryOwnViewModelFactory {
+        val repositoryWord = RepositoryFactory.getWordRepository(context)
+        val repositoryUser = RepositoryFactory.getUserRepository(context)
+        return DictionaryOwnViewModelFactory(repositoryWord, repositoryUser)
     }
 
     fun provideNotificationsViewModelFactory(context: Context): NotificationsViewModelFactory {
@@ -30,6 +33,10 @@ object InjectorUtils {
     fun provideSettingsViewModelFactory(context: Context): SettingsViewModelFactory {
         val repository = RepositoryFactory.getUserRepository(context)
         return SettingsViewModelFactory(repository)
+    }
+
+    fun provideWordViewModelFactory(context: Context): WordViewModelFactory {
+        return WordViewModelFactory()
     }
 }
 

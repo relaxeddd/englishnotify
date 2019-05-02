@@ -1,5 +1,6 @@
 package relaxeddd.englishnotify.ui.notifications
 
+import android.os.Build
 import android.view.View
 import android.widget.CompoundButton
 import androidx.lifecycle.LiveData
@@ -9,6 +10,7 @@ import relaxeddd.englishnotify.model.repository.RepositoryUser
 import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
+import relaxeddd.englishnotify.model.repository.RepositoryWord
 
 class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewModelBase() {
 
@@ -19,6 +21,7 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
     val timeStartOff = MutableLiveData<String>("20:00")
     val timeEndOff = MutableLiveData<String>("07:00")
     val selectedTagLiveData = MutableLiveData<String>("")
+    val isVisibleNotificationsView = MutableLiveData<Boolean>(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
 
     private val userObserver = Observer<User?> { user ->
         isEnableNotificationsClickable.value = user != null
@@ -125,6 +128,11 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
     }
 
     fun onDialogSelectTagResult(selectedItem: String) {
+        if (selectedItem == OWN && RepositoryWord.getInstance().getOwnWords().isEmpty()) {
+            showToastLong(R.string.category_own_not_selected)
+            return
+        }
+
         selectedTagLiveData.value = getStringByResName(selectedItem)
         if (!selectedItem.equals(repositoryUser.liveDataUser.value?.selectedTag, true)) {
             uiScope.launch {

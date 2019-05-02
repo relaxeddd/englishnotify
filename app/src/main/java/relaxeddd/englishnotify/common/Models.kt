@@ -30,15 +30,21 @@ data class Word(
     val eng: String = "",
     val rus: String = "",
     val transcription: String = "",
-    val tags: List<String> = ArrayList(),
+    var tags: List<String> = ArrayList(),
     val sampleEng: String = "",
     val sampleRus: String = "",
     val v2: String = "",
     val v3: String = "",
-    val timestamp: Long = 0,
+    var timestamp: Long = 0,
     var isDeleted: Boolean = false,
-    var isLearned: Boolean = false
-)
+    var isLearned: Boolean = false,
+    var saveType: Int = DICTIONARY
+) {
+    companion object {
+        const val DICTIONARY = 0
+        const val OWN = 1
+    }
+}
 
 @Keep
 data class Resource<T>(
@@ -71,12 +77,15 @@ open class Event<out T>(private val content: T) {
 data class AnimBlock(var isAnimating: Boolean = false)
 
 @Keep
-data class Result(val code: Int = RESULT_UNDEFINED, val msg: String = "") {
+data class Result(val code: Int = RESULT_UNDEFINED, val msg: String = "", val message: String = "") {
     fun isSuccess() = code == RESULT_OK
 }
 
 @Keep
 data class UpdateUserResult(val result: Result?, val user: User?)
+
+@Keep
+data class OwnWordsResult(val result: Result?, val words: List<Word>? = null)
 
 @Keep
 data class PurchaseResult(val result: Result?, val userId: String = "", val tokenId: String = "", val itemType: String = "",

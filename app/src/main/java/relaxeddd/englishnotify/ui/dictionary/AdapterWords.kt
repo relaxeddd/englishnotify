@@ -20,8 +20,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashSet
 
-class AdapterWords(val viewModel: ViewModelDictionary) : ListAdapter<Word, AdapterWords.ViewHolder>(
-    WordDiffCallback()) {
+class AdapterWords(val viewModel: ViewModelDictionary) : ListAdapter<Word, AdapterWords.ViewHolder>(WordDiffCallback()) {
 
     var isSelectState = false
         set(value) {
@@ -99,16 +98,23 @@ class AdapterWords(val viewModel: ViewModelDictionary) : ListAdapter<Word, Adapt
                         textWord.text = word.eng
                         textWordTranscription.text = transcription
                         textWordTranslation.text = word.rus
+                        textWordTranscription.visibility = View.VISIBLE
+                        textWordTranscriptionTranslation.visibility = View.GONE
                     }
                     1 -> {
                         textWord.text = word.rus
-                        textWordTranscription.text = transcription
+                        textWordTranscriptionTranslation.text = transcription
                         textWordTranslation.text = word.eng
+                        textWordTranscription.visibility = View.GONE
+                        textWordTranscriptionTranslation.visibility = View.VISIBLE
                     }
                 }
                 val dateFormat = "hh:mm dd.MM"
                 textWordSampleEng.text = word.sampleEng
                 textWordSampleRus.text = word.sampleRus
+                textWordSampleEng.visibility = if (word.sampleEng.isEmpty()) View.GONE else View.VISIBLE
+                textWordSampleRus.visibility = if (word.sampleRus.isEmpty()) View.GONE else View.VISIBLE
+                imageWordOwn.visibility = if (word.saveType == Word.DICTIONARY) View.GONE else View.VISIBLE
                 textWordTimestamp.text = SimpleDateFormat(dateFormat, Locale.getDefault()).format(word.timestamp) ?: ""
                 if (isSelectState) {
                     checkBoxWordSelect.visibility = View.VISIBLE
@@ -130,10 +136,14 @@ class AdapterWords(val viewModel: ViewModelDictionary) : ListAdapter<Word, Adapt
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.item_menu_delete -> viewModel.deleteWord(word)
+                R.id.item_menu_add_own -> viewModel.addToOwn(word)
+                R.id.item_menu_delete_own -> viewModel.removeFromOwnDict(word)
             }
             true
         }
 
+        popupMenu.menu.findItem(R.id.item_menu_add_own)?.isVisible = word.saveType == Word.DICTIONARY
+        popupMenu.menu.findItem(R.id.item_menu_delete_own)?.isVisible = word.saveType != Word.DICTIONARY
         val menuHelper = MenuPopupHelper(view.context, popupMenu.menu as MenuBuilder, view)
         menuHelper.setForceShowIcon(true)
         menuHelper.show()
@@ -147,6 +157,7 @@ private class WordDiffCallback : DiffUtil.ItemCallback<Word>() {
     }
 
     override fun areContentsTheSame(oldItem: Word, newItem: Word): Boolean {
-        return oldItem.eng == newItem.eng
+        return oldItem.eng == newItem.eng && oldItem.saveType == newItem.saveType && oldItem.rus == newItem.rus
+                && newItem.tags.containsAll(oldItem.tags) && oldItem.tags.containsAll(newItem.tags)
     }
 }
