@@ -134,6 +134,7 @@ class RepositoryUser private constructor() {
         }
     }
 
+    //------------------------------------------------------------------------------------------------------------------
     suspend fun requestOwnWords() {
         if (FirebaseAuth.getInstance().currentUser == null) {
             withContext(Dispatchers.Main) {
@@ -197,9 +198,11 @@ class RepositoryUser private constructor() {
         val answer = ApiHelper.requestInsertOwnWord(firebaseUser, tokenId, wordJson)
 
         if (answer?.isSuccess() == true) {
-            word.tags = tags
-            word.saveType = Word.OWN
-            RepositoryWord.getInstance(AppDatabase.getInstance(App.context).wordDao()).updateWord(word)
+            val saveWord = Word(word)
+
+            saveWord.tags = tags
+            saveWord.saveType = Word.OWN
+            RepositoryWord.getInstance().updateWord(saveWord)
             return true
         } else if (answer != null) {
             withContext(Dispatchers.Main) {
@@ -243,13 +246,14 @@ class RepositoryUser private constructor() {
                 val word = wordDao.findWordById(wordId)
 
                 if (word != null) {
+                    val saveWord = Word(word)
                     val tags = ArrayList(word.tags)
 
                     tags.remove(OWN)
-                    word.saveType = Word.DICTIONARY
-                    word.tags = tags
+                    saveWord.saveType = Word.DICTIONARY
+                    saveWord.tags = tags
 
-                    wordDao.insertAll(word)
+                    RepositoryWord.getInstance(wordDao).updateWord(saveWord)
                 }
             }
             return true

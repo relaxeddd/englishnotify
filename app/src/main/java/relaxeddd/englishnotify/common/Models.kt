@@ -38,8 +38,12 @@ data class Word(
     var timestamp: Long = 0,
     var isDeleted: Boolean = false,
     var isLearned: Boolean = false,
-    var saveType: Int = DICTIONARY
+    var saveType: Int = DICTIONARY,
+    var learnStage: Int = 0
 ) {
+    constructor(word: Word) : this(word.eng, word.rus, word.transcription, word.tags,
+        word.sampleEng, word.sampleRus, word.v2, word.v3, word.timestamp, word.isDeleted, word.isLearned, word.saveType, word.learnStage)
+
     companion object {
         const val DICTIONARY = 0
         const val OWN = 1

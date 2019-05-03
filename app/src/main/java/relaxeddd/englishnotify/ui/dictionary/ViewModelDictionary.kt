@@ -67,6 +67,14 @@ open class ViewModelDictionary(protected val repositoryWord: RepositoryWord, pro
         updateFilteredWords(searchText)
     }
 
+    fun resetProgress(word: Word) {
+        ioScope.launch {
+            val saveWord = Word(word)
+            saveWord.learnStage = 0
+            repositoryWord.updateWord(saveWord)
+        }
+    }
+
     fun addToOwn(word: Word) {
         navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
         ioScope.launch {
@@ -125,6 +133,7 @@ open class ViewModelDictionary(protected val repositoryWord: RepositoryWord, pro
         }
     }
 
+    //------------------------------------------------------------------------------------------------------------------
     protected open fun filterWords(items: HashSet<Word>) : HashSet<Word> {
         return items.filter { !it.isDeleted }.toHashSet()
     }

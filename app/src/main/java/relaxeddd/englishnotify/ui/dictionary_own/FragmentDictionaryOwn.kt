@@ -28,7 +28,6 @@ class FragmentDictionaryOwn : FragmentDictionary<ViewModelDictionaryOwn, Fragmen
         viewModel.wordsFiltered.observe(viewLifecycleOwner, Observer { words ->
             binding.hasWords = (words != null && words.isNotEmpty())
             if (words != null && words.isNotEmpty()) adapter.submitList(words)
-            adapter.notifyDataSetChanged()
         })
         viewModel.user.observe(viewLifecycleOwner, Observer { user ->
             adapter.languageType = user?.learnLanguageType ?: 0

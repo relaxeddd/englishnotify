@@ -27,44 +27,58 @@ class PushBroadcastReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         CoroutineScope(Dispatchers.IO).launch {
+            val wordDao = AppDatabase.getInstance(context).wordDao()
             val notificationId = intent.getIntExtra(NOTIFICATION_ID, -1)
             val wordId = intent.getStringExtra(WORD_ID)
             val isKnow = intent.getIntExtra(IS_KNOW, DONT_KNOW)
             val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            val word = AppDatabase.getInstance(context).wordDao().findWordById(wordId) ?: return@launch
+            val word = wordDao.findWordById(wordId) ?: return@launch
             val languageType = SharedHelper.getLearnLanguageType()
+            val saveWord = Word(word)
 
             if (isKnow == KNOW) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     val userText = RemoteInput.getResultsFromIntent(intent)?.getCharSequence(KEY_TEXT_REPLY).toString().toLowerCase()
-                    var answer = if (languageType == TYPE_PUSH_ENGLISH) word.rus else word.eng
+                    val answer = if (languageType == TYPE_PUSH_ENGLISH) word.rus else word.eng
                     val answerWords = answer.split(",")
+                    var isCorrectAnswer = false
+
+                    for (answerWord in answerWords) {
+                        if (answerWord.trim().toLowerCase() == userText) {
+                            isCorrectAnswer = true
+                        }
+                    }
+
+                    if (isCorrectAnswer) {
+                        saveWord.learnStage++
+                    } else {
+                        saveWord.learnStage = 0
+                    }
 
                     withContext(Dispatchers.Main) {
-                        for (answerWord in answerWords) {
-                            if (answerWord.trim().toLowerCase() == userText) {
-                                showToast(R.string.answer_correct)
-                                return@withContext
-                            }
+                        if (isCorrectAnswer) {
+                            showToast(R.string.answer_correct)
+                        } else {
+                            val title = if (languageType == TYPE_PUSH_ENGLISH) word.eng else word.rus
+                            val fullText = MyFirebaseMessagingService.getFullNotificationText(word, languageType)
+
+                            showToast(R.string.answer_incorrect)
+                            MyFirebaseMessagingService.showNotificationWord(context, wordId, fullText, title, false)
                         }
-
-                        val title = if (languageType == TYPE_PUSH_ENGLISH) word.eng else word.rus
-                        val fullText = MyFirebaseMessagingService.getFullNotificationText(word, languageType)
-
-                        showToast(R.string.answer_incorrect)
-                        MyFirebaseMessagingService.showNotificationWord(context, wordId, fullText, title, false)
                     }
                 } else {
-                    word.isLearned = true
-                    AppDatabase.getInstance(context).wordDao().insertAll(word)
+                    saveWord.learnStage++
                 }
             } else {
+                saveWord.learnStage = 0
+
                 val title = if (languageType == TYPE_PUSH_ENGLISH) word.eng else word.rus
                 val fullText = MyFirebaseMessagingService.getFullNotificationText(word, languageType)
                 withContext(Dispatchers.Main) {
                     MyFirebaseMessagingService.showNotificationWord(context, wordId, fullText, title, false)
                 }
             }
+            wordDao.insertAll(saveWord)
             if (notificationId != -1) {
                 notificationManager.cancel(notificationId)
             }

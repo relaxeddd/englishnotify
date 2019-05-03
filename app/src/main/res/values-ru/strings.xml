@@ -55,7 +55,7 @@
     <string name="night_time">Ночное время (без уведомлений)</string>
     <string name="night_time_value">С %s до %s</string>
     <string name="no_thanks">Нет, спасибо / уже</string>
-    <string name="no_words">Уведомления с новыми словами пока еще не пришли. Придется подождать… (Со стандартными настройками один час)</string>
+    <string name="no_words">Уведомления с новыми словами пока еще не пришли. Необходимо авторизоваться и подождать… (Со стандартными настройками один час)</string>
     <string name="no_words_own">Вы пока еще не добавили слова в свою категорию</string>
     <string name="no_test_notifications">У вас не осталось тестовых уведомлений</string>
     <string name="not_show_notifications">Не показывать уведомления начиная с (24-часовой формат, число от 0 до 23)</string>
@@ -76,8 +76,10 @@
     <string name="receive_notifications_time">Получать уведомления</string>
     <string name="remove_from_own_category">Убрать из своей категории</string>
     <string name="renew_subscription">Продлить использование</string>
+    <string name="reset_progress">Сбросить прогресс</string>
     <string name="russian_at_english">С руссокого на английский</string>
-    <string name="show_translation">Перевод</string>
+    <string name="show_translation">Я не знаю</string>
+    <string name="show_word_progress">Показывать прогресс слов</string>
     <string name="search_words">Искать слова</string>
     <string name="send_feedback">Отправить отзыв</string>
     <string name="send_test_notification">Отправить тестовое уведомление? (Осталось: %s)</string>
@@ -144,6 +146,7 @@
 
     <string name="patch_notes_1_3_0">- Добавлена "Своя категория". Вы можете добавить в неё пришедшие слова из словаря (долгим нажатием на слово) или же внести собственные во вкладке "Своя категория" в словаре
         \n- Улучшено отображение слов в словаре
+        \n- Добавлен прогресс изучения слов, пока только изменяется при ответе в уведомлениях. Можно отключить во вкладке настройка
         \n- Исправлен баг удаления сразу нескольких слов
         \n- Скрыта кнопка выбора отображения уведомлений для Android от 4.4 и ниже</string>
 

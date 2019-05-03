@@ -120,7 +120,9 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding>
     open fun onFragmentSelected() {}
 
     fun onFragmentDeselected() {
-        adapter.isSelectState = false
+        if (adapter.isSelectState) {
+            adapter.isSelectState = false
+        }
         animateDropdown(card_view_dictionary_filter, false, animBlock)
     }
 

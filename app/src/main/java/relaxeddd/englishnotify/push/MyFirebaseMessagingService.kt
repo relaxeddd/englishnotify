@@ -19,6 +19,7 @@ import org.json.JSONObject
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 import java.util.*
+import kotlin.collections.HashMap
 import kotlin.random.Random
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
@@ -190,11 +191,34 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     }
 
                     val wordDao = AppDatabase.getInstance(this).wordDao()
-                    val words = RepositoryWord.getInstance(wordDao).getOwnWords()
-                    val wordIx = (0 until words.size).random()
+                    var words = RepositoryWord.getInstance(wordDao).getOwnWords()
+                    val sortByLearnStage = HashMap<Int, ArrayList<Word>>()
 
-                    if (wordIx >= 0 && wordIx < words.size) {
-                        handleWordNotification(words[wordIx], false)
+                    if (words.isEmpty()) {
+                        words = wordDao.getAllItems()
+                    }
+                    for (word in words) {
+                        if (!sortByLearnStage.containsKey(word.learnStage)) {
+                            val list = ArrayList<Word>()
+                            list.add(word)
+                            sortByLearnStage[word.learnStage] = list
+                        } else {
+                            sortByLearnStage[word.learnStage]?.add(word)
+                        }
+                    }
+                    for (learnStage in 0..2) {
+                        if (sortByLearnStage.containsKey(learnStage)) {
+                            words = sortByLearnStage[learnStage] ?: ArrayList()
+                            break
+                        }
+                    }
+
+                    if (words.isNotEmpty()) {
+                        val wordIx = (0 until words.size).random()
+
+                        if (wordIx >= 0 && wordIx < words.size) {
+                            handleWordNotification(words[wordIx], false)
+                        }
                     }
                 }
                 PUSH -> {
@@ -225,7 +249,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             val wordDao = AppDatabase.getInstance(this).wordDao()
             val existsWord = wordDao.findWordById(word.eng)
 
-            if (existsWord == null || existsWord.saveType == Word.DICTIONARY) {
+            if (existsWord == null) {
+                wordDao.insertAll(word)
+            } else if (existsWord.saveType == Word.DICTIONARY) {
+                word.learnStage = existsWord.learnStage
                 wordDao.insertAll(word)
             }
         }
