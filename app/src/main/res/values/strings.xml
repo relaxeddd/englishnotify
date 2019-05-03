@@ -54,7 +54,7 @@
     <string name="night_time">Night time (without notifications)</string>
     <string name="night_time_value">From %s to %s</string>
     <string name="no_thanks">No, thanks / already</string>
-    <string name="no_words">Notifications with new words have not received yet. Please, wait… (With default settings wait 1 hour)</string>
+    <string name="no_words">Notifications with new words have not received yet. Please, authorize and wait… (With default settings wait 1 hour)</string>
     <string name="no_words_own">You have not added words to your category yet</string>
     <string name="no_test_notifications">There are no test notifications</string>
     <string name="not_show_notifications">Don`t show notifications beginning with (24-hour clock, the number from 0 to 23)</string>
@@ -75,8 +75,10 @@
     <string name="receive_notifications_time">Receive notifications time</string>
     <string name="remove_from_own_category">Remove from own category</string>
     <string name="renew_subscription">Renew subscription</string>
+    <string name="reset_progress">Reset progress</string>
     <string name="russian_at_english">Russian at english</string>
-    <string name="show_translation">Translation</string>
+    <string name="show_translation">I don`t know</string>
+    <string name="show_word_progress">Is show word progress</string>
     <string name="search_words">Search words</string>
     <string name="send_feedback">Send feedback</string>
     <string name="send_test_notification">Send test notification? (%s notifications left)</string>
@@ -151,6 +153,7 @@
 
     <string name="patch_notes_1_3_0">- Added "own category". You can add words to own category from dictionary (long tap on word) or input your words at Own category tab in dictionary
         \n- Improved words view in dictionary
+        \n- Added learn word progress. It changes when you answer in notifications. You can disable it in settings
         \n- Fixed delete several words bug
         \n- Hided notification view type button for Android from 4.4 and below</string>
 

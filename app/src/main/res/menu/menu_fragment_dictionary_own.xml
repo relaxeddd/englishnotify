@@ -8,10 +8,10 @@
           app:showAsAction="collapseActionView|ifRoom"
           app:actionViewClass="androidx.appcompat.widget.SearchView" />
 
-    <item android:id="@+id/item_menu_check"
-          android:title="@string/select"
+    <item android:id="@+id/item_menu_dialog_own"
+          android:title="@string/own_category"
           app:showAsAction="collapseActionView|ifRoom"
-          android:icon="@drawable/ic_check"/>
+          android:icon="@drawable/ic_info_white"/>
 
     <item android:id="@+id/item_menu_check_all"
           android:title="@string/check_all"
@@ -31,14 +31,14 @@
           android:icon="@drawable/ic_close"
           android:visible="false"/>
 
+    <item android:id="@+id/item_menu_check"
+          android:title="@string/select"
+          app:showAsAction="collapseActionView|ifRoom"
+          android:icon="@drawable/ic_check"/>
+
     <item android:id="@+id/item_menu_filter"
           android:title="@string/filter"
           app:showAsAction="collapseActionView|ifRoom"
           android:icon="@drawable/ic_filter"/>
-
-    <item android:id="@+id/item_menu_dialog_own"
-          android:title="@string/own_category"
-          app:showAsAction="collapseActionView|ifRoom"
-          android:icon="@drawable/ic_info_white"/>
 
 </menu>

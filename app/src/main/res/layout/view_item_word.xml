@@ -27,7 +27,10 @@
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/size_12">
+                android:paddingStart="@dimen/size_12"
+                android:paddingEnd="@dimen/size_12"
+                android:paddingBottom="@dimen/size_12"
+                android:paddingTop="@dimen/size_10">
 
             <TextView
                     android:layout_width="0dp"
@@ -36,8 +39,7 @@
                     android:textColor="@color/black"
                     app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintEnd_toStartOf="@+id/text_word_translation"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:ellipsize="end"/>
+                    android:ellipsize="end" app:layout_constraintTop_toBottomOf="@+id/progress_bar_word_learn_stage"/>
 
             <TextView
                     android:layout_width="0dp"
@@ -174,6 +176,15 @@
                         android:layout_weight="1"/>
 
             </LinearLayout>
+
+            <ProgressBar
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/size_2"
+                    android:progress="8"
+                    android:id="@+id/progress_bar_word_learn_stage"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="0.5dp"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

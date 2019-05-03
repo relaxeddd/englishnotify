@@ -1,6 +1,7 @@
 package relaxeddd.englishnotify.ui.dictionary
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,11 +17,16 @@ import relaxeddd.englishnotify.databinding.ViewItemWordBinding
 import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuPopupHelper
+import relaxeddd.englishnotify.common.SharedHelper
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashSet
 
 class AdapterWords(val viewModel: ViewModelDictionary) : ListAdapter<Word, AdapterWords.ViewHolder>(WordDiffCallback()) {
+
+    companion object {
+        var isHideLearnStage = SharedHelper.isHideLearnStage() || Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP
+    }
 
     var isSelectState = false
         set(value) {
@@ -124,6 +130,16 @@ class AdapterWords(val viewModel: ViewModelDictionary) : ListAdapter<Word, Adapt
                     checkBoxWordSelect.visibility = View.GONE
                     checkBoxWordSelect.isChecked = false
                 }
+                if (isHideLearnStage) {
+                    progressBarWordLearnStage.visibility = View.GONE
+                } else {
+                    progressBarWordLearnStage.visibility = View.VISIBLE
+                    when {
+                        word.learnStage <= 0 -> progressBarWordLearnStage.progress = 8
+                        word.learnStage >= 2 -> progressBarWordLearnStage.progress = 100
+                        else -> progressBarWordLearnStage.progress = 60
+                    }
+                }
             }
         }
     }
@@ -138,10 +154,12 @@ class AdapterWords(val viewModel: ViewModelDictionary) : ListAdapter<Word, Adapt
                 R.id.item_menu_delete -> viewModel.deleteWord(word)
                 R.id.item_menu_add_own -> viewModel.addToOwn(word)
                 R.id.item_menu_delete_own -> viewModel.removeFromOwnDict(word)
+                R.id.item_menu_reset_progress -> viewModel.resetProgress(word)
             }
             true
         }
 
+        popupMenu.menu.findItem(R.id.item_menu_reset_progress)?.isVisible = word.learnStage > 0 && !isHideLearnStage
         popupMenu.menu.findItem(R.id.item_menu_add_own)?.isVisible = word.saveType == Word.DICTIONARY
         popupMenu.menu.findItem(R.id.item_menu_delete_own)?.isVisible = word.saveType != Word.DICTIONARY
         val menuHelper = MenuPopupHelper(view.context, popupMenu.menu as MenuBuilder, view)
@@ -159,5 +177,6 @@ private class WordDiffCallback : DiffUtil.ItemCallback<Word>() {
     override fun areContentsTheSame(oldItem: Word, newItem: Word): Boolean {
         return oldItem.eng == newItem.eng && oldItem.saveType == newItem.saveType && oldItem.rus == newItem.rus
                 && newItem.tags.containsAll(oldItem.tags) && oldItem.tags.containsAll(newItem.tags)
+                && oldItem.learnStage == newItem.learnStage
     }
 }
