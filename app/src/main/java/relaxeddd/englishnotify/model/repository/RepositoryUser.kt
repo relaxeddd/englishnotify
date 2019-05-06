@@ -62,6 +62,7 @@ class RepositoryUser private constructor() {
                 if (answerInitData?.result != null && answerInitData.result.isSuccess() && answerInitData.user?.userId?.isNotEmpty() == true) {
                     liveDataUser.value = answerInitData.user
                     SharedHelper.setLearnLanguageType(answerInitData.user.learnLanguageType)
+                    SharedHelper.setSelectedCategory(answerInitData.user.selectedTag)
 
                     if (!answerInitData.isActualVersion) {
                         liveDataIsActualVersion.value = answerInitData.isActualVersion
@@ -101,13 +102,14 @@ class RepositoryUser private constructor() {
         updateUser(user, liveDataUser.value)
     }
 
-    suspend fun setSelectedTag(selectedTag: String) {
+    suspend fun setSelectedTag(selectedTag: String) : Boolean {
         if (selectedTag.isNotEmpty()) {
-            val user = User(liveDataUser.value ?: return)
+            val user = User(liveDataUser.value ?: return false)
             user.selectedTag = selectedTag
-            updateUser(user, liveDataUser.value)
+            return updateUser(user, liveDataUser.value)
         } else {
             showToast(R.string.tags_should_not_be_empty)
+            return false
         }
     }
 
@@ -271,7 +273,7 @@ class RepositoryUser private constructor() {
     }
 
     //------------------------------------------------------------------------------------------------------------------
-    private suspend fun updateUser(user: User, oldUser: User?) {
+    private suspend fun updateUser(user: User, oldUser: User?) : Boolean {
         liveDataUser.postValue(user)
 
         val firebaseUser = RepositoryCommon.getInstance().firebaseUser
@@ -281,10 +283,14 @@ class RepositoryUser private constructor() {
         if (updateResult != null && updateResult.result !== null && !updateResult.result.isSuccess()) {
             showToast(getErrorString(updateResult.result))
             liveDataUser.postValue(oldUser)
+            return false
         } else if (updateResult != null && updateResult.result !== null) {
             SharedHelper.setLearnLanguageType(user.learnLanguageType)
+            SharedHelper.setSelectedCategory(user.selectedTag)
+            return true
         } else {
             showToast(R.string.error_update)
+            return false
         }
     }
 }

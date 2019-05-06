@@ -104,7 +104,7 @@
     <string name="user_not_found">User not found</string>
     <string name="word">Word</string>
     <string name="word_added">Word has been added</string>
-    <string name="word_categories">Word categories</string>
+    <string name="word_category_select">Word category select</string>
     <string name="word_length_limit">The max length is 200 symbols</string>
     <string name="word_should_not_be_empty">Word should not be empty</string>
     <string name="words_not_selected">Words not selected</string>
@@ -116,6 +116,7 @@
     <string name="label_fragment_notifications" translatable="false">LabelFragmentNotifications</string>
     <string name="label_fragment_settings" translatable="false">LabelFragmentSettings</string>
     <string name="label_fragment_word" translatable="false">LabelFragmentWord</string>
+    <string name="label_fragment_categories" translatable="false">LabelFragmentCategories</string>
 
     <string name="text_rate_app">Write comments and suggestions. What you want to see in the app</string>
     <string name="text_app_about">Select categories of words which you want to learn and you will receive English words in push notifications.
@@ -158,12 +159,22 @@
         \n- Fixed delete several words bug
         \n- Hided notification view type button for Android from 4.4 and below</string>
 
+    <string name="patch_notes_1_3_2">- Changes in select category window
+        \n- Changes in input word window in own category
+        \n- Added translations of new categories
+        \n- Fixes in receiving notifications</string>
+
     <!-- =========================================================================================================== -->
     <string name="own">Own category (add words yourself in dictionary)</string>
     <string name="irregular">Irregular verbs</string>
     <string name="hard">Hard</string>
     <string name="all_app_words">All app words</string>
     <string name="all_app_words_without_simple">All app words (level 2)</string>
+    <string name="hard_5">Hard (level 2)</string>
+    <string name="pronoun">Pronouns</string>
+    <string name="proverb">Proverbs</string>
+    <string name="tourists">For tourists</string>
+    <string name="tourists_5">For tourists (level 2)</string>
 
     <string name="human_body">Human body</string>
     <string name="human_body_5">Human body (level 2)</string>
