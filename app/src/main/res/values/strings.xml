@@ -104,6 +104,7 @@
     <string name="user_not_found">User not found</string>
     <string name="word">Word</string>
     <string name="word_added">Word has been added</string>
+    <string name="word_categories">Word categories</string>
     <string name="word_length_limit">The max length is 200 symbols</string>
     <string name="word_should_not_be_empty">Word should not be empty</string>
     <string name="words_not_selected">Words not selected</string>

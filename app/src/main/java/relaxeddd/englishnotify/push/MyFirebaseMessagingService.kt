@@ -28,7 +28,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         var pushToken: String = ""
 
         fun showNotificationWord(ctx: Context, wordId: String, text: String, title: String = getString(R.string.app_name), withButtons : Boolean) {
-            val notificationId = Random.nextInt(1000)
+            val notificationId = Random.nextInt(10000)
             val intent = Intent(ctx, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             val pendingIntent = PendingIntent.getActivity(ctx, 0, intent, PendingIntent.FLAG_ONE_SHOT)
@@ -97,7 +97,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
 
         fun showNotification(ctx: Context, title: String = getString(R.string.app_name), text: String) {
-            val notificationId = Random.nextInt(1000)
+            val notificationId = Random.nextInt(10000)
             val intent = Intent(ctx, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             val pendingIntent = PendingIntent.getActivity(ctx, 0, intent, PendingIntent.FLAG_ONE_SHOT)
@@ -107,7 +107,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 .setContentTitle(title)
                 .setContentText(text)
                 .setStyle(NotificationCompat.BigTextStyle().bigText(text))
-                .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
                 .setPriority(Notification.PRIORITY_MAX)
 
@@ -173,6 +172,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
+        super.onMessageReceived(remoteMessage)
+
         val data = remoteMessage?.data
 
         if (data != null) {

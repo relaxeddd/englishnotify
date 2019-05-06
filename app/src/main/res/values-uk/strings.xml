@@ -105,6 +105,7 @@
     <string name="user_not_found">Пользователь не найден</string>
     <string name="word">Слово</string>
     <string name="word_added">Слово добавлено</string>
+    <string name="word_categories">Категории слов</string>
     <string name="word_length_limit">Длина не должна превышать 200 символов</string>
     <string name="word_should_not_be_empty">Слово не должно быть пустым</string>
     <string name="words_not_selected">Слова не выбраны</string>
