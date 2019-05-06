@@ -28,7 +28,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         var pushToken: String = ""
 
         fun showNotificationWord(ctx: Context, wordId: String, text: String, title: String = getString(R.string.app_name), withButtons : Boolean) {
-            val notificationId = Random.nextInt(1000)
+            val notificationId = Random.nextInt(10000)
             val intent = Intent(ctx, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             val pendingIntent = PendingIntent.getActivity(ctx, 0, intent, PendingIntent.FLAG_ONE_SHOT)
@@ -97,7 +97,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
 
         fun showNotification(ctx: Context, title: String = getString(R.string.app_name), text: String) {
-            val notificationId = Random.nextInt(1000)
+            val notificationId = Random.nextInt(10000)
             val intent = Intent(ctx, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             val pendingIntent = PendingIntent.getActivity(ctx, 0, intent, PendingIntent.FLAG_ONE_SHOT)
@@ -134,8 +134,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         fun getFullNotificationText(word: Word, languageType: Int) : String {
             var notificationText = ""
 
+            if (languageType == TYPE_PUSH_ENGLISH && word.rus.isNotEmpty()) {
+                notificationText += word.eng + "\n"
+            } else if (languageType == TYPE_PUSH_RUSSIAN && word.eng.isNotEmpty()) {
+                notificationText += word.rus + "\n"
+            }
             if (word.transcription.isNotEmpty()) {
-                notificationText += "[" + word.transcription + "]"
+                notificationText += "\n[" + word.transcription + "]"
             }
             if (word.v2.isNotEmpty() && word.v3.isNotEmpty()) {
                 if (notificationText.isNotEmpty()) {
@@ -155,7 +160,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 notificationText += "\n" + word.sampleEng
             }
             if (word.sampleRus.isNotEmpty()) {
-                notificationText += "\n"
                 notificationText += "\n" + word.sampleRus
             }
 
@@ -168,11 +172,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         super.onNewToken(p0)
         pushToken = p0 ?: ""
         if (p0 != null && p0.isNotEmpty()) {
-            SharedHelper.setPushToken(p0)
+            SharedHelper.setPushToken(p0, this)
         }
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
+        super.onMessageReceived(remoteMessage)
+
         val data = remoteMessage?.data
 
         if (data != null) {
@@ -236,14 +242,18 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun handleWordNotification(word: Word, isSave: Boolean = true) {
-        val languageType = SharedHelper.getLearnLanguageType()
-        val title = if (languageType == TYPE_PUSH_ENGLISH) word.eng else word.rus
+        val languageType = SharedHelper.getLearnLanguageType(this)
         val isShowButtons = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
-                && SharedHelper.getNotificationsView() == SharedHelper.NOTIFICATIONS_VIEW_WITH_QUESTION
-        val notificationText = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP
-            || SharedHelper.getNotificationsView() == SharedHelper.NOTIFICATIONS_VIEW_WITH_TRANSLATE) {
-            getFullNotificationText(word, languageType)
-        } else getString(R.string.expand_to_see_buttons)
+                && SharedHelper.getNotificationsView(this) == SharedHelper.NOTIFICATIONS_VIEW_WITH_QUESTION
+        var notificationText = ""
+        var title = getStringByResName(SharedHelper.getSelectedCategory(this))
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP
+            || SharedHelper.getNotificationsView(this) == SharedHelper.NOTIFICATIONS_VIEW_WITH_TRANSLATE) {
+            notificationText = getFullNotificationText(word, languageType)
+        } else {
+            notificationText = if (languageType == TYPE_PUSH_ENGLISH) word.eng else word.rus
+        }
 
         if (isSave) {
             val wordDao = AppDatabase.getInstance(this).wordDao()
@@ -261,8 +271,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun isNightTime() : Boolean {
-        val startHour = SharedHelper.getStartHour()
-        val durationHours = SharedHelper.getDurationHours()
+        val startHour = SharedHelper.getStartHour(this)
+        val durationHours = SharedHelper.getDurationHours(this)
         val endHour = if (startHour + durationHours >= 24) startHour + durationHours - 24 else startHour + durationHours
         val calendar = Calendar.getInstance()
         val currentHour = calendar.get(Calendar.HOUR_OF_DAY)

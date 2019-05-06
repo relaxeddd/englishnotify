@@ -1,6 +1,7 @@
 package relaxeddd.englishnotify.ui.notifications
 
 import android.os.Bundle
+import androidx.navigation.Navigation
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.databinding.FragmentNotificationsBinding
@@ -47,6 +48,7 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
     override fun configureBinding() {
         super.configureBinding()
         binding.viewModel = viewModel
+        binding.clickListenerChangeCategory = Navigation.createNavigateOnClickListener(R.id.action_fragmentNotifications_to_fragmentCategories)
         binding.listRepeatTime = resources.getStringArray(R.array.array_time_repeat)
         binding.listLearnLanguage = resources.getStringArray(R.array.array_learn_language)
         binding.listNotificationsView = resources.getStringArray(R.array.array_notifications_view)

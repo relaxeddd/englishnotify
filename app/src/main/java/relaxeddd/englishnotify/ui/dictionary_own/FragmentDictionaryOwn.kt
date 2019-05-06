@@ -24,7 +24,7 @@ class FragmentDictionaryOwn : FragmentDictionary<ViewModelDictionaryOwn, Fragmen
         binding.viewModel = viewModel
         binding.recyclerViewDictionary.adapter = adapter
         binding.clickListenerCloseFilter = clickListenerCloseFilter
-        binding.clickListenerAddOwnWord = Navigation.createNavigateOnClickListener(R.id.fragmentWord, null)
+        binding.clickListenerAddOwnWord = Navigation.createNavigateOnClickListener(R.id.action_fragmentDictionaryMain_to_fragmentWord)
         viewModel.wordsFiltered.observe(viewLifecycleOwner, Observer { words ->
             binding.hasWords = (words != null && words.isNotEmpty())
             if (words != null && words.isNotEmpty()) adapter.submitList(words)

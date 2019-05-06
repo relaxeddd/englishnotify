@@ -59,7 +59,7 @@ class PushBroadcastReceiver : BroadcastReceiver() {
                         if (isCorrectAnswer) {
                             showToast(R.string.answer_correct)
                         } else {
-                            val title = if (languageType == TYPE_PUSH_ENGLISH) word.eng else word.rus
+                            val title = getStringByResName(SharedHelper.getSelectedCategory(context))
                             val fullText = MyFirebaseMessagingService.getFullNotificationText(word, languageType)
 
                             showToast(R.string.answer_incorrect)
@@ -72,7 +72,7 @@ class PushBroadcastReceiver : BroadcastReceiver() {
             } else {
                 saveWord.learnStage = 0
 
-                val title = if (languageType == TYPE_PUSH_ENGLISH) word.eng else word.rus
+                val title = getStringByResName(SharedHelper.getSelectedCategory(context))
                 val fullText = MyFirebaseMessagingService.getFullNotificationText(word, languageType)
                 withContext(Dispatchers.Main) {
                     MyFirebaseMessagingService.showNotificationWord(context, wordId, fullText, title, false)

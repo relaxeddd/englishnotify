@@ -2,7 +2,6 @@ package relaxeddd.englishnotify.common
 
 import android.content.Context
 import relaxeddd.englishnotify.App
-import relaxeddd.englishnotify.BuildConfig
 
 object SharedHelper {
 
@@ -19,8 +18,8 @@ object SharedHelper {
         sPref.edit().putBoolean(PRIVACY_POLICY_CONFIRMED, isConfirmed).apply()
     }
 
-    fun getLearnLanguageType() : Int {
-        val sPref = App.context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+    fun getLearnLanguageType(context: Context = App.context) : Int {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         return sPref.getInt(PUSH_LANGUAGE, TYPE_PUSH_ENGLISH)
     }
 
@@ -34,8 +33,8 @@ object SharedHelper {
         return sPref.getString(PUSH_TOKEN, "") ?: ""
     }
 
-    fun setPushToken(pushToken : String) {
-        val sPref = App.context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+    fun setPushToken(pushToken : String, context: Context = App.context) {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         sPref.edit().putString(PUSH_TOKEN, pushToken).apply()
     }
 
@@ -69,8 +68,8 @@ object SharedHelper {
         sPref.edit().putInt(LAUNCH_COUNT, count).apply()
     }
 
-    fun getNotificationsView() : Int {
-        val sPref = App.context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+    fun getNotificationsView(context: Context = App.context) : Int {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         return sPref.getInt(NOTIFICATIONS_VIEW, 0)
     }
 
@@ -89,8 +88,8 @@ object SharedHelper {
         sPref.edit().putBoolean(version, true).apply()
     }
 
-    fun getStartHour() : Int {
-        val sPref = App.context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+    fun getStartHour(context: Context = App.context) : Int {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         return sPref.getInt(START_HOUR_OFF, 0)
     }
 
@@ -99,8 +98,8 @@ object SharedHelper {
         sPref.edit().putInt(START_HOUR_OFF, count).apply()
     }
 
-    fun getDurationHours() : Int {
-        val sPref = App.context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+    fun getDurationHours(context: Context = App.context) : Int {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         return sPref.getInt(DURATION_HOURS_OFF, 0)
     }
 
@@ -117,5 +116,15 @@ object SharedHelper {
     fun setHideLearnStage(isHide: Boolean) {
         val sPref = App.context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         sPref.edit().putBoolean(WORD_LEARN_STAGE, isHide).apply()
+    }
+
+    fun getSelectedCategory(context: Context = App.context) : String {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getString(SELECTED_CATEGORY, "") ?: ""
+    }
+
+    fun setSelectedCategory(string : String) {
+        val sPref = App.context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putString(SELECTED_CATEGORY, string).apply()
     }
 }

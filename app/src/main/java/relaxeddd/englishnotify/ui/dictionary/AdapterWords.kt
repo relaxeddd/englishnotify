@@ -86,6 +86,29 @@ class AdapterWords(val viewModel: ViewModelDictionary) : ListAdapter<Word, Adapt
         }
     }
 
+    @SuppressLint("RestrictedApi")
+    private fun showPopupWord(view: View, word: Word) {
+        val popupMenu = PopupMenu(view.context, view)
+
+        popupMenu.inflate(R.menu.menu_popup_word)
+        popupMenu.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.item_menu_delete -> viewModel.deleteWord(word)
+                R.id.item_menu_add_own -> viewModel.addToOwn(word)
+                R.id.item_menu_delete_own -> viewModel.removeFromOwnDict(word)
+                R.id.item_menu_reset_progress -> viewModel.resetProgress(word)
+            }
+            true
+        }
+
+        popupMenu.menu.findItem(R.id.item_menu_reset_progress)?.isVisible = word.learnStage > 0 && !isHideLearnStage
+        popupMenu.menu.findItem(R.id.item_menu_add_own)?.isVisible = word.saveType == Word.DICTIONARY
+        popupMenu.menu.findItem(R.id.item_menu_delete_own)?.isVisible = word.saveType != Word.DICTIONARY
+        val menuHelper = MenuPopupHelper(view.context, popupMenu.menu as MenuBuilder, view)
+        menuHelper.setForceShowIcon(true)
+        menuHelper.show()
+    }
+
     class ViewHolder(private val binding: ViewItemWordBinding) : RecyclerView.ViewHolder(binding.root) {
 
         var isOpen = false
@@ -144,39 +167,16 @@ class AdapterWords(val viewModel: ViewModelDictionary) : ListAdapter<Word, Adapt
         }
     }
 
-    @SuppressLint("RestrictedApi")
-    private fun showPopupWord(view: View, word: Word) {
-        val popupMenu = PopupMenu(view.context, view)
+    private class WordDiffCallback : DiffUtil.ItemCallback<Word>() {
 
-        popupMenu.inflate(R.menu.menu_popup_word)
-        popupMenu.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.item_menu_delete -> viewModel.deleteWord(word)
-                R.id.item_menu_add_own -> viewModel.addToOwn(word)
-                R.id.item_menu_delete_own -> viewModel.removeFromOwnDict(word)
-                R.id.item_menu_reset_progress -> viewModel.resetProgress(word)
-            }
-            true
+        override fun areItemsTheSame(oldItem: Word, newItem: Word): Boolean {
+            return oldItem.eng == newItem.eng
         }
 
-        popupMenu.menu.findItem(R.id.item_menu_reset_progress)?.isVisible = word.learnStage > 0 && !isHideLearnStage
-        popupMenu.menu.findItem(R.id.item_menu_add_own)?.isVisible = word.saveType == Word.DICTIONARY
-        popupMenu.menu.findItem(R.id.item_menu_delete_own)?.isVisible = word.saveType != Word.DICTIONARY
-        val menuHelper = MenuPopupHelper(view.context, popupMenu.menu as MenuBuilder, view)
-        menuHelper.setForceShowIcon(true)
-        menuHelper.show()
-    }
-}
-
-private class WordDiffCallback : DiffUtil.ItemCallback<Word>() {
-
-    override fun areItemsTheSame(oldItem: Word, newItem: Word): Boolean {
-        return oldItem.eng == newItem.eng
-    }
-
-    override fun areContentsTheSame(oldItem: Word, newItem: Word): Boolean {
-        return oldItem.eng == newItem.eng && oldItem.saveType == newItem.saveType && oldItem.rus == newItem.rus
-                && newItem.tags.containsAll(oldItem.tags) && oldItem.tags.containsAll(newItem.tags)
-                && oldItem.learnStage == newItem.learnStage
+        override fun areContentsTheSame(oldItem: Word, newItem: Word): Boolean {
+            return oldItem.eng == newItem.eng && oldItem.saveType == newItem.saveType && oldItem.rus == newItem.rus
+                    && newItem.tags.containsAll(oldItem.tags) && oldItem.tags.containsAll(newItem.tags)
+                    && oldItem.learnStage == newItem.learnStage
+        }
     }
 }

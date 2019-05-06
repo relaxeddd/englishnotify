@@ -1,7 +1,6 @@
 package relaxeddd.englishnotify.common
 
 import android.content.Context
-import relaxeddd.englishnotify.factories.*
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 import relaxeddd.englishnotify.model.db.AppDatabase
 import relaxeddd.englishnotify.model.repository.RepositoryUser
@@ -37,6 +36,11 @@ object InjectorUtils {
 
     fun provideWordViewModelFactory(context: Context): WordViewModelFactory {
         return WordViewModelFactory()
+    }
+
+    fun provideCategoriesViewModelFactory(context: Context): CategoriesViewModelFactory {
+        val repository = RepositoryFactory.getUserRepository(context)
+        return CategoriesViewModelFactory(repository)
     }
 }
 
