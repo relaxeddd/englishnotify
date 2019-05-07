@@ -28,7 +28,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         var pushToken: String = ""
 
         fun showNotificationWord(ctx: Context, wordId: String, text: String, title: String = getString(R.string.app_name), withButtons : Boolean) {
-            val notificationId = Random.nextInt(10000)
+            val notificationId = Random.nextInt(1000)
             val intent = Intent(ctx, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             val pendingIntent = PendingIntent.getActivity(ctx, 0, intent, PendingIntent.FLAG_ONE_SHOT)
@@ -40,7 +40,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 .setStyle(NotificationCompat.BigTextStyle().bigText(text))
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
-                .setPriority(Notification.PRIORITY_MAX)
 
             if (withButtons && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 val knowIntent = Intent(ctx, PushBroadcastReceiver::class.java).apply {
@@ -91,13 +90,15 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 } else null
 
                 if (channel != null) notificationManager.createNotificationChannel(channel)
+            } else {
+                notificationBuilder.priority = Notification.PRIORITY_HIGH
             }
 
             notificationManager.notify(notificationId, notificationBuilder.build())
         }
 
         fun showNotification(ctx: Context, title: String = getString(R.string.app_name), text: String) {
-            val notificationId = Random.nextInt(10000)
+            val notificationId = Random.nextInt(1000)
             val intent = Intent(ctx, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             val pendingIntent = PendingIntent.getActivity(ctx, 0, intent, PendingIntent.FLAG_ONE_SHOT)
@@ -109,7 +110,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 .setStyle(NotificationCompat.BigTextStyle().bigText(text))
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
-                .setPriority(Notification.PRIORITY_MAX)
 
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 notificationBuilder.setSmallIcon(R.drawable.ic_stat_onesignal_default)
@@ -126,6 +126,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 } else null
 
                 if (channel != null) notificationManager.createNotificationChannel(channel)
+            } else {
+                notificationBuilder.priority = Notification.PRIORITY_HIGH
             }
 
             notificationManager.notify(notificationId, notificationBuilder.build())
