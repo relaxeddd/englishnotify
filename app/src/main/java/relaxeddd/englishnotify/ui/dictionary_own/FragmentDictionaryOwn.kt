@@ -17,6 +17,7 @@ class FragmentDictionaryOwn : FragmentDictionary<ViewModelDictionaryOwn, Fragmen
     override fun getViewModelFactory() = InjectorUtils.provideDictionaryOwnViewModelFactory(requireContext())
     override fun getViewModelClass() = ViewModelDictionaryOwn::class.java
     override fun getMenuResId() = R.menu.menu_fragment_dictionary_own
+    override fun getSearchMenuItemId() = R.id.item_menu_search_own
 
     override fun configureBinding() {
         super.configureBinding()

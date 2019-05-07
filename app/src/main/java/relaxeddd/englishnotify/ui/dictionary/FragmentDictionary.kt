@@ -128,7 +128,7 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding>
 
     private fun setCkeckMode(isCheckMode: Boolean) {
         menu?.findItem(R.id.item_menu_check)?.isVisible = !isCheckMode
-        menu?.findItem(R.id.item_menu_search)?.isVisible = !isCheckMode
+        menu?.findItem(getSearchMenuItemId())?.isVisible = !isCheckMode
         menu?.findItem(R.id.item_menu_filter)?.isVisible = !isCheckMode
         menu?.findItem(R.id.item_menu_dialog_own)?.isVisible = !isCheckMode
         menu?.findItem(R.id.item_menu_check_all)?.isVisible = isCheckMode

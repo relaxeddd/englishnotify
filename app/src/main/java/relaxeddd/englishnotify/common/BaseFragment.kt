@@ -36,7 +36,7 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
     protected open fun getHomeMenuButtonListener() = {}
     protected open fun getMenuResId() = EMPTY_RES
     protected open fun onSearchTextChanged(searchText: String) {}
-    protected open fun getSearchMenuItemId() = R.id.item_menu_search
+    protected open fun getSearchMenuItemId() = EMPTY_RES
     protected open fun getToolbarElevation() = 4f
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -63,10 +63,10 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
             inflater.inflate(getMenuResId(), menu)
         }
 
-        val searchItem = menu.findItem(getSearchMenuItemId())
+        val searchItem = if (getSearchMenuItemId() != EMPTY_RES) menu.findItem(getSearchMenuItemId()) else null
 
         if (searchItem != null && searchItem.actionView != null) {
-            val searchView = menu.findItem(R.id.item_menu_search).actionView as SearchView
+            val searchView = searchItem.actionView as SearchView
 
             searchView.setOnCloseListener {
                 textSearch = ""

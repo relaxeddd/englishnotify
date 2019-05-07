@@ -12,6 +12,7 @@ class FragmentDictionaryAll : FragmentDictionary<ViewModelDictionaryAll, Fragmen
     override fun getLayoutResId() = R.layout.fragment_dictionary_all
     override fun getViewModelFactory() = InjectorUtils.provideDictionaryAllViewModelFactory(requireContext())
     override fun getViewModelClass() = ViewModelDictionaryAll::class.java
+    override fun getSearchMenuItemId() = R.id.item_menu_search_all
 
     override fun configureBinding() {
         super.configureBinding()

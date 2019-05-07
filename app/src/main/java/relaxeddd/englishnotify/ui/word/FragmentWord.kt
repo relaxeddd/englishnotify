@@ -16,7 +16,7 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
 
     override fun getLayoutResId() = R.layout.fragment_word
     override fun getToolbarTitleResId() = R.string.word
-    override fun getViewModelFactory() = InjectorUtils.provideWordViewModelFactory(requireContext())
+    override fun getViewModelFactory() = InjectorUtils.provideWordViewModelFactory()
     override fun getViewModelClass() = ViewModelWord::class.java
     override fun getMenuResId() = R.menu.menu_accept
     override fun isHomeMenuButtonEnabled() = true

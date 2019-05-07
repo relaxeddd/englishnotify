@@ -28,7 +28,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         var pushToken: String = ""
 
         fun showNotificationWord(ctx: Context, wordId: String, text: String, title: String = getString(R.string.app_name), withButtons : Boolean) {
-            val notificationId = Random.nextInt(1000)
+            val notificationId = Random.nextInt(10000)
             val intent = Intent(ctx, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             val pendingIntent = PendingIntent.getActivity(ctx, 0, intent, PendingIntent.FLAG_ONE_SHOT)
@@ -93,6 +93,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     notificationManager.createNotificationChannel(channel)
                 }
             } else {
+                @Suppress("DEPRECATION")
                 notificationBuilder.priority = Notification.PRIORITY_HIGH
             }
 
@@ -100,7 +101,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
 
         fun showNotification(ctx: Context, title: String = getString(R.string.app_name), text: String) {
-            val notificationId = Random.nextInt(1000)
+            val notificationId = Random.nextInt(10000)
             val intent = Intent(ctx, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             val pendingIntent = PendingIntent.getActivity(ctx, 0, intent, PendingIntent.FLAG_ONE_SHOT)
@@ -131,6 +132,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     notificationManager.createNotificationChannel(channel)
                 }
             } else {
+                @Suppress("DEPRECATION")
                 notificationBuilder.priority = Notification.PRIORITY_HIGH
             }
 
@@ -251,14 +253,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val languageType = SharedHelper.getLearnLanguageType(this)
         val isShowButtons = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
                 && SharedHelper.getNotificationsView(this) == SharedHelper.NOTIFICATIONS_VIEW_WITH_QUESTION
-        var notificationText = ""
-        var title = getStringByResName(SharedHelper.getSelectedCategory(this))
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP
+        val title = getStringByResName(SharedHelper.getSelectedCategory(this))
+        val notificationText = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP
             || SharedHelper.getNotificationsView(this) == SharedHelper.NOTIFICATIONS_VIEW_WITH_TRANSLATE) {
-            notificationText = getFullNotificationText(word, languageType)
+            getFullNotificationText(word, languageType)
         } else {
-            notificationText = if (languageType == TYPE_PUSH_ENGLISH) word.eng else word.rus
+            if (languageType == TYPE_PUSH_ENGLISH) word.eng else word.rus
         }
 
         if (isSave) {

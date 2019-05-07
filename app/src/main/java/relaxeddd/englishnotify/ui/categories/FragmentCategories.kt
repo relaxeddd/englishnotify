@@ -14,7 +14,7 @@ class FragmentCategories : BaseFragment<ViewModelCategories, FragmentCategoriesB
 
     override fun getLayoutResId() = R.layout.fragment_categories
     override fun getToolbarTitleResId() = R.string.word_category_select
-    override fun getViewModelFactory() = InjectorUtils.provideCategoriesViewModelFactory(requireContext())
+    override fun getViewModelFactory() = InjectorUtils.provideCategoriesViewModelFactory()
     override fun getViewModelClass() = ViewModelCategories::class.java
     override fun getMenuResId() = R.menu.menu_accept
     override fun isHomeMenuButtonEnabled() = true

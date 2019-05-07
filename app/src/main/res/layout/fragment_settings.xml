@@ -264,7 +264,7 @@
                     style="@style/StyleCardViewSettings"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:visibility="@{viewModel.isVisibleLearnStage ? View.VISIBLE : View.GONE}"
+                    android:visibility="@{safeUnbox(viewModel.isVisibleLearnStage) == true ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/card_view_settings_rate"
                     app:layout_constraintStart_toStartOf="parent">
@@ -278,7 +278,7 @@
                             android:text="@string/show_word_progress"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:checked="@{viewModel.isShowLearnStage}"
+                            android:checked="@{safeUnbox(viewModel.isShowLearnStage)}"
                             android:onCheckedChanged="@{viewModel.checkedChangeListenerLearnStage}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"

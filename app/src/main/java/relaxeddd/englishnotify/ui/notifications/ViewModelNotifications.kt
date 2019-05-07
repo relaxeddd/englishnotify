@@ -58,13 +58,6 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
             showToast(R.string.please_authorize)
         }
     }
-    val clickListenerCheckTags = View.OnClickListener {
-        if (user.value != null) {
-            navigateEvent.value = Event(NAVIGATION_DIALOG_CHECK_TAGS)
-        } else {
-            showToast(R.string.please_authorize)
-        }
-    }
     val clickListenerNotificationsView = View.OnClickListener {
         if (user.value != null) {
             navigateEvent.value = Event(NAVIGATION_DIALOG_NOTIFICATIONS_VIEW)
