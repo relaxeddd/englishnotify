@@ -86,7 +86,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val channel = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    NotificationChannel(channelId, getString(R.string.app_name), NotificationManager.IMPORTANCE_HIGH)
+                    NotificationChannel(channelId, ENGLISH_WORDS_NOTIFICATIONS_CHANNEL, NotificationManager.IMPORTANCE_HIGH)
                 } else null
 
                 if (channel != null) {
@@ -124,7 +124,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val channel = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    NotificationChannel(channelId, getString(R.string.app_name), NotificationManager.IMPORTANCE_HIGH)
+                    NotificationChannel(channelId, ENGLISH_WORDS_NOTIFICATIONS_CHANNEL, NotificationManager.IMPORTANCE_HIGH)
                 } else null
 
                 if (channel != null) {
