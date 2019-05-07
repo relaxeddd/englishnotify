@@ -40,7 +40,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 .setStyle(NotificationCompat.BigTextStyle().bigText(text))
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
-                .setPriority(Notification.PRIORITY_MAX)
 
             if (withButtons && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 val knowIntent = Intent(ctx, PushBroadcastReceiver::class.java).apply {
@@ -87,10 +86,14 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val channel = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    NotificationChannel(channelId, title, NotificationManager.IMPORTANCE_HIGH)
+                    NotificationChannel(channelId, getString(R.string.app_name), NotificationManager.IMPORTANCE_HIGH)
                 } else null
 
-                if (channel != null) notificationManager.createNotificationChannel(channel)
+                if (channel != null) {
+                    notificationManager.createNotificationChannel(channel)
+                }
+            } else {
+                notificationBuilder.priority = Notification.PRIORITY_HIGH
             }
 
             notificationManager.notify(notificationId, notificationBuilder.build())
@@ -109,7 +112,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 .setStyle(NotificationCompat.BigTextStyle().bigText(text))
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
-                .setPriority(Notification.PRIORITY_MAX)
 
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 notificationBuilder.setSmallIcon(R.drawable.ic_stat_onesignal_default)
@@ -122,10 +124,14 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val channel = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    NotificationChannel(channelId, title, NotificationManager.IMPORTANCE_HIGH)
+                    NotificationChannel(channelId, getString(R.string.app_name), NotificationManager.IMPORTANCE_HIGH)
                 } else null
 
-                if (channel != null) notificationManager.createNotificationChannel(channel)
+                if (channel != null) {
+                    notificationManager.createNotificationChannel(channel)
+                }
+            } else {
+                notificationBuilder.priority = Notification.PRIORITY_HIGH
             }
 
             notificationManager.notify(notificationId, notificationBuilder.build())
