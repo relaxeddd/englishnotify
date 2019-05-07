@@ -86,10 +86,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val channel = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    NotificationChannel(channelId, title, NotificationManager.IMPORTANCE_HIGH)
+                    NotificationChannel(channelId, ENGLISH_WORDS_NOTIFICATIONS_CHANNEL, NotificationManager.IMPORTANCE_HIGH)
                 } else null
 
-                if (channel != null) notificationManager.createNotificationChannel(channel)
+                if (channel != null) {
+                    notificationManager.createNotificationChannel(channel)
+                }
             } else {
                 notificationBuilder.priority = Notification.PRIORITY_HIGH
             }
@@ -122,10 +124,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val channel = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    NotificationChannel(channelId, title, NotificationManager.IMPORTANCE_HIGH)
+                    NotificationChannel(channelId, ENGLISH_WORDS_NOTIFICATIONS_CHANNEL, NotificationManager.IMPORTANCE_HIGH)
                 } else null
 
-                if (channel != null) notificationManager.createNotificationChannel(channel)
+                if (channel != null) {
+                    notificationManager.createNotificationChannel(channel)
+                }
             } else {
                 notificationBuilder.priority = Notification.PRIORITY_HIGH
             }
