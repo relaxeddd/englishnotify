@@ -1,9 +1,12 @@
 package relaxeddd.englishnotify.ui.dictionary_all
 
+import android.view.MenuItem
 import androidx.lifecycle.Observer
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.InjectorUtils
+import relaxeddd.englishnotify.common.showToastLong
 import relaxeddd.englishnotify.databinding.FragmentDictionaryAllBinding
+import relaxeddd.englishnotify.model.repository.RepositoryWord
 import relaxeddd.englishnotify.ui.dictionary.AdapterWords
 import relaxeddd.englishnotify.ui.dictionary.FragmentDictionary
 
@@ -27,5 +30,19 @@ class FragmentDictionaryAll : FragmentDictionary<ViewModelDictionaryAll, Fragmen
         viewModel.user.observe(viewLifecycleOwner, Observer { user ->
             adapter.languageType = user?.learnLanguageType ?: 0
         })
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.item_menu_training -> {
+                if (RepositoryWord.getInstance().isTrainingWordsExists()) {
+                    navigate(R.id.action_fragmentDictionaryMain_to_fragmentTrainingSetting)
+                } else {
+                    showToastLong(R.string.no_training_words)
+                }
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
     }
 }

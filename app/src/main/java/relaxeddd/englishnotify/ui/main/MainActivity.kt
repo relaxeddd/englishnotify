@@ -31,6 +31,7 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
     lateinit var navController: NavController
     private val providers: List<AuthUI.IdpConfig> = Arrays.asList(AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build())
     private var dialogNewVersion: DialogNewVersion? = null
+    private var isBillingInited = false
 
     private val listenerPrivacyPolicy: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
         override fun onResult(result: Boolean) {
@@ -163,8 +164,12 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
                 dialog.show(this@MainActivity.supportFragmentManager, "Patch Notes Dialog")
             }
             NAVIGATION_INIT_BILLING -> {
-                if (isMyResumed) {
-                    initBilling()
+                if (isMyResumed && !isBillingInited) {
+                    initBilling(object: ListenerResult<Boolean> {
+                        override fun onResult(result: Boolean) {
+                            if (result) isBillingInited = true
+                        }
+                    })
                 }
             }
             else -> super.onNavigationEvent(eventId)

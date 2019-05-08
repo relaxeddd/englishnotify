@@ -6,18 +6,14 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import relaxeddd.englishnotify.R
 
-class DialogPatchNotes : DialogFragment() {
-
-    companion object {
-        const val VERSION = "2.0.0"
-    }
+class DialogInfoTraining : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
 
-            builder.setTitle(getString(R.string.new_version))
-                .setMessage(getString(R.string.patch_notes_2_0_0))
+            builder.setTitle(R.string.words_training)
+                .setMessage(getString(R.string.text_info_words_training))
                 .setPositiveButton(android.R.string.ok) { _, _ -> }
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")

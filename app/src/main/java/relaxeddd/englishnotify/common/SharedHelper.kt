@@ -127,4 +127,24 @@ object SharedHelper {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         sPref.edit().putString(SELECTED_CATEGORY, string).apply()
     }
+
+    fun getTrainingCategory(context: Context = App.context) : String {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getString(TRAINING_CATEGORY, ALL_APP_WORDS) ?: ""
+    }
+
+    fun setTrainingCategory(string : String, context: Context = App.context) {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putString(TRAINING_CATEGORY, string).apply()
+    }
+
+    fun getTrainingLanguage(context: Context = App.context) : Int {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getInt(TRAINING_LANGUAGE, 0)
+    }
+
+    fun setTrainingLanguage(value : Int, context: Context = App.context) {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putInt(TRAINING_LANGUAGE, value).apply()
+    }
 }

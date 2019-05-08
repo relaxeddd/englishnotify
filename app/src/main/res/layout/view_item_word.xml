@@ -180,7 +180,7 @@
             <ProgressBar
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/size_2"
+                    android:layout_height="wrap_content"
                     android:progress="8"
                     android:id="@+id/progress_bar_word_learn_stage"
                     app:layout_constraintTop_toTopOf="parent"

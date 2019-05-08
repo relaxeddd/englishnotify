@@ -42,6 +42,15 @@ object InjectorUtils {
         val repository = RepositoryFactory.getUserRepository()
         return CategoriesViewModelFactory(repository)
     }
+
+    fun provideTrainingSettingViewModelFactory(): TrainingSettingViewModelFactory {
+        return TrainingSettingViewModelFactory()
+    }
+
+    fun provideTrainingViewModelFactory(context: Context): TrainingViewModelFactory {
+        val repositoryWord = RepositoryFactory.getWordRepository(context)
+        return TrainingViewModelFactory(repositoryWord)
+    }
 }
 
 object RepositoryFactory {

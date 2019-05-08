@@ -3,9 +3,7 @@ package relaxeddd.englishnotify.ui.categories
 import android.view.MenuItem
 import androidx.lifecycle.Observer
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.BaseFragment
-import relaxeddd.englishnotify.common.InjectorUtils
-import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK
+import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.FragmentCategoriesBinding
 
 class FragmentCategories : BaseFragment<ViewModelCategories, FragmentCategoriesBinding>() {
@@ -36,7 +34,6 @@ class FragmentCategories : BaseFragment<ViewModelCategories, FragmentCategoriesB
     override fun configureBinding() {
         super.configureBinding()
         adapter = AdapterCategories(viewModel)
-        binding.viewModel = viewModel
         binding.recyclerViewCategories.adapter = adapter
         viewModel.categories.observe(viewLifecycleOwner, Observer { items ->
             if (items != null && items.isNotEmpty()) adapter.submitList(items)

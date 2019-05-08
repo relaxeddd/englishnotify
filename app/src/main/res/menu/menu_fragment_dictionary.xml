@@ -8,6 +8,11 @@
           app:showAsAction="collapseActionView|ifRoom"
           app:actionViewClass="androidx.appcompat.widget.SearchView" />
 
+    <item android:id="@+id/item_menu_training"
+          android:title="@string/training"
+          app:showAsAction="collapseActionView|ifRoom"
+          android:icon="@drawable/ic_training"/>
+
     <item android:id="@+id/item_menu_check"
           android:title="@string/select"
           app:showAsAction="collapseActionView|ifRoom"

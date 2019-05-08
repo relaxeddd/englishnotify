@@ -9,7 +9,9 @@
     <string name="all_words">Все слова</string>
     <string name="alphabetical_name">Алфавитный</string>
     <string name="alphabetical_translate">Алфавитный (перевод)</string>
+    <string name="already_know">Уже знаю</string>
     <string name="another_operation">Другая операция</string>
+    <string name="answer">Ответить</string>
     <string name="app_info">О приложении</string>
     <string name="app_language">Язык приложения</string>
     <string name="answer_correct">Правильный ответ</string>
@@ -20,15 +22,23 @@
     <string name="close">Закрыть</string>
     <string name="confirm">Подтвердить</string>
     <string name="confirm_and_continue">Подтвердить и продолжить</string>
+    <string name="correct_answer">Правильный ответ</string>
     <string name="delete">Удалить</string>
     <string name="dictionary">Словарь</string>
     <string name="do_you_really_want_to_logout">Вы действительно хотите выйти из аккаунта?</string>
     <string name="do_you_really_want_to_delete_words">Вы действительно хотите удалить выбранные слова?</string>
     <string name="duration_not_show">продолжительностью</string>
     <string name="enable_notifications">Включить уведомления</string>
+    <string name="end">Закончить</string>
     <string name="english_at_russian">С английского на русский</string>
     <string name="enter_translation">Ввести перевод</string>
+    <string name="error_category_select">Ошибка выбора категории</string>
     <string name="error_initialization">Ошибка инициализации</string>
+    <string name="error_own_word_add">Ошибка добавления в Свою категорию</string>
+    <string name="error_own_word_exists">Ошибка, это слово уже добавлено</string>
+    <string name="error_own_word_limit">Ошибка, превышен лимит в Своей категории (максимум 200)</string>
+    <string name="error_own_word_incorrect">Ошибка, некорректное слово</string>
+    <string name="error_own_word_delete">Ошибка удаления слов из Своей категории</string>
     <string name="error_purchase">Ошибка покупки, напишите на почту for.gamer.develop@gmail.com</string>
     <string name="error_push_token">Ошибка пушей, пожалуйста, попробуйте перезайти в приложение</string>
     <string name="error_request">Ошибка отправки запроса, пожалуйста, проверьте авторизацию и Интернет-соединение</string>
@@ -43,6 +53,8 @@
     <string name="hours_off_time">Часов (0–23)</string>
     <string name="i_dont_know_it">Я не знаю</string>
     <string name="i_know_it">Я знаю это</string>
+    <string name="incorrect_answer">Неправильный ответ</string>
+    <string name="information">Информация</string>
     <string name="input_your_message">Введите сообщение</string>
     <string name="later">Позднее</string>
     <string name="learn_language">Изучаемый язык</string>
@@ -52,9 +64,12 @@
     <string name="logout_success">Вы вышли из аккаунта</string>
     <string name="new_version">Новая версия</string>
     <string name="network_not_available">Ошибка интернет соединения</string>
+    <string name="next">Далее</string>
     <string name="night_time">Ночное время (без уведомлений)</string>
     <string name="night_time_value">С %s до %s</string>
     <string name="no_thanks">Нет, спасибо / уже</string>
+    <string name="no_training_category_words">В этой категории нет слов для тренировки (вероятно там только предложения или уже выученные слова)</string>
+    <string name="no_training_words">У вас нет слов для тренировки, либо они выучены или являются предложениями</string>
     <string name="no_words">Уведомления с новыми словами пока еще не пришли. Необходимо авторизоваться и подождать… (Со стандартными настройками один час)</string>
     <string name="no_words_own">Вы пока еще не добавили слова в свою категорию</string>
     <string name="no_test_notifications">У вас не осталось тестовых уведомлений</string>
@@ -70,6 +85,7 @@
     <string name="please_wait">Пожалуйста, подождите</string>
     <string name="privacy_policy">Политика конфиденциальности</string>
     <string name="privacy_policy_in_sentence">Политикой конфиденциальности</string>
+    <string name="purchase_consumed">Покупка совершена, спасибо!</string>
     <string name="rate">Оценить</string>
     <string name="rate_app">Оценить приложение</string>
     <string name="rate_app_pls">Оцените пожалуйста приложение</string>
@@ -95,6 +111,8 @@
     <string name="test_notifications_text">Получить тестовое уведомление</string>
     <string name="time_new">Сначала новые</string>
     <string name="time_old">Сначала старые</string>
+    <string name="training">Тренировка</string>
+    <string name="training_setting">Настройка тренировки</string>
     <string name="transcription">Транскрипция</string>
     <string name="translation">Перевод</string>
     <string name="undefined_error">Неизвестная ошибка</string>
@@ -102,22 +120,27 @@
     <string name="update">Обновление</string>
     <string name="update_verb">Обновить</string>
     <string name="update_text">Доступна новая версия приложения. Пожалуйста, обновите</string>
+    <string name="unknown_action">Неизвестное действие</string>
     <string name="user_not_found">Пользователь не найден</string>
     <string name="word">Слово</string>
     <string name="word_added">Слово добавлено</string>
-    <string name="word_category_select">Выбор категории слов</string>
+    <string name="word_category_select">Выбор категории</string>
     <string name="word_length_limit">Длина не должна превышать 200 символов</string>
     <string name="word_should_not_be_empty">Слово не должно быть пустым</string>
     <string name="words_not_selected">Слова не выбраны</string>
     <string name="words_removed_from_own">Слова удалены из своей категории</string>
+    <string name="words_training">Тренировка слов</string>
     <string name="you_sign_in_as">Вы вошли как: %s</string>
+    <string name="your_answer">Ваш ответ: %s</string>
 
     <string name="text_rate_app">В комментариях пишите, что можно улучшить, какие новые категории слов нужно добавить</string>
-    <string name="text_app_about">Выберите категории английских слов, которые хотите изучить, установите период получения уведомлений
-        и вам будут приходить английские слова в виде пуш-уведомлений. \nСписок категорий постоянно растет и обновляется без необходимости обновления приложения.\n\nВерсия приложения: %s</string>
-    <string name="text_own_category">Слова отсюда будут Вам приходить, если в настройках уведомлений выбрать "Своя категория".
-        \n\nСюда можно добавить слова долгим нажатием на слово из словаря или нажатием на плюсик в правом нижнем углу экрана.
-        \n\nМаксимальное количество слов - 200</string>
+    <string name="text_app_about">\tВыберите категории английских слов, которые хотите изучить, установите период получения уведомлений
+        и вам будут приходить английские слова в виде пуш-уведомлений. \n\n\tСписок категорий постоянно растет и обновляется без необходимости обновления приложения.\n\nВерсия приложения: %s</string>
+    <string name="text_own_category">\tСлова отсюда будут Вам приходить, если в настройках уведомлений выбрать "Своя категория".
+        \n\n\tСюда можно добавить слова долгим нажатием на слово из словаря или нажатием на плюсик в правом нижнем углу экрана.
+        \n\n\tМаксимальное количество слов - 200</string>
+    <string name="text_info_words_training">\tТренировка слов увеличивает прогресс изучения слова. Если ответить неправльно - прогресс сбросится до 0.
+        \n\n\tДля тренировки подбираются слов, которые: 1. Не имеют максимального прогресса изучения 2. Не являются предложениями (состоят максимум из 3-х слов)</string>
 
     <string name="patch_notes_0_1_4">- Добавлено окно с описанием изменений после обновления (вот это как раз)
         \n- Исправлен баг, когда нельзя было выбрать алфавитную сортировку повторно
@@ -155,6 +178,10 @@
         \n- Изменен дизайн ввода слова в Свою категорию
         \n- Добавлены переводы новых категорий
         \n- Правки в обработке уведомлений</string>
+
+    <string name="patch_notes_2_0_0">- Добавлена возможность тренировки слов в разделе Словарь
+        \n- Фикс перехода по разделам при клике на тот раздел, в котором находимся
+        \n- Фикс поиска при смене вкладок в разделе Словарь</string>
 
     <!-- =========================================================================================================== -->
     <string name="own">Своя категория (добавлять слова самому в словаре)</string>

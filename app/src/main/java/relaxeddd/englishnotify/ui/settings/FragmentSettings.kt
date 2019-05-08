@@ -4,10 +4,7 @@ import com.firebase.ui.auth.AuthUI
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.databinding.FragmentSettingsBinding
-import relaxeddd.englishnotify.dialogs.DialogAppAbout
-import relaxeddd.englishnotify.dialogs.DialogConfirmLogout
-import relaxeddd.englishnotify.dialogs.DialogSendFeedback
-import relaxeddd.englishnotify.dialogs.DialogSubscription
+import relaxeddd.englishnotify.dialogs.*
 import relaxeddd.englishnotify.ui.main.MainActivity
 
 class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding>() {
@@ -47,7 +44,12 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
         when (eventId) {
             NAVIGATION_DIALOG_APP_ABOUT -> {
                 if (isResumed) {
-                    DialogAppAbout().show(this@FragmentSettings.childFragmentManager, "Learn Language Dialog")
+                    DialogAppAbout().show(this@FragmentSettings.childFragmentManager, "App Info Dialog")
+                }
+            }
+            NAVIGATION_DIALOG_INFO_TRAINING -> {
+                if (isResumed) {
+                    DialogInfoTraining().show(this@FragmentSettings.childFragmentManager, "Info Training Dialog")
                 }
             }
             NAVIGATION_DIALOG_CONFIRM_LOGOUT -> {

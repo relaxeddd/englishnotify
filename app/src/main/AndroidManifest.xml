@@ -25,7 +25,8 @@
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name="relaxeddd.englishnotify.ui.main.MainActivity">
+        <activity android:name="relaxeddd.englishnotify.ui.main.MainActivity"
+                  android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
