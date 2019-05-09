@@ -19,11 +19,6 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
             viewModel.onDialogRepeatTimeResult(result)
         }
     }
-    private val listenerCheckTags: ListenerResult<String> = object: ListenerResult<String> {
-        override fun onResult(result: String) {
-            viewModel.onDialogSelectTagResult(result)
-        }
-    }
     private val listenerNotificationsView: ListenerResult<Int> = object: ListenerResult<Int> {
         override fun onResult(result: Int) {
             viewModel.onDialogNotificationsViewResult(result)
@@ -42,7 +37,7 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
 
     override fun getLayoutResId() = R.layout.fragment_notifications
     override fun getToolbarTitleResId() = R.string.notifications
-    override fun getViewModelFactory() = InjectorUtils.provideNotificationsViewModelFactory(requireContext())
+    override fun getViewModelFactory() = InjectorUtils.provideNotificationsViewModelFactory()
     override fun getViewModelClass() = ViewModelNotifications::class.java
 
     override fun configureBinding() {
@@ -71,15 +66,6 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
                 dialog.arguments = args
                 dialog.listener = listenerRepeatTime
                 dialog.show(this@FragmentNotifications.childFragmentManager, "Repeat Dialog")
-            }
-            NAVIGATION_DIALOG_CHECK_TAGS -> {
-                val dialog = DialogSelectTag()
-                val args = Bundle()
-                args.putStringArray(ITEMS, (viewModel.user.value?.tagsAvailable ?: ArrayList()).toTypedArray())
-                args.putString(CHECKED_ITEM, (viewModel.user.value?.selectedTag ?: ""))
-                dialog.arguments = args
-                dialog.listener = listenerCheckTags
-                dialog.show(this@FragmentNotifications.childFragmentManager, "Select tag Dialog")
             }
             NAVIGATION_DIALOG_NOTIFICATIONS_VIEW -> {
                 val dialog = DialogNotificationsView()

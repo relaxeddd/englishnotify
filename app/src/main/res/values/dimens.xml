@@ -17,6 +17,8 @@
     <dimen name="size_34">34dp</dimen>
     <dimen name="size_36">36dp</dimen>
     <dimen name="size_46">46dp</dimen>
+    <dimen name="size_80">80dp</dimen>
+    <dimen name="size_120">120dp</dimen>
     <dimen name="size_240">240dp</dimen>
     <dimen name="size_320">320dp</dimen>
 
@@ -26,4 +28,9 @@
     <dimen name="font_16">16sp</dimen>
     <dimen name="font_18">18sp</dimen>
     <dimen name="font_20">20sp</dimen>
+    <dimen name="font_22">22sp</dimen>
+    <dimen name="font_24">24sp</dimen>
+    <dimen name="font_26">26sp</dimen>
+    <dimen name="font_28">28sp</dimen>
+
 </resources>

@@ -20,19 +20,25 @@
             app:popEnterAnim="@anim/nav_default_enter_anim"
             app:popExitAnim="@anim/nav_default_exit_anim"/>
 
+        <action
+            android:id="@+id/action_fragmentDictionaryMain_to_fragmentTrainingSetting"
+            app:destination="@id/fragmentTrainingSetting"/>
+
     </fragment>
 
-    <fragment android:id="@+id/fragmentNotifications"
-              android:name="relaxeddd.englishnotify.ui.notifications.FragmentNotifications"
-              tools:layout="@layout/fragment_notifications"
-              android:label="@string/label_fragment_notifications">
+    <fragment
+        android:id="@+id/fragmentNotifications"
+        android:name="relaxeddd.englishnotify.ui.notifications.FragmentNotifications"
+        tools:layout="@layout/fragment_notifications"
+        android:label="@string/label_fragment_notifications">
 
-        <action android:id="@+id/action_fragmentNotifications_to_fragmentCategories"
-                app:destination="@id/fragmentCategories"
-                app:enterAnim="@anim/nav_default_enter_anim"
-                app:exitAnim="@anim/nav_default_exit_anim"
-                app:popEnterAnim="@anim/nav_default_enter_anim"
-                app:popExitAnim="@anim/nav_default_exit_anim"/>
+        <action
+            android:id="@+id/action_fragmentNotifications_to_fragmentCategories"
+            app:destination="@id/fragmentCategories"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_enter_anim"
+            app:popExitAnim="@anim/nav_default_exit_anim"/>
 
     </fragment>
 
@@ -53,5 +59,51 @@
         android:name="relaxeddd.englishnotify.ui.categories.FragmentCategories"
         android:label="@string/label_fragment_categories"
         tools:layout="@layout/fragment_categories"/>
+
+    <fragment
+        android:id="@+id/fragmentTrainingSetting"
+        android:name="relaxeddd.englishnotify.ui.training_setting.FragmentTrainingSetting"
+        android:label="@string/label_fragment_training_setting"
+        tools:layout="@layout/fragment_training_setting">
+
+        <action android:id="@+id/action_fragmentTrainingSetting_to_fragmentTraining"
+                app:destination="@id/fragmentTraining"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentTraining"
+        android:name="relaxeddd.englishnotify.ui.training.FragmentTraining"
+        android:label="@string/label_fragment_training"
+        tools:layout="@layout/fragment_training">
+
+        <argument android:name="category" app:argType="string" android:defaultValue="all_app_words"/>
+        <argument android:name="trainingType" app:argType="integer" android:defaultValue="0"/>
+
+    </fragment>
+
+    <action
+        android:id="@+id/action_global_fragmentDictionaryMain"
+        app:destination="@id/fragmentDictionaryMain"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_enter_anim"
+        app:popExitAnim="@anim/nav_default_exit_anim"/>
+
+    <action
+        android:id="@+id/action_global_fragmentNotifications"
+        app:destination="@id/fragmentNotifications"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_enter_anim"
+        app:popExitAnim="@anim/nav_default_exit_anim"/>
+
+    <action
+        android:id="@+id/action_global_fragmentSettings"
+        app:destination="@id/fragmentSettings"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_enter_anim"
+        app:popExitAnim="@anim/nav_default_exit_anim"/>
 
 </navigation>

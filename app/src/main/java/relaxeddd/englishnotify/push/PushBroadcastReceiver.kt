@@ -40,14 +40,7 @@ class PushBroadcastReceiver : BroadcastReceiver() {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     val userText = RemoteInput.getResultsFromIntent(intent)?.getCharSequence(KEY_TEXT_REPLY).toString().toLowerCase()
                     val answer = if (languageType == TYPE_PUSH_ENGLISH) word.rus else word.eng
-                    val answerWords = answer.split(",")
-                    var isCorrectAnswer = false
-
-                    for (answerWord in answerWords) {
-                        if (answerWord.trim().toLowerCase() == userText) {
-                            isCorrectAnswer = true
-                        }
-                    }
+                    val isCorrectAnswer = isCorrectAnswer(userText, answer)
 
                     if (isCorrectAnswer) {
                         saveWord.learnStage++

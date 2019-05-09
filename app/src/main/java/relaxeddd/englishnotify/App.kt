@@ -1,5 +1,6 @@
 package relaxeddd.englishnotify
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.multidex.MultiDexApplication
 import com.google.firebase.FirebaseApp
@@ -8,6 +9,7 @@ import relaxeddd.englishnotify.common.SharedHelper
 class App : MultiDexApplication() {
 
     companion object {
+        @SuppressLint("StaticFieldLeak")
         lateinit var context: Context
     }
 

@@ -8,7 +8,9 @@
     <string name="all_words">All words</string>
     <string name="alphabetical_name">Alphabetical name</string>
     <string name="alphabetical_translate">Alphabetical translate</string>
+    <string name="already_know">Already know</string>
     <string name="another_operation">Another operation</string>
+    <string name="answer">Answer</string>
     <string name="app_info">App info</string>
     <string name="app_language">App language</string>
     <string name="answer_correct">Correct answer</string>
@@ -19,15 +21,23 @@
     <string name="close">Close</string>
     <string name="confirm">Confirm</string>
     <string name="confirm_and_continue">Confirm and continue</string>
+    <string name="correct_answer">Correct answer</string>
     <string name="delete">Delete</string>
     <string name="dictionary">Dictionary</string>
     <string name="do_you_really_want_to_logout">Do you really want to exit?</string>
     <string name="do_you_really_want_to_delete_words">Do you really want to delete words?</string>
     <string name="duration_not_show">with duration</string>
     <string name="enable_notifications">Enable notifications</string>
+    <string name="end">End</string>
     <string name="english_at_russian">English at russian</string>
     <string name="enter_translation">Enter translation</string>
+    <string name="error_category_select">Error category select</string>
     <string name="error_initialization">Initialization error</string>
+    <string name="error_own_word_add">Error add word in Won category</string>
+    <string name="error_own_word_exists">Error, world already added</string>
+    <string name="error_own_word_limit">Error, own words limit (max 200)</string>
+    <string name="error_own_word_incorrect">Error, incorrect word</string>
+    <string name="error_own_word_delete">Error delete word from own category</string>
     <string name="error_purchase">Purchase error, write to for.gamer.develop@gmail.com</string>
     <string name="error_push_token">Push token error, please, try to restart app</string>
     <string name="error_request">Error send request, please, check authorization and Internet connection</string>
@@ -42,6 +52,8 @@
     <string name="hours_off_time">Hours (0–23)</string>
     <string name="i_dont_know_it">I don`t know</string>
     <string name="i_know_it">I know it</string>
+    <string name="incorrect_answer">Incorrect answer</string>
+    <string name="information">Information</string>
     <string name="input_your_message">Input your message</string>
     <string name="later">Later</string>
     <string name="learn_language">Learn language</string>
@@ -51,9 +63,12 @@
     <string name="logout_success">Logout success</string>
     <string name="new_version">New version</string>
     <string name="network_not_available">Network error</string>
+    <string name="next">Next</string>
     <string name="night_time">Night time (without notifications)</string>
     <string name="night_time_value">From %s to %s</string>
     <string name="no_thanks">No, thanks / already</string>
+    <string name="no_training_category_words">There are no category words for training (probably it all the sentences or already learned words)</string>
+    <string name="no_training_words">There are no words for training or it already learned or it is all the sentences</string>
     <string name="no_words">Notifications with new words have not received yet. Please, authorize and wait… (With default settings wait 1 hour)</string>
     <string name="no_words_own">You have not added words to your category yet</string>
     <string name="no_test_notifications">There are no test notifications</string>
@@ -69,6 +84,7 @@
     <string name="please_wait">Please, wait</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="privacy_policy_in_sentence">Privacy Policy</string>
+    <string name="purchase_consumed">Success purchase, thank you!</string>
     <string name="rate_app">Rate app</string>
     <string name="rate_app_pls">Rate app, please</string>
     <string name="rate">Rate</string>
@@ -94,6 +110,8 @@
     <string name="test_notifications_text">Receive test notification</string>
     <string name="time_new">Time new</string>
     <string name="time_old">Time old</string>
+    <string name="training">Training</string>
+    <string name="training_setting">Training setting</string>
     <string name="transcription">Transcription</string>
     <string name="translation">Translation</string>
     <string name="undefined_error">Undefined error</string>
@@ -101,15 +119,18 @@
     <string name="update">Update</string>
     <string name="update_verb">Update</string>
     <string name="update_text">New app version is available. Please, update</string>
+    <string name="unknown_action">Unknown action</string>
     <string name="user_not_found">User not found</string>
     <string name="word">Word</string>
     <string name="word_added">Word has been added</string>
-    <string name="word_category_select">Word category select</string>
+    <string name="word_category_select">Category select</string>
     <string name="word_length_limit">The max length is 200 symbols</string>
     <string name="word_should_not_be_empty">Word should not be empty</string>
     <string name="words_not_selected">Words not selected</string>
     <string name="words_removed_from_own">Words removed from own category</string>
+    <string name="words_training">Words training</string>
     <string name="you_sign_in_as">You signed in as: %s</string>
+    <string name="your_answer">Your answer: %s</string>
 
     <string name="label_fragment_dictionary_main" translatable="false">LabelFragmentDictionaryMain</string>
     <string name="label_fragment_dictionary" translatable="false">LabelFragmentDictionary</string>
@@ -117,13 +138,17 @@
     <string name="label_fragment_settings" translatable="false">LabelFragmentSettings</string>
     <string name="label_fragment_word" translatable="false">LabelFragmentWord</string>
     <string name="label_fragment_categories" translatable="false">LabelFragmentCategories</string>
+    <string name="label_fragment_training_setting" translatable="false">LabelFragmentTrainingSetting</string>
+    <string name="label_fragment_training" translatable="false">LabelFragmentTraining</string>
 
     <string name="text_rate_app">Write comments and suggestions. What you want to see in the app</string>
-    <string name="text_app_about">Select categories of words which you want to learn and you will receive English words in push notifications.
+    <string name="text_app_about">\tSelect categories of words which you want to learn and you will receive English words in push notifications.
         Categories of words adding without app update.\n\nВерсия приложения: %s</string>
-    <string name="text_own_category">You will receive words from here if select "Own category" in notification settings
-        \n\nYou can add words here from dictionary (long tap on word) or input via plus button
-        \n\nMax words count - 200</string>
+    <string name="text_own_category">\tYou will receive words from here if select "Own category" in notification settings
+        \n\n\tYou can add words here from dictionary (long tap on word) or input via plus button
+        \n\n\tMax words count - 200</string>
+    <string name="text_info_words_training">\tThe words training increase word learn progress. If answer is wrong in training - word progress sets to 0.
+        \n\n\tTraining word matches if: 1. Word has not max learn progress 2. It is not sentence (contains maximum 3 words)</string>
 
     <string name="patch_notes_0_1_4">- Added patch notes dialog (here it is)
         \n- Fixed bug with alphabetical sort by in dictionary
@@ -163,6 +188,10 @@
         \n- Changes in input word window in own category
         \n- Added translations of new categories
         \n- Fixes in receiving notifications</string>
+
+    <string name="patch_notes_2_0_0">- Added word trainings in Dictionary section
+        \n- Fix reselection current tab in bottom menu
+        \n- Fix search view when change tab in Dictionary section</string>
 
     <!-- =========================================================================================================== -->
     <string name="own">Own category (add words yourself in dictionary)</string>

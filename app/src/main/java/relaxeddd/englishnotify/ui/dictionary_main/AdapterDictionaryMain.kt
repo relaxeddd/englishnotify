@@ -7,7 +7,7 @@ import relaxeddd.englishnotify.common.getString
 import relaxeddd.englishnotify.ui.dictionary_all.FragmentDictionaryAll
 import relaxeddd.englishnotify.ui.dictionary_own.FragmentDictionaryOwn
 
-class AdapterDictionaryMain(fm: FragmentManager) : FragmentPagerAdapter(fm) {
+class AdapterDictionaryMain(fm: FragmentManager) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     val TAB_ALL = 0
     val TAB_OWN = 1

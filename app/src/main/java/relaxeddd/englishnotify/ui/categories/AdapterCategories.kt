@@ -11,9 +11,10 @@ import com.google.android.material.radiobutton.MaterialRadioButton
 import kotlinx.android.synthetic.main.view_item_category.view.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.CategoryItem
+import relaxeddd.englishnotify.common.ISelectCategory
 import relaxeddd.englishnotify.common.getStringByResName
 
-class AdapterCategories(val viewModel: ViewModelCategories) : ListAdapter<CategoryItem, AdapterCategories.ViewHolder>(CategoryDiffCallback()) {
+class AdapterCategories(val viewModel: ISelectCategory) : ListAdapter<CategoryItem, AdapterCategories.ViewHolder>(CategoryDiffCallback()) {
 
     private var checkedRadioButton: MaterialRadioButton? = null
 
@@ -22,13 +23,13 @@ class AdapterCategories(val viewModel: ViewModelCategories) : ListAdapter<Catego
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position), viewModel.checkedItem, CompoundButton.OnCheckedChangeListener { radioButton, isChecked -> run {
+        holder.bind(getItem(position), viewModel.getSelectedCategory(), CompoundButton.OnCheckedChangeListener { radioButton, isChecked -> run {
             if (!isChecked) {
                 return@run
             }
 
             val checkedItem = radioButton.tag as CategoryItem
-            viewModel.checkedItem = checkedItem
+            viewModel.setSelectedCategory(checkedItem)
             if (radioButton != checkedRadioButton) {
                 checkedRadioButton?.isChecked = false
                 checkedRadioButton = radioButton as MaterialRadioButton

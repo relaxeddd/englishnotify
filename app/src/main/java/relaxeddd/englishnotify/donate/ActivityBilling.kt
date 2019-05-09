@@ -149,9 +149,7 @@ abstract class ActivityBilling<VM : ViewModelBase, B : ViewDataBinding> : Activi
     private fun consumePurchase(purchaseResult: PurchaseResult) {
         billingClient?.consumeAsync(purchaseResult.tokenId) { responseCode, _ ->
             if (responseCode == BillingClient.BillingResponse.OK) {
-                showToast("Purchase consumed")
-            } else {
-                showToast("Purchase error")
+                showToast(R.string.purchase_consumed)
             }
         }
     }

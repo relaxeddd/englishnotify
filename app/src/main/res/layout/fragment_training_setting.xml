@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RadioGroup
+            android:id="@+id/radio_group_training_setting_language"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/size_16"
+            android:paddingEnd="@dimen/size_16"
+            android:paddingTop="@dimen/size_2"
+            android:paddingBottom="@dimen/size_2">
+
+            <RadioButton
+                android:id="@+id/radio_button_training_setting_en_to_ru"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/english_at_russian"
+                android:layoutDirection="rtl"
+                android:textSize="@dimen/font_16"/>
+
+            <RadioButton
+                android:id="@+id/radio_button_training_setting_ru_to_en"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/russian_at_english"
+                android:layoutDirection="rtl"
+                android:textSize="@dimen/font_16"/>
+
+        </RadioGroup>
+
+        <View
+            android:id="@+id/view_training_setting_separator"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_1"
+            android:background="@color/gray"
+            android:layout_below="@+id/radio_group_training_setting_language"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_training_setting_categories"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/view_item_category"
+            android:layout_below="@+id/view_training_setting_separator"/>
+
+    </RelativeLayout>
+
+</layout>

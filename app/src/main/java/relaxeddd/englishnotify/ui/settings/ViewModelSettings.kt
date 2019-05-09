@@ -44,12 +44,14 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     val clickListenerRate = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_WEB_PLAY_MARKET)
     }
+    val clickListenerInfoTraining = View.OnClickListener {
+        navigateEvent.value = Event(NAVIGATION_DIALOG_INFO_TRAINING)
+    }
     val checkedChangeListenerLearnStage = CompoundButton.OnCheckedChangeListener { _, isChecked ->
         SharedHelper.setHideLearnStage(!isChecked)
         AdapterWords.isHideLearnStage = !isChecked
     }
     val isShowLearnStage = MutableLiveData<Boolean>(!SharedHelper.isHideLearnStage())
-    val isVisibleLearnStage = MutableLiveData<Boolean>(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
 
     init {
         user.observeForever(userObserver)

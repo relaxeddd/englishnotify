@@ -13,6 +13,7 @@ import android.net.ConnectivityManager
 import android.net.Uri
 import androidx.annotation.StringRes
 import androidx.fragment.app.FragmentActivity
+import android.view.inputmethod.InputMethodManager
 import relaxeddd.englishnotify.R
 
 fun showToast(string: String) {
@@ -25,6 +26,11 @@ fun showToast(@StringRes resId: Int) {
 
 fun showToastLong(@StringRes resId: Int) {
     Toast.makeText(App.context, resId, Toast.LENGTH_LONG).show()
+}
+
+fun hideKeyboard(view: View) {
+    val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+    imm?.hideSoftInputFromWindow(view.windowToken, 0)
 }
 
 fun convertDpToPixel(dp: Float): Float {
@@ -89,6 +95,8 @@ fun isNetworkAvailable(): Boolean {
 
 fun getString(@StringRes resId: Int) = App.context.getString(resId)
 
+fun getString(@StringRes resId: Int, arg: String) = App.context.getString(resId, arg)
+
 fun getStringByResName(resName: String): String {
     val packageName = App.context.packageName
     val resId = App.context.resources.getIdentifier(resName, "string", packageName)
@@ -129,13 +137,26 @@ fun getErrorString(result: Result?) : String {
         RESULT_PURCHASE_VERIFIED_ERROR -> getString(R.string.error_purchase)
         RESULT_PURCHASE_ALREADY_RECEIVED -> getString(R.string.error_purchase)
         RESULT_ERROR_TEST_NOTIFICATION -> getString(R.string.error_test_notification)
-        RESULT_ERROR_OWN_WORD -> "Error add own word"
-        RESULT_ERROR_OWN_WORD_EXISTS -> "Error, word already in own"
-        RESULT_ERROR_OWN_WORD_LIMIT -> "Error, own words limit is 200"
-        RESULT_ERROR_OWN_WORD_TYPE -> "Error, incorrect word"
-        RESULT_ERROR_OWN_DELETE_NO_IDS -> "Error, no selected delete words"
-        RESULT_ERROR_OWN_DELETE_NO_WORDS -> "Error, no delete words"
-        RESULT_ERROR_OWN_DELETE -> "Error delete own word"
+        RESULT_ERROR_OWN_WORD -> getString(R.string.error_own_word_add)
+        RESULT_ERROR_OWN_WORD_EXISTS -> getString(R.string.error_own_word_exists)
+        RESULT_ERROR_OWN_WORD_LIMIT -> getString(R.string.error_own_word_limit)
+        RESULT_ERROR_OWN_WORD_TYPE -> getString(R.string.error_own_word_incorrect)
+        RESULT_ERROR_OWN_DELETE_NO_IDS -> getString(R.string.error_own_word_delete)
+        RESULT_ERROR_OWN_DELETE_NO_WORDS -> getString(R.string.error_own_word_delete)
+        RESULT_ERROR_OWN_DELETE -> getString(R.string.error_own_word_delete)
         else -> result.msg
     }
+}
+
+fun isCorrectAnswer(userAnswer: String, trueAnswer: String) : Boolean {
+    val answerWords = trueAnswer.split(",")
+    var isCorrectAnswer = false
+
+    for (answerWord in answerWords) {
+        if (answerWord.trim().toLowerCase() == userAnswer.trim().toLowerCase()) {
+            isCorrectAnswer = true
+        }
+    }
+
+    return isCorrectAnswer
 }

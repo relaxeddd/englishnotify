@@ -50,6 +50,7 @@ class RepositoryUser private constructor() {
                     pushToken = SharedHelper.getPushToken()
                 }
                 if (pushToken.isEmpty()) {
+                    @Suppress("DEPRECATION")
                     pushToken = FirebaseInstanceId.getInstance().token ?: ""
                 }
                 if (pushToken.isEmpty()) {

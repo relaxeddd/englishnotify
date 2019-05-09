@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.ui.NavigationUI
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.dialogs.DialogPrivacyPolicy
 import com.firebase.ui.auth.AuthUI
@@ -12,8 +11,6 @@ import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import kotlinx.android.synthetic.main.main_activity.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.MainActivityBinding
 import relaxeddd.englishnotify.dialogs.DialogNewVersion
@@ -30,10 +27,11 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
         const val REQUEST_PLAY_SERVICES_RESULT = 7245
     }
 
-    private val uiScope = CoroutineScope(Dispatchers.Main)
+    private var selectedBottomMenuId: Int = R.id.fragmentDictionaryMain
     lateinit var navController: NavController
     private val providers: List<AuthUI.IdpConfig> = Arrays.asList(AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build())
     private var dialogNewVersion: DialogNewVersion? = null
+    private var isBillingInited = false
 
     private val listenerPrivacyPolicy: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
         override fun onResult(result: Boolean) {
@@ -51,7 +49,7 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
     }
 
     override fun getLayoutResId() = R.layout.main_activity
-    override fun getViewModelFactory() = InjectorUtils.provideMainViewModelFactory(this)
+    override fun getViewModelFactory() = InjectorUtils.provideMainViewModelFactory()
     override fun getViewModelClass(): Class<ViewModelMain> = ViewModelMain::class.java
 
     override fun configureBinding() {
@@ -67,7 +65,21 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
 
         navController = Navigation.findNavController(this, R.id.fragment_navigation_host)
 
-        NavigationUI.setupWithNavController(navigation_view_main, navController)
+        navigation_view_main.setOnNavigationItemSelectedListener {
+            if (it.itemId == selectedBottomMenuId) {
+                return@setOnNavigationItemSelectedListener true
+            }
+
+            when (it.itemId) {
+                R.id.fragmentDictionaryMain -> navController.navigate(R.id.action_global_fragmentDictionaryMain)
+                R.id.fragmentNotifications -> navController.navigate(R.id.action_global_fragmentNotifications)
+                R.id.fragmentSettings -> navController.navigate(R.id.action_global_fragmentSettings)
+                else -> return@setOnNavigationItemSelectedListener false
+            }
+            selectedBottomMenuId = it.itemId
+
+            return@setOnNavigationItemSelectedListener true
+        }
         viewModel.onViewCreate()
     }
 
@@ -145,8 +157,12 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
                 dialog.show(this@MainActivity.supportFragmentManager, "Patch Notes Dialog")
             }
             NAVIGATION_INIT_BILLING -> {
-                if (isMyResumed) {
-                    initBilling()
+                if (isMyResumed && !isBillingInited) {
+                    initBilling(object: ListenerResult<Boolean> {
+                        override fun onResult(result: Boolean) {
+                            if (result) isBillingInited = true
+                        }
+                    })
                 }
             }
             else -> super.onNavigationEvent(eventId)

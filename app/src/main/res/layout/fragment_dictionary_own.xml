@@ -53,7 +53,7 @@
                     android:layout_width="@dimen/size_36"
                     android:layout_height="@dimen/size_36"
                     android:layout_centerInParent="true"
-                    android:visibility="@{viewModel.isVisibleLoadingView ? View.VISIBLE : View.GONE}"/>
+                    android:visibility="@{safeUnbox(viewModel.isVisibleLoadingView) == true ? View.VISIBLE : View.GONE}"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/button_dictionary_own_add_word"

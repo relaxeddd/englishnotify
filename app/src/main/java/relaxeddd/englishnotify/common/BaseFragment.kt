@@ -3,6 +3,7 @@ package relaxeddd.englishnotify.common
 import android.os.Bundle
 import android.view.*
 import androidx.annotation.CallSuper
+import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -12,8 +13,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.ui.main.MainActivity
+import java.lang.IllegalStateException
 
 abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment() {
 
@@ -28,15 +31,16 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
 
     @LayoutRes
     abstract fun getLayoutResId() : Int
-    abstract fun getToolbarTitleResId(): Int
     abstract fun getViewModelFactory() : ViewModelProvider.NewInstanceFactory
     abstract fun getViewModelClass(): Class<VM>
+    protected open fun getToolbarTitleResId() = EMPTY_RES
+    protected open fun getToolbarTitle() = ""
     protected open fun isHomeMenuButtonEnabled() = false
     protected open fun getHomeMenuButtonIconResId() = R.drawable.ic_menu
     protected open fun getHomeMenuButtonListener() = {}
     protected open fun getMenuResId() = EMPTY_RES
     protected open fun onSearchTextChanged(searchText: String) {}
-    protected open fun getSearchMenuItemId() = R.id.item_menu_search
+    protected open fun getSearchMenuItemId() = EMPTY_RES
     protected open fun getToolbarElevation() = 4f
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -53,7 +57,8 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        (activity as AppCompatActivity).supportActionBar?.title = getString(getToolbarTitleResId())
+        val title = if (getToolbarTitleResId() != EMPTY_RES) getString(getToolbarTitleResId()) else getToolbarTitle()
+        (activity as AppCompatActivity).supportActionBar?.title = title
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -63,10 +68,10 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
             inflater.inflate(getMenuResId(), menu)
         }
 
-        val searchItem = menu.findItem(getSearchMenuItemId())
+        val searchItem = if (getSearchMenuItemId() != EMPTY_RES) menu.findItem(getSearchMenuItemId()) else null
 
         if (searchItem != null && searchItem.actionView != null) {
-            val searchView = menu.findItem(R.id.item_menu_search).actionView as SearchView
+            val searchView = searchItem.actionView as SearchView
 
             searchView.setOnCloseListener {
                 textSearch = ""
@@ -102,6 +107,16 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
                     activity?.onBackPressed()
                 }
             }
+            NAVIGATION_GLOBAL_DICTIONARY -> {
+                navigate(R.id.action_global_fragmentDictionaryMain)
+            }
+            NAVIGATION_ACTIVITY_BACK_TWICE -> {
+                try {
+                    val navController = Navigation.findNavController(activity ?: return, R.id.fragment_navigation_host)
+                    navController.popBackStack()
+                    onNavigationEvent(NAVIGATION_ACTIVITY_BACK)
+                } catch (e: IllegalStateException) {}
+            }
         }
     }
 
@@ -112,6 +127,12 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
                 onNavigationEvent(eventId)
             }
         })
+    }
+
+    protected fun navigate(@IdRes actionId: Int, args: Bundle? = null) {
+        try {
+            Navigation.findNavController(activity ?: return, R.id.fragment_navigation_host).navigate(actionId, args)
+        } catch (e: IllegalStateException) {}
     }
 
     private fun configureMenu() {

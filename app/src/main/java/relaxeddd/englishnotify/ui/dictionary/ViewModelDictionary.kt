@@ -75,6 +75,14 @@ open class ViewModelDictionary(protected val repositoryWord: RepositoryWord, pro
         }
     }
 
+    fun setMaxProgress(word: Word) {
+        ioScope.launch {
+            val saveWord = Word(word)
+            saveWord.learnStage = LEARN_STAGE_MAX
+            repositoryWord.updateWord(saveWord)
+        }
+    }
+
     fun addToOwn(word: Word) {
         navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
         ioScope.launch {
