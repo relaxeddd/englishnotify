@@ -9,7 +9,7 @@ import relaxeddd.englishnotify.databinding.FragmentTrainingBinding
 
 class FragmentTraining : BaseFragment<ViewModelTraining, FragmentTrainingBinding>() {
 
-    private var toolbarTitleTraining: String = App.context.getString(R.string.training)
+    private var toolbarTitleTraining: String = "Training"
 
     private val clickListenerOk = View.OnClickListener {
         val answer = edit_text_training_answer.text.toString()

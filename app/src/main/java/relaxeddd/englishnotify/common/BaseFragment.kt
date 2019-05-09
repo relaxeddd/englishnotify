@@ -129,12 +129,6 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
         })
     }
 
-    protected fun setToolbarTitle(title: String) {
-        if (activity != null) {
-            (activity as AppCompatActivity).supportActionBar?.title = title
-        }
-    }
-
     protected fun navigate(@IdRes actionId: Int, args: Bundle? = null) {
         try {
             Navigation.findNavController(activity ?: return, R.id.fragment_navigation_host).navigate(actionId, args)

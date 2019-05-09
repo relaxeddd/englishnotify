@@ -67,25 +67,18 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
 
         navigation_view_main.setOnNavigationItemSelectedListener {
             if (it.itemId == selectedBottomMenuId) {
-                return@setOnNavigationItemSelectedListener false
+                return@setOnNavigationItemSelectedListener true
             }
 
-            selectedBottomMenuId = it.itemId
-            return@setOnNavigationItemSelectedListener when (it.itemId) {
-                R.id.fragmentDictionaryMain -> {
-                    navController.navigate(R.id.action_global_fragmentDictionaryMain)
-                    true
-                }
-                R.id.fragmentNotifications -> {
-                    navController.navigate(R.id.action_global_fragmentNotifications)
-                    true
-                }
-                R.id.fragmentSettings -> {
-                    navController.navigate(R.id.action_global_fragmentSettings)
-                    true
-                }
-                else -> false
+            when (it.itemId) {
+                R.id.fragmentDictionaryMain -> navController.navigate(R.id.action_global_fragmentDictionaryMain)
+                R.id.fragmentNotifications -> navController.navigate(R.id.action_global_fragmentNotifications)
+                R.id.fragmentSettings -> navController.navigate(R.id.action_global_fragmentSettings)
+                else -> return@setOnNavigationItemSelectedListener false
             }
+            selectedBottomMenuId = it.itemId
+
+            return@setOnNavigationItemSelectedListener true
         }
         viewModel.onViewCreate()
     }
