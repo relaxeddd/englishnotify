@@ -93,6 +93,7 @@
     <string name="renew_subscription">Renew subscription</string>
     <string name="reset_progress">Reset progress</string>
     <string name="russian_at_english">Russian at english</string>
+    <string name="show_only_one_last_notification">Show only one last notification</string>
     <string name="show_translation">I don`t know</string>
     <string name="show_word_progress">Is show word progress</string>
     <string name="search_words">Search words</string>
@@ -140,6 +141,8 @@
     <string name="label_fragment_categories" translatable="false">LabelFragmentCategories</string>
     <string name="label_fragment_training_setting" translatable="false">LabelFragmentTrainingSetting</string>
     <string name="label_fragment_training" translatable="false">LabelFragmentTraining</string>
+
+    <string name="service_notifications_count_listener" translatable="false">NotificationsListenerService</string>
 
     <string name="text_rate_app">Write comments and suggestions. What you want to see in the app</string>
     <string name="text_app_about">\tSelect categories of words which you want to learn and you will receive English words in push notifications.
@@ -192,6 +195,10 @@
     <string name="patch_notes_2_0_0">- Added word trainings in Dictionary section
         \n- Fix reselection current tab in bottom menu
         \n- Fix search view when change tab in Dictionary section</string>
+
+    <string name="patch_notes_2_0_1">- Improved notifications view
+        \n- Added handle category with type `Exercise`
+        \n- Added option `Show only one last notification`</string>
 
     <!-- =========================================================================================================== -->
     <string name="own">Own category (add words yourself in dictionary)</string>
@@ -247,6 +254,9 @@
     <string name="sport_5">Sport (level 2)</string>
     <string name="auto">Auto</string>
     <string name="auto_5">Auto (level 2)</string>
+    <string name="frequent_verbs">Frequent verbs</string>
+    <string name="frequent_verbs_5">Frequent verbs (level 2)</string>
+    <string name="exercises_verbs_first">Exercises with verb form (1)</string>
 
     <string name="privacy_policy_text">Starting work in the application, you agree to our Privacy Policy</string>
 

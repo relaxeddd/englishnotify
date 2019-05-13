@@ -121,6 +121,8 @@ const val LEARN_LANGUAGE_TYPE = "learnLanguageType"
 const val WORD_ID = "wordId"
 const val NOTIFICATION_ID = "notificationId"
 
+const val EXERCISE = "exercise"
+
 const val START_HOUR = "startHour"
 const val DURATION_HOURS = "durationHours"
 
@@ -145,6 +147,7 @@ const val TITLE = "title"
 const val TEXT = "text"
 const val CANCELLED_RATE_DIALOG = "cancelledRateDialog"
 const val WORD_LEARN_STAGE = "wordLearnStage"
+const val IS_SHOW_ONLY_ONE_NOTIFICATION = "isShowOnlyOneNotification"
 const val SYSTEM = "system"
 const val OWN_WORD = "ownWord"
 const val PUSH = "push"

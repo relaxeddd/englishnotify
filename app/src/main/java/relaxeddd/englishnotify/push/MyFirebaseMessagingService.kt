@@ -27,7 +27,38 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     companion object {
         var pushToken: String = ""
 
-        fun showNotificationWord(ctx: Context, wordId: String, text: String, title: String = getString(R.string.app_name), withButtons : Boolean) {
+        fun handleWordNotification(context: Context, word: Word, isSave: Boolean = true, viewType: Int, withWrongTitle: Boolean = false) {
+            val languageType = SharedHelper.getLearnLanguageType(context)
+
+            val wordTitle = getWordTitle(word, languageType)
+            val isLongWord = wordTitle.length > 16
+            val title = if (withWrongTitle) context.getString(R.string.answer_incorrect) else if (isLongWord) "" else wordTitle
+
+            val notificationText = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP
+                || viewType == SharedHelper.NOTIFICATIONS_VIEW_WITH_TRANSLATE
+                || withWrongTitle) {
+                getFullNotificationText(word, languageType, !isLongWord && !withWrongTitle)
+            } else if (isLongWord) wordTitle else ""
+
+            val isShowButtons = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+                    && viewType == SharedHelper.NOTIFICATIONS_VIEW_WITH_QUESTION && !withWrongTitle
+
+            if (isSave) {
+                val wordDao = AppDatabase.getInstance(context).wordDao()
+                val existsWord = wordDao.findWordById(word.eng)
+
+                if (existsWord == null) {
+                    wordDao.insertAll(word)
+                } else if (existsWord.saveType == Word.DICTIONARY) {
+                    word.learnStage = existsWord.learnStage
+                    wordDao.insertAll(word)
+                }
+            }
+
+            showNotificationWord(context, word.eng, notificationText, title, isShowButtons)
+        }
+
+        private fun showNotificationWord(ctx: Context, wordId: String, text: String, title: String, withButtons : Boolean) {
             val notificationId = Random.nextInt(10000)
             val intent = Intent(ctx, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -35,11 +66,16 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
             val channelId = getString(R.string.default_notification_channel_id)
             val notificationBuilder = NotificationCompat.Builder(ctx, channelId)
-                .setContentTitle(title)
-                .setContentText(text)
-                .setStyle(NotificationCompat.BigTextStyle().bigText(text))
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
+
+            if (title.isNotEmpty()) {
+                notificationBuilder.setContentTitle(title)
+            }
+            if (text.isNotEmpty()) {
+                notificationBuilder.setContentText(text)
+                notificationBuilder.setStyle(NotificationCompat.BigTextStyle().bigText(text))
+            }
 
             if (withButtons && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 val knowIntent = Intent(ctx, PushBroadcastReceiver::class.java).apply {
@@ -75,14 +111,14 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 notificationBuilder.addAction(R.drawable.ic_close, getString(R.string.show_translation), dontKnowPendingIntent)
             }
 
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 notificationBuilder.setSmallIcon(R.drawable.ic_stat_onesignal_default)
                 notificationBuilder.color = ContextCompat.getColor(ctx, R.color.colorPrimary)
             } else {
                 notificationBuilder.setSmallIcon(R.drawable.ic_stat_onesignal_default)
             }
 
-            val notificationManager = ctx.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val notificationManager = ctx.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager?
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val channel = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -90,17 +126,20 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 } else null
 
                 if (channel != null) {
-                    notificationManager.createNotificationChannel(channel)
+                    notificationManager?.createNotificationChannel(channel)
                 }
             } else {
                 @Suppress("DEPRECATION")
                 notificationBuilder.priority = Notification.PRIORITY_HIGH
             }
 
-            notificationManager.notify(notificationId, notificationBuilder.build())
+            if (SharedHelper.isShowOnlyOneNotification(ctx)) {
+                notificationManager?.cancelAll()
+            }
+            notificationManager?.notify(notificationId, notificationBuilder.build())
         }
 
-        fun showNotification(ctx: Context, title: String = getString(R.string.app_name), text: String) {
+        private fun showNotification(ctx: Context, title: String, text: String) {
             val notificationId = Random.nextInt(10000)
             val intent = Intent(ctx, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -108,20 +147,25 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
             val channelId = getString(R.string.default_notification_channel_id)
             val notificationBuilder = NotificationCompat.Builder(ctx, channelId)
-                .setContentTitle(title)
-                .setContentText(text)
-                .setStyle(NotificationCompat.BigTextStyle().bigText(text))
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
 
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (title.isNotEmpty()) {
+                notificationBuilder.setContentTitle(title)
+            }
+            if (text.isNotEmpty()) {
+                notificationBuilder.setContentText(text)
+                notificationBuilder.setStyle(NotificationCompat.BigTextStyle().bigText(text))
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 notificationBuilder.setSmallIcon(R.drawable.ic_stat_onesignal_default)
                 notificationBuilder.color = ContextCompat.getColor(ctx, R.color.colorPrimary)
             } else {
                 notificationBuilder.setSmallIcon(R.drawable.ic_stat_onesignal_default)
             }
 
-            val notificationManager = ctx.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val notificationManager = ctx.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager?
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val channel = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -129,49 +173,61 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 } else null
 
                 if (channel != null) {
-                    notificationManager.createNotificationChannel(channel)
+                    notificationManager?.createNotificationChannel(channel)
                 }
             } else {
                 @Suppress("DEPRECATION")
                 notificationBuilder.priority = Notification.PRIORITY_HIGH
             }
 
-            notificationManager.notify(notificationId, notificationBuilder.build())
+            notificationManager?.notify(notificationId, notificationBuilder.build())
         }
 
-        fun getFullNotificationText(word: Word, languageType: Int) : String {
+        private fun getFullNotificationText(word: Word, languageType: Int, withoutWordText: Boolean) : String {
             var notificationText = ""
 
-            if (languageType == TYPE_PUSH_ENGLISH && word.rus.isNotEmpty()) {
-                notificationText += word.eng + "\n"
-            } else if (languageType == TYPE_PUSH_RUSSIAN && word.eng.isNotEmpty()) {
-                notificationText += word.rus + "\n"
-            }
-            if (word.transcription.isNotEmpty()) {
-                notificationText += "\n[" + word.transcription + "]"
-            }
-            if (word.v2.isNotEmpty() && word.v3.isNotEmpty()) {
-                if (notificationText.isNotEmpty()) {
-                    notificationText += "\n"
+            if (!withoutWordText) {
+                if (languageType == TYPE_PUSH_RUSSIAN && word.type != EXERCISE) {
+                    if (word.rus.isNotEmpty()) {
+                        notificationText += word.rus + "\n"
+                    }
+                } else if (word.eng.isNotEmpty()) {
+                    notificationText += word.eng + "\n"
                 }
-                notificationText += word.v2 + " - " + word.v3
             }
-            if (languageType == TYPE_PUSH_ENGLISH && word.rus.isNotEmpty()) {
-                notificationText += "\n"
-                notificationText += word.rus
-            } else if (languageType == TYPE_PUSH_RUSSIAN && word.eng.isNotEmpty()) {
-                notificationText += "\n"
-                notificationText += word.eng
+
+            if (word.transcription.isNotEmpty()) {
+                if (word.type != EXERCISE) {
+                    notificationText += "\n[" + word.transcription + "]"
+                } else {
+                    notificationText += "\n" + word.transcription
+                }
             }
+
+            if (word.v2.isNotEmpty() && word.v3.isNotEmpty()) {
+                notificationText += "\n" + word.v2 + " - " + word.v3
+            }
+
+            if (languageType == TYPE_PUSH_RUSSIAN && word.type != EXERCISE) {
+                if (word.eng.isNotEmpty()) {
+                    notificationText += "\n" + word.eng
+                }
+            } else if (word.rus.isNotEmpty()) {
+                notificationText += "\n" + word.rus
+            }
+
             if (word.sampleEng.isNotEmpty()) {
-                notificationText += "\n"
-                notificationText += "\n" + word.sampleEng
+                notificationText += "\n\n" + word.sampleEng
             }
             if (word.sampleRus.isNotEmpty()) {
                 notificationText += "\n" + word.sampleRus
             }
 
             return notificationText
+        }
+
+        private fun getWordTitle(word: Word, languageType: Int) : String {
+            return if (languageType == TYPE_PUSH_RUSSIAN && word.type != EXERCISE) word.rus else word.eng
         }
     }
 
@@ -231,7 +287,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                         val wordIx = (0 until words.size).random()
 
                         if (wordIx >= 0 && wordIx < words.size) {
-                            handleWordNotification(words[wordIx], false)
+                            handleWordNotification(this, words[wordIx], false, viewType = SharedHelper.getNotificationsView(this))
                         }
                     }
                 }
@@ -242,38 +298,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
                     if (data.containsKey(CONTENT) && data[CONTENT] != null) {
                         val word = parseWord(JSONObject(data[CONTENT]))
-                        handleWordNotification(word)
+                        handleWordNotification(this, word, viewType = SharedHelper.getNotificationsView(this))
                     }
                 }
             }
         }
-    }
-
-    private fun handleWordNotification(word: Word, isSave: Boolean = true) {
-        val languageType = SharedHelper.getLearnLanguageType(this)
-        val isShowButtons = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
-                && SharedHelper.getNotificationsView(this) == SharedHelper.NOTIFICATIONS_VIEW_WITH_QUESTION
-        val title = getStringByResName(SharedHelper.getSelectedCategory(this))
-        val notificationText = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP
-            || SharedHelper.getNotificationsView(this) == SharedHelper.NOTIFICATIONS_VIEW_WITH_TRANSLATE) {
-            getFullNotificationText(word, languageType)
-        } else {
-            if (languageType == TYPE_PUSH_ENGLISH) word.eng else word.rus
-        }
-
-        if (isSave) {
-            val wordDao = AppDatabase.getInstance(this).wordDao()
-            val existsWord = wordDao.findWordById(word.eng)
-
-            if (existsWord == null) {
-                wordDao.insertAll(word)
-            } else if (existsWord.saveType == Word.DICTIONARY) {
-                word.learnStage = existsWord.learnStage
-                wordDao.insertAll(word)
-            }
-        }
-
-        showNotificationWord(this, word.eng, notificationText, title, isShowButtons)
     }
 
     private fun isNightTime() : Boolean {

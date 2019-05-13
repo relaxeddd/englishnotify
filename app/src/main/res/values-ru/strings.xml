@@ -94,6 +94,7 @@
     <string name="renew_subscription">Продлить использование</string>
     <string name="reset_progress">Сбросить прогресс</string>
     <string name="russian_at_english">С руссокого на английский</string>
+    <string name="show_only_one_last_notification">Показывать только одно последнее уведомление</string>
     <string name="show_translation">Я не знаю</string>
     <string name="show_word_progress">Показывать прогресс слов</string>
     <string name="search_words">Искать слова</string>
@@ -183,6 +184,10 @@
         \n- Фикс перехода по разделам при клике на тот раздел, в котором находимся
         \n- Фикс поиска при смене вкладок в разделе Словарь</string>
 
+    <string name="patch_notes_2_0_1">- Улучшено отображение уведомлений
+        \n- Добавлена обработка категории типа "Упражнение"
+        \n- Добавлена опция `Показывать только одно последнее уведомление`</string>
+
     <!-- =========================================================================================================== -->
     <string name="own">Своя категория (добавлять слова самому в словаре)</string>
     <string name="irregular">Неправильные глаголы</string>
@@ -237,7 +242,9 @@
     <string name="sport_5">Спорт (уровень 2)</string>
     <string name="auto">Авто</string>
     <string name="auto_5">Авто (уровень 2)</string>
-
+    <string name="frequent_verbs">Частые глаголы</string>
+    <string name="frequent_verbs_5">Частые глаголы (уровень 2)</string>
+    <string name="exercises_verbs_first">Упражнения на форму глагола (1)</string>
 
     <string name="privacy_policy_text">Начиная работу с приложением, вы соглашаетесь с нашей Политикой конфиденциальности</string>
     <!--

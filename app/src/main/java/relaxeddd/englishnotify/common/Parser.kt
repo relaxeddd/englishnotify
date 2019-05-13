@@ -23,6 +23,7 @@ fun parseWord(wordJson: JSONObject) : Word {
     val v2 = if (wordJson.has(V2)) (wordJson[V2] as String) else ""
     val v3 = if (wordJson.has(V3)) (wordJson[V3] as String) else ""
     val timestamp = System.currentTimeMillis()
+    val type = if (wordJson.has(TYPE)) (wordJson[TYPE] as String) else ""
 
-    return Word(eng, rus, transcription, tags, sampleEng, sampleRus, v2, v3, timestamp)
+    return Word(eng, rus, transcription, tags, sampleEng, sampleRus, v2, v3, timestamp, type = type)
 }
