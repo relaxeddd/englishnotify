@@ -23,6 +23,11 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
     val selectedTagLiveData = MutableLiveData<String>("")
     val isVisibleNotificationsView = MutableLiveData<Boolean>(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
 
+    val checkedChangeListenerShowOnlyOneNotification = CompoundButton.OnCheckedChangeListener { _, isChecked ->
+        SharedHelper.setShowOnlyOneNotification(isChecked)
+    }
+    val isShowOnlyOneNotification = MutableLiveData<Boolean>(SharedHelper.isShowOnlyOneNotification())
+
     private val userObserver = Observer<User?> { user ->
         isEnableNotificationsClickable.value = user != null
         selectedTagLiveData.value = if (user != null) getStringByResName(user.selectedTag) else ""

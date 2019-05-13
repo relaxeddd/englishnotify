@@ -298,6 +298,48 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_view_notifications_show_only_one"
+                android:layout_width="match_parent"
+                style="@style/StyleCardViewSettings"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/card_view_notifications_view">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switch_notifications_show_only_one"
+                        android:text="@string/show_only_one_last_notification"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:checked="@{safeUnbox(viewModel.isShowOnlyOneNotification)}"
+                        android:onCheckedChanged="@{viewModel.checkedChangeListenerShowOnlyOneNotification}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:textSize="@dimen/font_12"
+                        android:paddingStart="@dimen/size_16"
+                        android:paddingEnd="@dimen/size_32" app:layout_constraintStart_toEndOf="@+id/image_notifications_show_only_one"
+                        android:layout_marginTop="4dp" android:layout_marginBottom="4dp"/>
+
+                    <ImageView
+                        android:id="@+id/image_notifications_show_only_one"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" app:srcCompat="@drawable/ic_list"
+                        app:layout_constraintTop_toTopOf="@+id/switch_notifications_show_only_one"
+                        app:layout_constraintBottom_toBottomOf="@+id/switch_notifications_show_only_one"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="16dp"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_view_notifications_night_time"
                 android:layout_width="match_parent"
                 style="@style/StyleCardViewSettings"
@@ -305,7 +347,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/card_view_notifications_view"
+                app:layout_constraintTop_toBottomOf="@+id/card_view_notifications_show_only_one"
                 app:layout_constraintStart_toStartOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout

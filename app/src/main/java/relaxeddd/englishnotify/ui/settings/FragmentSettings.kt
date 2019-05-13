@@ -80,21 +80,29 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
                 val activity = activity
 
                 if (isResumed && activity is MainActivity) {
-                    activity.initBilling(object: ListenerResult<Boolean> {
-                        override fun onResult(result: Boolean) {
-                            val freshActivity = this@FragmentSettings.activity
+                    if (activity.isBillingInited) {
+                        val dialog = DialogSubscription()
+                        dialog.listener = listenerSubscription
+                        dialog.show(this@FragmentSettings.childFragmentManager, "Subscription Dialog")
+                    } else {
+                        activity.initBilling(object: ListenerResult<Boolean> {
+                            override fun onResult(result: Boolean) {
+                                val freshActivity = this@FragmentSettings.activity
 
-                            if (freshActivity != null && freshActivity is MainActivity) {
-                                if (result) {
-                                    val dialog = DialogSubscription()
-                                    dialog.listener = listenerSubscription
-                                    dialog.show(this@FragmentSettings.childFragmentManager, "Subscription Dialog")
-                                } else {
-                                    showToast(R.string.error_purchase)
+                                if (isResumed && freshActivity != null && freshActivity is MainActivity) {
+                                    if (result) {
+                                        freshActivity.isBillingInited = true
+
+                                        val dialog = DialogSubscription()
+                                        dialog.listener = listenerSubscription
+                                        dialog.show(this@FragmentSettings.childFragmentManager, "Subscription Dialog")
+                                    } else {
+                                        showToast(R.string.error_purchase)
+                                    }
                                 }
                             }
-                        }
-                    })
+                        })
+                    }
                 }
             }
             else -> super.onNavigationEvent(eventId)

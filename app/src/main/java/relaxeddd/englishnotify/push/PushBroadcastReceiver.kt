@@ -52,11 +52,9 @@ class PushBroadcastReceiver : BroadcastReceiver() {
                         if (isCorrectAnswer) {
                             showToast(R.string.answer_correct)
                         } else {
-                            val title = getStringByResName(SharedHelper.getSelectedCategory(context))
-                            val fullText = MyFirebaseMessagingService.getFullNotificationText(word, languageType)
-
                             showToast(R.string.answer_incorrect)
-                            MyFirebaseMessagingService.showNotificationWord(context, wordId, fullText, title, false)
+                            MyFirebaseMessagingService.handleWordNotification(context, word, false,
+                                SharedHelper.NOTIFICATIONS_VIEW_WITH_TRANSLATE, withWrongTitle = true)
                         }
                     }
                 } else {
@@ -65,10 +63,8 @@ class PushBroadcastReceiver : BroadcastReceiver() {
             } else {
                 saveWord.learnStage = 0
 
-                val title = getStringByResName(SharedHelper.getSelectedCategory(context))
-                val fullText = MyFirebaseMessagingService.getFullNotificationText(word, languageType)
                 withContext(Dispatchers.Main) {
-                    MyFirebaseMessagingService.showNotificationWord(context, wordId, fullText, title, false)
+                    MyFirebaseMessagingService.handleWordNotification(context, word, false, SharedHelper.NOTIFICATIONS_VIEW_WITH_TRANSLATE)
                 }
             }
             wordDao.insertAll(saveWord)

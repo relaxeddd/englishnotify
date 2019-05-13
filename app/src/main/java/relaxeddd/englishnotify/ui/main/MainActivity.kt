@@ -31,7 +31,7 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
     lateinit var navController: NavController
     private val providers: List<AuthUI.IdpConfig> = Arrays.asList(AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build())
     private var dialogNewVersion: DialogNewVersion? = null
-    private var isBillingInited = false
+    var isBillingInited = false
 
     private val listenerPrivacyPolicy: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
         override fun onResult(result: Boolean) {

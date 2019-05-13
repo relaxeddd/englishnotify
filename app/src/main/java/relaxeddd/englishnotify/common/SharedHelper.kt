@@ -147,4 +147,14 @@ object SharedHelper {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         sPref.edit().putInt(TRAINING_LANGUAGE, value).apply()
     }
+
+    fun isShowOnlyOneNotification(context: Context = App.context) : Boolean {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getBoolean(IS_SHOW_ONLY_ONE_NOTIFICATION, false)
+    }
+
+    fun setShowOnlyOneNotification(value: Boolean, context: Context = App.context) {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putBoolean(IS_SHOW_ONLY_ONE_NOTIFICATION, value).apply()
+    }
 }
