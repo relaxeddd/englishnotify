@@ -14,7 +14,7 @@ import relaxeddd.englishnotify.dialogs.DialogDeleteWords
 abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding, A : AdapterWords<*>> : BaseFragment<VM, B>() {
 
     protected lateinit var adapter: A
-            private var animBlock: AnimBlock = AnimBlock(false)
+    private var animBlock: AnimBlock = AnimBlock(false)
 
     private val listenerCheckTags: ListenerResult<List<String>> = object:
         ListenerResult<List<String>> {

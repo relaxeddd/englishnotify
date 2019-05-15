@@ -144,6 +144,7 @@ fun getErrorString(result: Result?) : String {
         RESULT_ERROR_OWN_DELETE_NO_IDS -> getString(R.string.error_own_word_delete)
         RESULT_ERROR_OWN_DELETE_NO_WORDS -> getString(R.string.error_own_word_delete)
         RESULT_ERROR_OWN_DELETE -> getString(R.string.error_own_word_delete)
+        RESULT_ERROR_INTERNET -> getString(R.string.network_not_available)
         else -> result.msg
     }
 }

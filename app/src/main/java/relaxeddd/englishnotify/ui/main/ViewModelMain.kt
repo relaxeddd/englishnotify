@@ -3,16 +3,13 @@ package relaxeddd.englishnotify.ui.main
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import kotlinx.coroutines.Dispatchers
 import relaxeddd.englishnotify.model.repository.RepositoryUser
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.dialogs.DialogPatchNotes
 import relaxeddd.englishnotify.model.repository.RepositoryCommon
 import relaxeddd.englishnotify.model.repository.RepositoryWord
-import java.util.*
 
 class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase() {
 
@@ -22,41 +19,22 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
     val isShowWarningSubscription = MutableLiveData<Boolean>(false)
     val isShowLoading = MutableLiveData<Boolean>(false)
     val isShowHorizontalProgress = MutableLiveData<Boolean>(false)
-    var authTimer: Timer? = null
     var isRateDialogShown = false
     var isFirstLoad = true
 
     private val userObserver = Observer<User?> { user ->
-        authTimer?.cancel()
+        isShowGoogleAuth.value = user == null || RepositoryCommon.getInstance().firebaseUser == null
+        isShowWarningNotifications.value = isShowGoogleAuth.value == false && (user == null || user.receiveNotifications == false)
+        isShowWarningSubscription.value = user != null && user.subscriptionTime <= System.currentTimeMillis()
 
-        if (isFirstLoad && SharedHelper.isPrivacyPolicyConfirmed() && (user == null || RepositoryCommon.getInstance().firebaseUser == null)) {
-            authTimer = Timer()
-            authTimer?.schedule(object: TimerTask() {
-                override fun run() {
-                    uiScope.launch {
-                        isShowGoogleAuth.value = user == null || RepositoryCommon.getInstance().firebaseUser == null
-                        isShowWarningNotifications.value = isShowGoogleAuth.value == false && (user == null || user.receiveNotifications == false)
-
-                        val launchCount = SharedHelper.getLaunchCount()
-                        if (user != null && !isRateDialogShown && !SharedHelper.isCancelledRateDialog() && launchCount % 3 == 0) {
-                            isRateDialogShown = true
-                            navigateEvent.value = Event(NAVIGATION_DIALOG_RATE_APP)
-                        }
-                    }
-                }
-            }, 5000)
-        } else {
-            isShowGoogleAuth.value = user == null || RepositoryCommon.getInstance().firebaseUser == null
-            isShowWarningNotifications.value = isShowGoogleAuth.value == false && (user == null || user.receiveNotifications == false)
-            isShowWarningSubscription.value = user != null && user.subscriptionTime <= System.currentTimeMillis()
-
-            val launchCount = SharedHelper.getLaunchCount()
-            if (user != null && !isRateDialogShown && !SharedHelper.isCancelledRateDialog() && launchCount % 3 == 0) {
-                isRateDialogShown = true
-                navigateEvent.value = Event(NAVIGATION_DIALOG_RATE_APP)
-            }
-            if (user != null) {
-                navigateEvent.value = Event(NAVIGATION_INIT_BILLING)
+        val launchCount = SharedHelper.getLaunchCount()
+        if (user != null && !isRateDialogShown && !SharedHelper.isCancelledRateDialog() && launchCount % 3 == 0) {
+            isRateDialogShown = true
+            navigateEvent.value = Event(NAVIGATION_DIALOG_RATE_APP)
+        }
+        if (user != null) {
+            navigateEvent.value = Event(NAVIGATION_INIT_BILLING)
+            if (isFirstLoad) {
                 updateOwnWords()
                 isFirstLoad = false
             }
@@ -131,6 +109,9 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
             ioScope.launch {
                 repositoryUser.initUser(object: ListenerResult<Boolean> {
                     override fun onResult(result: Boolean) {
+                        if (!result) {
+                            userObserver.onChanged(null)
+                        }
                         isShowHorizontalProgress.value = false
                     }
                 })

@@ -113,7 +113,7 @@
                 android:layout_marginStart="@dimen/size_8"
                 android:layout_marginEnd="@dimen/size_8"
                 android:layout_marginTop="@dimen/size_8"
-                android:layout_marginBottom="@dimen/size_16"/>
+                android:layout_marginBottom="@dimen/size_4"/>
 
         <ProgressBar
                 android:id="@+id/progress_bar_main_linear"

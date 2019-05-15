@@ -202,6 +202,7 @@ class RepositoryUser private constructor() {
         wordJson.put(RUS, word.rus)
         wordJson.put(TRANSCRIPTION, word.transcription)
         wordJson.put(TAGS, tagsJson)
+        wordJson.put(TYPE, word.type)
 
         val answer = ApiHelper.requestInsertOwnWord(firebaseUser, tokenId, wordJson)
 

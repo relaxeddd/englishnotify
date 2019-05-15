@@ -203,6 +203,10 @@
         \n- Added handle category with type `Exercise`
         \n- Added option `Show only one last notification`</string>
 
+    <string name="patch_notes_2_0_2">- Added tab `Exercises` in dictionary
+        \n- Optimized Dictionary tab
+        \n- Added loader when authorize</string>
+
     <!-- =========================================================================================================== -->
     <string name="own">Own category (add words yourself in dictionary)</string>
     <string name="irregular">Irregular verbs</string>
