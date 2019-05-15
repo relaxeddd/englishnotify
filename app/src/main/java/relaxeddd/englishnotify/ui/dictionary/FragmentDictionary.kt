@@ -11,10 +11,10 @@ import kotlinx.android.synthetic.main.fragment_dictionary_all.*
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.dialogs.DialogDeleteWords
 
-abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding> : BaseFragment<VM, B>() {
+abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding, A : AdapterWords<*>> : BaseFragment<VM, B>() {
 
-    protected lateinit var adapter: AdapterWords
-    private var animBlock: AnimBlock = AnimBlock(false)
+    protected lateinit var adapter: A
+            private var animBlock: AnimBlock = AnimBlock(false)
 
     private val listenerCheckTags: ListenerResult<List<String>> = object:
         ListenerResult<List<String>> {
@@ -44,12 +44,12 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding>
                 return true
             }
             R.id.item_menu_check -> {
-                setCkeckMode(true)
+                setCheckMode(true)
                 adapter.isSelectState = true
                 return true
             }
             R.id.item_menu_cancel_check -> {
-                setCkeckMode(false)
+                setCheckMode(false)
                 adapter.isSelectState = false
                 return true
             }
@@ -66,7 +66,7 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding>
                         override fun onResult(result: Boolean) {
                             if (result) {
                                 viewModel.deleteWords(HashSet(adapter.checkList))
-                                setCkeckMode(false)
+                                setCheckMode(false)
                                 adapter.isSelectState = false
                             }
                         }
@@ -126,7 +126,7 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding>
         animateDropdown(card_view_dictionary_filter, false, animBlock)
     }
 
-    private fun setCkeckMode(isCheckMode: Boolean) {
+    private fun setCheckMode(isCheckMode: Boolean) {
         menu?.findItem(R.id.item_menu_check)?.isVisible = !isCheckMode
         menu?.findItem(getSearchMenuItemId())?.isVisible = !isCheckMode
         menu?.findItem(R.id.item_menu_filter)?.isVisible = !isCheckMode

@@ -3,8 +3,10 @@ package relaxeddd.englishnotify.ui.main
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import kotlinx.coroutines.Dispatchers
 import relaxeddd.englishnotify.model.repository.RepositoryUser
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.dialogs.DialogPatchNotes
@@ -16,9 +18,10 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
 
     val user = repositoryUser.liveDataUser
     val isShowWarningNotifications = MutableLiveData<Boolean>(false)
-    val isShowWarningAuthorize = MutableLiveData<Boolean>(false)
+    val isShowGoogleAuth = MutableLiveData<Boolean>(false)
     val isShowWarningSubscription = MutableLiveData<Boolean>(false)
     val isShowLoading = MutableLiveData<Boolean>(false)
+    val isShowHorizontalProgress = MutableLiveData<Boolean>(false)
     var authTimer: Timer? = null
     var isRateDialogShown = false
     var isFirstLoad = true
@@ -31,8 +34,8 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
             authTimer?.schedule(object: TimerTask() {
                 override fun run() {
                     uiScope.launch {
-                        isShowWarningAuthorize.value = user == null || RepositoryCommon.getInstance().firebaseUser == null
-                        isShowWarningNotifications.value = isShowWarningAuthorize.value == false && (user == null || user.receiveNotifications == false)
+                        isShowGoogleAuth.value = user == null || RepositoryCommon.getInstance().firebaseUser == null
+                        isShowWarningNotifications.value = isShowGoogleAuth.value == false && (user == null || user.receiveNotifications == false)
 
                         val launchCount = SharedHelper.getLaunchCount()
                         if (user != null && !isRateDialogShown && !SharedHelper.isCancelledRateDialog() && launchCount % 3 == 0) {
@@ -43,8 +46,8 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
                 }
             }, 5000)
         } else {
-            isShowWarningAuthorize.value = user == null || RepositoryCommon.getInstance().firebaseUser == null
-            isShowWarningNotifications.value = isShowWarningAuthorize.value == false && (user == null || user.receiveNotifications == false)
+            isShowGoogleAuth.value = user == null || RepositoryCommon.getInstance().firebaseUser == null
+            isShowWarningNotifications.value = isShowGoogleAuth.value == false && (user == null || user.receiveNotifications == false)
             isShowWarningSubscription.value = user != null && user.subscriptionTime <= System.currentTimeMillis()
 
             val launchCount = SharedHelper.getLaunchCount()
@@ -122,10 +125,15 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
     fun requestInitUser() {
         if (repositoryUser.isAuthorized()) {
             isShowWarningNotifications.value = false
-            isShowWarningAuthorize.value = false
+            isShowGoogleAuth.value = false
             isShowWarningSubscription.value = false
+            isShowHorizontalProgress.value = true
             ioScope.launch {
-                repositoryUser.initUser()
+                repositoryUser.initUser(object: ListenerResult<Boolean> {
+                    override fun onResult(result: Boolean) {
+                        isShowHorizontalProgress.value = false
+                    }
+                })
             }
         }
     }

@@ -1,10 +1,7 @@
 package relaxeddd.englishnotify.model.repository
 
 import relaxeddd.englishnotify.App
-import relaxeddd.englishnotify.common.ALL_APP_WORDS
-import relaxeddd.englishnotify.common.LEARN_STAGE_MAX
-import relaxeddd.englishnotify.common.OWN
-import relaxeddd.englishnotify.common.Word
+import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.db.AppDatabase
 import relaxeddd.englishnotify.model.db.WordDao
 
@@ -124,7 +121,8 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         val words = this@RepositoryWord.words.value ?: ArrayList()
 
         for (word in words) {
-            if ((word.tags.contains(category) || category == ALL_APP_WORDS) && word.eng.split(" ").size <= 3 && word.learnStage != LEARN_STAGE_MAX) {
+            if ((word.tags.contains(category) || category == ALL_APP_WORDS) && word.learnStage != LEARN_STAGE_MAX
+                && (word.eng.split(" ").size <= 3 || word.type == EXERCISE)) {
                 trainingWords.add(word)
             }
         }

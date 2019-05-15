@@ -30,18 +30,19 @@ class RepositoryUser private constructor() {
 
     var liveDataUser = MutableLiveData<User>(null)
     val liveDataIsActualVersion = MutableLiveData<Boolean>(true)
-    var isOwnWordsRequested = false
+    private var isOwnWordsRequested = false
 
     fun isAuthorized() = FirebaseAuth.getInstance().currentUser != null
 
     //------------------------------------------------------------------------------------------------------------------
-    suspend fun initUser() {
+    suspend fun initUser(listener: ListenerResult<Boolean>? = null) {
         RepositoryCommon.getInstance().initFirebase { isSuccess ->
-            if (!isSuccess) {
-                return@initFirebase
-            }
-
             CoroutineScope(Dispatchers.Main).launch {
+                if (!isSuccess) {
+                    listener?.onResult(false)
+                    return@launch
+                }
+
                 val firebaseUser = RepositoryCommon.getInstance().firebaseUser
                 val tokenId = RepositoryCommon.getInstance().tokenId
                 var pushToken = MyFirebaseMessagingService.pushToken
@@ -55,6 +56,7 @@ class RepositoryUser private constructor() {
                 }
                 if (pushToken.isEmpty()) {
                     showToast(R.string.error_push_token)
+                    listener?.onResult(false)
                     return@launch
                 }
 
@@ -68,10 +70,13 @@ class RepositoryUser private constructor() {
                     if (!answerInitData.isActualVersion) {
                         liveDataIsActualVersion.value = answerInitData.isActualVersion
                     }
+                    listener?.onResult(true)
                 } else if (answerInitData?.result != null) {
                     showToast(getErrorString(answerInitData.result))
+                    listener?.onResult(false)
                 } else {
                     showToast(R.string.error_initialization)
+                    listener?.onResult(false)
                 }
             }
         }
@@ -193,10 +198,10 @@ class RepositoryUser private constructor() {
         for (tag in tags) {
             tagsJson.put(tag)
         }
-        wordJson.put("eng", word.eng)
-        wordJson.put("rus", word.rus)
-        wordJson.put("transcription", word.transcription)
-        wordJson.put("tags", tagsJson)
+        wordJson.put(ENG, word.eng)
+        wordJson.put(RUS, word.rus)
+        wordJson.put(TRANSCRIPTION, word.transcription)
+        wordJson.put(TAGS, tagsJson)
 
         val answer = ApiHelper.requestInsertOwnWord(firebaseUser, tokenId, wordJson)
 

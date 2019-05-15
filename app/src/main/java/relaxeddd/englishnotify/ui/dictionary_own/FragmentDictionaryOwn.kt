@@ -8,10 +8,10 @@ import relaxeddd.englishnotify.common.InjectorUtils
 import relaxeddd.englishnotify.common.NAVIGATION_DIALOG_OWN_CATEGORY
 import relaxeddd.englishnotify.databinding.FragmentDictionaryOwnBinding
 import relaxeddd.englishnotify.dialogs.DialogOwnCategory
-import relaxeddd.englishnotify.ui.dictionary.AdapterWords
+import relaxeddd.englishnotify.ui.dictionary.AdapterDictionary
 import relaxeddd.englishnotify.ui.dictionary.FragmentDictionary
 
-class FragmentDictionaryOwn : FragmentDictionary<ViewModelDictionaryOwn, FragmentDictionaryOwnBinding>() {
+class FragmentDictionaryOwn : FragmentDictionary<ViewModelDictionaryOwn, FragmentDictionaryOwnBinding, AdapterDictionary>() {
 
     override fun getLayoutResId() = R.layout.fragment_dictionary_own
     override fun getViewModelFactory() = InjectorUtils.provideDictionaryOwnViewModelFactory(requireContext())
@@ -21,7 +21,7 @@ class FragmentDictionaryOwn : FragmentDictionary<ViewModelDictionaryOwn, Fragmen
 
     override fun configureBinding() {
         super.configureBinding()
-        adapter = AdapterWords(viewModel)
+        adapter = AdapterDictionary(viewModel)
         binding.viewModel = viewModel
         binding.recyclerViewDictionary.adapter = adapter
         binding.clickListenerCloseFilter = clickListenerCloseFilter
