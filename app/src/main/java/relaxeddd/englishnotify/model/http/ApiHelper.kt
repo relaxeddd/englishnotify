@@ -1,6 +1,5 @@
 package relaxeddd.englishnotify.model.http
 
-import android.system.ErrnoException
 import com.google.firebase.auth.FirebaseUser
 import okhttp3.OkHttpClient
 import relaxeddd.englishnotify.BuildConfig
@@ -24,6 +23,10 @@ object ApiHelper {
     private val api: Api = Api()
 
     suspend fun requestInit(firebaseUser: FirebaseUser?, tokenId: String?, pushToken: String) : InitData? {
+        if (!isNetworkAvailable()) {
+            return InitData(Result(RESULT_ERROR_INTERNET), User())
+        }
+
         val requestId = UUID.randomUUID().toString()
         val userId = firebaseUser?.uid ?: ""
         val email = firebaseUser?.email ?: ""
@@ -49,6 +52,10 @@ object ApiHelper {
     }
 
     suspend fun requestSendFeedback(firebaseUser: FirebaseUser?, tokenId: String?, feedback: String) : Result? {
+        if (!isNetworkAvailable()) {
+            return Result(RESULT_ERROR_INTERNET)
+        }
+
         val requestId = UUID.randomUUID().toString()
         val userId = firebaseUser?.uid ?: ""
 
@@ -72,6 +79,10 @@ object ApiHelper {
     }
 
     suspend fun requestSendTestNotification(firebaseUser: FirebaseUser?, tokenId: String?) : Result? {
+        if (!isNetworkAvailable()) {
+            return Result(RESULT_ERROR_INTERNET)
+        }
+
         val requestId = UUID.randomUUID().toString()
         val userId = firebaseUser?.uid ?: ""
 
@@ -95,6 +106,10 @@ object ApiHelper {
     }
 
     suspend fun requestUpdateUser(firebaseUser: FirebaseUser?, tokenId: String?, user: User) : UpdateUserResult? {
+        if (!isNetworkAvailable()) {
+            return UpdateUserResult(Result(RESULT_ERROR_INTERNET), User())
+        }
+
         val requestId = UUID.randomUUID().toString()
         val userId = firebaseUser?.uid ?: ""
         val notificationsTimeType = user.notificationsTimeType
@@ -124,6 +139,10 @@ object ApiHelper {
 
     suspend fun requestVerifyPurchase(firebaseUser: FirebaseUser?, tokenId: String?, purchaseTokenId: String,
                                       signature: String, originalJson: String, itemType: String) : PurchaseResult? {
+        if (!isNetworkAvailable()) {
+            return PurchaseResult(Result(RESULT_ERROR_INTERNET))
+        }
+
         val requestId = UUID.randomUUID().toString()
         val userId = firebaseUser?.uid ?: ""
 
@@ -147,6 +166,10 @@ object ApiHelper {
     }
 
     suspend fun requestInsertOwnWord(firebaseUser: FirebaseUser?, tokenId: String?, word: JSONObject) : Result? {
+        if (!isNetworkAvailable()) {
+            return Result(RESULT_ERROR_INTERNET)
+        }
+
         val requestId = UUID.randomUUID().toString()
         val userId = firebaseUser?.uid ?: ""
 
@@ -170,6 +193,10 @@ object ApiHelper {
     }
 
     suspend fun requestDeleteOwnWords(firebaseUser: FirebaseUser?, tokenId: String?, wordIds: JSONArray) : Result? {
+        if (!isNetworkAvailable()) {
+            return Result(RESULT_ERROR_INTERNET)
+        }
+
         val requestId = UUID.randomUUID().toString()
         val userId = firebaseUser?.uid ?: ""
 
@@ -193,6 +220,10 @@ object ApiHelper {
     }
 
     suspend fun requestOwnWords(firebaseUser: FirebaseUser?, tokenId: String?) : OwnWordsResult? {
+        if (!isNetworkAvailable()) {
+            return OwnWordsResult(Result(RESULT_ERROR_INTERNET))
+        }
+
         val requestId = UUID.randomUUID().toString()
         val userId = firebaseUser?.uid ?: ""
 

@@ -1,29 +1,27 @@
 package relaxeddd.englishnotify.ui.dictionary
 
 import android.annotation.SuppressLint
-import android.os.Build
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.CompoundButton
-import androidx.databinding.DataBindingUtil
+import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.TextView
+import androidx.annotation.CallSuper
+import androidx.appcompat.view.menu.MenuBuilder
+import androidx.appcompat.view.menu.MenuPopupHelper
+import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
+import com.google.android.material.checkbox.MaterialCheckBox
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.Word
-import relaxeddd.englishnotify.common.animateDropdown
-import relaxeddd.englishnotify.databinding.ViewItemWordBinding
-import androidx.appcompat.widget.PopupMenu
-import androidx.appcompat.view.menu.MenuBuilder
-import androidx.appcompat.view.menu.MenuPopupHelper
-import relaxeddd.englishnotify.common.LEARN_STAGE_MAX
-import relaxeddd.englishnotify.common.SharedHelper
+import relaxeddd.englishnotify.common.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashSet
 
-class AdapterWords(val viewModel: ViewModelDictionary) : ListAdapter<Word, AdapterWords.ViewHolder>(WordDiffCallback()) {
+abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewModelDictionary) : ListAdapter<Word, VH>(WordDiffCallback()) {
 
     companion object {
         var isHideLearnStage = SharedHelper.isHideLearnStage()
@@ -35,33 +33,29 @@ class AdapterWords(val viewModel: ViewModelDictionary) : ListAdapter<Word, Adapt
             if (!value) checkList.clear()
             notifyDataSetChanged()
         }
-    var languageType = 0
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
     var checkList = HashSet<Word>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(
-            DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.view_item_word, parent, false)
-        )
+    //------------------------------------------------------------------------------------------------------------------
+    override fun onBindViewHolder(holder: VH, position: Int) {
+        val word = getItem(position)
+        val clickListener = View.OnClickListener {
+            animateDropdown(it.findViewById(R.id.constraint_word_drop_dawn), !holder.isOpen, paddingDp = 16f)
+            holder.isOpen = !holder.isOpen
+        }
+        val longListener = View.OnLongClickListener {
+            showPopupWord(holder.itemView, word)
+            true
+        }
+        val checkListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
+            if (isChecked) checkList.add(word) else checkList.remove(word)
+        }
+
+        bind(holder, word, clickListener, longListener, checkListener)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        getItem(position).let { word ->
-            with(holder) {
-                itemView.tag = word.eng
-                bind(createOnClickListener(this), createOnLongClickListener(this, word), word, languageType,
-                    isSelectState, checkList, CompoundButton.OnCheckedChangeListener { _, isChecked ->
-                        if (isChecked) {
-                            checkList.add(word)
-                        } else {
-                            checkList.remove(word)
-                        }
-                    })
-            }
-        }
+    open fun bind(holder: VH, item: Word, clickListener: View.OnClickListener, longListener: View.OnLongClickListener,
+                  checkListener: CompoundButton.OnCheckedChangeListener) {
+        holder.bind(item, isSelectState, checkList, clickListener, longListener, checkListener)
     }
 
     fun checkAll() {
@@ -73,22 +67,8 @@ class AdapterWords(val viewModel: ViewModelDictionary) : ListAdapter<Word, Adapt
         notifyDataSetChanged()
     }
 
-    private fun createOnLongClickListener(holder: ViewHolder, word: Word): View.OnLongClickListener {
-        return View.OnLongClickListener {
-            showPopupWord(holder.itemView, word)
-            true
-        }
-    }
-
-    private fun createOnClickListener(holder: ViewHolder): View.OnClickListener {
-        return View.OnClickListener {
-            animateDropdown(it.findViewById(R.id.constraint_word_drop_dawn), !holder.isOpen, paddingDp = 16f)
-            holder.isOpen = !holder.isOpen
-        }
-    }
-
     @SuppressLint("RestrictedApi")
-    private fun showPopupWord(view: View, word: Word) {
+    protected fun showPopupWord(view: View, word: Word) {
         val popupMenu = PopupMenu(view.context, view)
 
         popupMenu.inflate(R.menu.menu_popup_word)
@@ -112,65 +92,6 @@ class AdapterWords(val viewModel: ViewModelDictionary) : ListAdapter<Word, Adapt
         menuHelper.show()
     }
 
-    class ViewHolder(private val binding: ViewItemWordBinding) : RecyclerView.ViewHolder(binding.root) {
-
-        var isOpen = false
-
-        fun bind(listener: View.OnClickListener, longListener: View.OnLongClickListener, word: Word, languageType: Int,
-                 isSelectState: Boolean, checkList: HashSet<Word>, checkedChangeListener: CompoundButton.OnCheckedChangeListener?) {
-            with(binding) {
-                clickListener = listener
-                longClickListener = longListener
-                this.word = word
-                executePendingBindings()
-                val transcription = if (word.transcription.isNotEmpty()) "[" + word.transcription + "]" else ""
-
-                when (languageType) {
-                    0 -> {
-                        textWord.text = word.eng
-                        textWordTranscription.text = transcription
-                        textWordTranslation.text = word.rus
-                        textWordTranscription.visibility = View.VISIBLE
-                        textWordTranscriptionTranslation.visibility = View.GONE
-                    }
-                    1 -> {
-                        textWord.text = word.rus
-                        textWordTranscriptionTranslation.text = transcription
-                        textWordTranslation.text = word.eng
-                        textWordTranscription.visibility = View.GONE
-                        textWordTranscriptionTranslation.visibility = View.VISIBLE
-                    }
-                }
-                val dateFormat = "hh:mm dd.MM"
-                textWordSampleEng.text = word.sampleEng
-                textWordSampleRus.text = word.sampleRus
-                textWordSampleEng.visibility = if (word.sampleEng.isEmpty()) View.GONE else View.VISIBLE
-                textWordSampleRus.visibility = if (word.sampleRus.isEmpty()) View.GONE else View.VISIBLE
-                imageWordOwn.visibility = if (word.saveType == Word.DICTIONARY) View.GONE else View.VISIBLE
-                textWordTimestamp.text = SimpleDateFormat(dateFormat, Locale.getDefault()).format(word.timestamp) ?: ""
-                if (isSelectState) {
-                    checkBoxWordSelect.visibility = View.VISIBLE
-                    checkBoxWordSelect.isChecked = checkList.contains(word)
-                    checkBoxWordSelect.setOnCheckedChangeListener(checkedChangeListener)
-                } else {
-                    checkBoxWordSelect.visibility = View.GONE
-                    checkBoxWordSelect.isChecked = false
-                }
-                if (isHideLearnStage) {
-                    progressBarWordLearnStage.visibility = View.GONE
-                } else {
-                    progressBarWordLearnStage.visibility = View.VISIBLE
-                    when (word.learnStage) {
-                        0 -> progressBarWordLearnStage.progress = 4
-                        1 -> progressBarWordLearnStage.progress = 32
-                        2 -> progressBarWordLearnStage.progress = 68
-                        else -> progressBarWordLearnStage.progress = 100
-                    }
-                }
-            }
-        }
-    }
-
     private class WordDiffCallback : DiffUtil.ItemCallback<Word>() {
 
         override fun areItemsTheSame(oldItem: Word, newItem: Word): Boolean {
@@ -180,7 +101,53 @@ class AdapterWords(val viewModel: ViewModelDictionary) : ListAdapter<Word, Adapt
         override fun areContentsTheSame(oldItem: Word, newItem: Word): Boolean {
             return oldItem.eng == newItem.eng && oldItem.saveType == newItem.saveType && oldItem.rus == newItem.rus
                     && newItem.tags.containsAll(oldItem.tags) && oldItem.tags.containsAll(newItem.tags)
-                    && oldItem.learnStage == newItem.learnStage
+                    && oldItem.learnStage == newItem.learnStage && oldItem.type == newItem.type
+        }
+    }
+
+    abstract class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+        var isOpen = false
+
+        abstract fun getCardViewWord() : MaterialCardView
+        abstract fun getTextTimestamp() : TextView
+        abstract fun getTextTags() : TextView
+        abstract fun getImageOwnWord() : ImageView
+        abstract fun getCheckBoxSelect() : MaterialCheckBox
+        abstract fun getProgressLearn() : ProgressBar
+
+        @CallSuper
+        open fun bind(word: Word, isSelectState: Boolean, checkList: java.util.HashSet<Word>,
+                 clickListener: View.OnClickListener, longClickListener: View.OnLongClickListener,
+                 checkedChangeListener: CompoundButton.OnCheckedChangeListener) {
+            with(itemView) {
+                tag = word.eng
+                getCardViewWord().setOnClickListener(clickListener)
+                getCardViewWord().setOnLongClickListener(longClickListener)
+
+                getTextTimestamp().text = SimpleDateFormat("hh:mm dd.MM", Locale.getDefault()).format(word.timestamp) ?: ""
+                getTextTags().text = word.tags.toString()
+                getImageOwnWord().visibility = if (word.saveType == Word.DICTIONARY) View.GONE else View.VISIBLE
+
+                getCheckBoxSelect().visibility = if (isSelectState) View.VISIBLE else View.GONE
+                getCheckBoxSelect().setOnCheckedChangeListener(null)
+                if (isSelectState) {
+                    getCheckBoxSelect().isChecked = checkList.contains(word)
+                    getCheckBoxSelect().setOnCheckedChangeListener(checkedChangeListener)
+                } else {
+                    getCheckBoxSelect().isChecked = false
+                }
+
+                getProgressLearn().visibility = if (isHideLearnStage) View.GONE else View.VISIBLE
+                if (!isHideLearnStage) {
+                    getProgressLearn().progress = when (word.learnStage) {
+                        0 -> 4
+                        1 -> 32
+                        2 -> 68
+                        else -> 100
+                    }
+                }
+            }
         }
     }
 }

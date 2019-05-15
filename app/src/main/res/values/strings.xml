@@ -11,6 +11,7 @@
     <string name="already_know">Already know</string>
     <string name="another_operation">Another operation</string>
     <string name="answer">Answer</string>
+    <string name="answer_exercise">Answer: %s</string>
     <string name="app_info">App info</string>
     <string name="app_language">App language</string>
     <string name="answer_correct">Correct answer</string>
@@ -44,6 +45,7 @@
     <string name="error_test_notification">Error request test notification</string>
     <string name="error_text_time">Wrong time</string>
     <string name="error_update">Error update</string>
+    <string name="exercises">Exercises</string>
     <string name="expand_to_see_buttons">Expand to see buttons</string>
     <string name="feedback_is_empty">Feedback is empty</string>
     <string name="feedback_send_error">Feedback send error</string>
@@ -66,6 +68,7 @@
     <string name="next">Next</string>
     <string name="night_time">Night time (without notifications)</string>
     <string name="night_time_value">From %s to %s</string>
+    <string name="no_exercises">Notifications with exercises have not received yet. Please select exercise category and wait</string>
     <string name="no_thanks">No, thanks / already</string>
     <string name="no_training_category_words">There are no category words for training (probably it all the sentences or already learned words)</string>
     <string name="no_training_words">There are no words for training or it already learned or it is all the sentences</string>
@@ -199,6 +202,10 @@
     <string name="patch_notes_2_0_1">- Improved notifications view
         \n- Added handle category with type `Exercise`
         \n- Added option `Show only one last notification`</string>
+
+    <string name="patch_notes_2_0_2">- Added tab `Exercises` in dictionary
+        \n- Optimized Dictionary tab
+        \n- Added loader when authorize</string>
 
     <!-- =========================================================================================================== -->
     <string name="own">Own category (add words yourself in dictionary)</string>

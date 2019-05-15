@@ -1,25 +1,25 @@
-package relaxeddd.englishnotify.ui.dictionary_all
+package relaxeddd.englishnotify.ui.dictionary_exercises
 
 import android.view.MenuItem
 import androidx.lifecycle.Observer
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.InjectorUtils
 import relaxeddd.englishnotify.common.showToastLong
-import relaxeddd.englishnotify.databinding.FragmentDictionaryAllBinding
+import relaxeddd.englishnotify.databinding.FragmentDictionaryExercisesBinding
 import relaxeddd.englishnotify.model.repository.RepositoryWord
-import relaxeddd.englishnotify.ui.dictionary.AdapterDictionary
+import relaxeddd.englishnotify.ui.dictionary.AdapterExercises
 import relaxeddd.englishnotify.ui.dictionary.FragmentDictionary
 
-class FragmentDictionaryAll : FragmentDictionary<ViewModelDictionaryAll, FragmentDictionaryAllBinding, AdapterDictionary>() {
+class FragmentDictionaryExercises : FragmentDictionary<ViewModelDictionaryExercises, FragmentDictionaryExercisesBinding, AdapterExercises>() {
 
-    override fun getLayoutResId() = R.layout.fragment_dictionary_all
-    override fun getViewModelFactory() = InjectorUtils.provideDictionaryAllViewModelFactory(requireContext())
-    override fun getViewModelClass() = ViewModelDictionaryAll::class.java
+    override fun getLayoutResId() = R.layout.fragment_dictionary_exercises
+    override fun getViewModelFactory() = InjectorUtils.provideDictionaryExercisesViewModelFactory(requireContext())
+    override fun getViewModelClass() = ViewModelDictionaryExercises::class.java
     override fun getSearchMenuItemId() = R.id.item_menu_search_all
 
     override fun configureBinding() {
         super.configureBinding()
-        adapter = AdapterDictionary(viewModel)
+        adapter = AdapterExercises(viewModel)
         binding.viewModel = viewModel
         binding.recyclerViewDictionary.adapter = adapter
         binding.clickListenerCloseFilter = clickListenerCloseFilter
@@ -27,22 +27,19 @@ class FragmentDictionaryAll : FragmentDictionary<ViewModelDictionaryAll, Fragmen
             binding.hasWords = (words != null && words.isNotEmpty())
             if (words != null && words.isNotEmpty()) adapter.submitList(words)
         })
-        viewModel.user.observe(viewLifecycleOwner, Observer { user ->
-            adapter.languageType = user?.learnLanguageType ?: 0
-        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+        return when (item.itemId) {
             R.id.item_menu_training -> {
                 if (RepositoryWord.getInstance().isTrainingWordsExists()) {
                     navigate(R.id.action_fragmentDictionaryMain_to_fragmentTrainingSetting)
                 } else {
                     showToastLong(R.string.no_training_words)
                 }
-                return true
+                true
             }
-            else -> return super.onOptionsItemSelected(item)
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }

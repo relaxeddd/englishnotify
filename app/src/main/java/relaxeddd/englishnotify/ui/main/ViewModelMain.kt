@@ -10,50 +10,31 @@ import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.dialogs.DialogPatchNotes
 import relaxeddd.englishnotify.model.repository.RepositoryCommon
 import relaxeddd.englishnotify.model.repository.RepositoryWord
-import java.util.*
 
 class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase() {
 
     val user = repositoryUser.liveDataUser
     val isShowWarningNotifications = MutableLiveData<Boolean>(false)
-    val isShowWarningAuthorize = MutableLiveData<Boolean>(false)
+    val isShowGoogleAuth = MutableLiveData<Boolean>(false)
     val isShowWarningSubscription = MutableLiveData<Boolean>(false)
     val isShowLoading = MutableLiveData<Boolean>(false)
-    var authTimer: Timer? = null
+    val isShowHorizontalProgress = MutableLiveData<Boolean>(false)
     var isRateDialogShown = false
     var isFirstLoad = true
 
     private val userObserver = Observer<User?> { user ->
-        authTimer?.cancel()
+        isShowGoogleAuth.value = user == null || RepositoryCommon.getInstance().firebaseUser == null
+        isShowWarningNotifications.value = isShowGoogleAuth.value == false && (user == null || user.receiveNotifications == false)
+        isShowWarningSubscription.value = user != null && user.subscriptionTime <= System.currentTimeMillis()
 
-        if (isFirstLoad && SharedHelper.isPrivacyPolicyConfirmed() && (user == null || RepositoryCommon.getInstance().firebaseUser == null)) {
-            authTimer = Timer()
-            authTimer?.schedule(object: TimerTask() {
-                override fun run() {
-                    uiScope.launch {
-                        isShowWarningAuthorize.value = user == null || RepositoryCommon.getInstance().firebaseUser == null
-                        isShowWarningNotifications.value = isShowWarningAuthorize.value == false && (user == null || user.receiveNotifications == false)
-
-                        val launchCount = SharedHelper.getLaunchCount()
-                        if (user != null && !isRateDialogShown && !SharedHelper.isCancelledRateDialog() && launchCount % 3 == 0) {
-                            isRateDialogShown = true
-                            navigateEvent.value = Event(NAVIGATION_DIALOG_RATE_APP)
-                        }
-                    }
-                }
-            }, 5000)
-        } else {
-            isShowWarningAuthorize.value = user == null || RepositoryCommon.getInstance().firebaseUser == null
-            isShowWarningNotifications.value = isShowWarningAuthorize.value == false && (user == null || user.receiveNotifications == false)
-            isShowWarningSubscription.value = user != null && user.subscriptionTime <= System.currentTimeMillis()
-
-            val launchCount = SharedHelper.getLaunchCount()
-            if (user != null && !isRateDialogShown && !SharedHelper.isCancelledRateDialog() && launchCount % 3 == 0) {
-                isRateDialogShown = true
-                navigateEvent.value = Event(NAVIGATION_DIALOG_RATE_APP)
-            }
-            if (user != null) {
-                navigateEvent.value = Event(NAVIGATION_INIT_BILLING)
+        val launchCount = SharedHelper.getLaunchCount()
+        if (user != null && !isRateDialogShown && !SharedHelper.isCancelledRateDialog() && launchCount % 3 == 0) {
+            isRateDialogShown = true
+            navigateEvent.value = Event(NAVIGATION_DIALOG_RATE_APP)
+        }
+        if (user != null) {
+            navigateEvent.value = Event(NAVIGATION_INIT_BILLING)
+            if (isFirstLoad) {
                 updateOwnWords()
                 isFirstLoad = false
             }
@@ -122,10 +103,18 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
     fun requestInitUser() {
         if (repositoryUser.isAuthorized()) {
             isShowWarningNotifications.value = false
-            isShowWarningAuthorize.value = false
+            isShowGoogleAuth.value = false
             isShowWarningSubscription.value = false
+            isShowHorizontalProgress.value = true
             ioScope.launch {
-                repositoryUser.initUser()
+                repositoryUser.initUser(object: ListenerResult<Boolean> {
+                    override fun onResult(result: Boolean) {
+                        if (!result) {
+                            userObserver.onChanged(null)
+                        }
+                        isShowHorizontalProgress.value = false
+                    }
+                })
             }
         }
     }
