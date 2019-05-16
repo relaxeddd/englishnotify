@@ -19,8 +19,9 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
     val isShowWarningSubscription = MutableLiveData<Boolean>(false)
     val isShowLoading = MutableLiveData<Boolean>(false)
     val isShowHorizontalProgress = MutableLiveData<Boolean>(false)
-    var isRateDialogShown = false
-    var isFirstLoad = true
+    val isVisibleSecondaryBottomNavigationView = MutableLiveData<Boolean>(true)
+    private var isRateDialogShown = false
+    private var isFirstLoad = true
 
     private val userObserver = Observer<User?> { user ->
         isShowGoogleAuth.value = user == null || RepositoryCommon.getInstance().firebaseUser == null

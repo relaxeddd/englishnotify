@@ -10,6 +10,7 @@ import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.BaseFragment
 import relaxeddd.englishnotify.common.InjectorUtils
 import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK
+import relaxeddd.englishnotify.common.hideKeyboard
 import relaxeddd.englishnotify.databinding.FragmentWordBinding
 
 class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
@@ -28,6 +29,8 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.item_menu_accept -> {
+                hideKeyboard(text_input_word)
+
                 val eng = text_input_word.text.toString()
                 val rus = text_input_translation.text.toString()
                 val transcription = text_input_transcription.text.toString()

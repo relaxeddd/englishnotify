@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@id/fragmentDictionaryAll"
+          android:title="@string/all_words"
+          app:showAsAction="ifRoom"
+          android:icon="@drawable/ic_dictionary_all"/>
+
+    <item android:id="@id/fragmentDictionaryOwn"
+          android:title="@string/own_category"
+          app:showAsAction="ifRoom"
+          android:icon="@drawable/ic_dictionary_own"/>
+
+    <item android:id="@id/fragmentDictionaryExercises"
+          android:title="@string/exercises"
+          app:showAsAction="ifRoom"
+          android:icon="@drawable/ic_exercises"/>
+
+    <item android:id="@id/fragmentDictionaryKnow"
+          android:title="@string/already_know"
+          app:showAsAction="ifRoom"
+          android:icon="@drawable/ic_know"/>
+
+</menu>

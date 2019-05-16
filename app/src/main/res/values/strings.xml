@@ -73,6 +73,7 @@
     <string name="no_training_category_words">There are no category words for training (probably it all the sentences or already learned words)</string>
     <string name="no_training_words">There are no words for training or it already learned or it is all the sentences</string>
     <string name="no_words">Notifications with new words have not received yet. Please, authorize and wait… (With default settings wait 1 hour)</string>
+    <string name="no_words_know">You have not learned words in dictionary</string>
     <string name="no_words_own">You have not added words to your category yet</string>
     <string name="no_test_notifications">There are no test notifications</string>
     <string name="not_show_notifications">Don`t show notifications beginning with (24-hour clock, the number from 0 to 23)</string>
@@ -144,6 +145,10 @@
     <string name="label_fragment_categories" translatable="false">LabelFragmentCategories</string>
     <string name="label_fragment_training_setting" translatable="false">LabelFragmentTrainingSetting</string>
     <string name="label_fragment_training" translatable="false">LabelFragmentTraining</string>
+    <string name="label_fragment_dictionary_all" translatable="false">LabelFragmentDictionaryAll</string>
+    <string name="label_fragment_dictionary_own" translatable="false">LabelFragmentDictionaryOwn</string>
+    <string name="label_fragment_dictionary_exercises" translatable="false">LabelFragmentDictionaryExercises</string>
+    <string name="label_fragment_dictionary_know" translatable="false">LabelFragmentDictionaryKnow</string>
 
     <string name="service_notifications_count_listener" translatable="false">NotificationsListenerService</string>
 
@@ -206,6 +211,9 @@
     <string name="patch_notes_2_0_2">- Added tab `Exercises` in dictionary
         \n- Optimized Dictionary tab
         \n- Added loader when authorize</string>
+
+    <string name="patch_notes_2_0_3">- Changed navigation in Dictionary section
+        \n- Added `Already know` tab in Dictionary section</string>
 
     <!-- =========================================================================================================== -->
     <string name="own">Own category (add words yourself in dictionary)</string>

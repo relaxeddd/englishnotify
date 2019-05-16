@@ -27,8 +27,9 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
         const val REQUEST_PLAY_SERVICES_RESULT = 7245
     }
 
-    private var selectedBottomMenuId: Int = R.id.fragmentDictionaryMain
-    lateinit var navController: NavController
+    private var selectedBottomMenuId: Int = R.id.fragmentDictionaryAll
+    private var selectedSecondaryBottomMenuId: Int = R.id.fragmentDictionaryAll
+    private lateinit var navController: NavController
     private val providers: List<AuthUI.IdpConfig> = Arrays.asList(AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build())
     private var dialogNewVersion: DialogNewVersion? = null
     var isBillingInited = false
@@ -66,12 +67,22 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
         navController = Navigation.findNavController(this, R.id.fragment_navigation_host)
 
         navigation_view_main.setOnNavigationItemSelectedListener {
+            viewModel.isVisibleSecondaryBottomNavigationView.value = isDictionaryTab(it.itemId)
+
             if (it.itemId == selectedBottomMenuId) {
                 return@setOnNavigationItemSelectedListener true
             }
 
             when (it.itemId) {
-                R.id.fragmentDictionaryMain -> navController.navigate(R.id.action_global_fragmentDictionaryMain)
+                R.id.fragmentDictionaryAll -> {
+                    when (selectedSecondaryBottomMenuId) {
+                        R.id.fragmentDictionaryAll -> navController.navigate(R.id.action_global_fragmentDictionaryAll)
+                        R.id.fragmentDictionaryOwn -> navController.navigate(R.id.action_global_fragmentDictionaryOwn)
+                        R.id.fragmentDictionaryExercises -> navController.navigate(R.id.action_global_fragmentDictionaryExercises)
+                        R.id.fragmentDictionaryKnow -> navController.navigate(R.id.action_global_fragmentDictionaryKnow)
+                        else -> return@setOnNavigationItemSelectedListener false
+                    }
+                }
                 R.id.fragmentNotifications -> navController.navigate(R.id.action_global_fragmentNotifications)
                 R.id.fragmentSettings -> navController.navigate(R.id.action_global_fragmentSettings)
                 else -> return@setOnNavigationItemSelectedListener false
@@ -80,6 +91,25 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
 
             return@setOnNavigationItemSelectedListener true
         }
+        navigation_view_main_secondary.setOnNavigationItemSelectedListener {
+            viewModel.isVisibleSecondaryBottomNavigationView.value = isDictionaryTab(it.itemId)
+
+            if (it.itemId == selectedSecondaryBottomMenuId) {
+                return@setOnNavigationItemSelectedListener true
+            }
+
+            when (it.itemId) {
+                R.id.fragmentDictionaryAll -> navController.navigate(R.id.action_global_fragmentDictionaryAll)
+                R.id.fragmentDictionaryOwn -> navController.navigate(R.id.action_global_fragmentDictionaryOwn)
+                R.id.fragmentDictionaryExercises -> navController.navigate(R.id.action_global_fragmentDictionaryExercises)
+                R.id.fragmentDictionaryKnow -> navController.navigate(R.id.action_global_fragmentDictionaryKnow)
+                else -> return@setOnNavigationItemSelectedListener false
+            }
+            selectedSecondaryBottomMenuId = it.itemId
+
+            return@setOnNavigationItemSelectedListener true
+        }
+
         viewModel.onViewCreate()
     }
 
@@ -187,4 +217,8 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
             GoogleApiAvailability.getInstance().makeGooglePlayServicesAvailable(this)
         }
     }
+
+    private fun isDictionaryTab(tabResId: Int) = tabResId == R.id.fragmentDictionaryAll
+            || tabResId == R.id.fragmentDictionaryOwn || tabResId == R.id.fragmentDictionaryExercises
+            || tabResId == R.id.fragmentDictionaryKnow
 }

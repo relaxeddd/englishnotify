@@ -30,6 +30,12 @@ object InjectorUtils {
         return DictionaryExercisesViewModelFactory(repositoryWord, repositoryUser)
     }
 
+    fun provideDictionaryKnowViewModelFactory(context: Context): DictionaryKnowViewModelFactory {
+        val repositoryWord = RepositoryFactory.getWordRepository(context)
+        val repositoryUser = RepositoryFactory.getUserRepository()
+        return DictionaryKnowViewModelFactory(repositoryWord, repositoryUser)
+    }
+
     fun provideNotificationsViewModelFactory(): NotificationsViewModelFactory {
         val repository = RepositoryFactory.getUserRepository()
         return NotificationsViewModelFactory(repository)

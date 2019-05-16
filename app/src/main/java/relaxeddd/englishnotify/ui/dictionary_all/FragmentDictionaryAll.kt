@@ -13,6 +13,7 @@ import relaxeddd.englishnotify.ui.dictionary.FragmentDictionary
 class FragmentDictionaryAll : FragmentDictionary<ViewModelDictionaryAll, FragmentDictionaryAllBinding, AdapterDictionary>() {
 
     override fun getLayoutResId() = R.layout.fragment_dictionary_all
+    override fun getToolbarTitleResId() = R.string.all_words
     override fun getViewModelFactory() = InjectorUtils.provideDictionaryAllViewModelFactory(requireContext())
     override fun getViewModelClass() = ViewModelDictionaryAll::class.java
     override fun getSearchMenuItemId() = R.id.item_menu_search_all
@@ -36,7 +37,7 @@ class FragmentDictionaryAll : FragmentDictionary<ViewModelDictionaryAll, Fragmen
         when (item.itemId) {
             R.id.item_menu_training -> {
                 if (RepositoryWord.getInstance().isTrainingWordsExists()) {
-                    navigate(R.id.action_fragmentDictionaryMain_to_fragmentTrainingSetting)
+                    navigate(R.id.action_fragmentDictionaryAll_to_fragmentTrainingSetting)
                 } else {
                     showToastLong(R.string.no_training_words)
                 }
