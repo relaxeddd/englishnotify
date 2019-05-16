@@ -4,27 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_graph"
-    app:startDestination="@id/fragmentDictionaryMain">
-
-    <fragment
-        android:id="@+id/fragmentDictionaryMain"
-        android:name="relaxeddd.englishnotify.ui.dictionary_main.FragmentDictionaryMain"
-        android:label="@string/label_fragment_dictionary_main"
-        tools:layout="@layout/fragment_dictionary_main">
-
-        <action
-            android:id="@+id/action_fragmentDictionaryMain_to_fragmentWord"
-            app:destination="@id/fragmentWord"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_enter_anim"
-            app:popExitAnim="@anim/nav_default_exit_anim"/>
-
-        <action
-            android:id="@+id/action_fragmentDictionaryMain_to_fragmentTrainingSetting"
-            app:destination="@id/fragmentTrainingSetting"/>
-
-    </fragment>
+    app:startDestination="@id/fragmentDictionaryAll">
 
     <fragment
         android:id="@+id/fragmentNotifications"
@@ -72,6 +52,60 @@
     </fragment>
 
     <fragment
+        android:id="@+id/fragmentDictionaryAll"
+        android:name="relaxeddd.englishnotify.ui.dictionary_all.FragmentDictionaryAll"
+        android:label="@string/label_fragment_dictionary_all"
+        tools:layout="@layout/fragment_dictionary_all">
+
+        <action
+            android:id="@+id/action_fragmentDictionaryAll_to_fragmentTrainingSetting"
+            app:destination="@id/fragmentTrainingSetting"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_enter_anim"
+            app:popExitAnim="@anim/nav_default_exit_anim"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentDictionaryOwn"
+        android:name="relaxeddd.englishnotify.ui.dictionary_own.FragmentDictionaryOwn"
+        android:label="@string/label_fragment_dictionary_own"
+        tools:layout="@layout/fragment_dictionary_own">
+
+        <action
+            android:id="@+id/action_fragmentDictionaryOwn_to_fragmentWord"
+            app:destination="@id/fragmentWord"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_enter_anim"
+            app:popExitAnim="@anim/nav_default_exit_anim"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentDictionaryExercises"
+        android:name="relaxeddd.englishnotify.ui.dictionary_exercises.FragmentDictionaryExercises"
+        android:label="@string/label_fragment_dictionary_exercises"
+        tools:layout="@layout/fragment_dictionary_exercises">
+
+        <action
+            android:id="@+id/action_fragmentDictionaryExercises_to_fragmentTrainingSetting"
+            app:destination="@id/fragmentTrainingSetting"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_enter_anim"
+            app:popExitAnim="@anim/nav_default_exit_anim"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentDictionaryKnow"
+        android:name="relaxeddd.englishnotify.ui.dictionary_know.FragmentDictionaryKnow"
+        android:label="@string/label_fragment_dictionary_know"
+        tools:layout="@layout/fragment_dictionary_know"/>
+
+    <fragment
         android:id="@+id/fragmentTraining"
         android:name="relaxeddd.englishnotify.ui.training.FragmentTraining"
         android:label="@string/label_fragment_training"
@@ -83,8 +117,32 @@
     </fragment>
 
     <action
-        android:id="@+id/action_global_fragmentDictionaryMain"
-        app:destination="@id/fragmentDictionaryMain"
+        android:id="@+id/action_global_fragmentDictionaryAll"
+        app:destination="@id/fragmentDictionaryAll"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_enter_anim"
+        app:popExitAnim="@anim/nav_default_exit_anim"/>
+
+    <action
+        android:id="@+id/action_global_fragmentDictionaryOwn"
+        app:destination="@id/fragmentDictionaryOwn"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_enter_anim"
+        app:popExitAnim="@anim/nav_default_exit_anim"/>
+
+    <action
+        android:id="@+id/action_global_fragmentDictionaryExercises"
+        app:destination="@id/fragmentDictionaryExercises"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_enter_anim"
+        app:popExitAnim="@anim/nav_default_exit_anim"/>
+
+    <action
+        android:id="@+id/action_global_fragmentDictionaryKnow"
+        app:destination="@id/fragmentDictionaryKnow"
         app:enterAnim="@anim/nav_default_enter_anim"
         app:exitAnim="@anim/nav_default_exit_anim"
         app:popEnterAnim="@anim/nav_default_enter_anim"

@@ -14,6 +14,7 @@ import relaxeddd.englishnotify.ui.dictionary.FragmentDictionary
 class FragmentDictionaryOwn : FragmentDictionary<ViewModelDictionaryOwn, FragmentDictionaryOwnBinding, AdapterDictionary>() {
 
     override fun getLayoutResId() = R.layout.fragment_dictionary_own
+    override fun getToolbarTitleResId() = R.string.own_category
     override fun getViewModelFactory() = InjectorUtils.provideDictionaryOwnViewModelFactory(requireContext())
     override fun getViewModelClass() = ViewModelDictionaryOwn::class.java
     override fun getMenuResId() = R.menu.menu_fragment_dictionary_own
@@ -25,7 +26,7 @@ class FragmentDictionaryOwn : FragmentDictionary<ViewModelDictionaryOwn, Fragmen
         binding.viewModel = viewModel
         binding.recyclerViewDictionary.adapter = adapter
         binding.clickListenerCloseFilter = clickListenerCloseFilter
-        binding.clickListenerAddOwnWord = Navigation.createNavigateOnClickListener(R.id.action_fragmentDictionaryMain_to_fragmentWord)
+        binding.clickListenerAddOwnWord = Navigation.createNavigateOnClickListener(R.id.action_fragmentDictionaryOwn_to_fragmentWord)
         viewModel.wordsFiltered.observe(viewLifecycleOwner, Observer { words ->
             binding.hasWords = (words != null && words.isNotEmpty())
             if (words != null && words.isNotEmpty()) adapter.submitList(words)

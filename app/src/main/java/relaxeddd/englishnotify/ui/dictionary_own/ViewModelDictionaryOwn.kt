@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import relaxeddd.englishnotify.common.LEARN_STAGE_MAX
 import relaxeddd.englishnotify.common.Word
 import relaxeddd.englishnotify.model.repository.RepositoryUser
 import relaxeddd.englishnotify.model.repository.RepositoryWord
@@ -14,7 +15,7 @@ class ViewModelDictionaryOwn(repositoryWord: RepositoryWord, repositoryUser: Rep
     val isVisibleLoadingView = MutableLiveData<Boolean>(false)
 
     override fun filterWords(items: HashSet<Word>) : HashSet<Word> {
-        return items.filter { it.saveType != Word.DICTIONARY }.toHashSet()
+        return items.filter { it.saveType != Word.DICTIONARY && it.learnStage != LEARN_STAGE_MAX }.toHashSet()
     }
 
     fun requestOwnWords() {

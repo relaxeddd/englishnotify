@@ -1,15 +1,14 @@
-package relaxeddd.englishnotify.ui.dictionary_all
+package relaxeddd.englishnotify.ui.dictionary_know
 
-import relaxeddd.englishnotify.common.EXERCISE
 import relaxeddd.englishnotify.common.LEARN_STAGE_MAX
 import relaxeddd.englishnotify.common.Word
 import relaxeddd.englishnotify.model.repository.RepositoryUser
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 import relaxeddd.englishnotify.ui.dictionary.ViewModelDictionary
 
-class ViewModelDictionaryAll(repositoryWord: RepositoryWord, repositoryUser: RepositoryUser) : ViewModelDictionary(repositoryWord, repositoryUser) {
+class ViewModelDictionaryKnow(repositoryWord: RepositoryWord, repositoryUser: RepositoryUser) : ViewModelDictionary(repositoryWord, repositoryUser) {
 
     override fun filterWords(items: HashSet<Word>) : HashSet<Word> {
-        return items.filter { it.type != EXERCISE && it.learnStage != LEARN_STAGE_MAX }.toHashSet()
+        return items.filter { it.learnStage == LEARN_STAGE_MAX }.toHashSet()
     }
 }

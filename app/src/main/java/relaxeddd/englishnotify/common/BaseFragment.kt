@@ -107,9 +107,6 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
                     activity?.onBackPressed()
                 }
             }
-            NAVIGATION_GLOBAL_DICTIONARY -> {
-                navigate(R.id.action_global_fragmentDictionaryMain)
-            }
             NAVIGATION_ACTIVITY_BACK_TWICE -> {
                 try {
                     val navController = Navigation.findNavController(activity ?: return, R.id.fragment_navigation_host)
