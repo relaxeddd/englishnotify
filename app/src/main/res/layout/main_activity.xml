@@ -70,7 +70,7 @@
             app:layout_constraintStart_toStartOf="parent"
             android:onClick="@{viewModel.clickListenerWarningSubscription}"
             android:visibility="@{safeUnbox(viewModel.isShowWarningSubscription) ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toTopOf="@+id/button_sign_in_main_google">
+            app:layout_constraintBottom_toTopOf="@+id/container_main_sign_in">
 
             <TextView
                 android:id="@+id/text_main_warning_subscription"
@@ -100,20 +100,40 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/button_sign_in_main_google"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/container_main_sign_in"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:buttonSize="wide"
+            android:visibility="@{safeUnbox(viewModel.isShowGoogleAuth) ? View.VISIBLE : View.GONE}"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/barrier3"
+            android:gravity="center_horizontal"
             app:layout_constraintStart_toStartOf="parent"
-            android:visibility="@{safeUnbox(viewModel.isShowGoogleAuth) ? View.VISIBLE : View.GONE}"
-            android:onClick="@{viewModel.clickListenerGoogleAuth}"
-            android:layout_marginStart="@dimen/size_8"
-            android:layout_marginEnd="@dimen/size_8"
-            android:layout_marginTop="@dimen/size_8"
-            android:layout_marginBottom="@dimen/size_4"/>
+            android:layout_margin="@dimen/size_4">
+
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/button_sign_in_main_google"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:buttonSize="wide"
+                android:onClick="@{viewModel.clickListenerGoogleAuth}"
+                android:layout_marginStart="@dimen/size_4"
+                android:layout_marginEnd="@dimen/size_4"
+                android:layout_marginTop="@dimen/size_4"
+                android:layout_marginBottom="@dimen/size_4"/>
+
+            <TextView
+                android:id="@+id/text_main_privacy_policy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:background="@color/white"
+                android:text="@string/privacy_policy_text"
+                android:textSize="@dimen/font_12"/>
+
+        </LinearLayout>
 
         <ProgressBar
             android:id="@+id/progress_bar_main_linear"

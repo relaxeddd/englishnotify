@@ -16,15 +16,13 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding,
     protected lateinit var adapter: A
     private var animBlock: AnimBlock = AnimBlock(false)
 
-    private val listenerCheckTags: ListenerResult<List<String>> = object:
-        ListenerResult<List<String>> {
+    private val listenerCheckTags: ListenerResult<List<String>> = object: ListenerResult<List<String>> {
         override fun onResult(result: List<String>) {
             viewModel.setFilterTags(result)
         }
     }
 
-    private val listenerSortBy: ListenerResult<Int> = object:
-        ListenerResult<Int> {
+    private val listenerSortBy: ListenerResult<Int> = object: ListenerResult<Int> {
         override fun onResult(result: Int) {
             viewModel.onDialogSortByType(result)
         }

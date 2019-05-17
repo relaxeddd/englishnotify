@@ -215,6 +215,8 @@
     <string name="patch_notes_2_0_3">- Changed navigation in Dictionary section
         \n- Added `Already know` tab in Dictionary section</string>
 
+    <string name="patch_notes_2_1_0">- Fixed bug with screen navigation</string>
+
     <!-- =========================================================================================================== -->
     <string name="own">Own category (add words yourself in dictionary)</string>
     <string name="irregular">Irregular verbs</string>
@@ -273,7 +275,7 @@
     <string name="frequent_verbs_5">Frequent verbs (level 2)</string>
     <string name="exercises_verbs_first">Exercises with verb form (1)</string>
 
-    <string name="privacy_policy_text">Starting work in the application, you agree to our Privacy Policy</string>
+    <string name="privacy_policy_text">Clicked authorize, you agree to our Privacy Policy</string>
 
     <!--
         This is the name that users will see when interacting with this channel.

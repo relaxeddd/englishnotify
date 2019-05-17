@@ -119,6 +119,8 @@
     <action
         android:id="@+id/action_global_fragmentDictionaryAll"
         app:destination="@id/fragmentDictionaryAll"
+        app:popUpTo="@+id/fragmentDictionaryAll"
+        app:popUpToInclusive="true"
         app:enterAnim="@anim/nav_default_enter_anim"
         app:exitAnim="@anim/nav_default_exit_anim"
         app:popEnterAnim="@anim/nav_default_enter_anim"
@@ -127,6 +129,8 @@
     <action
         android:id="@+id/action_global_fragmentDictionaryOwn"
         app:destination="@id/fragmentDictionaryOwn"
+        app:popUpTo="@+id/fragmentDictionaryOwn"
+        app:popUpToInclusive="true"
         app:enterAnim="@anim/nav_default_enter_anim"
         app:exitAnim="@anim/nav_default_exit_anim"
         app:popEnterAnim="@anim/nav_default_enter_anim"
@@ -135,6 +139,8 @@
     <action
         android:id="@+id/action_global_fragmentDictionaryExercises"
         app:destination="@id/fragmentDictionaryExercises"
+        app:popUpTo="@+id/fragmentDictionaryExercises"
+        app:popUpToInclusive="true"
         app:enterAnim="@anim/nav_default_enter_anim"
         app:exitAnim="@anim/nav_default_exit_anim"
         app:popEnterAnim="@anim/nav_default_enter_anim"
@@ -143,6 +149,8 @@
     <action
         android:id="@+id/action_global_fragmentDictionaryKnow"
         app:destination="@id/fragmentDictionaryKnow"
+        app:popUpTo="@+id/fragmentDictionaryKnow"
+        app:popUpToInclusive="true"
         app:enterAnim="@anim/nav_default_enter_anim"
         app:exitAnim="@anim/nav_default_exit_anim"
         app:popEnterAnim="@anim/nav_default_enter_anim"
@@ -151,6 +159,8 @@
     <action
         android:id="@+id/action_global_fragmentNotifications"
         app:destination="@id/fragmentNotifications"
+        app:popUpTo="@+id/fragmentNotifications"
+        app:popUpToInclusive="true"
         app:enterAnim="@anim/nav_default_enter_anim"
         app:exitAnim="@anim/nav_default_exit_anim"
         app:popEnterAnim="@anim/nav_default_enter_anim"
@@ -159,6 +169,8 @@
     <action
         android:id="@+id/action_global_fragmentSettings"
         app:destination="@id/fragmentSettings"
+        app:popUpTo="@+id/fragmentSettings"
+        app:popUpToInclusive="true"
         app:enterAnim="@anim/nav_default_enter_anim"
         app:exitAnim="@anim/nav_default_exit_anim"
         app:popEnterAnim="@anim/nav_default_enter_anim"
