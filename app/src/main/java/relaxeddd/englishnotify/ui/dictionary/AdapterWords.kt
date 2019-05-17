@@ -99,9 +99,10 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
         }
 
         override fun areContentsTheSame(oldItem: Word, newItem: Word): Boolean {
-            return oldItem.eng == newItem.eng && oldItem.saveType == newItem.saveType && oldItem.rus == newItem.rus
+            return oldItem.learnStage == newItem.learnStage && oldItem.saveType == newItem.saveType
+                    && oldItem.rus == newItem.rus && oldItem.type == newItem.type
                     && newItem.tags.containsAll(oldItem.tags) && oldItem.tags.containsAll(newItem.tags)
-                    && oldItem.learnStage == newItem.learnStage && oldItem.type == newItem.type
+
         }
     }
 

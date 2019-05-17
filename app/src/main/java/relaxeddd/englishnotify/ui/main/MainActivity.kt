@@ -2,10 +2,16 @@ package relaxeddd.englishnotify.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.text.style.UnderlineSpan
+import android.view.View
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.dialogs.DialogPrivacyPolicy
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.common.ConnectionResult
@@ -34,18 +40,11 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
     private var dialogNewVersion: DialogNewVersion? = null
     var isBillingInited = false
 
-    private val listenerPrivacyPolicy: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
-        override fun onResult(result: Boolean) {
-            viewModel.onPrivacyPolicyConfirmedResult(result)
-        }
-    }
-
     private val listenerNewVersion: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
         override fun onResult(result: Boolean) {
             if (result) {
                 openWebApplication(this@MainActivity)
             }
-            finish()
         }
     }
 
@@ -65,10 +64,26 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
         initGooglePlayServices()
 
         navController = Navigation.findNavController(this, R.id.fragment_navigation_host)
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            val isDictionaryTab = isDictionaryTab(destination.id)
+            viewModel.isVisibleSecondaryBottomNavigationView.value = isDictionaryTab
+
+            if (isDictionaryTab) {
+                if (destination.id != selectedSecondaryBottomMenuId) {
+                    selectedSecondaryBottomMenuId = destination.id
+                    navigation_view_main_secondary.selectedItemId = destination.id
+                }
+                if (selectedBottomMenuId != R.id.fragmentDictionaryAll) {
+                    selectedBottomMenuId = R.id.fragmentDictionaryAll
+                    navigation_view_main.selectedItemId = R.id.fragmentDictionaryAll
+                }
+            } else if (destination.id != selectedBottomMenuId) {
+                selectedBottomMenuId = destination.id
+                navigation_view_main.selectedItemId = destination.id
+            }
+        }
 
         navigation_view_main.setOnNavigationItemSelectedListener {
-            viewModel.isVisibleSecondaryBottomNavigationView.value = isDictionaryTab(it.itemId)
-
             if (it.itemId == selectedBottomMenuId) {
                 return@setOnNavigationItemSelectedListener true
             }
@@ -92,8 +107,6 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
             return@setOnNavigationItemSelectedListener true
         }
         navigation_view_main_secondary.setOnNavigationItemSelectedListener {
-            viewModel.isVisibleSecondaryBottomNavigationView.value = isDictionaryTab(it.itemId)
-
             if (it.itemId == selectedSecondaryBottomMenuId) {
                 return@setOnNavigationItemSelectedListener true
             }
@@ -109,6 +122,7 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
 
             return@setOnNavigationItemSelectedListener true
         }
+        initPrivacyPolicyText()
 
         viewModel.onViewCreate()
     }
@@ -150,11 +164,6 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
                 if (navController.currentDestination?.label != getString(R.string.label_fragment_settings)) {
                     navController.navigate(R.id.fragmentSettings)
                 }
-            }
-            NAVIGATION_DIALOG_PRIVACY_POLICY -> {
-                val dialog = DialogPrivacyPolicy()
-                dialog.setConfirmListener(listenerPrivacyPolicy)
-                dialog.show(this@MainActivity.supportFragmentManager, "Privacy Policy Dialog")
             }
             NAVIGATION_DIALOG_RATE_APP -> {
                 if (isMyResumed) {
@@ -221,4 +230,32 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
     private fun isDictionaryTab(tabResId: Int) = tabResId == R.id.fragmentDictionaryAll
             || tabResId == R.id.fragmentDictionaryOwn || tabResId == R.id.fragmentDictionaryExercises
             || tabResId == R.id.fragmentDictionaryKnow
+
+    private fun initPrivacyPolicyText() {
+        if (SharedHelper.isPrivacyPolicyConfirmed(this)) {
+            text_main_privacy_policy.visibility = View.GONE
+            return
+        }
+
+        val privacyPolicy = text_main_privacy_policy.text.toString()
+        val spannablePrivacyPolicy = SpannableString(privacyPolicy)
+        val clickablePrivacyPolicy = object : ClickableSpan() {
+            override fun onClick(textView: View) {
+                openWebPrivacyPolicy(this@MainActivity)
+            }
+        }
+
+        setClickableSubstring(privacyPolicy, spannablePrivacyPolicy, getString(R.string.privacy_policy_in_sentence), clickablePrivacyPolicy)
+
+        text_main_privacy_policy.text = spannablePrivacyPolicy
+        text_main_privacy_policy.movementMethod = LinkMovementMethod.getInstance()
+    }
+
+    private fun setClickableSubstring(string: String, spannableString: SpannableString, substring: String, clickableSpan: ClickableSpan) {
+        val firstIndex = string.indexOf(substring)
+        val lastIndex = firstIndex + substring.length
+
+        spannableString.setSpan(clickableSpan, firstIndex, lastIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannableString.setSpan(UnderlineSpan(), firstIndex, lastIndex, 0)
+    }
 }

@@ -199,6 +199,9 @@
     <string name="patch_notes_2_0_3">- Изменена навигация внутри раздела Словарь
         \n- Добавлена вкладка `Уже знаю` словаре</string>
 
+    <string name="patch_notes_2_1_0">- Исправлен баг при навигации между экранами
+        \n- Диалоговое окно с уведомлением о новой версии теперь можно закрыть, теперь необязательно обновлять приложение</string>
+
     <!-- =========================================================================================================== -->
     <string name="own">Своя категория (добавлять слова самому в словаре)</string>
     <string name="irregular">Неправильные глаголы</string>
@@ -257,7 +260,7 @@
     <string name="frequent_verbs_5">Частые глаголы (уровень 2)</string>
     <string name="exercises_verbs_first">Упражнения на форму глагола (1)</string>
 
-    <string name="privacy_policy_text">Начиная работу с приложением, вы соглашаетесь с нашей Политикой конфиденциальности</string>
+    <string name="privacy_policy_text">Авторизируясь, вы соглашаетесь с нашей Политикой конфиденциальности</string>
     <!--
         This is the name that users will see when interacting with this channel.
         It should describe the category of notifications that will be sent through this channel

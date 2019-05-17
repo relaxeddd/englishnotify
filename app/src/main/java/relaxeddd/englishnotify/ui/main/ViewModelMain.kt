@@ -34,6 +34,9 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
             navigateEvent.value = Event(NAVIGATION_DIALOG_RATE_APP)
         }
         if (user != null) {
+            if (user.email.isNotEmpty()) {
+                SharedHelper.setPrivacyPolicyConfirmed(true)
+            }
             navigateEvent.value = Event(NAVIGATION_INIT_BILLING)
             if (isFirstLoad) {
                 updateOwnWords()
@@ -73,33 +76,15 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
     }
 
     fun onViewCreate() {
-        val isConfirmed = SharedHelper.isPrivacyPolicyConfirmed()
+        requestInitUser()
 
-        if (isConfirmed) {
-            requestInitUser()
-        }
         if (!SharedHelper.isPatchNotesViewed(DialogPatchNotes.VERSION)) {
             navigateEvent.value = Event(NAVIGATION_DIALOG_PATCH_NOTES)
             SharedHelper.setPatchNotesViewed(DialogPatchNotes.VERSION)
         }
     }
 
-    fun onViewResume() {
-        val isConfirmed = SharedHelper.isPrivacyPolicyConfirmed()
-
-        if (!isConfirmed) {
-            navigateEvent.value = Event(NAVIGATION_DIALOG_PRIVACY_POLICY)
-        }
-    }
-
-    fun onPrivacyPolicyConfirmedResult(isConfirmed: Boolean) {
-        if (isConfirmed) {
-            SharedHelper.setPrivacyPolicyConfirmed(true)
-            requestInitUser()
-        } else {
-            navigateEvent.value = Event(NAVIGATION_EXIT)
-        }
-    }
+    fun onViewResume() {}
 
     fun requestInitUser() {
         if (repositoryUser.isAuthorized()) {
