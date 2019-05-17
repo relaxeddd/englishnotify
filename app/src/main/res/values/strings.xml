@@ -215,7 +215,8 @@
     <string name="patch_notes_2_0_3">- Changed navigation in Dictionary section
         \n- Added `Already know` tab in Dictionary section</string>
 
-    <string name="patch_notes_2_1_0">- Fixed bug with screen navigation</string>
+    <string name="patch_notes_2_1_0">- Fixed bug with screen navigation
+        \n- New version available dialog set cancellable</string>
 
     <!-- =========================================================================================================== -->
     <string name="own">Own category (add words yourself in dictionary)</string>

@@ -9,7 +9,6 @@ import android.text.style.ClickableSpan
 import android.text.style.UnderlineSpan
 import android.view.View
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import relaxeddd.englishnotify.R
@@ -46,7 +45,6 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
             if (result) {
                 openWebApplication(this@MainActivity)
             }
-            finish()
         }
     }
 
@@ -89,8 +87,6 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
             if (it.itemId == selectedBottomMenuId) {
                 return@setOnNavigationItemSelectedListener true
             }
-
-            val options = NavOptions.Builder().setLaunchSingleTop(true).build()
 
             when (it.itemId) {
                 R.id.fragmentDictionaryAll -> {
