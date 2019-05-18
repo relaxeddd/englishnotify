@@ -33,8 +33,7 @@
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
                 android:visibility="@{hasWords ? View.VISIBLE : View.GONE}"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/view_item_word"/>
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
             <TextView
                 android:id="@+id/text_dictionary_no_words"
