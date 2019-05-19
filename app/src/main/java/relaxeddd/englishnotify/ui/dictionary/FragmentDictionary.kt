@@ -1,13 +1,17 @@
 package relaxeddd.englishnotify.ui.dictionary
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Handler
 import android.view.MenuItem
 import android.view.View
 import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.dialogs.DialogCheckTags
 import relaxeddd.englishnotify.dialogs.DialogSortBy
-import kotlinx.android.synthetic.main.fragment_dictionary_all.*
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.dialogs.DialogDeleteWords
 
@@ -15,6 +19,7 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding,
 
     protected lateinit var adapter: A
     private var animBlock: AnimBlock = AnimBlock(false)
+    private val handler = Handler()
 
     private val listenerCheckTags: ListenerResult<List<String>> = object: ListenerResult<List<String>> {
         override fun onResult(result: List<String>) {
@@ -28,17 +33,38 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding,
         }
     }
     protected val clickListenerCloseFilter = View.OnClickListener {
-        animateDropdown(card_view_dictionary_filter, false, animBlock)
+        animateDropdown(getCardViewFilter(), false, animBlock)
     }
 
-    override fun getToolbarTitleResId() = R.string.dictionary
-    override fun getMenuResId() = R.menu.menu_fragment_dictionary
+    //------------------------------------------------------------------------------------------------------------------
+    abstract fun createWordsAdapter() : A
+    abstract fun getRecyclerViewWords() : RecyclerView
+    abstract fun getCardViewFilter() : MaterialCardView
+
+    override fun getLayoutResId() = R.layout.fragment_dictionary
     override fun getToolbarElevation() = 0f
+
+    override fun configureBinding() {
+        super.configureBinding()
+        adapter = createWordsAdapter()
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        getRecyclerViewWords().layoutManager = LinearLayoutManager(context)
+        getRecyclerViewWords().adapter = adapter
+        getRecyclerViewWords().setOnTouchListener { _, _ ->
+            animateDropdown(getCardViewFilter(), false, animBlock)
+            false
+        }
+    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.item_menu_filter -> {
-                animateDropdown(card_view_dictionary_filter, card_view_dictionary_filter.visibility == View.GONE, animBlock)
+                animateDropdown(getCardViewFilter(), getCardViewFilter().visibility == View.GONE, animBlock)
                 return true
             }
             R.id.item_menu_check -> {
@@ -79,14 +105,6 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding,
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        recycler_view_dictionary.setOnTouchListener { _, _ ->
-            animateDropdown(card_view_dictionary_filter, false, animBlock)
-            false
-        }
-    }
-
     override fun onNavigationEvent(eventId: Int) {
         when (eventId) {
             NAVIGATION_DIALOG_CHECK_TAGS -> {
@@ -121,7 +139,17 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding,
         if (adapter.isSelectState) {
             adapter.isSelectState = false
         }
-        animateDropdown(card_view_dictionary_filter, false, animBlock)
+        animateDropdown(getCardViewFilter(), false, animBlock)
+    }
+
+    protected fun updateAdapter(words: List<Word>?) {
+        if (words != null && words.isNotEmpty()) {
+            if (words.size > 3 && adapter.currentList.isEmpty()) {
+                handler.postDelayed({ adapter.submitList(words) }, 400)
+            } else {
+                adapter.submitList(words)
+            }
+        }
     }
 
     private fun setCheckMode(isCheckMode: Boolean) {

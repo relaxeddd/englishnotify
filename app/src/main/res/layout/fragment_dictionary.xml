@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools">
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
-        <import type="android.view.View"/>
+        <import type="android.view.View" />
         <variable
             name="hasWords"
-            type="boolean"/>
+            type="boolean" />
         <variable
             name="clickListenerCloseFilter"
             type="android.view.View.OnClickListener"/>
         <variable
             name="viewModel"
-            type="relaxeddd.englishnotify.ui.dictionary_know.ViewModelDictionaryKnow"/>
+            type="relaxeddd.englishnotify.ui.dictionary.ViewModelDictionary" />
 
     </data>
 
@@ -32,17 +31,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
-                android:visibility="@{hasWords ? View.VISIBLE : View.GONE}"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                android:visibility="@{hasWords ? View.VISIBLE : View.GONE}"/>
 
             <TextView
                 android:id="@+id/text_dictionary_no_words"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="@string/no_words_know"
+                android:text="@string/no_words_default"
                 android:textSize="@dimen/font_16"
-                android:visibility="@{hasWords ? View.GONE : View.VISIBLE}"/>
+                android:visibility="@{!hasWords ? View.VISIBLE : View.GONE}"/>
 
         </FrameLayout>
 

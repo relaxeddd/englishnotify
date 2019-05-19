@@ -27,6 +27,14 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
         var isHideLearnStage = SharedHelper.isHideLearnStage()
     }
 
+    var languageType = 0
+        set(value) {
+            if (field != value) {
+                field = value
+                notifyDataSetChanged()
+            }
+        }
+
     var isSelectState = false
         set(value) {
             field = value
