@@ -128,6 +128,16 @@ object SharedHelper {
         sPref.edit().putString(SELECTED_CATEGORY, string).apply()
     }
 
+    fun getLocalSelectedCategory(context: Context = App.context) : String {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getString(LOCAL_SELECTED_CATEGORY, "") ?: ""
+    }
+
+    fun setLocalSelectedCategory(string : String, context: Context = App.context) {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putString(LOCAL_SELECTED_CATEGORY, string).apply()
+    }
+
     fun getTrainingCategory(context: Context = App.context) : String {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         return sPref.getString(TRAINING_CATEGORY, ALL_APP_WORDS) ?: ""

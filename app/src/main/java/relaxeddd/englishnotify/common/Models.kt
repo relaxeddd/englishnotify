@@ -106,4 +106,4 @@ data class RefillInfo(val subscriptionTime: Long = 0)
 @Keep
 data class InitData(val result: Result?, val user: User?, val isActualVersion: Boolean = true)
 
-data class CategoryItem(val key: String)
+data class CategoryItem(val key: String, var isSelected: Boolean = false)

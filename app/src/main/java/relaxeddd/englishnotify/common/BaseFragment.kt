@@ -132,6 +132,12 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
         } catch (e: IllegalStateException) {}
     }
 
+    protected fun updateToolbarTitle(title: String) {
+        if (activity != null) {
+            (activity as AppCompatActivity).supportActionBar?.title = title
+        }
+    }
+
     private fun configureMenu() {
         setHasOptionsMenu(true)
         (activity as ActivityBase<*, *>).configureMenu(isHomeMenuButtonEnabled(), getHomeMenuButtonIconResId(),

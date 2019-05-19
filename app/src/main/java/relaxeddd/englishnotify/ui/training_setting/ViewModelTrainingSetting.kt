@@ -34,7 +34,7 @@ class ViewModelTrainingSetting : ViewModelBase(), ISelectCategory {
         categories.postValue(list)
     }
 
-    override fun getSelectedCategory() = checkedItem
+    override fun getSelectedCategory() = checkedItem?.key
     override fun setSelectedCategory(item: CategoryItem?) {
         checkedItem = item
     }

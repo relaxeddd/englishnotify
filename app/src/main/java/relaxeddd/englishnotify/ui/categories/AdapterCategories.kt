@@ -39,17 +39,13 @@ class AdapterCategories(val viewModel: ISelectCategory) : ListAdapter<CategoryIt
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: CategoryItem, checkedItem: CategoryItem?, listener: CompoundButton.OnCheckedChangeListener) {
+        fun bind(item: CategoryItem, selectedCategory: String?, listener: CompoundButton.OnCheckedChangeListener) {
             with(itemView) {
                 radio_button_category.tag = item
                 radio_button_category.text = getStringByResName(item.key)
 
                 radio_button_category.setOnCheckedChangeListener(listener)
-                if (item == checkedItem && !radio_button_category.isChecked) {
-                    radio_button_category.isChecked = true
-                } else if (item != checkedItem && radio_button_category.isChecked) {
-                    radio_button_category.isChecked = false
-                }
+                radio_button_category.isChecked = item.key == selectedCategory && !radio_button_category.isChecked
             }
         }
     }
@@ -57,11 +53,11 @@ class AdapterCategories(val viewModel: ISelectCategory) : ListAdapter<CategoryIt
     private class CategoryDiffCallback : DiffUtil.ItemCallback<CategoryItem>() {
 
         override fun areItemsTheSame(oldItem: CategoryItem, newItem: CategoryItem): Boolean {
-            return oldItem.key == newItem.key
+            return false
         }
 
         override fun areContentsTheSame(oldItem: CategoryItem, newItem: CategoryItem): Boolean {
-            return oldItem.key == newItem.key
+            return oldItem.key == newItem.key && oldItem.isSelected == newItem.isSelected
         }
     }
 }

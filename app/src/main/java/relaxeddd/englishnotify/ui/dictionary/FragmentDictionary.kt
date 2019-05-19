@@ -40,9 +40,7 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding,
     abstract fun createWordsAdapter() : A
     abstract fun getRecyclerViewWords() : RecyclerView
     abstract fun getCardViewFilter() : MaterialCardView
-
     override fun getLayoutResId() = R.layout.fragment_dictionary
-    override fun getToolbarElevation() = 0f
 
     override fun configureBinding() {
         super.configureBinding()

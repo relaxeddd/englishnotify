@@ -66,6 +66,7 @@ class RepositoryUser private constructor() {
                     liveDataUser.value = answerInitData.user
                     SharedHelper.setLearnLanguageType(answerInitData.user.learnLanguageType)
                     SharedHelper.setSelectedCategory(answerInitData.user.selectedTag)
+                    SharedHelper.setLocalSelectedCategory(answerInitData.user.selectedTag)
 
                     if (!answerInitData.isActualVersion) {
                         liveDataIsActualVersion.value = answerInitData.isActualVersion
@@ -294,6 +295,7 @@ class RepositoryUser private constructor() {
         } else if (updateResult != null && updateResult.result !== null) {
             SharedHelper.setLearnLanguageType(user.learnLanguageType)
             SharedHelper.setSelectedCategory(user.selectedTag)
+            SharedHelper.setLocalSelectedCategory(user.selectedTag)
             return true
         } else {
             showToast(R.string.error_update)

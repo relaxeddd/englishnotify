@@ -64,6 +64,8 @@
     <string name="logout">Выход из аккаунта</string>
     <string name="logout_error">Ошибка выхода из аккаунта</string>
     <string name="logout_success">Вы вышли из аккаунта</string>
+    <string name="main">Основные</string>
+    <string name="new_categories">Новые</string>
     <string name="new_version">Новая версия</string>
     <string name="network_not_available">Ошибка интернет соединения</string>
     <string name="next">Далее</string>
@@ -85,6 +87,7 @@
     <string name="notifications_not_receiving_authorize">Уведомления не приходят, авторизируйтесь</string>
     <string name="notifications_view">Показ уведомлений</string>
     <string name="notifications">Уведомления</string>
+    <string name="other">Остальные</string>
     <string name="own_category">Своя категория</string>
     <string name="please_authorize">Необходимо войти в систему</string>
     <string name="please_wait">Пожалуйста, подождите</string>

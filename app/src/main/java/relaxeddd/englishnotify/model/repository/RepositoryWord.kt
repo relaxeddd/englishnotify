@@ -4,6 +4,7 @@ import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.db.AppDatabase
 import relaxeddd.englishnotify.model.db.WordDao
+import relaxeddd.englishnotify.ui.categories.CategorySection
 
 class RepositoryWord private constructor(private val wordDao: WordDao) {
 
@@ -14,6 +15,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         }
     }
 
+    private val categoryItems = ArrayList<CategoryItem>()
     var words = wordDao.getAll()
 
     fun updateWord(word : Word) {
@@ -128,5 +130,22 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         }
 
         return if (trainingWords.size >= 10) ArrayList(trainingWords.shuffled().subList(0, 10)) else ArrayList(trainingWords.shuffled())
+    }
+
+    fun getCategoryItems(tags: List<String>) : ArrayList<CategoryItem> {
+        if (categoryItems.isEmpty()) {
+            val selectedTag = SharedHelper.getLocalSelectedCategory()
+
+            for (tag in tags) {
+                val categoryItem = CategoryItem(tag)
+
+                if (tag == selectedTag) {
+                    categoryItem.isSelected = true
+                }
+                categoryItems.add(categoryItem)
+            }
+        }
+
+        return ArrayList(categoryItems)
     }
 }

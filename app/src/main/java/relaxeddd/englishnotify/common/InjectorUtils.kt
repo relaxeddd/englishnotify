@@ -4,6 +4,7 @@ import android.content.Context
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 import relaxeddd.englishnotify.model.db.AppDatabase
 import relaxeddd.englishnotify.model.repository.RepositoryUser
+import relaxeddd.englishnotify.ui.categories.CategorySection
 
 object InjectorUtils {
 
@@ -50,9 +51,9 @@ object InjectorUtils {
         return WordViewModelFactory()
     }
 
-    fun provideCategoriesViewModelFactory(): CategoriesViewModelFactory {
+    fun provideCategorySectionViewModelFactory(type: CategorySection): CategorySectionViewModelFactory {
         val repository = RepositoryFactory.getUserRepository()
-        return CategoriesViewModelFactory(repository)
+        return CategorySectionViewModelFactory(type, repository)
     }
 
     fun provideTrainingSettingViewModelFactory(): TrainingSettingViewModelFactory {

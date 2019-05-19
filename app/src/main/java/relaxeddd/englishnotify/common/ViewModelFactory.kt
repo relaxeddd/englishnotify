@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import relaxeddd.englishnotify.model.repository.RepositoryUser
 import relaxeddd.englishnotify.model.repository.RepositoryWord
+import relaxeddd.englishnotify.ui.categories.CategorySection
 import relaxeddd.englishnotify.ui.categories.ViewModelCategories
+import relaxeddd.englishnotify.ui.categories.section.ViewModelCategorySection
 import relaxeddd.englishnotify.ui.dictionary_all.ViewModelDictionaryAll
 import relaxeddd.englishnotify.ui.dictionary_exercises.ViewModelDictionaryExercises
 import relaxeddd.englishnotify.ui.dictionary_know.ViewModelDictionaryKnow
@@ -84,11 +86,11 @@ class WordViewModelFactory : ViewModelProvider.NewInstanceFactory() {
     }
 }
 
-class CategoriesViewModelFactory(private val repositoryUser: RepositoryUser) : ViewModelProvider.NewInstanceFactory() {
+class CategorySectionViewModelFactory(private val type: CategorySection, private val repositoryUser: RepositoryUser) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return ViewModelCategories(repositoryUser) as T
+        return ViewModelCategorySection(type, repositoryUser) as T
     }
 }
 
