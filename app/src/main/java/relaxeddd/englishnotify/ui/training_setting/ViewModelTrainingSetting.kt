@@ -1,6 +1,7 @@
 package relaxeddd.englishnotify.ui.training_setting
 
 import androidx.lifecycle.MutableLiveData
+import com.google.android.material.radiobutton.MaterialRadioButton
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.repository.RepositoryWord
@@ -38,6 +39,7 @@ class ViewModelTrainingSetting : ViewModelBase(), ISelectCategory {
     override fun setSelectedCategory(item: CategoryItem?) {
         checkedItem = item
     }
+    override fun onRadioButtonInit(category: String, radioButton: MaterialRadioButton) {}
 
     fun onClickAccept() {
         val category = checkedItem?.key

@@ -18,6 +18,7 @@
     <string name="answer_incorrect">Incorrect answer</string>
     <string name="cancel_check">Cancel check</string>
     <string name="category_own_not_selected">Category not selected. Firstly, add words to "Own category"</string>
+    <string name="change_account_text">You login with another account. The dictionary will be cleared.</string>
     <string name="check_all">Check all</string>
     <string name="close">Close</string>
     <string name="confirm">Confirm</string>
@@ -220,6 +221,10 @@
         \n- Added `Already know` tab in Dictionary section</string>
 
     <string name="patch_notes_2_1_0">- Fixed bug with screen navigation
+        \n- New version available dialog set cancellable</string>
+
+    <string name="patch_notes_2_2_0">- Changed select category design. Now categories split on sections
+        \n- Fixed bug with screen navigation
         \n- New version available dialog set cancellable</string>
 
     <!-- =========================================================================================================== -->

@@ -61,6 +61,11 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
         (activity as AppCompatActivity).supportActionBar?.title = title
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.onFragmentResume()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         this.menu = menu

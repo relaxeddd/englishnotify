@@ -3,8 +3,11 @@ package relaxeddd.englishnotify.ui.main
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.Dispatchers
 import relaxeddd.englishnotify.model.repository.RepositoryUser
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.dialogs.DialogPatchNotes
@@ -76,7 +79,7 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
     }
 
     fun onViewCreate() {
-        requestInitUser()
+        prepareInit()
 
         if (!SharedHelper.isPatchNotesViewed(DialogPatchNotes.VERSION)) {
             navigateEvent.value = Event(NAVIGATION_DIALOG_PATCH_NOTES)
@@ -86,7 +89,35 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
 
     fun onViewResume() {}
 
-    fun requestInitUser() {
+    fun onDialogChangeAccountResult(isConfirmed: Boolean) {
+        if (isConfirmed) {
+            ioScope.launch {
+                RepositoryWord.getInstance().clearDictionary()
+                withContext(Dispatchers.Main) {
+                    SharedHelper.setUserEmail("")
+                    prepareInit()
+                }
+            }
+        } else {
+            navigateEvent.value = Event(NAVIGATION_GOOGLE_LOGOUT)
+        }
+    }
+
+    fun prepareInit() {
+        if (repositoryUser.isAuthorized()) {
+            val loginEmail = FirebaseAuth.getInstance().currentUser?.email ?: ""
+            val savedEmail = SharedHelper.getUserEmail()
+
+            if (savedEmail.isEmpty() || savedEmail == loginEmail) {
+                SharedHelper.setUserEmail(loginEmail)
+                requestInitUser()
+            } else {
+                navigateEvent.value = Event(NAVIGATION_DIALOG_CHANGE_ACCOUNT)
+            }
+        }
+    }
+
+    private fun requestInitUser() {
         if (repositoryUser.isAuthorized()) {
             isShowWarningNotifications.value = false
             isShowGoogleAuth.value = false

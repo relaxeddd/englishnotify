@@ -198,9 +198,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
             if (word.transcription.isNotEmpty()) {
                 if (word.type != EXERCISE) {
-                    notificationText += "\n[" + word.transcription + "]"
+                    notificationText += "\n[" + word.transcription + "]" + "\n"
                 } else {
-                    notificationText += "\n" + word.transcription
+                    notificationText += "\n" + word.transcription + "\n"
                 }
             }
 

@@ -29,7 +29,7 @@ class FragmentCategorySection(val type: CategorySection) : BaseFragment<ViewMode
         super.configureBinding()
         adapter = AdapterCategories(viewModel)
         binding.recyclerViewCategories.adapter = adapter
-        binding.recyclerViewCategories.itemAnimator = null
+        binding.recyclerViewCategories.setHasFixedSize(true)
         viewModel.title.observe(viewLifecycleOwner, Observer {
             updateToolbarTitle(it)
         })
@@ -38,11 +38,6 @@ class FragmentCategorySection(val type: CategorySection) : BaseFragment<ViewMode
                 adapter.submitList(items)
             }
         })
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.updateCategories()
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {

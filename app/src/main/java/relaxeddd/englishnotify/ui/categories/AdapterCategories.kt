@@ -28,24 +28,24 @@ class AdapterCategories(val viewModel: ISelectCategory) : ListAdapter<CategoryIt
                 return@run
             }
 
-            val checkedItem = radioButton.tag as CategoryItem
-            viewModel.setSelectedCategory(checkedItem)
             if (radioButton != checkedRadioButton) {
+                val checkedItem = radioButton.tag as CategoryItem
                 checkedRadioButton?.isChecked = false
                 checkedRadioButton = radioButton as MaterialRadioButton
+                viewModel.setSelectedCategory(checkedItem)
             }
-        }})
+        }}, viewModel)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: CategoryItem, selectedCategory: String?, listener: CompoundButton.OnCheckedChangeListener) {
+        fun bind(item: CategoryItem, selectedCategory: String?, listener: CompoundButton.OnCheckedChangeListener, iSelectCategory: ISelectCategory) {
             with(itemView) {
                 radio_button_category.tag = item
                 radio_button_category.text = getStringByResName(item.key)
-
                 radio_button_category.setOnCheckedChangeListener(listener)
-                radio_button_category.isChecked = item.key == selectedCategory && !radio_button_category.isChecked
+                radio_button_category.isChecked = item.key == selectedCategory
+                iSelectCategory.onRadioButtonInit(item.key, radio_button_category)
             }
         }
     }
@@ -53,11 +53,11 @@ class AdapterCategories(val viewModel: ISelectCategory) : ListAdapter<CategoryIt
     private class CategoryDiffCallback : DiffUtil.ItemCallback<CategoryItem>() {
 
         override fun areItemsTheSame(oldItem: CategoryItem, newItem: CategoryItem): Boolean {
-            return false
+            return oldItem.key == newItem.key
         }
 
         override fun areContentsTheSame(oldItem: CategoryItem, newItem: CategoryItem): Boolean {
-            return oldItem.key == newItem.key && oldItem.isSelected == newItem.isSelected
+            return oldItem.key == newItem.key
         }
     }
 }
