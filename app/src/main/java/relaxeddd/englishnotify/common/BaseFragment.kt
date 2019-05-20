@@ -61,6 +61,11 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
         (activity as AppCompatActivity).supportActionBar?.title = title
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.onFragmentResume()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         this.menu = menu
@@ -130,6 +135,12 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
         try {
             Navigation.findNavController(activity ?: return, R.id.fragment_navigation_host).navigate(actionId, args)
         } catch (e: IllegalStateException) {}
+    }
+
+    protected fun updateToolbarTitle(title: String) {
+        if (activity != null) {
+            (activity as AppCompatActivity).supportActionBar?.title = title
+        }
     }
 
     private fun configureMenu() {

@@ -55,7 +55,7 @@
         android:id="@+id/fragmentDictionaryAll"
         android:name="relaxeddd.englishnotify.ui.dictionary_all.FragmentDictionaryAll"
         android:label="@string/label_fragment_dictionary_all"
-        tools:layout="@layout/fragment_dictionary_all">
+        tools:layout="@layout/fragment_dictionary">
 
         <action
             android:id="@+id/action_fragmentDictionaryAll_to_fragmentTrainingSetting"
@@ -87,7 +87,7 @@
         android:id="@+id/fragmentDictionaryExercises"
         android:name="relaxeddd.englishnotify.ui.dictionary_exercises.FragmentDictionaryExercises"
         android:label="@string/label_fragment_dictionary_exercises"
-        tools:layout="@layout/fragment_dictionary_exercises">
+        tools:layout="@layout/fragment_dictionary">
 
         <action
             android:id="@+id/action_fragmentDictionaryExercises_to_fragmentTrainingSetting"
@@ -103,7 +103,7 @@
         android:id="@+id/fragmentDictionaryKnow"
         android:name="relaxeddd.englishnotify.ui.dictionary_know.FragmentDictionaryKnow"
         android:label="@string/label_fragment_dictionary_know"
-        tools:layout="@layout/fragment_dictionary_know"/>
+        tools:layout="@layout/fragment_dictionary"/>
 
     <fragment
         android:id="@+id/fragmentTraining"

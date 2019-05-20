@@ -7,7 +7,7 @@ import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.repository.RepositoryUser
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 
-class ViewModelCategories(private val repositoryUser: RepositoryUser) : ViewModelBase(), ISelectCategory {
+class ViewModelCategories(private val repositoryUser: RepositoryUser) : ViewModelBase() {
 
     val categories = MutableLiveData<List<CategoryItem>>(ArrayList())
     var checkedItem: CategoryItem? = null
@@ -28,11 +28,6 @@ class ViewModelCategories(private val repositoryUser: RepositoryUser) : ViewMode
             }
         }
         categories.postValue(list)
-    }
-
-    override fun getSelectedCategory() = checkedItem
-    override fun setSelectedCategory(item: CategoryItem?) {
-        checkedItem = item
     }
 
     fun onClickAccept() {

@@ -118,14 +118,14 @@ object SharedHelper {
         sPref.edit().putBoolean(WORD_LEARN_STAGE, isHide).apply()
     }
 
-    fun getSelectedCategory(context: Context = App.context) : String {
+    fun getUserEmail(context: Context = App.context) : String {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        return sPref.getString(SELECTED_CATEGORY, "") ?: ""
+        return sPref.getString(USER_EMAIL, "") ?: ""
     }
 
-    fun setSelectedCategory(string : String, context: Context = App.context) {
+    fun setUserEmail(string : String, context: Context = App.context) {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        sPref.edit().putString(SELECTED_CATEGORY, string).apply()
+        sPref.edit().putString(USER_EMAIL, string).apply()
     }
 
     fun getTrainingCategory(context: Context = App.context) : String {

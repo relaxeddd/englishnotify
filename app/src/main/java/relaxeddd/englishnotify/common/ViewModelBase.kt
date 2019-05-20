@@ -14,4 +14,6 @@ abstract class ViewModelBase : ViewModel() {
 
     val navigation : LiveData<Event<Int>>
         get() = navigateEvent
+
+    open fun onFragmentResume() {}
 }

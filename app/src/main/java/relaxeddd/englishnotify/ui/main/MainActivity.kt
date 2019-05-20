@@ -19,6 +19,7 @@ import com.google.android.gms.common.GoogleApiAvailability
 import kotlinx.android.synthetic.main.main_activity.*
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.MainActivityBinding
+import relaxeddd.englishnotify.dialogs.DialogChangeAccount
 import relaxeddd.englishnotify.dialogs.DialogNewVersion
 import relaxeddd.englishnotify.dialogs.DialogPatchNotes
 import relaxeddd.englishnotify.dialogs.DialogRateApp
@@ -45,6 +46,12 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
             if (result) {
                 openWebApplication(this@MainActivity)
             }
+        }
+    }
+
+    private val listenerChangeAccount: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
+        override fun onResult(result: Boolean) {
+            viewModel.onDialogChangeAccountResult(result)
         }
     }
 
@@ -138,7 +145,7 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
                 val response: IdpResponse? = IdpResponse.fromResultIntent(data)
 
                 if (response?.errorCode == -1) {
-                    viewModel.requestInitUser()
+                    viewModel.prepareInit()
                 } else {
                     AuthUI.getInstance().signOut(this).addOnCompleteListener {}
                     showToast(response.toString())
@@ -191,6 +198,11 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
                     dialogNewVersion?.show(this@MainActivity.supportFragmentManager, "New version Dialog")
                 }
             }
+            NAVIGATION_DIALOG_CHANGE_ACCOUNT -> {
+                val dialog = DialogChangeAccount()
+                dialog.confirmListener = listenerChangeAccount
+                dialog.show(this@MainActivity.supportFragmentManager, "Change account Dialog")
+            }
             NAVIGATION_DIALOG_PATCH_NOTES -> {
                 val dialog = DialogPatchNotes()
                 dialog.show(this@MainActivity.supportFragmentManager, "Patch Notes Dialog")
@@ -202,6 +214,14 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
                             if (result) isBillingInited = true
                         }
                     })
+                }
+            }
+            NAVIGATION_GOOGLE_LOGOUT -> {
+                if (isMyResumed) {
+                    viewModel.isShowLoading.value = true
+                    AuthUI.getInstance().signOut(this).addOnCompleteListener {
+                        viewModel.isShowLoading.value = false
+                    }
                 }
             }
             else -> super.onNavigationEvent(eventId)

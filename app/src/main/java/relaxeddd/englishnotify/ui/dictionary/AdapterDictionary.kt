@@ -18,17 +18,11 @@ import java.util.*
 
 class AdapterDictionary(viewModel: ViewModelDictionary) : AdapterWords<AdapterDictionary.ViewHolder>(viewModel) {
 
-    var languageType = 0
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_item_word, parent, false))
     }
 
-    override fun bind(holder: AdapterDictionary.ViewHolder, item: Word, clickListener: View.OnClickListener,
+    override fun bind(holder: ViewHolder, item: Word, clickListener: View.OnClickListener,
                       longListener: View.OnLongClickListener, checkListener: CompoundButton.OnCheckedChangeListener) {
         holder.bind(item, languageType, isSelectState, checkList, clickListener, longListener, checkListener)
     }

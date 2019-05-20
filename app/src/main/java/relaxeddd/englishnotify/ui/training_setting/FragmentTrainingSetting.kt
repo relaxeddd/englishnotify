@@ -25,14 +25,12 @@ class FragmentTrainingSetting : BaseFragment<ViewModelTrainingSetting, FragmentT
         onNavigationEvent(NAVIGATION_ACTIVITY_BACK)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.item_menu_accept -> {
-                viewModel.onClickAccept()
-                return true
-            }
-            else -> return super.onOptionsItemSelected(item)
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.item_menu_accept -> {
+            viewModel.onClickAccept()
+            true
         }
+        else -> super.onOptionsItemSelected(item)
     }
 
     override fun configureBinding() {

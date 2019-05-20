@@ -97,10 +97,6 @@ data class PurchaseResult(val result: Result?, val userId: String = "", val toke
                           val refillInfo: RefillInfo = RefillInfo(), val isObtained: Boolean = false, val text: String = "")
 
 @Keep
-data class PurchaseObject(val userId: String, val tokenId: String, val itemType: String, val refillInfo: RefillInfo,
-                          val isObtained: Boolean = false)
-
-@Keep
 data class RefillInfo(val subscriptionTime: Long = 0)
 
 @Keep

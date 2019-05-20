@@ -18,6 +18,7 @@
     <string name="answer_incorrect">Incorrect answer</string>
     <string name="cancel_check">Cancel check</string>
     <string name="category_own_not_selected">Category not selected. Firstly, add words to "Own category"</string>
+    <string name="change_account_text">You login with another account. The dictionary will be cleared.</string>
     <string name="check_all">Check all</string>
     <string name="close">Close</string>
     <string name="confirm">Confirm</string>
@@ -63,6 +64,8 @@
     <string name="logout">Logout</string>
     <string name="logout_error">Logout error</string>
     <string name="logout_success">Logout success</string>
+    <string name="main">Main</string>
+    <string name="new_categories">New</string>
     <string name="new_version">New version</string>
     <string name="network_not_available">Network error</string>
     <string name="next">Next</string>
@@ -73,6 +76,7 @@
     <string name="no_training_category_words">There are no category words for training (probably it all the sentences or already learned words)</string>
     <string name="no_training_words">There are no words for training or it already learned or it is all the sentences</string>
     <string name="no_words">Notifications with new words have not received yet. Please, authorize and wait… (With default settings wait 1 hour)</string>
+    <string name="no_words_default">Notifications with new words have not received yet. Please wait or try to use test notifications in Notifications section</string>
     <string name="no_words_know">You have not learned words in dictionary</string>
     <string name="no_words_own">You have not added words to your category yet</string>
     <string name="no_test_notifications">There are no test notifications</string>
@@ -83,6 +87,7 @@
     <string name="notifications_not_receiving_authorize">Notifications is not receiving, please sign in</string>
     <string name="notifications_view">Notifications view</string>
     <string name="notifications">Notifications</string>
+    <string name="other">Other</string>
     <string name="own_category">Own category</string>
     <string name="please_authorize">Please, sign in</string>
     <string name="please_wait">Please, wait</string>
@@ -216,6 +221,10 @@
         \n- Added `Already know` tab in Dictionary section</string>
 
     <string name="patch_notes_2_1_0">- Fixed bug with screen navigation
+        \n- New version available dialog set cancellable</string>
+
+    <string name="patch_notes_2_2_0">- Changed select category design. Now categories split on sections
+        \n- Fixed bug with screen navigation
         \n- New version available dialog set cancellable</string>
 
     <!-- =========================================================================================================== -->

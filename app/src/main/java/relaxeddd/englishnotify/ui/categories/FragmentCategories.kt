@@ -1,42 +1,35 @@
 package relaxeddd.englishnotify.ui.categories
 
-import android.view.MenuItem
-import androidx.lifecycle.Observer
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
+import kotlinx.android.synthetic.main.fragment_categories.*
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.*
-import relaxeddd.englishnotify.databinding.FragmentCategoriesBinding
+import relaxeddd.englishnotify.common.getString
+import relaxeddd.englishnotify.ui.categories.section.FragmentCategorySection
 
-class FragmentCategories : BaseFragment<ViewModelCategories, FragmentCategoriesBinding>() {
+class FragmentCategories : Fragment() {
 
-    private lateinit var adapter: AdapterCategories
+    private lateinit var pagerAdapter: PagerAdapterCategories
 
-    override fun getLayoutResId() = R.layout.fragment_categories
-    override fun getToolbarTitleResId() = R.string.word_category_select
-    override fun getViewModelFactory() = InjectorUtils.provideCategoriesViewModelFactory()
-    override fun getViewModelClass() = ViewModelCategories::class.java
-    override fun getMenuResId() = R.menu.menu_accept
-    override fun isHomeMenuButtonEnabled() = true
-    override fun getHomeMenuButtonIconResId() = R.drawable.ic_back
-    override fun getHomeMenuButtonListener(): () -> Unit = {
-        onNavigationEvent(NAVIGATION_ACTIVITY_BACK)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_categories, container, false)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.item_menu_accept -> {
-                viewModel.onClickAccept()
-                return true
-            }
-            else -> return super.onOptionsItemSelected(item)
-        }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        pagerAdapter = PagerAdapterCategories(childFragmentManager)
+        tab_layout_categories.setupWithViewPager(view_pager_categories)
+        view_pager_categories.adapter = pagerAdapter
     }
 
-    override fun configureBinding() {
-        super.configureBinding()
-        adapter = AdapterCategories(viewModel)
-        binding.recyclerViewCategories.adapter = adapter
-        viewModel.categories.observe(viewLifecycleOwner, Observer { items ->
-            if (items != null && items.isNotEmpty()) adapter.submitList(items)
-        })
+    class PagerAdapterCategories(fm: FragmentManager) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+
+        override fun getCount() = CategorySection.values().size
+        override fun getPageTitle(position: Int) : CharSequence = getString(CategorySection.values()[position].titleResId)
+        override fun getItem(position: Int) = FragmentCategorySection(CategorySection.values()[position])
     }
 }

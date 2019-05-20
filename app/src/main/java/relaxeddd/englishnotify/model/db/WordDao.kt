@@ -29,6 +29,9 @@ interface WordDao {
     @Delete
     fun delete(word: Word)
 
+    @Query("DELETE FROM $WORDS")
+    fun deleteAll()
+
     @Query("DELETE FROM $WORDS WHERE eng = :eng")
     fun deleteByEng(eng: String)
 }

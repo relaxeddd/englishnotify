@@ -129,4 +129,8 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
 
         return if (trainingWords.size >= 10) ArrayList(trainingWords.shuffled().subList(0, 10)) else ArrayList(trainingWords.shuffled())
     }
+
+    fun clearDictionary() {
+        wordDao.deleteAll()
+    }
 }

@@ -19,6 +19,7 @@
     <string name="answer_incorrect">Неправильный ответ</string>
     <string name="cancel_check">Отменить выбранное</string>
     <string name="category_own_not_selected">Категоря не выбрана. Сначала добавьте слова в "Свою категорию"</string>
+    <string name="change_account_text">Вы заходите под другим аккаунтом. Словарь будет очищен.</string>
     <string name="check_all">Выбрать все</string>
     <string name="close">Закрыть</string>
     <string name="confirm">Подтвердить</string>
@@ -64,6 +65,8 @@
     <string name="logout">Выход из аккаунта</string>
     <string name="logout_error">Ошибка выхода из аккаунта</string>
     <string name="logout_success">Вы вышли из аккаунта</string>
+    <string name="main">Основные</string>
+    <string name="new_categories">Новые</string>
     <string name="new_version">Новая версия</string>
     <string name="network_not_available">Ошибка интернет соединения</string>
     <string name="next">Далее</string>
@@ -74,6 +77,7 @@
     <string name="no_training_category_words">В этой категории нет слов для тренировки (вероятно там только предложения или уже выученные слова)</string>
     <string name="no_training_words">У вас нет слов для тренировки, либо они выучены или являются предложениями</string>
     <string name="no_words">Уведомления с новыми словами пока еще не пришли. Необходимо авторизоваться и подождать… (Со стандартными настройками один час)</string>
+    <string name="no_words_default">Уведомления с новыми словами пока еще не пришли. Пожалуйста подождите или попробуйте тестовые уведомления в разделе Уведомления</string>
     <string name="no_words_know">У вас нет выученных слов в словаре</string>
     <string name="no_words_own">Вы пока еще не добавили слова в свою категорию</string>
     <string name="no_test_notifications">У вас не осталось тестовых уведомлений</string>
@@ -84,6 +88,7 @@
     <string name="notifications_not_receiving_authorize">Уведомления не приходят, авторизируйтесь</string>
     <string name="notifications_view">Показ уведомлений</string>
     <string name="notifications">Уведомления</string>
+    <string name="other">Остальные</string>
     <string name="own_category">Своя категория</string>
     <string name="please_authorize">Необходимо войти в систему</string>
     <string name="please_wait">Пожалуйста, подождите</string>
@@ -200,6 +205,10 @@
         \n- Добавлена вкладка `Уже знаю` словаре</string>
 
     <string name="patch_notes_2_1_0">- Исправлен баг при навигации между экранами
+        \n- Диалоговое окно с уведомлением о новой версии теперь можно закрыть, теперь необязательно обновлять приложение</string>
+
+    <string name="patch_notes_2_2_0">- Улучшен дизайн выбора категорий, теперь они разделены на секции
+        \n- Исправлен баг при навигации между экранами
         \n- Диалоговое окно с уведомлением о новой версии теперь можно закрыть, теперь необязательно обновлять приложение</string>
 
     <!-- =========================================================================================================== -->
