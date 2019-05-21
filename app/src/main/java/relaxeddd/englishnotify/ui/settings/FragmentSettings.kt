@@ -60,9 +60,11 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
                 }
             }
             NAVIGATION_GOOGLE_LOGOUT -> {
-                activity?.let {
-                    AuthUI.getInstance().signOut(it).addOnCompleteListener { resultTask ->
-                        viewModel.onLogoutResult(resultTask.isSuccessful)
+                if (isResumed) {
+                    activity?.let {
+                        AuthUI.getInstance().signOut(it).addOnCompleteListener { resultTask ->
+                            viewModel.onLogoutResult(resultTask.isSuccessful)
+                        }
                     }
                 }
             }

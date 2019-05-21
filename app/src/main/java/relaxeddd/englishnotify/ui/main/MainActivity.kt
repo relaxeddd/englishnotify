@@ -1,5 +1,6 @@
 package relaxeddd.englishnotify.ui.main
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableString
@@ -37,7 +38,7 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
     private var selectedBottomMenuId: Int = R.id.fragmentDictionaryAll
     private var selectedSecondaryBottomMenuId: Int = R.id.fragmentDictionaryAll
     private lateinit var navController: NavController
-    private val providers: List<AuthUI.IdpConfig> = Arrays.asList(AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build())
+    private val providers: List<AuthUI.IdpConfig> = Arrays.asList(AuthUI.IdpConfig.GoogleBuilder().build())
     private var dialogNewVersion: DialogNewVersion? = null
     var isBillingInited = false
 
@@ -144,11 +145,11 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
             REQUEST_SIGN_IN -> {
                 val response: IdpResponse? = IdpResponse.fromResultIntent(data)
 
-                if (response?.errorCode == -1) {
+                if (resultCode == Activity.RESULT_OK) {
                     viewModel.prepareInit()
-                } else {
+                } else if (isMyResumed && response != null) {
                     AuthUI.getInstance().signOut(this).addOnCompleteListener {}
-                    showToast(response.toString())
+                    showToast(response.error.toString())
                 }
             }
             REQUEST_PLAY_SERVICES_RESULT -> {

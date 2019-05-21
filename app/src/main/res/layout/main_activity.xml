@@ -158,7 +158,9 @@
             app:itemTextColor="@drawable/selector_bottom_navigation"
             app:menu="@menu/menu_main_navigation_secondary"
             app:layout_constraintBottom_toTopOf="@+id/navigation_view_main" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" app:itemBackground="@color/colorPrimary"/>
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@color/colorPrimary"
+            app:itemBackground="@color/colorPrimary"/>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/navigation_view_main"
@@ -168,7 +170,9 @@
             app:itemTextColor="@drawable/selector_bottom_navigation"
             app:menu="@menu/menu_main_navigation"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" app:itemBackground="@color/colorPrimary"/>
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@color/colorPrimary"
+            app:itemBackground="@color/colorPrimary"/>
 
         <View
             android:layout_width="match_parent"

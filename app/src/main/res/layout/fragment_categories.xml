@@ -15,6 +15,6 @@
         app:tabSelectedTextColor="@color/white"
         app:tabTextColor="@color/gray_light"
         android:elevation="@dimen/size_6"
-        app:tabMode="scrollable"/>
+        app:tabMode="auto"/>
 
 </androidx.viewpager.widget.ViewPager>
