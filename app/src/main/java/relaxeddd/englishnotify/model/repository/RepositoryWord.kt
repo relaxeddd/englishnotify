@@ -25,46 +25,16 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
     }
 
     fun updateOwsWords(ownWords: List<Word>) {
-        val cacheOwnWords = getOwnWords()
-
-        if (ownWords.size == cacheOwnWords.size) {
-            var isNotFound = false
-
-            for (ownWord in ownWords) {
-                var isFind = false
-
-                for (cacheOwnWord in cacheOwnWords) {
-                    if (ownWord.eng == cacheOwnWord.eng) {
-                        isFind = true
-                    }
-                }
-                if (!isFind) {
-                    isNotFound = true
-                }
-            }
-
-            if (!isNotFound) {
-                return
-            }
-        }
-
-        for (word in cacheOwnWords) {
-            val tags = ArrayList(word.tags)
-
-            tags.remove(OWN)
-            word.saveType = Word.DICTIONARY
-            word.tags = tags
-
-            wordDao.insertAll(word)
-        }
         ownWords.forEach {
-            val tags = ArrayList(it.tags)
+            if (wordDao.findWordById(it.eng) == null) {
+                val tags = ArrayList(it.tags)
 
-            it.tags = tags
-            it.saveType = Word.OWN
-            it.timestamp = System.currentTimeMillis()
+                it.tags = tags
+                it.saveType = Word.OWN
+                it.timestamp = System.currentTimeMillis()
 
-            wordDao.insertAll(it)
+                wordDao.insertAll(it)
+            }
         }
     }
 

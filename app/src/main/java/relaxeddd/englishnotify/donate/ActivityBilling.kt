@@ -7,7 +7,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
-import relaxeddd.englishnotify.model.db.AppDatabase
 import relaxeddd.englishnotify.model.http.ApiHelper
 import relaxeddd.englishnotify.model.repository.RepositoryCommon
 import relaxeddd.englishnotify.model.repository.RepositoryUser
@@ -154,7 +153,7 @@ abstract class ActivityBilling<VM : ViewModelBase, B : ViewDataBinding> : Activi
         }
     }
 
-    private suspend fun onPurchaseResultSuccess(purchaseResult: PurchaseResult) {
+    private fun onPurchaseResultSuccess(purchaseResult: PurchaseResult) {
         consumePurchase(purchaseResult)
 
         val user: User? = RepositoryUser.getInstance().liveDataUser.value

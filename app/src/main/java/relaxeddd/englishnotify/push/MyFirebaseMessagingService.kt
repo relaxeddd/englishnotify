@@ -64,7 +64,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             val pendingIntent = PendingIntent.getActivity(ctx, 0, intent, PendingIntent.FLAG_ONE_SHOT)
 
-            val channelId = getString(R.string.default_notification_channel_id)
+            val channelId = getAppString(R.string.default_notification_channel_id)
             val notificationBuilder = NotificationCompat.Builder(ctx, channelId)
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
@@ -84,15 +84,15 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     putExtra(WORD_ID, wordId)
                     putExtra(NOTIFICATION_ID, notificationId)
                 }
-                val dontKnowIntent = Intent(ctx, PushBroadcastReceiver::class.java).apply {
+                val notKnowIntent = Intent(ctx, PushBroadcastReceiver::class.java).apply {
                     action = PushBroadcastReceiver.ACTION_KNOW
-                    putExtra(IS_KNOW, PushBroadcastReceiver.DONT_KNOW)
+                    putExtra(IS_KNOW, PushBroadcastReceiver.NOT_KNOW)
                     putExtra(WORD_ID, wordId)
                     putExtra(NOTIFICATION_ID, notificationId)
                 }
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    val replyLabel: String = getString(R.string.enter_translation)
+                    val replyLabel: String = getAppString(R.string.enter_translation)
                     val remoteInput: RemoteInput = RemoteInput.Builder(PushBroadcastReceiver.KEY_TEXT_REPLY).run {
                         setLabel(replyLabel)
                         build()
@@ -100,15 +100,15 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     val replyPendingIntent: PendingIntent = PendingIntent.getBroadcast(ctx, Random.nextInt(1000),
                         knowIntent, PendingIntent.FLAG_UPDATE_CURRENT)
                     val action: NotificationCompat.Action = NotificationCompat.Action.Builder(R.drawable.ic_dictionary,
-                        getString(R.string.i_know_it), replyPendingIntent)
+                        getAppString(R.string.i_know_it), replyPendingIntent)
                             .addRemoteInput(remoteInput)
                             .build()
                     notificationBuilder.addAction(action)
                 }
 
-                val dontKnowPendingIntent: PendingIntent =
-                    PendingIntent.getBroadcast(ctx, Random.nextInt(1000), dontKnowIntent, 0)
-                notificationBuilder.addAction(R.drawable.ic_close, getString(R.string.show_translation), dontKnowPendingIntent)
+                val notKnowPendingIntent: PendingIntent =
+                    PendingIntent.getBroadcast(ctx, Random.nextInt(1000), notKnowIntent, 0)
+                notificationBuilder.addAction(R.drawable.ic_close, getAppString(R.string.show_translation), notKnowPendingIntent)
             }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -145,7 +145,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             val pendingIntent = PendingIntent.getActivity(ctx, 0, intent, PendingIntent.FLAG_ONE_SHOT)
 
-            val channelId = getString(R.string.default_notification_channel_id)
+            val channelId = getAppString(R.string.default_notification_channel_id)
             val notificationBuilder = NotificationCompat.Builder(ctx, channelId)
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
@@ -197,11 +197,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             }
 
             if (word.transcription.isNotEmpty()) {
-                if (word.type != EXERCISE) {
-                    notificationText += "\n[" + word.transcription + "]" + "\n"
-                } else {
-                    notificationText += "\n" + word.transcription + "\n"
-                }
+                notificationText += if (word.type != EXERCISE) "\n[" + word.transcription + "]" + "\n" else "\n" + word.transcription + "\n"
             }
 
             if (word.v2.isNotEmpty() && word.v3.isNotEmpty()) {
@@ -246,9 +242,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val data = remoteMessage?.data
 
         if (data != null) {
-            val type = if (data.containsKey(TYPE)) data[TYPE] else ""
-
-            when (type) {
+            when (if (data.containsKey(TYPE)) data[TYPE] else "") {
                 SYSTEM -> {
                     val title = if (data.containsKey(TITLE)) data[TITLE] ?: "" else ""
                     val text = if (data.containsKey(TEXT)) data[TEXT] ?: "" else ""
@@ -312,7 +306,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val calendar = Calendar.getInstance()
         val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
 
-        return durationHours != 0 && ((currentHour in startHour..(endHour - 1))
+        return durationHours != 0 && ((currentHour in startHour until endHour)
                 || (startHour + durationHours >= 24 && currentHour < endHour) )
     }
 }

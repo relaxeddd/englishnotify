@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import relaxeddd.englishnotify.model.repository.RepositoryUser
 import kotlinx.coroutines.launch
+import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
 
@@ -15,12 +16,15 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
 
     val user: LiveData<User?> = repositoryUser.liveDataUser
     val isEnableNotificationsClickable = MutableLiveData<Boolean>(false)
-    val notificationsViewType = MutableLiveData<Int>(SharedHelper.getNotificationsView())
     val timeDurationOffValue = MutableLiveData<Int>(SharedHelper.getDurationHours())
     val timeStartOff = MutableLiveData<String>("20:00")
     val timeEndOff = MutableLiveData<String>("07:00")
     val selectedTagLiveData = MutableLiveData<String>("")
     val isVisibleNotificationsView = MutableLiveData<Boolean>(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+
+    val textRepeatTime = MutableLiveData<String>("")
+    val textLearnLanguage = MutableLiveData<String>("")
+    val textNotificationsView = MutableLiveData<String>(App.context.resources.getStringArray(R.array.array_notifications_view)[SharedHelper.getNotificationsView()])
 
     val checkedChangeListenerShowOnlyOneNotification = CompoundButton.OnCheckedChangeListener { _, isChecked ->
         SharedHelper.setShowOnlyOneNotification(isChecked)
@@ -30,6 +34,8 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
     private val userObserver = Observer<User?> { user ->
         isEnableNotificationsClickable.value = user != null
         selectedTagLiveData.value = if (user != null) getStringByResName(user.selectedTag) else ""
+        textRepeatTime.value = App.context.resources.getStringArray(R.array.array_time_repeat)[user?.notificationsTimeType ?: 0]
+        textLearnLanguage.value = App.context.resources.getStringArray(R.array.array_learn_language)[user?.learnLanguageType ?: 0]
     }
 
     var checkedChangeListenerEnableNotifications = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
@@ -137,7 +143,7 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
     }
 
     fun onDialogNotificationsViewResult(result: Int) {
-        notificationsViewType.value = result
+        textNotificationsView.value = App.context.resources.getStringArray(R.array.array_notifications_view)[result]
         SharedHelper.setNotificationsView(result)
     }
 

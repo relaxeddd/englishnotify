@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <string name="app_name">English Words Notifications</string>
@@ -53,7 +54,7 @@
     <string name="feedback_too_short">Feedback too short</string>
     <string name="filter">Filter</string>
     <string name="hours_off_time">Hours (0–23)</string>
-    <string name="i_dont_know_it">I don`t know</string>
+    <string name="i_not_know_it">I don`t know</string>
     <string name="i_know_it">I know it</string>
     <string name="incorrect_answer">Incorrect answer</string>
     <string name="information">Information</string>
@@ -168,7 +169,7 @@
 
     <string name="patch_notes_0_1_4">- Added patch notes dialog (here it is)
         \n- Fixed bug with alphabetical sort by in dictionary
-        \n- Added prices of subscribtions in dialog
+        \n- Added prices of subscriptions in dialog
         \n- The button "Cancel" was removed from send feedback dialog</string>
 
     <string name="patch_notes_1_0_0">- Added new notifications setting "night time" - you don`t receive notifications in selected time period</string>
@@ -227,6 +228,9 @@
         \n- Fixed bug with screen navigation
         \n- New version available dialog set cancellable</string>
 
+    <string name="patch_notes_2_2_1">- Tablet optimization
+        \n- Libraries update</string>
+
     <!-- =========================================================================================================== -->
     <string name="own">Own category (add words yourself in dictionary)</string>
     <string name="irregular">Irregular verbs</string>
@@ -283,7 +287,14 @@
     <string name="auto_5">Auto (level 2)</string>
     <string name="frequent_verbs">Frequent verbs</string>
     <string name="frequent_verbs_5">Frequent verbs (level 2)</string>
-    <string name="exercises_verbs_first">Exercises with verb form (1)</string>
+    <string name="exercises_verbs_first">ex. Verb form (1)</string>
+    <string name="exercises_conditional_sentences_1">ex. Conditional sentences (1)</string>
+    <string name="exercises_comparison_adjectives_1">ex. Comparison adjectives (1)</string>
+    <string name="exercises_passive_voice_1">ex. Passive voice (1)</string>
+    <string name="exercises_articles_1">ex. Articles (1)</string>
+    <string name="exercises_modal_verbs_1">ex. Modal verbs (1)</string>
+    <string name="exercises_indirect_speech_1">ex. Indirect speech (1)</string>
+    <string name="exercises_reflexive_1">ex. Reflexive (1)</string>
 
     <string name="privacy_policy_text">Clicked authorize, you agree to our Privacy Policy</string>
 
@@ -292,5 +303,25 @@
         It should describe the category of notifications that will be sent through this channel
      -->
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+
+    <!--Content descriptions-->
+    <string name="ic_notifications_enable" translatable="false">Enable notifications option</string>
+    <string name="ic_categories" translatable="false">Select categories option</string>
+    <string name="ic_time" translatable="false">Notifications repeat receive time option</string>
+    <string name="ic_language" translatable="false">Notifications receive language option</string>
+    <string name="ic_notifications_view" translatable="false">Notifications view option</string>
+    <string name="ic_notifications_show_only_one" translatable="false">Notifications show only one option</string>
+    <string name="ic_night_time" translatable="false">Notifications night time option</string>
+    <string name="ic_send_test_notification" translatable="false">Send test notification</string>
+    <string name="ic_application_info" translatable="false">Application info</string>
+    <string name="ic_subscription_settings" translatable="false">Subscription settings</string>
+    <string name="ic_send_feedback" translatable="false">Send feedback</string>
+    <string name="ic_training_words_information" translatable="false">Training words information</string>
+    <string name="ic_rate_application" translatable="false">Rate application</string>
+    <string name="ic_learn_stage_settings" translatable="false">Is show learn stage option</string>
+    <string name="ic_logout" translatable="false">Logout</string>
+    <string name="ic_main_warning_notifications" translatable="false">Warning notifications</string>
+    <string name="ic_main_warning_subscription" translatable="false">Warning subscription</string>
+    <string name="ic_own" translatable="false">Word in own category</string>
 
 </resources>

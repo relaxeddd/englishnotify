@@ -48,14 +48,12 @@ class FragmentDictionaryOwn : FragmentDictionary<ViewModelDictionaryOwn, Fragmen
         })
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.item_menu_dialog_own -> {
-                onNavigationEvent(NAVIGATION_DIALOG_OWN_CATEGORY)
-                return true
-            }
-            else -> return super.onOptionsItemSelected(item)
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.item_menu_dialog_own -> {
+            onNavigationEvent(NAVIGATION_DIALOG_OWN_CATEGORY)
+            true
         }
+        else -> super.onOptionsItemSelected(item)
     }
 
     override fun onNavigationEvent(eventId: Int) {

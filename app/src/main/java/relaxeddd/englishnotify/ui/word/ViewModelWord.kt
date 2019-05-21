@@ -9,7 +9,7 @@ import relaxeddd.englishnotify.model.repository.RepositoryUser
 
 class ViewModelWord : ViewModelBase() {
 
-    var isWordCreating: Boolean = false
+    private var isWordCreating: Boolean = false
 
     fun createOwnWord(eng: String, transcription: String, rus: String) {
         if (isWordCreating) {

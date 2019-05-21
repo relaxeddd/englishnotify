@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import kotlinx.android.synthetic.main.fragment_categories.*
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.getString
+import relaxeddd.englishnotify.common.getAppString
 import relaxeddd.englishnotify.ui.categories.section.FragmentCategorySection
 
 class FragmentCategories : Fragment() {
@@ -29,7 +29,7 @@ class FragmentCategories : Fragment() {
     class PagerAdapterCategories(fm: FragmentManager) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
         override fun getCount() = CategorySection.values().size
-        override fun getPageTitle(position: Int) : CharSequence = getString(CategorySection.values()[position].titleResId)
+        override fun getPageTitle(position: Int) : CharSequence = getAppString(CategorySection.values()[position].titleResId)
         override fun getItem(position: Int) = FragmentCategorySection(CategorySection.values()[position])
     }
 }

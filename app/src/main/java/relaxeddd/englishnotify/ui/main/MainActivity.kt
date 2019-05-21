@@ -10,7 +10,6 @@ import android.text.style.ClickableSpan
 import android.text.style.UnderlineSpan
 import android.view.View
 import androidx.navigation.NavController
-import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import relaxeddd.englishnotify.R
 import com.firebase.ui.auth.AuthUI
@@ -40,7 +39,7 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
     private lateinit var navController: NavController
     private val providers: List<AuthUI.IdpConfig> = Arrays.asList(AuthUI.IdpConfig.GoogleBuilder().build())
     private var dialogNewVersion: DialogNewVersion? = null
-    var isBillingInited = false
+    var isBillingInit = false
 
     private val listenerNewVersion: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
         override fun onResult(result: Boolean) {
@@ -146,6 +145,7 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
                 val response: IdpResponse? = IdpResponse.fromResultIntent(data)
 
                 if (resultCode == Activity.RESULT_OK) {
+                    text_main_privacy_policy.visibility = View.GONE
                     viewModel.prepareInit()
                 } else if (isMyResumed && response != null) {
                     AuthUI.getInstance().signOut(this).addOnCompleteListener {}
@@ -209,10 +209,10 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
                 dialog.show(this@MainActivity.supportFragmentManager, "Patch Notes Dialog")
             }
             NAVIGATION_INIT_BILLING -> {
-                if (isMyResumed && !isBillingInited) {
+                if (isMyResumed && !isBillingInit) {
                     initBilling(object: ListenerResult<Boolean> {
                         override fun onResult(result: Boolean) {
-                            if (result) isBillingInited = true
+                            if (result) isBillingInit = true
                         }
                     })
                 }

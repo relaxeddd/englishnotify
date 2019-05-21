@@ -18,10 +18,9 @@ class PushBroadcastReceiver : BroadcastReceiver() {
 
     companion object {
         const val ACTION_KNOW = "relaxeddd.englishnotify.KNOW"
-        const val ACTION_ANSWER = "relaxeddd.englishnotify.ANSWER"
         const val KEY_TEXT_REPLY = "key_text_reply"
 
-        const val DONT_KNOW = 0
+        const val NOT_KNOW = 0
         const val KNOW = 1
     }
 
@@ -30,7 +29,7 @@ class PushBroadcastReceiver : BroadcastReceiver() {
             val wordDao = AppDatabase.getInstance(context).wordDao()
             val notificationId = intent.getIntExtra(NOTIFICATION_ID, -1)
             val wordId = intent.getStringExtra(WORD_ID)
-            val isKnow = intent.getIntExtra(IS_KNOW, DONT_KNOW)
+            val isKnow = intent.getIntExtra(IS_KNOW, NOT_KNOW)
             val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             val word = wordDao.findWordById(wordId) ?: return@launch
             val languageType = SharedHelper.getLearnLanguageType()

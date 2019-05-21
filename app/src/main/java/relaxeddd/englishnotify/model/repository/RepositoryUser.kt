@@ -30,7 +30,6 @@ class RepositoryUser private constructor() {
 
     var liveDataUser = MutableLiveData<User>(null)
     val liveDataIsActualVersion = MutableLiveData<Boolean>(true)
-    private var isOwnWordsRequested = false
 
     fun isAuthorized() = FirebaseAuth.getInstance().currentUser != null
 
@@ -83,7 +82,7 @@ class RepositoryUser private constructor() {
 
     suspend fun deleteUserInfo() {
         withContext(Dispatchers.Main) {
-            liveDataUser.postValue(null)
+            liveDataUser.value = null
             showToast(R.string.logout_success)
         }
     }
@@ -129,15 +128,15 @@ class RepositoryUser private constructor() {
 
         val answer = ApiHelper.requestSendTestNotification(firebaseUser, tokenId)
 
-        if (answer?.isSuccess() == true) {
-            showToastLong(R.string.test_notification_sent)
-            val user = User(liveDataUser.value ?: return)
-            user.testCount -= 1
-            liveDataUser.postValue(user)
-        } else if (answer != null) {
-            showToast(getErrorString(answer))
-        } else {
-            showToastLong(R.string.error_request)
+        when {
+            answer?.isSuccess() == true -> {
+                showToastLong(R.string.test_notification_sent)
+                val user = User(liveDataUser.value ?: return)
+                user.testCount -= 1
+                liveDataUser.postValue(user)
+            }
+            answer != null -> showToast(getErrorString(answer))
+            else -> showToastLong(R.string.error_request)
         }
     }
 
@@ -150,10 +149,6 @@ class RepositoryUser private constructor() {
             return
         }
 
-        if (isOwnWordsRequested) {
-            return
-        }
-
         val firebaseUser = RepositoryCommon.getInstance().firebaseUser
         val tokenId = RepositoryCommon.getInstance().tokenId
 
@@ -161,7 +156,6 @@ class RepositoryUser private constructor() {
 
         if (answer?.result?.isSuccess() == true && answer.words != null) {
             RepositoryWord.getInstance(AppDatabase.getInstance(App.context).wordDao()).updateOwsWords(answer.words)
-            isOwnWordsRequested = true
         } else if (answer?.result != null) {
             withContext(Dispatchers.Main) {
                 showToast(getErrorString(answer.result))
@@ -205,23 +199,27 @@ class RepositoryUser private constructor() {
 
         val answer = ApiHelper.requestInsertOwnWord(firebaseUser, tokenId, wordJson)
 
-        if (answer?.isSuccess() == true) {
-            val saveWord = Word(word)
+        return when {
+            answer?.isSuccess() == true -> {
+                val saveWord = Word(word)
 
-            saveWord.tags = tags
-            saveWord.saveType = Word.OWN
-            RepositoryWord.getInstance().updateWord(saveWord)
-            return true
-        } else if (answer != null) {
-            withContext(Dispatchers.Main) {
-                showToast(getErrorString(answer))
+                saveWord.tags = tags
+                saveWord.saveType = Word.OWN
+                RepositoryWord.getInstance().updateWord(saveWord)
+                true
             }
-            return false
-        } else {
-            withContext(Dispatchers.Main) {
-                showToastLong(R.string.error_request)
+            answer != null -> {
+                withContext(Dispatchers.Main) {
+                    showToast(getErrorString(answer))
+                }
+                false
             }
-            return false
+            else -> {
+                withContext(Dispatchers.Main) {
+                    showToastLong(R.string.error_request)
+                }
+                false
+            }
         }
     }
 
@@ -247,34 +245,38 @@ class RepositoryUser private constructor() {
 
         val answer = ApiHelper.requestDeleteOwnWords(firebaseUser, tokenId, wordIdsJson)
 
-        if (answer?.isSuccess() == true) {
-            val wordDao = AppDatabase.getInstance(App.context).wordDao()
+        return when {
+            answer?.isSuccess() == true -> {
+                val wordDao = AppDatabase.getInstance(App.context).wordDao()
 
-            for (wordId in wordIds) {
-                val word = wordDao.findWordById(wordId)
+                for (wordId in wordIds) {
+                    val word = wordDao.findWordById(wordId)
 
-                if (word != null) {
-                    val saveWord = Word(word)
-                    val tags = ArrayList(word.tags)
+                    if (word != null) {
+                        val saveWord = Word(word)
+                        val tags = ArrayList(word.tags)
 
-                    tags.remove(OWN)
-                    saveWord.saveType = Word.DICTIONARY
-                    saveWord.tags = tags
+                        tags.remove(OWN)
+                        saveWord.saveType = Word.DICTIONARY
+                        saveWord.tags = tags
 
-                    RepositoryWord.getInstance(wordDao).updateWord(saveWord)
+                        RepositoryWord.getInstance(wordDao).updateWord(saveWord)
+                    }
                 }
+                true
             }
-            return true
-        } else if (answer != null) {
-            withContext(Dispatchers.Main) {
-                showToast(getErrorString(answer))
+            answer != null -> {
+                withContext(Dispatchers.Main) {
+                    showToast(getErrorString(answer))
+                }
+                false
             }
-            return false
-        } else {
-            withContext(Dispatchers.Main) {
-                showToastLong(R.string.error_request)
+            else -> {
+                withContext(Dispatchers.Main) {
+                    showToastLong(R.string.error_request)
+                }
+                false
             }
-            return false
         }
     }
 
@@ -286,16 +288,16 @@ class RepositoryUser private constructor() {
         val tokenId = RepositoryCommon.getInstance().tokenId
         val updateResult = ApiHelper.requestUpdateUser(firebaseUser, tokenId, user)
 
-        if (updateResult != null && updateResult.result !== null && !updateResult.result.isSuccess()) {
+        return if (updateResult != null && updateResult.result !== null && !updateResult.result.isSuccess()) {
             showToast(getErrorString(updateResult.result))
             liveDataUser.postValue(oldUser)
-            return false
+            false
         } else if (updateResult != null && updateResult.result !== null) {
             SharedHelper.setLearnLanguageType(user.learnLanguageType)
-            return true
+            true
         } else {
             showToast(R.string.error_update)
-            return false
+            false
         }
     }
 }

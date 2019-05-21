@@ -127,34 +127,32 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
 
         @CallSuper
         open fun bind(word: Word, isSelectState: Boolean, checkList: java.util.HashSet<Word>,
-                 clickListener: View.OnClickListener, longClickListener: View.OnLongClickListener,
-                 checkedChangeListener: CompoundButton.OnCheckedChangeListener) {
-            with(itemView) {
-                tag = word.eng
-                getCardViewWord().setOnClickListener(clickListener)
-                getCardViewWord().setOnLongClickListener(longClickListener)
+                      clickListener: View.OnClickListener, longClickListener: View.OnLongClickListener,
+                      checkedChangeListener: CompoundButton.OnCheckedChangeListener) {
+            itemView.tag = word.eng
+            getCardViewWord().setOnClickListener(clickListener)
+            getCardViewWord().setOnLongClickListener(longClickListener)
 
-                getTextTimestamp().text = SimpleDateFormat("hh:mm dd.MM", Locale.getDefault()).format(word.timestamp) ?: ""
-                getTextTags().text = word.tags.toString()
-                getImageOwnWord().visibility = if (word.saveType == Word.DICTIONARY) View.GONE else View.VISIBLE
+            getTextTimestamp().text = SimpleDateFormat("hh:mm dd.MM", Locale.getDefault()).format(word.timestamp) ?: ""
+            getTextTags().text = word.tags.toString()
+            getImageOwnWord().visibility = if (word.saveType == Word.DICTIONARY) View.GONE else View.VISIBLE
 
-                getCheckBoxSelect().visibility = if (isSelectState) View.VISIBLE else View.GONE
-                getCheckBoxSelect().setOnCheckedChangeListener(null)
-                if (isSelectState) {
-                    getCheckBoxSelect().isChecked = checkList.contains(word)
-                    getCheckBoxSelect().setOnCheckedChangeListener(checkedChangeListener)
-                } else {
-                    getCheckBoxSelect().isChecked = false
-                }
+            getCheckBoxSelect().visibility = if (isSelectState) View.VISIBLE else View.GONE
+            getCheckBoxSelect().setOnCheckedChangeListener(null)
+            if (isSelectState) {
+                getCheckBoxSelect().isChecked = checkList.contains(word)
+                getCheckBoxSelect().setOnCheckedChangeListener(checkedChangeListener)
+            } else {
+                getCheckBoxSelect().isChecked = false
+            }
 
-                getProgressLearn().visibility = if (isHideLearnStage) View.GONE else View.VISIBLE
-                if (!isHideLearnStage) {
-                    getProgressLearn().progress = when (word.learnStage) {
-                        0 -> 4
-                        1 -> 32
-                        2 -> 68
-                        else -> 100
-                    }
+            getProgressLearn().visibility = if (isHideLearnStage) View.GONE else View.VISIBLE
+            if (!isHideLearnStage) {
+                getProgressLearn().progress = when (word.learnStage) {
+                    0 -> 4
+                    1 -> 32
+                    2 -> 68
+                    else -> 100
                 }
             }
         }

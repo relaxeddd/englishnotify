@@ -23,7 +23,7 @@ class RepositoryCommon private constructor() {
     var firebaseUser: FirebaseUser? = null
     var tokenId: String? = null
 
-    suspend fun initFirebase(initCallback: (isSuccess: Boolean) -> Unit) {
+    fun initFirebase(initCallback: (isSuccess: Boolean) -> Unit) {
         if (FirebaseAuth.getInstance().currentUser == null) {
             showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
             initCallback(false)

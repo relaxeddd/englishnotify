@@ -54,7 +54,7 @@
     <string name="feedback_too_short">Отзыв слишком короткий</string>
     <string name="filter">Фильтр</string>
     <string name="hours_off_time">Часов (0–23)</string>
-    <string name="i_dont_know_it">Я не знаю</string>
+    <string name="i_not_know_it">Я не знаю</string>
     <string name="i_know_it">Я знаю это</string>
     <string name="incorrect_answer">Неправильный ответ</string>
     <string name="information">Информация</string>
@@ -211,6 +211,9 @@
         \n- Исправлен баг при навигации между экранами
         \n- Диалоговое окно с уведомлением о новой версии теперь можно закрыть, теперь необязательно обновлять приложение</string>
 
+    <string name="patch_notes_2_2_1">- Оптимизация под планшеты
+        \n- Обновление библиотек</string>
+
     <!-- =========================================================================================================== -->
     <string name="own">Своя категория (добавлять слова самому в словаре)</string>
     <string name="irregular">Неправильные глаголы</string>
@@ -267,7 +270,14 @@
     <string name="auto_5">Авто (уровень 2)</string>
     <string name="frequent_verbs">Частые глаголы</string>
     <string name="frequent_verbs_5">Частые глаголы (уровень 2)</string>
-    <string name="exercises_verbs_first">Упражнения на форму глагола (1)</string>
+    <string name="exercises_verbs_first">упр. Форма глагола (1)</string>
+    <string name="exercises_conditional_sentences_1">упр. Условные предложения (1)</string>
+    <string name="exercises_comparison_adjectives_1">упр. Степени сравнения прилагательных (1)</string>
+    <string name="exercises_passive_voice_1">упр. Страдательный залог (1)</string>
+    <string name="exercises_articles_1">упр. Артикли (1)</string>
+    <string name="exercises_modal_verbs_1">упр. Модальные глаголы (1)</string>
+    <string name="exercises_indirect_speech_1">упр. Косвенная речь (1)</string>
+    <string name="exercises_reflexive_1">упр. Возвратные местоимения (1)</string>
 
     <string name="privacy_policy_text">Авторизируясь, вы соглашаетесь с нашей Политикой конфиденциальности</string>
     <!--
