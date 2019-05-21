@@ -88,7 +88,7 @@ object ApiHelper {
 
         try {
             return if (tokenId?.isNotEmpty() == true) {
-                api.requestSendTestNotfication(tokenId, requestId, userId)
+                api.requestSendTestNotification(tokenId, requestId, userId)
             } else {
                 Result(msg = ERROR_SEND_TEST_NOTIFICATION)
             }
@@ -294,41 +294,41 @@ object ApiHelper {
         //--------------------------------------------------------------------------------------------------------------
         suspend fun requestInit(tokenId: String, requestId: String, userId: String, appVersion: Int, pushToken: String,
                                 email: String) : InitData? {
-            return apiHelper.requestInit(tokenPrefix + tokenId, requestId, userId, appVersion, pushToken,
+            return apiHelper.requestInitAsync(tokenPrefix + tokenId, requestId, userId, appVersion, pushToken,
                 email).await()
         }
 
         suspend fun requestVerifyPurchase(tokenId: String, requestId: String, userId: String, purchaseTokenId: String,
                                           signature: String, originalJson: String, itemType: String) : PurchaseResult? {
-            return apiHelper.requestVerifyPurchase(tokenPrefix + tokenId, requestId, userId, purchaseTokenId,
+            return apiHelper.requestVerifyPurchaseAsync(tokenPrefix + tokenId, requestId, userId, purchaseTokenId,
                                                    signature, originalJson, itemType).await()
         }
 
         suspend fun requestSendFeedback(tokenId: String, requestId: String, userId: String, message: String) : Result? {
-            return apiHelper.requestSendFeedback(tokenPrefix + tokenId, requestId, userId, message).await()
+            return apiHelper.requestSendFeedbackAsync(tokenPrefix + tokenId, requestId, userId, message).await()
         }
 
-        suspend fun requestSendTestNotfication(tokenId: String, requestId: String, userId: String) : Result? {
-            return apiHelper.requestSendTestNotification(tokenPrefix + tokenId, requestId, userId).await()
+        suspend fun requestSendTestNotification(tokenId: String, requestId: String, userId: String) : Result? {
+            return apiHelper.requestSendTestNotificationAsync(tokenPrefix + tokenId, requestId, userId).await()
         }
 
         suspend fun requestUpdateUser(tokenId: String, requestId: String, userId: String, notificationsTimeType: Int,
                                       receiveNotifications: Boolean, learnLanguageType: Int,
                                       selectedTag: String): UpdateUserResult? {
-            return apiHelper.requestUpdateUser(tokenPrefix + tokenId, requestId, userId,
+            return apiHelper.requestUpdateUserAsync(tokenPrefix + tokenId, requestId, userId,
                 receiveNotifications, notificationsTimeType, learnLanguageType, selectedTag).await()
         }
 
         suspend fun requestInsertOwnWord(tokenId: String, requestId: String, userId: String, word: JSONObject) : Result? {
-            return apiHelper.requestInsertOwnWord(tokenPrefix + tokenId, requestId, userId, word).await()
+            return apiHelper.requestInsertOwnWordAsync(tokenPrefix + tokenId, requestId, userId, word).await()
         }
 
         suspend fun requestDeleteOwnWords(tokenId: String, requestId: String, userId: String, wordIds: JSONArray) : Result? {
-            return apiHelper.requestDeleteOwnWords(tokenPrefix + tokenId, requestId, userId, wordIds).await()
+            return apiHelper.requestDeleteOwnWordsAsync(tokenPrefix + tokenId, requestId, userId, wordIds).await()
         }
 
         suspend fun requestOwnWords(tokenId: String, requestId: String, userId: String) : OwnWordsResult? {
-            return apiHelper.requestOwnWords(tokenPrefix + tokenId, requestId, userId).await()
+            return apiHelper.requestOwnWordsAsync(tokenPrefix + tokenId, requestId, userId).await()
         }
     }
 }

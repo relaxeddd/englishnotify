@@ -44,9 +44,6 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
         super.configureBinding()
         binding.viewModel = viewModel
         binding.clickListenerChangeCategory = Navigation.createNavigateOnClickListener(R.id.action_fragmentNotifications_to_fragmentCategories)
-        binding.listRepeatTime = resources.getStringArray(R.array.array_time_repeat)
-        binding.listLearnLanguage = resources.getStringArray(R.array.array_learn_language)
-        binding.listNotificationsView = resources.getStringArray(R.array.array_notifications_view)
     }
 
     override fun onNavigationEvent(eventId: Int) {

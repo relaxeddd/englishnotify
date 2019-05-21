@@ -76,13 +76,13 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
         wordText.value = if (isEngTraining) eng else rus
         translation.value = if (isEngTraining) rus else eng
         transcription.value = transcriptionValue
-        resultText.value = if (currentResult == STATE_SUCCESS) getString(R.string.correct_answer) else getString(R.string.incorrect_answer)
+        resultText.value = if (currentResult == STATE_SUCCESS) getAppString(R.string.correct_answer) else getAppString(R.string.incorrect_answer)
         if (answers.size > currentIx) {
             var savedAnswer = answers[currentIx]
             if (savedAnswer.isEmpty()) savedAnswer = "-"
-            answer.value = getString(R.string.your_answer, savedAnswer)
+            answer.value = getAppString(R.string.your_answer, savedAnswer)
         } else {
-            answer.value = getString(R.string.your_answer, "-")
+            answer.value = getAppString(R.string.your_answer, "-")
         }
 
         isVisibleTranslation.value = currentResult != STATE_ANSWER
@@ -111,12 +111,10 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
         val size = trainingWords.size
         val currentResult = getResultLiveDataByIx(currentIx).value ?: 0
 
-        if (currentResult == STATE_ANSWER) {
-            checkResult(currentIx, textAnswer)
-        } else if (currentIx == (size - 1)) {
-            navigateEvent.value = Event(NAVIGATION_ACTIVITY_BACK_TWICE)
-        } else {
-            current.value = currentIx + 1
+        when {
+            currentResult == STATE_ANSWER -> checkResult(currentIx, textAnswer)
+            currentIx == (size - 1) -> navigateEvent.value = Event(NAVIGATION_ACTIVITY_BACK_TWICE)
+            else -> current.value = currentIx + 1
         }
     }
 
@@ -147,12 +145,10 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
         val size = trainingWords.size
         val currentResult = getResultLiveDataByIx(currentIx).value ?: 0
 
-        if (currentResult == STATE_ANSWER) {
-            textButtonOk.value = getString(R.string.answer)
-        } else if (currentIx == (size - 1)) {
-            textButtonOk.value = getString(R.string.end)
-        } else  {
-            textButtonOk.value = getString(R.string.next)
+        when {
+            currentResult == STATE_ANSWER -> textButtonOk.value = getAppString(R.string.answer)
+            currentIx == (size - 1) -> textButtonOk.value = getAppString(R.string.end)
+            else -> textButtonOk.value = getAppString(R.string.next)
         }
         isVisibleButtonOk.value = (currentIx == size - 1) || (currentResult == STATE_ANSWER) || getResultLiveDataByIx(currentIx + 1).value == 0
     }

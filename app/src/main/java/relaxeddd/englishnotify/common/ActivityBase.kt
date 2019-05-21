@@ -47,14 +47,12 @@ abstract class ActivityBase<VM : ViewModelBase, B : ViewDataBinding> : AppCompat
         isMyResumed = false
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-            android.R.id.home -> {
-                listenerHomeMenuButton.invoke()
-                return true
-            }
-            else -> return super.onOptionsItemSelected(item)
+    override fun onOptionsItemSelected(item: MenuItem?) = when (item?.itemId) {
+        android.R.id.home -> {
+            listenerHomeMenuButton.invoke()
+            true
         }
+        else -> super.onOptionsItemSelected(item)
     }
 
     @CallSuper

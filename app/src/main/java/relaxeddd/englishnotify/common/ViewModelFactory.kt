@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModelProvider
 import relaxeddd.englishnotify.model.repository.RepositoryUser
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 import relaxeddd.englishnotify.ui.categories.CategorySection
-import relaxeddd.englishnotify.ui.categories.ViewModelCategories
 import relaxeddd.englishnotify.ui.categories.section.ViewModelCategorySection
 import relaxeddd.englishnotify.ui.dictionary_all.ViewModelDictionaryAll
 import relaxeddd.englishnotify.ui.dictionary_exercises.ViewModelDictionaryExercises

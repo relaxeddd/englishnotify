@@ -46,12 +46,12 @@ class ViewModelCategorySection(type: CategorySection, private val repositoryUser
 
     override fun getSelectedCategory() = selectedCategory
     override fun setSelectedCategory(item: CategoryItem?) {
-        val unselectCategory = selectedCategory
+        val unselectedCategory = selectedCategory
         selectedCategory = item?.key ?: ""
 
-        if (mapCategoryRadioButtons.containsKey(unselectCategory)) {
-            val unselectRb = mapCategoryRadioButtons[unselectCategory] ?: ArrayList()
-            for (radioButton in unselectRb) {
+        if (mapCategoryRadioButtons.containsKey(unselectedCategory)) {
+            val unselectedRb = mapCategoryRadioButtons[unselectedCategory] ?: ArrayList()
+            for (radioButton in unselectedRb) {
                 radioButton.isChecked = false
             }
         }
@@ -132,7 +132,7 @@ class ViewModelCategorySection(type: CategorySection, private val repositoryUser
         CategorySection.EXERCISES -> {
             when (category) {
                 EXERCISES_VERBS_FIRST -> true
-                else -> false
+                else -> category.contains(EXERCISE)
             }
         }
         CategorySection.OTHER -> {

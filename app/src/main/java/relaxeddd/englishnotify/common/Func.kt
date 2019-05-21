@@ -1,3 +1,4 @@
+@file:Suppress("unused")
 package relaxeddd.englishnotify.common
 
 import android.animation.ValueAnimator
@@ -7,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import relaxeddd.englishnotify.App
 import android.util.DisplayMetrics
-import android.view.View.*
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.Uri
@@ -39,12 +39,10 @@ fun convertDpToPixel(dp: Float): Float {
 
 fun animateDropdown(view: ViewGroup, isOpen: Boolean, animBlock: AnimBlock = AnimBlock(false),
                     paddingDp: Float = 0f) {
-    if (animBlock.isAnimating || view.visibility == GONE && !isOpen || view.visibility == VISIBLE && isOpen) return
+    if (animBlock.isAnimating || view.visibility == View.GONE && !isOpen || view.visibility == View.VISIBLE && isOpen) return
 
-    val widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(
-        App.context.resources.displayMetrics.widthPixels,
-                                                            View.MeasureSpec.AT_MOST)
-    val heightMeasureSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
+    val widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(App.context.resources.displayMetrics.widthPixels, View.MeasureSpec.AT_MOST)
+    val heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
 
     view.measure(widthMeasureSpec, heightMeasureSpec)
     val maxHeight = view.measuredHeight + convertDpToPixel(paddingDp).toInt()
@@ -93,14 +91,14 @@ fun isNetworkAvailable(): Boolean {
     return activeNetworkInfo != null && activeNetworkInfo.isConnected
 }
 
-fun getString(@StringRes resId: Int) = App.context.getString(resId)
+fun getAppString(@StringRes resId: Int) : String = App.context.getString(resId)
 
-fun getString(@StringRes resId: Int, arg: String) = App.context.getString(resId, arg)
+fun getAppString(@StringRes resId: Int, arg: String) : String = App.context.getString(resId, arg)
 
 fun getStringByResName(resName: String): String {
     val packageName = App.context.packageName
     val resId = App.context.resources.getIdentifier(resName, "string", packageName)
-    return if (resId != 0) getString(resId) else resName
+    return if (resId != 0) getAppString(resId) else resName
 }
 
 fun openWebPrivacyPolicy(activity: FragmentActivity?) {
@@ -115,36 +113,36 @@ fun openWebApplication(activity: FragmentActivity?) {
     activity?.startActivity(browserIntent)
 }
 
-fun getErrorString(code: Int) = getErrorString(Result(code, getString(R.string.undefined_error)))
+fun getErrorString(code: Int) = getErrorString(Result(code, getAppString(R.string.undefined_error)))
 
 fun getErrorString(result: Result?) : String {
     if (result == null) {
-        return getString(R.string.undefined_error)
+        return getAppString(R.string.undefined_error)
     }
 
     return when (result.code) {
-        RESULT_UNDEFINED -> getString(R.string.undefined_error)
-        RESULT_ERROR_SEND_FEEDBACK -> getString(R.string.feedback_send_error)
-        RESULT_ERROR_FEEDBACK_TOO_SHORT -> getString(R.string.feedback_too_short)
-        RESULT_ERROR_NETWORK -> getString(R.string.network_not_available)
-        RESULT_LOCAL_ERROR -> getString(R.string.undefined_error)
-        RESULT_ERROR_UNAUTHORIZED -> getString(R.string.unauthorized_error)
-        RESULT_ERROR_USER_NOT_FOUND -> getString(R.string.user_not_found)
-        RESULT_ERROR_APP_INIT -> getString(R.string.error_initialization)
-        RESULT_ERROR_ADD_PUSH_TOKEN -> getString(R.string.error_push_token)
-        RESULT_ERROR_UPDATE_USER -> getString(R.string.error_update)
-        RESULT_PURCHASE_NOT_VERIFIED -> getString(R.string.error_purchase)
-        RESULT_PURCHASE_VERIFIED_ERROR -> getString(R.string.error_purchase)
-        RESULT_PURCHASE_ALREADY_RECEIVED -> getString(R.string.error_purchase)
-        RESULT_ERROR_TEST_NOTIFICATION -> getString(R.string.error_test_notification)
-        RESULT_ERROR_OWN_WORD -> getString(R.string.error_own_word_add)
-        RESULT_ERROR_OWN_WORD_EXISTS -> getString(R.string.error_own_word_exists)
-        RESULT_ERROR_OWN_WORD_LIMIT -> getString(R.string.error_own_word_limit)
-        RESULT_ERROR_OWN_WORD_TYPE -> getString(R.string.error_own_word_incorrect)
-        RESULT_ERROR_OWN_DELETE_NO_IDS -> getString(R.string.error_own_word_delete)
-        RESULT_ERROR_OWN_DELETE_NO_WORDS -> getString(R.string.error_own_word_delete)
-        RESULT_ERROR_OWN_DELETE -> getString(R.string.error_own_word_delete)
-        RESULT_ERROR_INTERNET -> getString(R.string.network_not_available)
+        RESULT_UNDEFINED -> getAppString(R.string.undefined_error)
+        RESULT_ERROR_SEND_FEEDBACK -> getAppString(R.string.feedback_send_error)
+        RESULT_ERROR_FEEDBACK_TOO_SHORT -> getAppString(R.string.feedback_too_short)
+        RESULT_ERROR_NETWORK -> getAppString(R.string.network_not_available)
+        RESULT_LOCAL_ERROR -> getAppString(R.string.undefined_error)
+        RESULT_ERROR_UNAUTHORIZED -> getAppString(R.string.unauthorized_error)
+        RESULT_ERROR_USER_NOT_FOUND -> getAppString(R.string.user_not_found)
+        RESULT_ERROR_APP_INIT -> getAppString(R.string.error_initialization)
+        RESULT_ERROR_ADD_PUSH_TOKEN -> getAppString(R.string.error_push_token)
+        RESULT_ERROR_UPDATE_USER -> getAppString(R.string.error_update)
+        RESULT_PURCHASE_NOT_VERIFIED -> getAppString(R.string.error_purchase)
+        RESULT_PURCHASE_VERIFIED_ERROR -> getAppString(R.string.error_purchase)
+        RESULT_PURCHASE_ALREADY_RECEIVED -> getAppString(R.string.error_purchase)
+        RESULT_ERROR_TEST_NOTIFICATION -> getAppString(R.string.error_test_notification)
+        RESULT_ERROR_OWN_WORD -> getAppString(R.string.error_own_word_add)
+        RESULT_ERROR_OWN_WORD_EXISTS -> getAppString(R.string.error_own_word_exists)
+        RESULT_ERROR_OWN_WORD_LIMIT -> getAppString(R.string.error_own_word_limit)
+        RESULT_ERROR_OWN_WORD_TYPE -> getAppString(R.string.error_own_word_incorrect)
+        RESULT_ERROR_OWN_DELETE_NO_IDS -> getAppString(R.string.error_own_word_delete)
+        RESULT_ERROR_OWN_DELETE_NO_WORDS -> getAppString(R.string.error_own_word_delete)
+        RESULT_ERROR_OWN_DELETE -> getAppString(R.string.error_own_word_delete)
+        RESULT_ERROR_INTERNET -> getAppString(R.string.network_not_available)
         else -> result.msg
     }
 }

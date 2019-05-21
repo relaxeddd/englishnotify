@@ -1,7 +1,6 @@
 package relaxeddd.englishnotify.dialogs
 
 import android.app.Dialog
-import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment

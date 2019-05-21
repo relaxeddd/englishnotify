@@ -1,6 +1,5 @@
 package relaxeddd.englishnotify.ui.settings
 
-import android.os.Build
 import android.view.View
 import android.widget.CompoundButton
 import androidx.lifecycle.LiveData
@@ -23,12 +22,8 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     }
 
     val user: LiveData<User?> = repositoryUser.liveDataUser
-    val appLanguageType = MutableLiveData(0)
     val liveDataSubDays = MutableLiveData("")
-
-    val clickListenerLanguage = View.OnClickListener {
-        navigateEvent.value = Event(NAVIGATION_DIALOG_LEARN_ENGLISH)
-    }
+    
     val clickListenerAppInfo = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_APP_ABOUT)
     }

@@ -28,7 +28,7 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
 
     private val userObserver = Observer<User?> { user ->
         isShowGoogleAuth.value = user == null || RepositoryCommon.getInstance().firebaseUser == null
-        isShowWarningNotifications.value = isShowGoogleAuth.value == false && (user == null || user.receiveNotifications == false)
+        isShowWarningNotifications.value = isShowGoogleAuth.value == false && (user == null || !user.receiveNotifications)
         isShowWarningSubscription.value = user != null && user.subscriptionTime <= System.currentTimeMillis()
 
         val launchCount = SharedHelper.getLaunchCount()
@@ -61,7 +61,7 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
     }
     val clickListenerGoogleAuth = View.OnClickListener {
         if (!isNetworkAvailable()) {
-            showToast(getString(R.string.network_not_available))
+            showToast(getAppString(R.string.network_not_available))
             return@OnClickListener
         }
         navigateEvent.value = Event(NAVIGATION_GOOGLE_AUTH)
@@ -94,6 +94,7 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
             ioScope.launch {
                 RepositoryWord.getInstance().clearDictionary()
                 withContext(Dispatchers.Main) {
+                    isFirstLoad = true
                     SharedHelper.setUserEmail("")
                     prepareInit()
                 }
@@ -138,10 +139,7 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
 
     private fun updateOwnWords() {
         ioScope.launch {
-            val words = RepositoryWord.getInstance().words.value
-            if (words?.isEmpty() == true) {
-                repositoryUser.requestOwnWords()
-            }
+            repositoryUser.requestOwnWords()
         }
     }
 }

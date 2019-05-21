@@ -2,7 +2,6 @@ package relaxeddd.englishnotify.ui.training
 
 import android.view.View
 import kotlinx.android.synthetic.main.fragment_training.*
-import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.FragmentTrainingBinding

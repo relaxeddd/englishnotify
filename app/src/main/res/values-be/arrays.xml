@@ -14,21 +14,9 @@
         <item>На 6 месяцев (-50%)</item>
     </string-array>
 
-    <string-array name="array_sort_by">
-        <item>Алфавитный</item>
-        <item>Новые</item>
-        <item>Старые</item>
-        <item>Алфавитный (перевод)</item>
-    </string-array>
-
     <string-array name="array_learn_language">
         <item>Англо-русский</item>
         <item>Русско-английский</item>
-    </string-array>
-
-    <string-array name="array_languages">
-        <item>Английский</item>
-        <item>Русский</item>
     </string-array>
 
     <string-array name="array_notifications_view">

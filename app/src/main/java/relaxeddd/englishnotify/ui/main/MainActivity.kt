@@ -1,5 +1,6 @@
 package relaxeddd.englishnotify.ui.main
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableString
@@ -9,7 +10,6 @@ import android.text.style.ClickableSpan
 import android.text.style.UnderlineSpan
 import android.view.View
 import androidx.navigation.NavController
-import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import relaxeddd.englishnotify.R
 import com.firebase.ui.auth.AuthUI
@@ -37,9 +37,9 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
     private var selectedBottomMenuId: Int = R.id.fragmentDictionaryAll
     private var selectedSecondaryBottomMenuId: Int = R.id.fragmentDictionaryAll
     private lateinit var navController: NavController
-    private val providers: List<AuthUI.IdpConfig> = Arrays.asList(AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build())
+    private val providers: List<AuthUI.IdpConfig> = Arrays.asList(AuthUI.IdpConfig.GoogleBuilder().build())
     private var dialogNewVersion: DialogNewVersion? = null
-    var isBillingInited = false
+    var isBillingInit = false
 
     private val listenerNewVersion: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
         override fun onResult(result: Boolean) {
@@ -144,11 +144,12 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
             REQUEST_SIGN_IN -> {
                 val response: IdpResponse? = IdpResponse.fromResultIntent(data)
 
-                if (response?.errorCode == -1) {
+                if (resultCode == Activity.RESULT_OK) {
+                    text_main_privacy_policy.visibility = View.GONE
                     viewModel.prepareInit()
-                } else {
+                } else if (isMyResumed && response != null) {
                     AuthUI.getInstance().signOut(this).addOnCompleteListener {}
-                    showToast(response.toString())
+                    showToast(response.error.toString())
                 }
             }
             REQUEST_PLAY_SERVICES_RESULT -> {
@@ -208,10 +209,10 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
                 dialog.show(this@MainActivity.supportFragmentManager, "Patch Notes Dialog")
             }
             NAVIGATION_INIT_BILLING -> {
-                if (isMyResumed && !isBillingInited) {
+                if (isMyResumed && !isBillingInit) {
                     initBilling(object: ListenerResult<Boolean> {
                         override fun onResult(result: Boolean) {
-                            if (result) isBillingInited = true
+                            if (result) isBillingInit = true
                         }
                     })
                 }

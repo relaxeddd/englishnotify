@@ -37,7 +37,7 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
     protected open fun getToolbarTitle() = ""
     protected open fun isHomeMenuButtonEnabled() = false
     protected open fun getHomeMenuButtonIconResId() = R.drawable.ic_menu
-    protected open fun getHomeMenuButtonListener() = {}
+    protected open fun getHomeMenuButtonListener(): () -> Unit = {}
     protected open fun getMenuResId() = EMPTY_RES
     protected open fun onSearchTextChanged(searchText: String) {}
     protected open fun getSearchMenuItemId() = EMPTY_RES

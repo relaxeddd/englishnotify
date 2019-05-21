@@ -13,56 +13,56 @@ import retrofit2.http.Query
 interface IApi {
 
     @GET(FUNC_REQUEST_INIT)
-    fun requestInit(@Header("Authorization") idToken: String,
-                    @Query("requestId") requestId: String,
-                    @Query("userId") userId: String,
-                    @Query("appVersion") appVersion: Int,
-                    @Query("pushToken") pushToken: String,
-                    @Query("email") email: String) : Deferred<InitData?>
+    fun requestInitAsync(@Header("Authorization") idToken: String,
+                         @Query("requestId") requestId: String,
+                         @Query("userId") userId: String,
+                         @Query("appVersion") appVersion: Int,
+                         @Query("pushToken") pushToken: String,
+                         @Query("email") email: String) : Deferred<InitData?>
 
     @GET(FUNC_REQUEST_VERIFY_PURCHASE)
-    fun requestVerifyPurchase(@Header("Authorization") idToken: String,
-                              @Query("requestId") requestId: String,
-                              @Query("userId") userId: String,
-                              @Query("purchaseTokenId") purchaseTokenId: String,
-                              @Query("signature") signature: String,
-                              @Query("originalJson") originalJson: String,
-                              @Query("itemType") itemType: String) : Deferred<PurchaseResult?>
+    fun requestVerifyPurchaseAsync(@Header("Authorization") idToken: String,
+                                   @Query("requestId") requestId: String,
+                                   @Query("userId") userId: String,
+                                   @Query("purchaseTokenId") purchaseTokenId: String,
+                                   @Query("signature") signature: String,
+                                   @Query("originalJson") originalJson: String,
+                                   @Query("itemType") itemType: String) : Deferred<PurchaseResult?>
 
     @GET(FUNC_REQUEST_SEND_FEEDBACK)
-    fun requestSendFeedback(@Header("Authorization") idToken: String,
-                            @Query("requestId") requestId: String,
-                            @Query("userId") userId: String,
-                            @Query("message") message: String) : Deferred<Result?>
+    fun requestSendFeedbackAsync(@Header("Authorization") idToken: String,
+                                 @Query("requestId") requestId: String,
+                                 @Query("userId") userId: String,
+                                 @Query("message") message: String) : Deferred<Result?>
 
     @GET(FUNC_REQUEST_SEND_TEST_NOTIFICATION)
-    fun requestSendTestNotification(@Header("Authorization") idToken: String,
-                            @Query("requestId") requestId: String,
-                            @Query("userId") userId: String) : Deferred<Result?>
+    fun requestSendTestNotificationAsync(@Header("Authorization") idToken: String,
+                                         @Query("requestId") requestId: String,
+                                         @Query("userId") userId: String) : Deferred<Result?>
 
     @GET(FUNC_REQUEST_UPDATE_USER)
-    fun requestUpdateUser(@Header("Authorization") idToken: String,
-                          @Query("requestId") requestId: String,
-                          @Query("userId") userId: String,
-                          @Query("receiveNotifications") receiveNotifications: Boolean,
-                          @Query("notificationsTimeType") notificationsTimeType: Int,
-                          @Query("learnLanguageType") learnLanguageType: Int,
-                          @Query("selectedTag") selectedTag: String) : Deferred<UpdateUserResult?>
+    fun requestUpdateUserAsync(@Header("Authorization") idToken: String,
+                               @Query("requestId") requestId: String,
+                               @Query("userId") userId: String,
+                               @Query("receiveNotifications") receiveNotifications: Boolean,
+                               @Query("notificationsTimeType") notificationsTimeType: Int,
+                               @Query("learnLanguageType") learnLanguageType: Int,
+                               @Query("selectedTag") selectedTag: String) : Deferred<UpdateUserResult?>
 
     @GET(FUNC_REQUEST_INSERT_OWN_WORD)
-    fun requestInsertOwnWord(@Header("Authorization") idToken: String,
-                             @Query("requestId") requestId: String,
-                             @Query("userId") userId: String,
-                             @Query("word") word: JSONObject) : Deferred<Result?>
+    fun requestInsertOwnWordAsync(@Header("Authorization") idToken: String,
+                                  @Query("requestId") requestId: String,
+                                  @Query("userId") userId: String,
+                                  @Query("word") word: JSONObject) : Deferred<Result?>
 
     @GET(FUNC_REQUEST_DELETE_OWN_WORDS)
-    fun requestDeleteOwnWords(@Header("Authorization") idToken: String,
-                              @Query("requestId") requestId: String,
-                              @Query("userId") userId: String,
-                              @Query("wordIds") wordIds: JSONArray) : Deferred<Result?>
+    fun requestDeleteOwnWordsAsync(@Header("Authorization") idToken: String,
+                                   @Query("requestId") requestId: String,
+                                   @Query("userId") userId: String,
+                                   @Query("wordIds") wordIds: JSONArray) : Deferred<Result?>
 
     @GET(FUNC_REQUEST_GET_OWN_WORDS)
-    fun requestOwnWords(@Header("Authorization") idToken: String,
-                        @Query("requestId") requestId: String,
-                        @Query("userId") userId: String) : Deferred<OwnWordsResult?>
+    fun requestOwnWordsAsync(@Header("Authorization") idToken: String,
+                             @Query("requestId") requestId: String,
+                             @Query("userId") userId: String) : Deferred<OwnWordsResult?>
 }

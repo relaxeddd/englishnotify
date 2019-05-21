@@ -2,24 +2,17 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/size_16"
+    android:paddingEnd="@dimen/size_16"
+    android:paddingTop="@dimen/size_2"
+    android:paddingBottom="@dimen/size_2">
 
-    <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="@dimen/size_16"
-            android:paddingEnd="@dimen/size_16"
-            android:paddingTop="@dimen/size_2"
-            android:paddingBottom="@dimen/size_2">
-
-        <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/radio_button_category"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layoutDirection="rtl"
-                android:textSize="@dimen/font_16"
-                android:text="Образование (уровень 2)"/>
-
-    </FrameLayout>
+    <com.google.android.material.radiobutton.MaterialRadioButton
+        android:id="@+id/radio_button_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layoutDirection="rtl"
+        android:textSize="@dimen/font_16"/>
 
 </FrameLayout>

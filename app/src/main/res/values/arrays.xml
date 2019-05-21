@@ -14,21 +14,9 @@
         <item>For 6 month (-50%)</item>
     </string-array>
 
-    <string-array name="array_sort_by">
-        <item>Alphabetical name</item>
-        <item>Time new</item>
-        <item>Time old</item>
-        <item>Alphabetical translate</item>
-    </string-array>
-
     <string-array name="array_learn_language">
         <item>English-russian</item>
         <item>Russian-english</item>
-    </string-array>
-
-    <string-array name="array_languages">
-        <item>English</item>
-        <item>Russian</item>
     </string-array>
 
     <string-array name="array_notifications_view">

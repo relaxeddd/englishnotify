@@ -37,7 +37,6 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
     override fun configureBinding() {
         super.configureBinding()
         binding.viewModel = viewModel
-        binding.listLanguages = resources.getStringArray(R.array.array_languages)
     }
 
     override fun onNavigationEvent(eventId: Int) {
@@ -60,9 +59,11 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
                 }
             }
             NAVIGATION_GOOGLE_LOGOUT -> {
-                activity?.let {
-                    AuthUI.getInstance().signOut(it).addOnCompleteListener { resultTask ->
-                        viewModel.onLogoutResult(resultTask.isSuccessful)
+                if (isResumed) {
+                    activity?.let {
+                        AuthUI.getInstance().signOut(it).addOnCompleteListener { resultTask ->
+                            viewModel.onLogoutResult(resultTask.isSuccessful)
+                        }
                     }
                 }
             }
@@ -80,7 +81,7 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
                 val activity = activity
 
                 if (isResumed && activity is MainActivity) {
-                    if (activity.isBillingInited) {
+                    if (activity.isBillingInit) {
                         val dialog = DialogSubscription()
                         dialog.listener = listenerSubscription
                         dialog.show(this@FragmentSettings.childFragmentManager, "Subscription Dialog")
@@ -91,7 +92,7 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
 
                                 if (isResumed && freshActivity != null && freshActivity is MainActivity) {
                                     if (result) {
-                                        freshActivity.isBillingInited = true
+                                        freshActivity.isBillingInit = true
 
                                         val dialog = DialogSubscription()
                                         dialog.listener = listenerSubscription

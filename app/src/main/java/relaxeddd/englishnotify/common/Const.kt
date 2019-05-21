@@ -1,9 +1,8 @@
+@file:Suppress("unused")
 package relaxeddd.englishnotify.common
 
 const val URL_FIREBASE = "https://us-central1-push-english-79db7.cloudfunctions.net/"
-const val URL_LOCAL = "http://192.168.1.69:5000/push-english-79db7/us-central1/"
-
-const val USER_ID_TEST = "id123456"
+const val URL_LOCAL = "http://192.168.0.1:5000/push-english-79db7/us-central1/"
 
 const val CHECKED_ITEM = "checked_item"
 const val CHECKED_ITEMS = "checked_items"
@@ -142,7 +141,7 @@ const val TIMESTAMP = "timestamp"
 const val TYPE = "type"
 const val TITLE = "title"
 const val TEXT = "text"
-const val CANCELLED_RATE_DIALOG = "cancelledRateDialog2"
+const val CANCELLED_RATE_DIALOG = "cancelledRateDialog3"
 const val WORD_LEARN_STAGE = "wordLearnStage"
 const val IS_SHOW_ONLY_ONE_NOTIFICATION = "isShowOnlyOneNotification"
 const val SYSTEM = "system"
