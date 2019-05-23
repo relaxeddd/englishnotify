@@ -30,7 +30,6 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
                 val tags = ArrayList(it.tags)
 
                 it.tags = tags
-                it.saveType = Word.OWN
                 it.timestamp = System.currentTimeMillis()
 
                 wordDao.insertAll(it)

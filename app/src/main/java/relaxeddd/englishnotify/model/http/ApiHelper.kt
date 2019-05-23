@@ -193,6 +193,23 @@ object ApiHelper {
         }
     }
 
+    //------------------------------------------------------------------------------------------------------------------
+    private suspend fun <T> executeRequest(request: suspend () -> T, defaultAnswer: T) = try {
+        request()
+    } catch (e: UnknownHostException) {
+        defaultAnswer
+    } catch (e: SocketTimeoutException) {
+        defaultAnswer
+    } catch (e: StreamResetException) {
+        defaultAnswer
+    } catch (e: HttpException) {
+        defaultAnswer
+    } catch (e: ConnectException) {
+        defaultAnswer
+    } catch (e: SSLHandshakeException) {
+        defaultAnswer
+    }
+
     private class Api {
 
         private val tokenPrefix = "Bearer "

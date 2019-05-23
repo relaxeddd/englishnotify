@@ -174,7 +174,7 @@ class RepositoryUser private constructor() {
             }
             return false
         }
-        if (word.tags.contains(OWN)) {
+        if (word.tags.contains(OWN) || word.saveType == Word.DICTIONARY) {
             withContext(Dispatchers.Main) {
                 showToast(getErrorString(RESULT_ERROR_OWN_WORD_TYPE))
             }
@@ -189,13 +189,16 @@ class RepositoryUser private constructor() {
 
         tags.add(OWN)
         for (tag in tags) {
-            tagsJson.put(tag)
+            if (tag.isNotEmpty()) {
+                tagsJson.put(tag)
+            }
         }
         wordJson.put(ENG, word.eng)
         wordJson.put(RUS, word.rus)
         wordJson.put(TRANSCRIPTION, word.transcription)
         wordJson.put(TAGS, tagsJson)
         wordJson.put(TYPE, word.type)
+        wordJson.put(SAVE_TYPE, word.saveType)
 
         val answer = ApiHelper.requestInsertOwnWord(firebaseUser, tokenId, wordJson)
 
@@ -204,7 +207,6 @@ class RepositoryUser private constructor() {
                 val saveWord = Word(word)
 
                 saveWord.tags = tags
-                saveWord.saveType = Word.OWN
                 RepositoryWord.getInstance().updateWord(saveWord)
                 true
             }
@@ -257,7 +259,9 @@ class RepositoryUser private constructor() {
                         val tags = ArrayList(word.tags)
 
                         tags.remove(OWN)
-                        saveWord.saveType = Word.DICTIONARY
+                        if (saveWord.saveType == Word.DICTIONARY_OWN) {
+                            saveWord.saveType = Word.DICTIONARY
+                        }
                         saveWord.tags = tags
 
                         RepositoryWord.getInstance(wordDao).updateWord(saveWord)

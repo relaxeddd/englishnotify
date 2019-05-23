@@ -93,8 +93,8 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
 
         popupMenu.menu.findItem(R.id.item_menu_reset_progress)?.isVisible = word.learnStage > 0 && !isHideLearnStage
         popupMenu.menu.findItem(R.id.item_menu_know)?.isVisible = word.learnStage != LEARN_STAGE_MAX && !isHideLearnStage
-        popupMenu.menu.findItem(R.id.item_menu_add_own)?.isVisible = word.saveType == Word.DICTIONARY
-        popupMenu.menu.findItem(R.id.item_menu_delete_own)?.isVisible = word.saveType != Word.DICTIONARY
+        popupMenu.menu.findItem(R.id.item_menu_add_own)?.isVisible = word.saveType == Word.DICTIONARY || !word.tags.contains(OWN)
+        popupMenu.menu.findItem(R.id.item_menu_delete_own)?.isVisible = word.saveType != Word.DICTIONARY && word.tags.contains(OWN)
         val menuHelper = MenuPopupHelper(view.context, popupMenu.menu as MenuBuilder, view)
         menuHelper.setForceShowIcon(true)
         menuHelper.show()
@@ -122,6 +122,7 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
         abstract fun getTextTimestamp() : TextView
         abstract fun getTextTags() : TextView
         abstract fun getImageOwnWord() : ImageView
+        abstract fun getImageOwnCreatedWord() : ImageView
         abstract fun getCheckBoxSelect() : MaterialCheckBox
         abstract fun getProgressLearn() : ProgressBar
 
@@ -135,7 +136,8 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
 
             getTextTimestamp().text = SimpleDateFormat("hh:mm dd.MM", Locale.getDefault()).format(word.timestamp) ?: ""
             getTextTags().text = word.tags.toString()
-            getImageOwnWord().visibility = if (word.saveType == Word.DICTIONARY) View.GONE else View.VISIBLE
+            getImageOwnWord().visibility = if (word.saveType != Word.DICTIONARY && word.tags.contains(OWN)) View.VISIBLE else View.GONE
+            getImageOwnCreatedWord().visibility = if (word.saveType == Word.OWN) View.VISIBLE else View.GONE
 
             getCheckBoxSelect().visibility = if (isSelectState) View.VISIBLE else View.GONE
             getCheckBoxSelect().setOnCheckedChangeListener(null)

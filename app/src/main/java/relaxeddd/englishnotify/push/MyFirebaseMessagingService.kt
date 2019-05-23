@@ -100,8 +100,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     knowIntent, PendingIntent.FLAG_UPDATE_CURRENT)
                 val action: NotificationCompat.Action = NotificationCompat.Action.Builder(R.drawable.ic_dictionary,
                     getAppString(R.string.i_know_it), replyPendingIntent)
-                    .addRemoteInput(remoteInput)
-                    .build()
+                        .addRemoteInput(remoteInput)
+                        .build()
                 notificationBuilder.addAction(action)
 
                 val notKnowPendingIntent: PendingIntent =

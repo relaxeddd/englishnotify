@@ -334,5 +334,6 @@
     <string name="ic_main_warning_notifications" translatable="false">Warning notifications</string>
     <string name="ic_main_warning_subscription" translatable="false">Warning subscription</string>
     <string name="ic_own" translatable="false">Word in own category</string>
+    <string name="ic_own_created" translatable="false">Word in own category which created by you</string>
 
 </resources>

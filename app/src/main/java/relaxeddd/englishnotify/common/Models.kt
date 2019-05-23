@@ -48,6 +48,7 @@ data class Word(
     companion object {
         const val DICTIONARY = 0
         const val OWN = 1
+        const val DICTIONARY_OWN = 2
     }
 }
 

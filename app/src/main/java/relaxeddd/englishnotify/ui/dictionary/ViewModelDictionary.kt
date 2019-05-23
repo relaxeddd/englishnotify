@@ -83,6 +83,9 @@ open class ViewModelDictionary(protected val repositoryWord: RepositoryWord, pro
     fun addToOwn(word: Word) {
         navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
         ioScope.launch {
+            if (word.saveType == Word.DICTIONARY) {
+                word.saveType = Word.DICTIONARY_OWN
+            }
             repositoryUser.insertOwnWord(word)
             withContext(Dispatchers.Main) {
                 navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
