@@ -17,6 +17,7 @@ import retrofit2.HttpException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
+import javax.net.ssl.SSLHandshakeException
 
 object ApiHelper {
 
@@ -32,22 +33,11 @@ object ApiHelper {
         val email = firebaseUser?.email ?: ""
         val appVersion = BuildConfig.VERSION_CODE
 
-        try {
-            return if (tokenId?.isNotEmpty() == true) {
-                api.requestInit(tokenId, requestId, userId, appVersion, pushToken, email)
-            } else {
-                InitData(Result(RESULT_ERROR_UNAUTHORIZED), User())
-            }
-        } catch (e: UnknownHostException) {
-            return InitData(Result(RESULT_ERROR_INTERNET), User())
-        } catch (e: SocketTimeoutException) {
-            return InitData(Result(RESULT_ERROR_INTERNET), User())
-        } catch (e: StreamResetException) {
-            return InitData(Result(RESULT_ERROR_INTERNET), User())
-        } catch (e: HttpException) {
-            return InitData(Result(RESULT_ERROR_INTERNET), User())
-        } catch (e: ConnectException) {
-            return InitData(Result(RESULT_ERROR_INTERNET), User())
+        return if (tokenId?.isNotEmpty() == true) {
+            return executeRequest( suspend { api.requestInit(tokenId, requestId, userId, appVersion, pushToken, email) },
+                InitData(Result(RESULT_ERROR_INTERNET), User()))
+        } else {
+            InitData(Result(RESULT_ERROR_UNAUTHORIZED), User())
         }
     }
 
@@ -59,22 +49,10 @@ object ApiHelper {
         val requestId = UUID.randomUUID().toString()
         val userId = firebaseUser?.uid ?: ""
 
-        try {
-            return if (tokenId?.isNotEmpty() == true) {
-                api.requestSendFeedback(tokenId, requestId, userId, feedback)
-            } else {
-                Result(msg = ERROR_TOKEN_NOT_INIT)
-            }
-        } catch (e: UnknownHostException) {
-            return Result(RESULT_ERROR_INTERNET)
-        } catch (e: SocketTimeoutException) {
-            return Result(RESULT_ERROR_INTERNET)
-        } catch (e: StreamResetException) {
-            return Result(RESULT_ERROR_INTERNET)
-        } catch (e: HttpException) {
-            return Result(RESULT_ERROR_INTERNET)
-        } catch (e: ConnectException) {
-            return Result(RESULT_ERROR_INTERNET)
+        return if (tokenId?.isNotEmpty() == true) {
+            return executeRequest( suspend { api.requestSendFeedback(tokenId, requestId, userId, feedback) }, Result(RESULT_ERROR_INTERNET))
+        } else {
+            Result(msg = ERROR_TOKEN_NOT_INIT)
         }
     }
 
@@ -86,22 +64,10 @@ object ApiHelper {
         val requestId = UUID.randomUUID().toString()
         val userId = firebaseUser?.uid ?: ""
 
-        try {
-            return if (tokenId?.isNotEmpty() == true) {
-                api.requestSendTestNotification(tokenId, requestId, userId)
-            } else {
-                Result(msg = ERROR_SEND_TEST_NOTIFICATION)
-            }
-        } catch (e: UnknownHostException) {
-            return Result(RESULT_ERROR_INTERNET)
-        } catch (e: SocketTimeoutException) {
-            return Result(RESULT_ERROR_INTERNET)
-        } catch (e: StreamResetException) {
-            return Result(RESULT_ERROR_INTERNET)
-        } catch (e: HttpException) {
-            return Result(RESULT_ERROR_INTERNET)
-        } catch (e: ConnectException) {
-            return Result(RESULT_ERROR_INTERNET)
+        return if (tokenId?.isNotEmpty() == true) {
+            return executeRequest( suspend { api.requestSendTestNotification(tokenId, requestId, userId) }, Result(RESULT_ERROR_INTERNET))
+        } else {
+            Result(msg = ERROR_SEND_TEST_NOTIFICATION)
         }
     }
 
@@ -117,23 +83,11 @@ object ApiHelper {
         val learnLanguageType = user.learnLanguageType
         val selectedTag = user.selectedTag
 
-        try {
-            return if (tokenId?.isNotEmpty() == true) {
-                api.requestUpdateUser(tokenId, requestId, userId, notificationsTimeType, receiveNotifications,
-                    learnLanguageType, selectedTag)
-            } else {
-                UpdateUserResult(Result(RESULT_ERROR_UNAUTHORIZED), User())
-            }
-        } catch (e: UnknownHostException) {
-            return UpdateUserResult(Result(RESULT_ERROR_INTERNET), User())
-        } catch (e: SocketTimeoutException) {
-            return UpdateUserResult(Result(RESULT_ERROR_INTERNET), User())
-        } catch (e: StreamResetException) {
-            return UpdateUserResult(Result(RESULT_ERROR_INTERNET), User())
-        } catch (e: HttpException) {
-            return UpdateUserResult(Result(RESULT_ERROR_INTERNET), User())
-        } catch (e: ConnectException) {
-            return UpdateUserResult(Result(RESULT_ERROR_INTERNET), User())
+        return if (tokenId?.isNotEmpty() == true) {
+            return executeRequest( suspend { api.requestUpdateUser(tokenId, requestId, userId, notificationsTimeType, receiveNotifications,
+                learnLanguageType, selectedTag) }, UpdateUserResult(Result(RESULT_ERROR_INTERNET), User()))
+        } else {
+            UpdateUserResult(Result(RESULT_ERROR_UNAUTHORIZED), User())
         }
     }
 
@@ -146,22 +100,11 @@ object ApiHelper {
         val requestId = UUID.randomUUID().toString()
         val userId = firebaseUser?.uid ?: ""
 
-        try {
-            return if (tokenId?.isNotEmpty() == true) {
-                api.requestVerifyPurchase(tokenId, requestId, userId, purchaseTokenId, signature, originalJson, itemType)
-            } else {
-                PurchaseResult(Result(RESULT_PURCHASE_VERIFIED_ERROR))
-            }
-        } catch (e: UnknownHostException) {
-            return PurchaseResult(Result(RESULT_ERROR_INTERNET))
-        } catch (e: SocketTimeoutException) {
-            return PurchaseResult(Result(RESULT_ERROR_INTERNET))
-        } catch (e: StreamResetException) {
-            return PurchaseResult(Result(RESULT_ERROR_INTERNET))
-        } catch (e: HttpException) {
-            return PurchaseResult(Result(RESULT_ERROR_INTERNET))
-        } catch (e: ConnectException) {
-            return PurchaseResult(Result(RESULT_ERROR_INTERNET))
+        return if (tokenId?.isNotEmpty() == true) {
+            return executeRequest( suspend { api.requestVerifyPurchase(tokenId, requestId, userId, purchaseTokenId, signature, originalJson, itemType) },
+                PurchaseResult(Result(RESULT_ERROR_INTERNET)))
+        } else {
+            PurchaseResult(Result(RESULT_PURCHASE_VERIFIED_ERROR))
         }
     }
 
@@ -173,22 +116,10 @@ object ApiHelper {
         val requestId = UUID.randomUUID().toString()
         val userId = firebaseUser?.uid ?: ""
 
-        try {
-            return if (tokenId?.isNotEmpty() == true) {
-                api.requestInsertOwnWord(tokenId, requestId, userId, word)
-            } else {
-                Result(RESULT_ERROR_OWN_WORD)
-            }
-        } catch (e: UnknownHostException) {
-            return Result(RESULT_ERROR_INTERNET)
-        } catch (e: SocketTimeoutException) {
-            return Result(RESULT_ERROR_INTERNET)
-        } catch (e: StreamResetException) {
-            return Result(RESULT_ERROR_INTERNET)
-        } catch (e: HttpException) {
-            return Result(RESULT_ERROR_INTERNET)
-        } catch (e: ConnectException) {
-            return Result(RESULT_ERROR_INTERNET)
+        return if (tokenId?.isNotEmpty() == true) {
+            return executeRequest( suspend { api.requestInsertOwnWord(tokenId, requestId, userId, word) }, Result(RESULT_ERROR_INTERNET))
+        } else {
+            Result(RESULT_ERROR_OWN_WORD)
         }
     }
 
@@ -200,22 +131,10 @@ object ApiHelper {
         val requestId = UUID.randomUUID().toString()
         val userId = firebaseUser?.uid ?: ""
 
-        try {
-            return if (tokenId?.isNotEmpty() == true) {
-                api.requestDeleteOwnWords(tokenId, requestId, userId, wordIds)
-            } else {
-                Result(RESULT_ERROR_OWN_WORD)
-            }
-        } catch (e: UnknownHostException) {
-            return Result(RESULT_ERROR_INTERNET)
-        } catch (e: SocketTimeoutException) {
-            return Result(RESULT_ERROR_INTERNET)
-        } catch (e: StreamResetException) {
-            return Result(RESULT_ERROR_INTERNET)
-        } catch (e: HttpException) {
-            return Result(RESULT_ERROR_INTERNET)
-        } catch (e: ConnectException) {
-            return Result(RESULT_ERROR_INTERNET)
+        return if (tokenId?.isNotEmpty() == true) {
+            return executeRequest( suspend { api.requestDeleteOwnWords(tokenId, requestId, userId, wordIds) }, Result(RESULT_ERROR_INTERNET))
+        } else {
+            Result(RESULT_ERROR_OWN_WORD)
         }
     }
 
@@ -227,23 +146,28 @@ object ApiHelper {
         val requestId = UUID.randomUUID().toString()
         val userId = firebaseUser?.uid ?: ""
 
-        try {
-            return if (tokenId?.isNotEmpty() == true) {
-                api.requestOwnWords(tokenId, requestId, userId)
-            } else {
-                OwnWordsResult(Result(RESULT_ERROR_OWN_GET))
-            }
-        } catch (e: UnknownHostException) {
-            return OwnWordsResult(Result(RESULT_ERROR_INTERNET))
-        } catch (e: SocketTimeoutException) {
-            return OwnWordsResult(Result(RESULT_ERROR_INTERNET))
-        } catch (e: StreamResetException) {
-            return OwnWordsResult(Result(RESULT_ERROR_INTERNET))
-        } catch (e: HttpException) {
-            return OwnWordsResult(Result(RESULT_ERROR_INTERNET))
-        } catch (e: ConnectException) {
-            return OwnWordsResult(Result(RESULT_ERROR_INTERNET))
+        return if (tokenId?.isNotEmpty() == true) {
+            return executeRequest( suspend { api.requestOwnWords(tokenId, requestId, userId) }, OwnWordsResult(Result(RESULT_ERROR_INTERNET)))
+        } else {
+            OwnWordsResult(Result(RESULT_ERROR_OWN_GET))
         }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    private suspend fun <T> executeRequest(request: suspend () -> T, defaultAnswer: T) = try {
+        request()
+    } catch (e: UnknownHostException) {
+        defaultAnswer
+    } catch (e: SocketTimeoutException) {
+        defaultAnswer
+    } catch (e: StreamResetException) {
+        defaultAnswer
+    } catch (e: HttpException) {
+        defaultAnswer
+    } catch (e: ConnectException) {
+        defaultAnswer
+    } catch (e: SSLHandshakeException) {
+        defaultAnswer
     }
 
     //------------------------------------------------------------------------------------------------------------------

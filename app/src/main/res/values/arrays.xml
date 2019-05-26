@@ -2,9 +2,13 @@
 <resources>
 
     <string-array name="array_time_repeat">
-        <item>Every 1 hour</item>
-        <item>Every 2 hours</item>
+        <item>Every 1 hour (with subscription)</item>
+        <item>Every 2 hours (with subscription)</item>
+        <item>Every 3 hours (with subscription)</item>
         <item>Every 4 hours</item>
+        <item>Every 5 hours</item>
+        <item>Every 6 hours</item>
+        <item>Every 7 hours</item>
         <item>Every 8 hours</item>
     </string-array>
 
@@ -21,7 +25,7 @@
 
     <string-array name="array_notifications_view">
         <item>With translation in notification</item>
-        <item>Enter translation (from Android 7.0) or show not right away</item>
+        <item>Enter translation into notification</item>
     </string-array>
 
 </resources>

@@ -113,12 +113,16 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
 
         when {
             currentResult == STATE_ANSWER -> checkResult(currentIx, textAnswer)
-            currentIx == (size - 1) -> navigateEvent.value = Event(NAVIGATION_ACTIVITY_BACK_TWICE)
+            currentIx >= (size - 1) -> navigateEvent.value = Event(NAVIGATION_ACTIVITY_BACK_TWICE)
             else -> current.value = currentIx + 1
         }
     }
 
     private fun checkResult(ix: Int, textAnswer: String) {
+        if (ix >= trainingWords.size) {
+            return
+        }
+
         val word = trainingWords[ix]
         val answer = if (isEngTraining(word)) word.rus else word.eng
         val isCorrectAnswer = isCorrectAnswer(textAnswer, answer)
