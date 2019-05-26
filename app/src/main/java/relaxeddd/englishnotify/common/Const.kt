@@ -82,6 +82,7 @@ const val NAVIGATION_DIALOG_OWN_CATEGORY = 1091
 const val NAVIGATION_FRAGMENT_TRAINING = 1111
 const val NAVIGATION_DIALOG_INFO_TRAINING = 1121
 const val NAVIGATION_DIALOG_CHANGE_ACCOUNT = 1131
+const val NAVIGATION_DIALOG_SUBSCRIPTION_INFO = 1141
 
 const val NAVIGATION_LOADING_SHOW = 801
 const val NAVIGATION_LOADING_HIDE = 802
@@ -141,7 +142,7 @@ const val TIMESTAMP = "timestamp"
 const val TYPE = "type"
 const val TITLE = "title"
 const val TEXT = "text"
-const val CANCELLED_RATE_DIALOG = "cancelledRateDialog3"
+const val CANCELLED_RATE_DIALOG = "cancelledRateDialog4"
 const val WORD_LEARN_STAGE = "wordLearnStage"
 const val IS_SHOW_ONLY_ONE_NOTIFICATION = "isShowOnlyOneNotification"
 const val SYSTEM = "system"

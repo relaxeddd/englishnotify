@@ -100,7 +100,7 @@
     <string name="rate_app_pls">Оцените пожалуйста приложение</string>
     <string name="receive_notifications_time">Получать уведомления</string>
     <string name="remove_from_own_category">Убрать из своей категории</string>
-    <string name="renew_subscription">Продлить использование</string>
+    <string name="renew_subscription">Продлить подписку</string>
     <string name="reset_progress">Сбросить прогресс</string>
     <string name="russian_at_english">С руссокого на английский</string>
     <string name="show_only_one_last_notification">Показывать только одно последнее уведомление</string>
@@ -112,8 +112,11 @@
     <string name="select">Выбрать</string>
     <string name="settings">Настройки</string>
     <string name="sort_by">Сортировать по</string>
-    <string name="subscription_days">Дней использования: %s</string>
-    <string name="subscription_time_error">Время подписки истекло, необходимо её продлить</string>
+    <string name="sub_advantages">Преимущества подписки</string>
+    <string name="sub_advantages_info">- Получение уведомлений чаще чем раз в 4 часа</string>
+    <string name="subscription_days">Дней подписки: %s</string>
+    <string name="subscription_time_error">Время подписки истекло, можно продлить для получения преимуществ</string>
+    <string name="subscription_need">Нужно продлить подписку</string>
     <string name="thank_you">Спасибо!</string>
     <string name="tags_should_not_be_empty">Вы должны выбрать как минимум 1 категорию</string>
     <string name="test_notification_sent">Тестовое уведомление отправлено</string>
@@ -148,7 +151,7 @@
         и вам будут приходить английские слова в виде пуш-уведомлений. \n\n\tСписок категорий постоянно растет и обновляется без необходимости обновления приложения.\n\nВерсия приложения: %s</string>
     <string name="text_own_category">\tСлова отсюда будут Вам приходить, если в настройках уведомлений выбрать "Своя категория".
         \n\n\tСюда можно добавить слова долгим нажатием на слово из словаря или нажатием на плюсик в правом нижнем углу экрана.
-        \n\n\tМаксимальное количество слов - 200</string>
+        \n\n\tМаксимальное количество слов - 1000</string>
     <string name="text_info_words_training">\tТренировка слов увеличивает прогресс изучения слова. Если ответить неправльно - прогресс сбросится до 0.
         \n\n\tДля тренировки подбираются слов, которые: 1. Не имеют максимального прогресса изучения 2. Не являются предложениями (состоят максимум из 3-х слов)</string>
 
@@ -212,6 +215,9 @@
         \n- Диалоговое окно с уведомлением о новой версии теперь можно закрыть, теперь необязательно обновлять приложение</string>
 
     <string name="patch_notes_2_2_1">- Оптимизация под планшеты
+        \n- Обновление библиотек</string>
+
+    <string name="patch_notes_2_2_2">- При окончании действия подписки уведомления ходят не чаще чем раз в 4 часа (до этого момента они полностью переставали ходить)
         \n- Обновление библиотек</string>
 
     <!-- =========================================================================================================== -->
@@ -278,6 +284,7 @@
     <string name="exercises_modal_verbs_1">упр. Модальные глаголы (1)</string>
     <string name="exercises_indirect_speech_1">упр. Косвенная речь (1)</string>
     <string name="exercises_reflexive_1">упр. Возвратные местоимения (1)</string>
+    <string name="exercises_verbs_2">упр. Глаголы (2)</string>
 
     <string name="privacy_policy_text">Авторизируясь, вы соглашаетесь с нашей Политикой конфиденциальности</string>
     <!--

@@ -41,9 +41,9 @@ class PushBroadcastReceiver : BroadcastReceiver() {
                     val answer = if (languageType == TYPE_PUSH_ENGLISH) word.rus else word.eng
                     val isCorrectAnswer = isCorrectAnswer(userText, answer)
 
-                    if (isCorrectAnswer) {
+                    if (isCorrectAnswer && saveWord.learnStage != LEARN_STAGE_MAX) {
                         saveWord.learnStage++
-                    } else {
+                    } else if (saveWord.learnStage != LEARN_STAGE_MAX) {
                         saveWord.learnStage = 0
                     }
 
@@ -56,11 +56,11 @@ class PushBroadcastReceiver : BroadcastReceiver() {
                                 SharedHelper.NOTIFICATIONS_VIEW_WITH_TRANSLATE, withWrongTitle = true)
                         }
                     }
-                } else {
-                    saveWord.learnStage++
                 }
             } else {
-                saveWord.learnStage = 0
+                if (saveWord.learnStage != LEARN_STAGE_MAX) {
+                    saveWord.learnStage = 0
+                }
 
                 withContext(Dispatchers.Main) {
                     MyFirebaseMessagingService.handleWordNotification(context, word, false, SharedHelper.NOTIFICATIONS_VIEW_WITH_TRANSLATE)

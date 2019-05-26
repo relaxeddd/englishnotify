@@ -30,6 +30,9 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     val clickListenerSubscription = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_SUBSCRIPTION)
     }
+    val clickListenerSubscriptionInfo = View.OnClickListener {
+        navigateEvent.value = Event(NAVIGATION_DIALOG_SUBSCRIPTION_INFO)
+    }
     val clickListenerSendFeedback = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_SEND_FEEDBACK)
     }

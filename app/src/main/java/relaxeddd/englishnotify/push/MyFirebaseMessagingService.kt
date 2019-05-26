@@ -34,13 +34,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             val isLongWord = wordTitle.length > 16
             val title = if (withWrongTitle) context.getString(R.string.answer_incorrect) else if (isLongWord) "" else wordTitle
 
-            val notificationText = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP
+            val notificationText = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N
                 || viewType == SharedHelper.NOTIFICATIONS_VIEW_WITH_TRANSLATE
                 || withWrongTitle) {
                 getFullNotificationText(word, languageType, !isLongWord && !withWrongTitle)
             } else if (isLongWord) wordTitle else ""
 
-            val isShowButtons = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+            val isShowButtons = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
                     && viewType == SharedHelper.NOTIFICATIONS_VIEW_WITH_QUESTION && !withWrongTitle
 
             if (isSave) {
@@ -77,7 +77,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 notificationBuilder.setStyle(NotificationCompat.BigTextStyle().bigText(text))
             }
 
-            if (withButtons && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (withButtons && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 val knowIntent = Intent(ctx, PushBroadcastReceiver::class.java).apply {
                     action = PushBroadcastReceiver.ACTION_KNOW
                     putExtra(IS_KNOW, PushBroadcastReceiver.KNOW)
@@ -91,20 +91,18 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     putExtra(NOTIFICATION_ID, notificationId)
                 }
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    val replyLabel: String = getAppString(R.string.enter_translation)
-                    val remoteInput: RemoteInput = RemoteInput.Builder(PushBroadcastReceiver.KEY_TEXT_REPLY).run {
-                        setLabel(replyLabel)
-                        build()
-                    }
-                    val replyPendingIntent: PendingIntent = PendingIntent.getBroadcast(ctx, Random.nextInt(1000),
-                        knowIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-                    val action: NotificationCompat.Action = NotificationCompat.Action.Builder(R.drawable.ic_dictionary,
-                        getAppString(R.string.i_know_it), replyPendingIntent)
-                            .addRemoteInput(remoteInput)
-                            .build()
-                    notificationBuilder.addAction(action)
+                val replyLabel: String = getAppString(R.string.enter_translation)
+                val remoteInput: RemoteInput = RemoteInput.Builder(PushBroadcastReceiver.KEY_TEXT_REPLY).run {
+                    setLabel(replyLabel)
+                    build()
                 }
+                val replyPendingIntent: PendingIntent = PendingIntent.getBroadcast(ctx, Random.nextInt(1000),
+                    knowIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+                val action: NotificationCompat.Action = NotificationCompat.Action.Builder(R.drawable.ic_dictionary,
+                    getAppString(R.string.i_know_it), replyPendingIntent)
+                    .addRemoteInput(remoteInput)
+                    .build()
+                notificationBuilder.addAction(action)
 
                 val notKnowPendingIntent: PendingIntent =
                     PendingIntent.getBroadcast(ctx, Random.nextInt(1000), notKnowIntent, 0)

@@ -2,9 +2,13 @@
 <resources>
 
     <string-array name="array_time_repeat">
-        <item>Каждый час</item>
-        <item>Каждые 2 часа</item>
-        <item>Каждые 4 часа</item>
+        <item>Каждый час (с наличием подписки)</item>
+        <item>Каждые 2 часа (с наличием подписки)</item>
+        <item>Каждые 3 часа (с наличием подписки)</item>
+        <item>Каждые 4 часов</item>
+        <item>Каждые 5 часов</item>
+        <item>Каждые 6 часов</item>
+        <item>Каждые 7 часов</item>
         <item>Каждые 8 часов</item>
     </string-array>
 
@@ -21,7 +25,7 @@
 
     <string-array name="array_notifications_view">
         <item>Сразу перевод в уведомлении</item>
-        <item>Ввод перевода (от Android 7.0) или по нажатию кнопки</item>
+        <item>Ввод перевода в ответ на уведомление</item>
     </string-array>
 
 </resources>

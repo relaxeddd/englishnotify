@@ -20,7 +20,7 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
     val timeStartOff = MutableLiveData<String>("20:00")
     val timeEndOff = MutableLiveData<String>("07:00")
     val selectedTagLiveData = MutableLiveData<String>("")
-    val isVisibleNotificationsView = MutableLiveData<Boolean>(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+    val isVisibleNotificationsView = MutableLiveData<Boolean>(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
 
     val textRepeatTime = MutableLiveData<String>("")
     val textLearnLanguage = MutableLiveData<String>("")
@@ -123,7 +123,11 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
     }
 
     fun onDialogRepeatTimeResult(receiveNotificationsTime: Int) {
-        if (receiveNotificationsTime != repositoryUser.liveDataUser.value?.notificationsTimeType) {
+        val user = repositoryUser.liveDataUser.value
+
+        if (receiveNotificationsTime < 4 && (user?.subscriptionTime ?: 0) < System.currentTimeMillis()) {
+            showToast(R.string.subscription_need)
+        } else if (receiveNotificationsTime != user?.notificationsTimeType) {
             uiScope.launch {
                 repositoryUser.setNotificationsTimeType(receiveNotificationsTime)
             }

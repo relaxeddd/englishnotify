@@ -46,6 +46,11 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
                     DialogAppAbout().show(this@FragmentSettings.childFragmentManager, "App Info Dialog")
                 }
             }
+            NAVIGATION_DIALOG_SUBSCRIPTION_INFO -> {
+                if (isResumed) {
+                    DialogSubscriptionInfo().show(this@FragmentSettings.childFragmentManager, "Sub Info Dialog")
+                }
+            }
             NAVIGATION_DIALOG_INFO_TRAINING -> {
                 if (isResumed) {
                     DialogInfoTraining().show(this@FragmentSettings.childFragmentManager, "Info Training Dialog")
