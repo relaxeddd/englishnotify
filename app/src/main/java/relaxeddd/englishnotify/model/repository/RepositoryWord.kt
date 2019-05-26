@@ -21,19 +21,29 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
     }
 
     fun deleteWord(word : Word) {
-        wordDao.delete(word)
+        word.isDeleted = true
+        updateWord(word)
     }
 
     fun updateOwsWords(ownWords: List<Word>) {
         ownWords.forEach {
-            if (wordDao.findWordById(it.eng) == null) {
-                val tags = ArrayList(it.tags)
+            val existsWord = wordDao.findWordById(it.eng);
 
-                it.tags = tags
+            if (it.timestamp == 0L) {
                 it.timestamp = System.currentTimeMillis()
-
-                wordDao.insertAll(it)
             }
+            if (it.tags.contains(OWN)) {
+                val tags = ArrayList(it.tags)
+                tags.remove(OWN)
+                it.tags = tags
+                it.isOwnCategory = true
+                it.isCreatedByUser = true
+            }
+            if (existsWord != null) {
+                it.learnStage = existsWord.learnStage
+            }
+
+            wordDao.insertAll(it)
         }
     }
 
@@ -42,7 +52,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
 
         if (words != null) {
             for (word in words) {
-                if (word.saveType != Word.DICTIONARY) {
+                if (word.isOwnCategory) {
                     return true
                 }
             }
@@ -69,7 +79,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
 
         if (allWords != null) {
             for (word in allWords) {
-                if (word.saveType != Word.DICTIONARY) {
+                if (word.isOwnCategory) {
                     ownWords.add(word)
                 }
             }

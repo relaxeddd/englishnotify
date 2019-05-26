@@ -40,10 +40,13 @@ data class Word(
     var isLearned: Boolean = false,
     var saveType: Int = DICTIONARY,
     var learnStage: Int = 0,
-    var type: String = ""
+    var type: String = "",
+    var isCreatedByUser: Boolean = false,
+    var isOwnCategory: Boolean = false
 ) {
-    constructor(word: Word) : this(word.eng, word.rus, word.transcription, word.tags,
-        word.sampleEng, word.sampleRus, word.v2, word.v3, word.timestamp, word.isDeleted, word.isLearned, word.saveType, word.learnStage, word.type)
+    constructor(word: Word) : this(word.eng, word.rus, word.transcription, word.tags, word.sampleEng, word.sampleRus,
+        word.v2, word.v3, word.timestamp, word.isDeleted, word.isLearned, word.saveType, word.learnStage, word.type,
+        word.isCreatedByUser, word.isOwnCategory)
 
     companion object {
         const val DICTIONARY = 0

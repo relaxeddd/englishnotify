@@ -174,7 +174,7 @@ class RepositoryUser private constructor() {
             }
             return false
         }
-        if (word.tags.contains(OWN) || word.saveType == Word.DICTIONARY) {
+        if (word.isOwnCategory) {
             withContext(Dispatchers.Main) {
                 showToast(getErrorString(RESULT_ERROR_OWN_WORD_TYPE))
             }
@@ -184,11 +184,9 @@ class RepositoryUser private constructor() {
         val firebaseUser = RepositoryCommon.getInstance().firebaseUser
         val tokenId = RepositoryCommon.getInstance().tokenId
         val wordJson = JSONObject()
-        val tags = ArrayList(word.tags)
         val tagsJson = JSONArray()
 
-        tags.add(OWN)
-        for (tag in tags) {
+        for (tag in word.tags) {
             if (tag.isNotEmpty()) {
                 tagsJson.put(tag)
             }
@@ -198,15 +196,16 @@ class RepositoryUser private constructor() {
         wordJson.put(TRANSCRIPTION, word.transcription)
         wordJson.put(TAGS, tagsJson)
         wordJson.put(TYPE, word.type)
-        wordJson.put(SAVE_TYPE, word.saveType)
+        wordJson.put(TIMESTAMP, word.timestamp)
+        wordJson.put(IS_CREATED_BY_USER, word.isCreatedByUser)
+        wordJson.put(IS_OWN_CATEGORY, true)
 
         val answer = ApiHelper.requestInsertOwnWord(firebaseUser, tokenId, wordJson)
 
         return when {
             answer?.isSuccess() == true -> {
                 val saveWord = Word(word)
-
-                saveWord.tags = tags
+                saveWord.isOwnCategory = true
                 RepositoryWord.getInstance().updateWord(saveWord)
                 true
             }
@@ -256,14 +255,8 @@ class RepositoryUser private constructor() {
 
                     if (word != null) {
                         val saveWord = Word(word)
-                        val tags = ArrayList(word.tags)
 
-                        tags.remove(OWN)
-                        if (saveWord.saveType == Word.DICTIONARY_OWN) {
-                            saveWord.saveType = Word.DICTIONARY
-                        }
-                        saveWord.tags = tags
-
+                        saveWord.isOwnCategory = false
                         RepositoryWord.getInstance(wordDao).updateWord(saveWord)
                     }
                 }

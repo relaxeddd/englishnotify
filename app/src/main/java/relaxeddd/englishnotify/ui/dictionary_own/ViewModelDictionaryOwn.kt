@@ -15,7 +15,7 @@ class ViewModelDictionaryOwn(repositoryWord: RepositoryWord, repositoryUser: Rep
     val isVisibleLoadingView = MutableLiveData<Boolean>(false)
 
     override fun filterWords(items: HashSet<Word>) : HashSet<Word> {
-        return items.filter { it.saveType != Word.DICTIONARY && it.learnStage != LEARN_STAGE_MAX }.toHashSet()
+        return items.filter { it.isOwnCategory && it.learnStage != LEARN_STAGE_MAX }.toHashSet()
     }
 
     fun requestOwnWords() {

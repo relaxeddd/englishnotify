@@ -93,8 +93,8 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
 
         popupMenu.menu.findItem(R.id.item_menu_reset_progress)?.isVisible = word.learnStage > 0 && !isHideLearnStage
         popupMenu.menu.findItem(R.id.item_menu_know)?.isVisible = word.learnStage != LEARN_STAGE_MAX && !isHideLearnStage
-        popupMenu.menu.findItem(R.id.item_menu_add_own)?.isVisible = word.saveType == Word.DICTIONARY || !word.tags.contains(OWN)
-        popupMenu.menu.findItem(R.id.item_menu_delete_own)?.isVisible = word.saveType != Word.DICTIONARY && word.tags.contains(OWN)
+        popupMenu.menu.findItem(R.id.item_menu_add_own)?.isVisible = !word.isOwnCategory
+        popupMenu.menu.findItem(R.id.item_menu_delete_own)?.isVisible = word.isOwnCategory
         val menuHelper = MenuPopupHelper(view.context, popupMenu.menu as MenuBuilder, view)
         menuHelper.setForceShowIcon(true)
         menuHelper.show()
@@ -107,10 +107,10 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
         }
 
         override fun areContentsTheSame(oldItem: Word, newItem: Word): Boolean {
-            return oldItem.learnStage == newItem.learnStage && oldItem.saveType == newItem.saveType
-                    && oldItem.rus == newItem.rus && oldItem.type == newItem.type
-                    && newItem.tags.containsAll(oldItem.tags) && oldItem.tags.containsAll(newItem.tags)
-
+            return oldItem.learnStage == newItem.learnStage && oldItem.rus == newItem.rus
+                    && oldItem.type == newItem.type && newItem.tags.containsAll(oldItem.tags)
+                    && oldItem.tags.containsAll(newItem.tags) && oldItem.isCreatedByUser == newItem.isCreatedByUser
+                    && oldItem.isOwnCategory == newItem.isOwnCategory && oldItem.isDeleted == newItem.isDeleted
         }
     }
 
@@ -135,9 +135,10 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
             getCardViewWord().setOnLongClickListener(longClickListener)
 
             getTextTimestamp().text = SimpleDateFormat("hh:mm dd.MM", Locale.getDefault()).format(word.timestamp) ?: ""
-            getTextTags().text = word.tags.toString()
-            getImageOwnWord().visibility = if (word.saveType != Word.DICTIONARY && word.tags.contains(OWN)) View.VISIBLE else View.GONE
-            getImageOwnCreatedWord().visibility = if (word.saveType == Word.OWN) View.VISIBLE else View.GONE
+            getTextTags().text = if (word.tags.isNotEmpty()) word.tags.toString() else ""
+            getTextTags().visibility = if (word.tags.isNotEmpty()) View.VISIBLE else View.GONE
+            getImageOwnWord().visibility = if (word.isOwnCategory) View.VISIBLE else View.GONE
+            getImageOwnCreatedWord().visibility = if (word.isCreatedByUser) View.VISIBLE else View.GONE
 
             getCheckBoxSelect().visibility = if (isSelectState) View.VISIBLE else View.GONE
             getCheckBoxSelect().setOnCheckedChangeListener(null)

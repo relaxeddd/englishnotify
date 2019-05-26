@@ -81,11 +81,9 @@ open class ViewModelDictionary(protected val repositoryWord: RepositoryWord, pro
     }
 
     fun addToOwn(word: Word) {
+        if (word.isOwnCategory) return
         navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
         ioScope.launch {
-            if (word.saveType == Word.DICTIONARY) {
-                word.saveType = Word.DICTIONARY_OWN
-            }
             repositoryUser.insertOwnWord(word)
             withContext(Dispatchers.Main) {
                 navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
@@ -104,11 +102,11 @@ open class ViewModelDictionary(protected val repositoryWord: RepositoryWord, pro
     }
 
     fun deleteWord(word: Word) {
-        if (word.saveType != Word.DICTIONARY) {
+        if (word.isOwnCategory) {
             navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
         }
         ioScope.launch {
-            val deleteResult = repositoryUser.deleteOwnWord(word.eng)
+            val deleteResult = if (word.isOwnCategory) repositoryUser.deleteOwnWord(word.eng) else true
 
             if (deleteResult) {
                 repositoryWord.deleteWord(word)
@@ -121,7 +119,7 @@ open class ViewModelDictionary(protected val repositoryWord: RepositoryWord, pro
 
     fun deleteWords(words: Collection<Word>) {
         for (word in words) {
-            if (word.saveType != Word.DICTIONARY) {
+            if (word.isOwnCategory) {
                 navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
                 break
             }
@@ -129,7 +127,7 @@ open class ViewModelDictionary(protected val repositoryWord: RepositoryWord, pro
         ioScope.launch {
             val listIds = HashSet<String>()
 
-            words.forEach { if (it.saveType != Word.DICTIONARY) listIds.add(it.eng) }
+            words.forEach { if (it.isOwnCategory) listIds.add(it.eng) }
             val deleteResult = if (listIds.isNotEmpty()) repositoryUser.deleteOwnWords(listIds.toList()) else true
 
             if (deleteResult) {

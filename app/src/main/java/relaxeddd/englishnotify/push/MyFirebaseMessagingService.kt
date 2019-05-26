@@ -49,8 +49,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
                 if (existsWord == null) {
                     wordDao.insertAll(word)
-                } else if (existsWord.saveType == Word.DICTIONARY) {
+                } else {
+                    word.isOwnCategory = existsWord.isOwnCategory
                     word.learnStage = existsWord.learnStage
+                    word.isDeleted = existsWord.isDeleted
                     wordDao.insertAll(word)
                 }
             }

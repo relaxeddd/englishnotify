@@ -11,7 +11,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import relaxeddd.englishnotify.common.Word
 import relaxeddd.englishnotify.common.DATABASE_TEST_APP
 
-@Database(entities = [Word::class], version = 11, exportSchema = false)
+@Database(entities = [Word::class], version = 12, exportSchema = false)
 @TypeConverters(ConverterListStr::class)
 abstract class AppDatabase : RoomDatabase() {
 
@@ -34,6 +34,7 @@ abstract class AppDatabase : RoomDatabase() {
                 .addMigrations(MIGRATION_8_9)
                 .addMigrations(MIGRATION_9_10)
                 .addMigrations(MIGRATION_10_11)
+                .addMigrations(MIGRATION_11_12)
                 .fallbackToDestructiveMigration()
                 .build()
         }
@@ -80,6 +81,15 @@ abstract class AppDatabase : RoomDatabase() {
             override fun migrate(database: SupportSQLiteDatabase) {
                 try {
                     database.execSQL("ALTER TABLE words ADD COLUMN type TEXT DEFAULT '' NOT NULL")
+                } catch (e: SQLiteException) {}
+            }
+        }
+
+        private val MIGRATION_11_12 = object : Migration(11, 12) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                try {
+                    database.execSQL("ALTER TABLE words ADD COLUMN isCreatedByUser INTEGER DEFAULT 0 NOT NULL")
+                    database.execSQL("ALTER TABLE words ADD COLUMN isOwnCategory INTEGER DEFAULT 0 NOT NULL")
                 } catch (e: SQLiteException) {}
             }
         }

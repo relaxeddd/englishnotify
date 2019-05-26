@@ -19,7 +19,7 @@ class ViewModelWord : ViewModelBase() {
         isWordCreating = true
         navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
         ioScope.launch {
-            val word = Word(eng, rus, transcription, timestamp = System.currentTimeMillis(), saveType = Word.OWN)
+            val word = Word(eng, rus, transcription, timestamp = System.currentTimeMillis(), isCreatedByUser = true)
             val result = RepositoryUser.getInstance().insertOwnWord(word)
 
             withContext(Dispatchers.Main) {
