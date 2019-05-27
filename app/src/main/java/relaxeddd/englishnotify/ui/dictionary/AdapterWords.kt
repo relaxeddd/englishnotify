@@ -86,13 +86,11 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
                 R.id.item_menu_add_own -> viewModel.addToOwn(word)
                 R.id.item_menu_delete_own -> viewModel.removeFromOwnDict(word)
                 R.id.item_menu_reset_progress -> viewModel.resetProgress(word)
-                R.id.item_menu_know -> viewModel.setMaxProgress(word)
             }
             true
         }
 
         popupMenu.menu.findItem(R.id.item_menu_reset_progress)?.isVisible = word.learnStage > 0 && !isHideLearnStage
-        popupMenu.menu.findItem(R.id.item_menu_know)?.isVisible = word.learnStage != LEARN_STAGE_MAX && !isHideLearnStage
         popupMenu.menu.findItem(R.id.item_menu_add_own)?.isVisible = !word.isOwnCategory
         popupMenu.menu.findItem(R.id.item_menu_delete_own)?.isVisible = word.isOwnCategory
         val menuHelper = MenuPopupHelper(view.context, popupMenu.menu as MenuBuilder, view)

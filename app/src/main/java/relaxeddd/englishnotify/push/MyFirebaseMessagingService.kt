@@ -15,6 +15,9 @@ import relaxeddd.englishnotify.model.db.AppDatabase
 import relaxeddd.englishnotify.ui.main.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.repository.RepositoryWord
@@ -47,13 +50,16 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 val wordDao = AppDatabase.getInstance(context).wordDao()
                 val existsWord = wordDao.findWordById(word.eng)
 
-                if (existsWord == null) {
-                    wordDao.insertAll(word)
-                } else {
-                    word.isOwnCategory = existsWord.isOwnCategory
-                    word.learnStage = existsWord.learnStage
-                    word.isDeleted = existsWord.isDeleted
-                    wordDao.insertAll(word)
+                if (existsWord != null) {
+                    existsWord.rus = word.rus
+                    existsWord.transcription = word.transcription
+                }
+                CoroutineScope(Dispatchers.IO).launch {
+                    if (existsWord != null) {
+                        wordDao.insertAll(existsWord)
+                    } else {
+                        wordDao.insertAll(word)
+                    }
                 }
             }
 

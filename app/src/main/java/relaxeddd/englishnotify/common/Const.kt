@@ -43,6 +43,8 @@ const val RESULT_ERROR_FEEDBACK_TOO_SHORT = 1602
 const val RESULT_LOCAL_ERROR = 5101
 const val RESULT_ERROR_NETWORK = 5102
 
+const val RESULT_ERROR_UPDATE_LEARN_STAGES = 1702
+
 const val RESULT_ERROR_TEST_NOTIFICATION = 6100
 
 const val RESULT_ERROR_OWN_WORD = 6301
@@ -111,6 +113,10 @@ const val IS_CREATED_BY_USER = "isCreatedByUser"
 const val IS_OWN_CATEGORY = "isOwnCategory"
 const val IS_DELETED = "isDeleted"
 const val LEARN_STAGE = "learnStage"
+const val LEARN_STAGE_0 = "learnStage0"
+const val LEARN_STAGE_1 = "learnStage1"
+const val LEARN_STAGE_2 = "learnStage2"
+const val LEARN_STAGE_3 = "learnStage3"
 
 const val ID = "id"
 const val EMAIL = "email"

@@ -157,4 +157,44 @@ object SharedHelper {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         sPref.edit().putBoolean(IS_SHOW_ONLY_ONE_NOTIFICATION, value).apply()
     }
+
+    fun getLearnStage0(context: Context = App.context) : MutableSet<String> {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getStringSet(LEARN_STAGE_0, HashSet<String>()) ?: HashSet()
+    }
+
+    fun setLearnStage0(value : MutableSet<String>, context: Context = App.context) {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putStringSet(LEARN_STAGE_0, value).apply()
+    }
+
+    fun getLearnStage1(context: Context = App.context) : MutableSet<String> {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getStringSet(LEARN_STAGE_1, HashSet<String>()) ?: HashSet()
+    }
+
+    fun setLearnStage1(value : MutableSet<String>, context: Context = App.context) {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putStringSet(LEARN_STAGE_1, value).apply()
+    }
+
+    fun getLearnStage2(context: Context = App.context) : MutableSet<String> {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getStringSet(LEARN_STAGE_2, HashSet<String>()) ?: HashSet()
+    }
+
+    fun setLearnStage2(value : MutableSet<String>, context: Context = App.context) {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putStringSet(LEARN_STAGE_2, value).apply()
+    }
+
+    fun getLearnStage3(context: Context = App.context) : MutableSet<String> {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getStringSet(LEARN_STAGE_3, HashSet<String>()) ?: HashSet()
+    }
+
+    fun setLearnStage3(value : MutableSet<String>, context: Context = App.context) {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putStringSet(LEARN_STAGE_3, value).apply()
+    }
 }

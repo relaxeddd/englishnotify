@@ -1,5 +1,8 @@
 package relaxeddd.englishnotify.model.repository
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.db.AppDatabase
@@ -14,6 +17,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         }
     }
 
+    private val ioScope = CoroutineScope(Dispatchers.IO)
     var words = wordDao.getAll()
 
     fun updateWord(word : Word) {
@@ -25,10 +29,16 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         updateWord(word)
     }
 
+    fun setWordProgress(word: Word, progress: Int) {
+        ioScope.launch {
+            val saveWord = Word(word)
+            saveWord.learnStage = progress
+            updateWord(saveWord)
+        }
+    }
+
     fun updateOwsWords(ownWords: List<Word>) {
         ownWords.forEach {
-            val existsWord = wordDao.findWordById(it.eng);
-
             if (it.timestamp == 0L) {
                 it.timestamp = System.currentTimeMillis()
             }
@@ -38,9 +48,6 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
                 it.tags = tags
                 it.isOwnCategory = true
                 it.isCreatedByUser = true
-            }
-            if (existsWord != null) {
-                it.learnStage = existsWord.learnStage
             }
 
             wordDao.insertAll(it)

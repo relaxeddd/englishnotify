@@ -65,19 +65,7 @@ open class ViewModelDictionary(protected val repositoryWord: RepositoryWord, pro
     }
 
     fun resetProgress(word: Word) {
-        ioScope.launch {
-            val saveWord = Word(word)
-            saveWord.learnStage = 0
-            repositoryWord.updateWord(saveWord)
-        }
-    }
-
-    fun setMaxProgress(word: Word) {
-        ioScope.launch {
-            val saveWord = Word(word)
-            saveWord.learnStage = LEARN_STAGE_MAX
-            repositoryWord.updateWord(saveWord)
-        }
+        repositoryWord.setWordProgress(word, 0)
     }
 
     fun addToOwn(word: Word) {
