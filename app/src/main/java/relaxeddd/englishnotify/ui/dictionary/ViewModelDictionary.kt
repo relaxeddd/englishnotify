@@ -70,7 +70,6 @@ open class ViewModelDictionary(protected val repositoryWord: RepositoryWord, pro
     }
 
     fun addToOwn(word: Word) {
-        if (word.isOwnCategory) return
         navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
         ioScope.launch {
             repositoryWord.addToOwn(word.id)

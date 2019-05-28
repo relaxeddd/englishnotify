@@ -245,5 +245,38 @@ object ApiHelper {
         suspend fun requestRemoveFromOwnWords(tokenId: String, userId: String, wordIds: JSONArray, isOwnCategory: Boolean) : Result? {
             return apiHelper.requestSetIsOwnCategoryWordsAsync(tokenPrefix + tokenId, userId, wordIds, isOwnCategory).await()
         }
+
+        suspend fun requestUpdateLearnStages(tokenId: String, requestId: String, userId: String, learnStage0: JSONArray,
+                                             learnStage1: JSONArray, learnStage2: JSONArray, learnStage3: JSONArray) : OwnWordsResult? {
+            return apiHelper.requestUpdateLearnStagesAsync(tokenPrefix + tokenId, requestId, userId, learnStage0,
+                learnStage1, learnStage2, learnStage3).await()
+        }
+
+        suspend fun requestSetLearnStage(tokenId: String, requestId: String, userId: String, wordId: String,
+                                             learnStage: Int) : Result? {
+            return apiHelper.requestSetLearnStageAsync(tokenPrefix + tokenId, requestId, userId, wordId, learnStage).await()
+        }
+
+        suspend fun requestUpdateWord(tokenId: String, userId: String, wordId: String, eng: String, rus: String, transcription: String,
+                                      isDeleted: Boolean, isOwnCategory: Boolean, learnStage: Int) : Result? {
+            return apiHelper.requestUpdateWordAsync(tokenPrefix + tokenId, userId, wordId, eng, rus, transcription,
+                isDeleted, isOwnCategory, learnStage).await()
+        }
+
+        suspend fun requestUpdateWordLearnStage(tokenId: String, userId: String, wordId: String, learnStage: Int) : Result? {
+            return apiHelper.requestUpdateWordLearnStageAsync(tokenPrefix + tokenId, userId, wordId, learnStage).await()
+        }
+
+        suspend fun requestUpdateWords(tokenId: String, userId: String, wordIds: JSONArray, isDeleted: Boolean, isOwnCategory: Boolean) : Result? {
+            return apiHelper.requestUpdateWordsAsync(tokenPrefix + tokenId, userId, wordIds, isDeleted, isOwnCategory).await()
+        }
+
+        suspend fun requestDeleteWords(tokenId: String, userId: String, wordIds: JSONArray) : Result? {
+            return apiHelper.requestDeleteWordsAsync(tokenPrefix + tokenId, userId, wordIds).await()
+        }
+
+        suspend fun requestRemoveFromOwnWords(tokenId: String, userId: String, wordIds: JSONArray, isOwnCategory: Boolean) : Result? {
+            return apiHelper.requestSetIsOwnCategoryWordsAsync(tokenPrefix + tokenId, userId, wordIds, isOwnCategory).await()
+        }
     }
 }
