@@ -138,7 +138,8 @@ object ApiHelper {
         }
     }
 
-    suspend fun requestOwnWords(firebaseUser: FirebaseUser?, tokenId: String?) : OwnWordsResult? {
+    suspend fun requestUpdateLearnStages(firebaseUser: FirebaseUser?, tokenId: String?, learnStage0: JSONArray,
+                                         learnStage1: JSONArray, learnStage2: JSONArray, learnStage3: JSONArray) : OwnWordsResult? {
         if (!isNetworkAvailable()) {
             return OwnWordsResult(Result(RESULT_ERROR_INTERNET))
         }
@@ -147,9 +148,97 @@ object ApiHelper {
         val userId = firebaseUser?.uid ?: ""
 
         return if (tokenId?.isNotEmpty() == true) {
-            return executeRequest( suspend { api.requestOwnWords(tokenId, requestId, userId) }, OwnWordsResult(Result(RESULT_ERROR_INTERNET)))
+            return executeRequest( suspend { api.requestUpdateLearnStages(tokenId, requestId, userId, learnStage0,
+                learnStage1, learnStage2, learnStage3) }, OwnWordsResult(Result(RESULT_ERROR_INTERNET)))
         } else {
-            OwnWordsResult(Result(RESULT_ERROR_OWN_GET))
+            OwnWordsResult(Result(RESULT_ERROR_INTERNET))
+        }
+    }
+
+    suspend fun requestSetLearnStage(firebaseUser: FirebaseUser?, tokenId: String?, wordId: String, learnStage: Int) : Result? {
+        if (!isNetworkAvailable()) {
+            return Result(RESULT_ERROR_INTERNET)
+        }
+
+        val requestId = UUID.randomUUID().toString()
+        val userId = firebaseUser?.uid ?: ""
+
+        return if (tokenId?.isNotEmpty() == true) {
+            return executeRequest( suspend { api.requestSetLearnStage(tokenId, requestId, userId, wordId, learnStage) }, Result(RESULT_ERROR_INTERNET))
+        } else {
+            Result(RESULT_ERROR_INTERNET)
+        }
+    }
+
+    suspend fun requestUpdateWord(firebaseUser: FirebaseUser?, tokenId: String?, wordId: String, eng: String, rus: String,
+                                  transcription: String, isDeleted: Boolean, isOwnCategory: Boolean, learnStage: Int) : Result? {
+        if (!isNetworkAvailable()) {
+            return Result(RESULT_ERROR_INTERNET)
+        }
+
+        val userId = firebaseUser?.uid ?: ""
+
+        return if (tokenId?.isNotEmpty() == true && userId.isNotEmpty()) {
+            return executeRequest( suspend { api.requestUpdateWord(tokenId, userId, wordId, eng, rus, transcription,
+                isDeleted, isOwnCategory, learnStage) }, Result(RESULT_ERROR_INTERNET))
+        } else {
+            Result(RESULT_ERROR_INTERNET)
+        }
+    }
+
+    suspend fun requestUpdateWordLearnStage(firebaseUser: FirebaseUser?, tokenId: String?, wordId: String,
+                                            learnStage: Int) : Result? {
+        if (!isNetworkAvailable()) {
+            return Result(RESULT_ERROR_INTERNET)
+        }
+
+        val userId = firebaseUser?.uid ?: ""
+
+        return if (tokenId?.isNotEmpty() == true && userId.isNotEmpty()) {
+            return executeRequest( suspend { api.requestUpdateWordLearnStage(tokenId, userId, wordId, learnStage) }, Result(RESULT_ERROR_INTERNET))
+        } else {
+            Result(RESULT_ERROR_INTERNET)
+        }
+    }
+
+    suspend fun requestDeleteWords(firebaseUser: FirebaseUser?, tokenId: String?, wordIds: List<String>) : Result? {
+        return requestUpdateWords(firebaseUser, tokenId, wordIds, isChangeIsDeleted = true, isChangeIsOwnCategory = false,
+            isDeleted = true, isOwnCategory = false)
+    }
+
+    suspend fun requestAddToOwnWords(firebaseUser: FirebaseUser?, tokenId: String?, wordIds: List<String>) : Result? {
+        return requestUpdateWords(firebaseUser, tokenId, wordIds, isChangeIsDeleted = false, isChangeIsOwnCategory = true,
+            isDeleted = false, isOwnCategory = true)
+    }
+
+    suspend fun requestRemoveFromOwnWords(firebaseUser: FirebaseUser?, tokenId: String?, wordIds: List<String>) : Result? {
+        return requestUpdateWords(firebaseUser, tokenId, wordIds, isChangeIsDeleted = false, isChangeIsOwnCategory = true,
+            isDeleted = false, isOwnCategory = false)
+    }
+
+    private suspend fun requestUpdateWords(firebaseUser: FirebaseUser?, tokenId: String?, wordIds: List<String>,
+                                   isChangeIsDeleted: Boolean, isChangeIsOwnCategory: Boolean,
+                                   isDeleted: Boolean = false, isOwnCategory: Boolean = false) : Result? {
+        if (!isNetworkAvailable()) {
+            return Result(RESULT_ERROR_INTERNET)
+        }
+
+        val userId = firebaseUser?.uid ?: ""
+        val wordIdsJson = JSONArray()
+        for (wordId in wordIds) {
+            if (wordId.isNotEmpty()) wordIdsJson.put(wordId)
+        }
+
+        return if (tokenId?.isNotEmpty() == true && userId.isNotEmpty()) {
+            return if (isChangeIsDeleted && isChangeIsOwnCategory) {
+                executeRequest( suspend { api.requestUpdateWords(tokenId, userId, wordIdsJson, isDeleted, isOwnCategory) }, Result(RESULT_ERROR_INTERNET))
+            } else if (isChangeIsDeleted) {
+                executeRequest( suspend { api.requestDeleteWords(tokenId, userId, wordIdsJson) }, Result(RESULT_ERROR_INTERNET))
+            } else {
+                executeRequest( suspend { api.requestRemoveFromOwnWords(tokenId, userId, wordIdsJson, isOwnCategory) }, Result(RESULT_ERROR_INTERNET))
+            }
+        } else {
+            Result(RESULT_ERROR_INTERNET)
         }
     }
 
@@ -191,23 +280,6 @@ object ApiHelper {
                 resultListener(Resource(errorStr = ERROR_NOT_AUTHORIZED))
             }
         }
-    }
-
-    //------------------------------------------------------------------------------------------------------------------
-    private suspend fun <T> executeRequest(request: suspend () -> T, defaultAnswer: T) = try {
-        request()
-    } catch (e: UnknownHostException) {
-        defaultAnswer
-    } catch (e: SocketTimeoutException) {
-        defaultAnswer
-    } catch (e: StreamResetException) {
-        defaultAnswer
-    } catch (e: HttpException) {
-        defaultAnswer
-    } catch (e: ConnectException) {
-        defaultAnswer
-    } catch (e: SSLHandshakeException) {
-        defaultAnswer
     }
 
     private class Api {
@@ -270,6 +342,39 @@ object ApiHelper {
 
         suspend fun requestOwnWords(tokenId: String, requestId: String, userId: String) : OwnWordsResult? {
             return apiHelper.requestOwnWordsAsync(tokenPrefix + tokenId, requestId, userId).await()
+        }
+
+        suspend fun requestUpdateLearnStages(tokenId: String, requestId: String, userId: String, learnStage0: JSONArray,
+                                             learnStage1: JSONArray, learnStage2: JSONArray, learnStage3: JSONArray) : OwnWordsResult? {
+            return apiHelper.requestUpdateLearnStagesAsync(tokenPrefix + tokenId, requestId, userId, learnStage0,
+                learnStage1, learnStage2, learnStage3).await()
+        }
+
+        suspend fun requestSetLearnStage(tokenId: String, requestId: String, userId: String, wordId: String,
+                                             learnStage: Int) : Result? {
+            return apiHelper.requestSetLearnStageAsync(tokenPrefix + tokenId, requestId, userId, wordId, learnStage).await()
+        }
+
+        suspend fun requestUpdateWord(tokenId: String, userId: String, wordId: String, eng: String, rus: String, transcription: String,
+                                      isDeleted: Boolean, isOwnCategory: Boolean, learnStage: Int) : Result? {
+            return apiHelper.requestUpdateWordAsync(tokenPrefix + tokenId, userId, wordId, eng, rus, transcription,
+                isDeleted, isOwnCategory, learnStage).await()
+        }
+
+        suspend fun requestUpdateWordLearnStage(tokenId: String, userId: String, wordId: String, learnStage: Int) : Result? {
+            return apiHelper.requestUpdateWordLearnStageAsync(tokenPrefix + tokenId, userId, wordId, learnStage).await()
+        }
+
+        suspend fun requestUpdateWords(tokenId: String, userId: String, wordIds: JSONArray, isDeleted: Boolean, isOwnCategory: Boolean) : Result? {
+            return apiHelper.requestUpdateWordsAsync(tokenPrefix + tokenId, userId, wordIds, isDeleted, isOwnCategory).await()
+        }
+
+        suspend fun requestDeleteWords(tokenId: String, userId: String, wordIds: JSONArray) : Result? {
+            return apiHelper.requestDeleteWordsAsync(tokenPrefix + tokenId, userId, wordIds).await()
+        }
+
+        suspend fun requestRemoveFromOwnWords(tokenId: String, userId: String, wordIds: JSONArray, isOwnCategory: Boolean) : Result? {
+            return apiHelper.requestSetIsOwnCategoryWordsAsync(tokenPrefix + tokenId, userId, wordIds, isOwnCategory).await()
         }
     }
 }

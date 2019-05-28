@@ -27,6 +27,7 @@ data class User(
 data class Word(
 
     @PrimaryKey
+    val id: String = "",
     val eng: String = "",
     var rus: String = "",
     var transcription: String = "",
@@ -37,22 +38,13 @@ data class Word(
     val v3: String = "",
     var timestamp: Long = 0L,
     var isDeleted: Boolean = false,
-    var isLearned: Boolean = false,
-    var saveType: Int = DICTIONARY,
     var learnStage: Int = 0,
     var type: String = "",
     var isCreatedByUser: Boolean = false,
     var isOwnCategory: Boolean = false
 ) {
-    constructor(word: Word) : this(word.eng, word.rus, word.transcription, word.tags, word.sampleEng, word.sampleRus,
-        word.v2, word.v3, word.timestamp, word.isDeleted, word.isLearned, word.saveType, word.learnStage, word.type,
-        word.isCreatedByUser, word.isOwnCategory)
-
-    companion object {
-        const val DICTIONARY = 0
-        const val OWN = 1
-        const val DICTIONARY_OWN = 2
-    }
+    constructor(word: Word) : this(word.id,  word.eng, word.rus, word.transcription, word.tags, word.sampleEng, word.sampleRus,
+        word.v2, word.v3, word.timestamp, word.isDeleted, word.learnStage, word.type, word.isCreatedByUser, word.isOwnCategory)
 }
 
 @Keep

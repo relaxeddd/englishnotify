@@ -20,6 +20,11 @@ const val FUNC_REQUEST_SEND_TEST_NOTIFICATION = "requestSendTestNotification/"
 const val FUNC_REQUEST_INSERT_OWN_WORD = "requestInsertOwnWord/"
 const val FUNC_REQUEST_DELETE_OWN_WORDS = "requestDeleteOwnWordsNew/"
 const val FUNC_REQUEST_GET_OWN_WORDS = "requestOwnWords/"
+const val FUNC_REQUEST_UPDATE_LEARN_STAGES = "requestUpdateLearnStages/"
+const val FUNC_REQUEST_SET_LEARN_STAGE = "requestSetLearnStage/"
+
+const val FUNC_REQUEST_UPDATE_WORD = "requestUpdateWord/"
+const val FUNC_REQUEST_UPDATE_WORDS = "requestUpdateWords/"
 
 const val EMPTY_RES = -1
 

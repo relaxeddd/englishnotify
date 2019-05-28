@@ -65,14 +65,13 @@ open class ViewModelDictionary(protected val repositoryWord: RepositoryWord, pro
     }
 
     fun resetProgress(word: Word) {
-        repositoryWord.setWordProgress(word, 0)
+        repositoryWord.setWordLearnStage(word, 0)
     }
 
     fun addToOwn(word: Word) {
-        if (word.isOwnCategory) return
         navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
         ioScope.launch {
-            repositoryUser.insertOwnWord(word)
+            repositoryWord.addToOwn(word.id)
             withContext(Dispatchers.Main) {
                 navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
             }
@@ -82,7 +81,7 @@ open class ViewModelDictionary(protected val repositoryWord: RepositoryWord, pro
     fun removeFromOwnDict(word: Word) {
         navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
         ioScope.launch {
-            repositoryUser.deleteOwnWord(word.eng)
+            repositoryWord.removeFromOwn(word.id)
             withContext(Dispatchers.Main) {
                 navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
             }
@@ -90,15 +89,9 @@ open class ViewModelDictionary(protected val repositoryWord: RepositoryWord, pro
     }
 
     fun deleteWord(word: Word) {
-        if (word.isOwnCategory) {
-            navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
-        }
+        navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
         ioScope.launch {
-            val deleteResult = if (word.isOwnCategory) repositoryUser.deleteOwnWord(word.eng) else true
-
-            if (deleteResult) {
-                repositoryWord.deleteWord(word)
-            }
+            repositoryWord.deleteWord(word.id)
             withContext(Dispatchers.Main) {
                 navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
             }
@@ -106,20 +99,13 @@ open class ViewModelDictionary(protected val repositoryWord: RepositoryWord, pro
     }
 
     fun deleteWords(words: Collection<Word>) {
-        for (word in words) {
-            if (word.isOwnCategory) {
-                navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
-                break
-            }
-        }
+        navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
         ioScope.launch {
             val listIds = HashSet<String>()
 
-            words.forEach { if (it.isOwnCategory) listIds.add(it.eng) }
-            val deleteResult = if (listIds.isNotEmpty()) repositoryUser.deleteOwnWords(listIds.toList()) else true
-
-            if (deleteResult) {
-                words.forEach { repositoryWord.deleteWord(it) }
+            words.forEach { listIds.add(it.id) }
+            if (listIds.isNotEmpty()) {
+                repositoryWord.deleteWords(listIds.toList())
             }
             withContext(Dispatchers.Main) {
                 navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)

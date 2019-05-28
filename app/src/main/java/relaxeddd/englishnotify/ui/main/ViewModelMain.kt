@@ -138,8 +138,14 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
     }
 
     private fun updateOwnWords() {
+        if (RepositoryWord.getInstance().words.value?.isEmpty() == true) {
+            isShowHorizontalProgress.value = true
+        }
         ioScope.launch {
-            repositoryUser.requestOwnWords()
+            RepositoryWord.getInstance().requestSyncWords()
+            withContext(Dispatchers.Main) {
+                isShowHorizontalProgress.value = false
+            }
         }
     }
 }

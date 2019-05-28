@@ -5,11 +5,13 @@ import org.json.JSONObject
 import java.util.ArrayList
 
 fun parseWord(wordJson: JSONObject) : Word {
+    var id = if (wordJson.has(ID)) (wordJson[ID] as String) else ""
     val eng = if (wordJson.has(ENG)) (wordJson[ENG] as String) else ""
     val rus = if (wordJson.has(RUS)) (wordJson[RUS] as String) else ""
     val transcription = if (wordJson.has(TRANSCRIPTION)) (wordJson[TRANSCRIPTION] as String) else ""
     val tags = ArrayList<String>()
 
+    if (id.isEmpty()) id = eng
     if (wordJson.has(TAGS) && wordJson[TAGS] is JSONArray) {
         val jsonArray = wordJson[TAGS] as JSONArray
 
@@ -29,6 +31,6 @@ fun parseWord(wordJson: JSONObject) : Word {
     val isOwnCategory = if (wordJson.has(IS_OWN_CATEGORY)) (wordJson[IS_OWN_CATEGORY] as Boolean) else false
     val learnStage = if (wordJson.has(LEARN_STAGE)) (wordJson[LEARN_STAGE] as Int) else 0
 
-    return Word(eng, rus, transcription, tags, sampleEng, sampleRus, v2, v3, timestamp, isDeleted = isDeleted,
-        learnStage = learnStage, type = type, isCreatedByUser = isCreatedByUser, isOwnCategory = isOwnCategory)
+    return Word(id, eng, rus, transcription, tags, sampleEng, sampleRus, v2, v3, timestamp, isDeleted,
+        learnStage, type, isCreatedByUser, isOwnCategory)
 }

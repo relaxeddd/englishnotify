@@ -11,7 +11,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import relaxeddd.englishnotify.common.Word
 import relaxeddd.englishnotify.common.DATABASE_TEST_APP
 
-@Database(entities = [Word::class], version = 12, exportSchema = false)
+@Database(entities = [Word::class], version = 13, exportSchema = false)
 @TypeConverters(ConverterListStr::class)
 abstract class AppDatabase : RoomDatabase() {
 
@@ -28,13 +28,6 @@ abstract class AppDatabase : RoomDatabase() {
 
         private fun buildDatabase(context: Context): AppDatabase {
             return Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_TEST_APP)
-                .addMigrations(MIGRATION_5_6)
-                .addMigrations(MIGRATION_6_7)
-                .addMigrations(MIGRATION_7_8)
-                .addMigrations(MIGRATION_8_9)
-                .addMigrations(MIGRATION_9_10)
-                .addMigrations(MIGRATION_10_11)
-                .addMigrations(MIGRATION_11_12)
                 .fallbackToDestructiveMigration()
                 .build()
         }

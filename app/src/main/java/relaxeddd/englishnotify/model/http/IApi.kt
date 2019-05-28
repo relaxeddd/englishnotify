@@ -65,4 +65,56 @@ interface IApi {
     fun requestOwnWordsAsync(@Header("Authorization") idToken: String,
                              @Query("requestId") requestId: String,
                              @Query("userId") userId: String) : Deferred<OwnWordsResult?>
+
+    @GET(FUNC_REQUEST_UPDATE_LEARN_STAGES)
+    fun requestUpdateLearnStagesAsync(@Header("Authorization") idToken: String,
+                                      @Query("requestId") requestId: String,
+                                      @Query("userId") userId: String,
+                                      @Query("learnStage0") learnStage0: JSONArray,
+                                      @Query("learnStage1") learnStage1: JSONArray,
+                                      @Query("learnStage2") learnStage2: JSONArray,
+                                      @Query("learnStage3") learnStage3: JSONArray) : Deferred<OwnWordsResult?>
+
+    @GET(FUNC_REQUEST_UPDATE_LEARN_STAGES)
+    fun requestSetLearnStageAsync(@Header("Authorization") idToken: String,
+                                      @Query("requestId") requestId: String,
+                                      @Query("userId") userId: String,
+                                      @Query("wordId") wordId: String,
+                                      @Query("learnStage") learnStage: Int) : Deferred<Result?>
+
+    @GET(FUNC_REQUEST_UPDATE_WORD)
+    fun requestUpdateWordAsync(@Header("Authorization") idToken: String,
+                               @Query("userId") userId: String,
+                               @Query("wordId") wordId: String,
+                               @Query("eng") eng: String,
+                               @Query("rus") rus: String,
+                               @Query("transcription") transcription: String,
+                               @Query("isDeleted") isDeleted: Boolean,
+                               @Query("isOwnCategory") isOwnCategory: Boolean,
+                               @Query("learnStage") learnStage: Int) : Deferred<Result?>
+
+    @GET(FUNC_REQUEST_UPDATE_WORD)
+    fun requestUpdateWordLearnStageAsync(@Header("Authorization") idToken: String,
+                               @Query("userId") userId: String,
+                               @Query("wordId") wordId: String,
+                               @Query("learnStage") learnStage: Int) : Deferred<Result?>
+
+    @GET(FUNC_REQUEST_UPDATE_WORDS)
+    fun requestUpdateWordsAsync(@Header("Authorization") idToken: String,
+                                @Query("userId") userId: String,
+                                @Query("wordIds") wordIds: JSONArray,
+                                @Query("isDeleted") isDeleted: Boolean,
+                                @Query("isOwnCategory") isOwnCategory: Boolean) : Deferred<Result?>
+
+    @GET(FUNC_REQUEST_UPDATE_WORDS)
+    fun requestDeleteWordsAsync(@Header("Authorization") idToken: String,
+                                @Query("userId") userId: String,
+                                @Query("wordIds") wordIds: JSONArray,
+                                @Query("isDeleted") isDeleted: Boolean = true) : Deferred<Result?>
+
+    @GET(FUNC_REQUEST_UPDATE_WORDS)
+    fun requestSetIsOwnCategoryWordsAsync(@Header("Authorization") idToken: String,
+                                @Query("userId") userId: String,
+                                @Query("wordIds") wordIds: JSONArray,
+                                @Query("isOwnCategory") isOwnCategory: Boolean) : Deferred<Result?>
 }

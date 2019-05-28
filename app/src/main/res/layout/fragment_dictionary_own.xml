@@ -47,12 +47,6 @@
                     android:textSize="@dimen/font_16"
                     android:visibility="@{!hasWords ? View.VISIBLE : View.GONE}"/>
 
-            <ProgressBar
-                    android:layout_width="@dimen/size_36"
-                    android:layout_height="@dimen/size_36"
-                    android:layout_centerInParent="true"
-                    android:visibility="@{safeUnbox(viewModel.isVisibleLoadingView) == true ? View.VISIBLE : View.GONE}"/>
-
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/button_dictionary_own_add_word"
                     android:layout_width="wrap_content"

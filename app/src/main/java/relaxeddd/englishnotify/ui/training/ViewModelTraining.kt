@@ -3,7 +3,6 @@ package relaxeddd.englishnotify.ui.training
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
@@ -132,14 +131,14 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
         answers.add(textAnswer)
         getResultLiveDataByIx(ix).value = result
         if (result == STATE_SUCCESS) {
-            repositoryWord.setWordProgress(word, word.learnStage + 1)
+            repositoryWord.setWordLearnStage(word, word.learnStage + 1)
             if (currentIx >= trainingWords.size - 1) {
                 current.value = currentIx
             } else {
                 current.value = currentIx + 1
             }
         } else {
-            repositoryWord.setWordProgress(word, 0)
+            repositoryWord.setWordLearnStage(word, 0)
             current.value = currentIx
         }
     }

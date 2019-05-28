@@ -64,9 +64,4 @@ class FragmentDictionaryOwn : FragmentDictionary<ViewModelDictionaryOwn, Fragmen
             else -> super.onNavigationEvent(eventId)
         }
     }
-
-    override fun onFragmentSelected() {
-        super.onFragmentSelected()
-        viewModel.requestOwnWords()
-    }
 }

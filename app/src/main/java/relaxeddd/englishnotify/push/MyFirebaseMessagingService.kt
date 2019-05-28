@@ -58,6 +58,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     if (existsWord != null) {
                         wordDao.insertAll(existsWord)
                     } else {
+                        if (word.timestamp == 0L) {
+                            word.timestamp = System.currentTimeMillis()
+                        }
                         wordDao.insertAll(word)
                     }
                 }
