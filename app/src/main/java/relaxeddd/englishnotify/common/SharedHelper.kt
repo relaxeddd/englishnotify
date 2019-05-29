@@ -197,4 +197,55 @@ object SharedHelper {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         sPref.edit().putStringSet(LEARN_STAGE_3, value).apply()
     }
+
+    //------------------------------------------------------------------------------------------------------------------
+    fun setWordLearnStage(wordId: String, learnStage: Int) {
+        deleteWordLearnStage(wordId)
+        when(learnStage) {
+            0 -> {
+                val learnStage0 = HashSet(getLearnStage0())
+                learnStage0.add(wordId)
+                setLearnStage0(learnStage0)
+            }
+            1 -> {
+                val learnStage1 = HashSet(getLearnStage0())
+                learnStage1.add(wordId)
+                setLearnStage1(learnStage1)
+            }
+            2 -> {
+                val learnStage2 = HashSet(getLearnStage0())
+                learnStage2.add(wordId)
+                setLearnStage2(learnStage2)
+            }
+            3 -> {
+                val learnStage3 = HashSet(getLearnStage0())
+                learnStage3.add(wordId)
+                setLearnStage3(learnStage3)
+            }
+        }
+    }
+
+    fun deleteWordLearnStage(wordId: String) {
+        val learnStage0 = HashSet(SharedHelper.getLearnStage0())
+        val learnStage1 = HashSet(SharedHelper.getLearnStage1())
+        val learnStage2 = HashSet(SharedHelper.getLearnStage2())
+        val learnStage3 = HashSet(SharedHelper.getLearnStage3())
+
+        if (learnStage0.contains(wordId)) {
+            learnStage0.remove(wordId)
+            SharedHelper.setLearnStage0(learnStage0)
+        }
+        if (learnStage1.contains(wordId)) {
+            learnStage1.remove(wordId)
+            SharedHelper.setLearnStage1(learnStage1)
+        }
+        if (learnStage2.contains(wordId)) {
+            learnStage2.remove(wordId)
+            SharedHelper.setLearnStage2(learnStage2)
+        }
+        if (learnStage3.contains(wordId)) {
+            learnStage3.remove(wordId)
+            SharedHelper.setLearnStage3(learnStage3)
+        }
+    }
 }

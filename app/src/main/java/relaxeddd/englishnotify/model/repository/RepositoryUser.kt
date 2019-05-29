@@ -8,6 +8,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONArray
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.push.MyFirebaseMessagingService
@@ -28,7 +29,7 @@ class RepositoryUser private constructor() {
     fun isAuthorized() = FirebaseAuth.getInstance().currentUser != null
 
     //------------------------------------------------------------------------------------------------------------------
-    suspend fun initUser(listener: ListenerResult<Boolean>? = null) {
+    suspend fun init(listener: ListenerResult<Boolean>? = null) {
         RepositoryCommon.getInstance().initFirebase { isSuccess ->
             CoroutineScope(Dispatchers.Main).launch {
                 if (!isSuccess) {
@@ -52,16 +53,56 @@ class RepositoryUser private constructor() {
                     listener?.onResult(false)
                     return@launch
                 }
+                if (firebaseUser == null) {
+                    showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
+                    listener?.onResult(false)
+                    return@launch
+                }
 
-                val answerInitData = ApiHelper.requestInit(firebaseUser, tokenId, pushToken)
+                val learnStage0 = JSONArray()
+                for (learnStage in SharedHelper.getLearnStage0()) {
+                    if (learnStage.isNotEmpty()) {
+                        learnStage0.put(learnStage)
+                    }
+                }
+                val learnStage1 = JSONArray()
+                for (learnStage in SharedHelper.getLearnStage1()) {
+                    if (learnStage.isNotEmpty()) {
+                        learnStage1.put(learnStage)
+                    }
+                }
+                val learnStage2 = JSONArray()
+                for (learnStage in SharedHelper.getLearnStage2()) {
+                    if (learnStage.isNotEmpty()) {
+                        learnStage2.put(learnStage)
+                    }
+                }
+                val learnStage3 = JSONArray()
+                for (learnStage in SharedHelper.getLearnStage3()) {
+                    if (learnStage.isNotEmpty()) {
+                        learnStage3.put(learnStage)
+                    }
+                }
+
+                val answerInitData = ApiHelper.requestInit(firebaseUser, tokenId, pushToken, learnStage0, learnStage1, learnStage2, learnStage3)
 
                 if (answerInitData?.result != null && answerInitData.result.isSuccess() && answerInitData.user?.userId?.isNotEmpty() == true) {
                     liveDataUser.value = answerInitData.user
                     SharedHelper.setLearnLanguageType(answerInitData.user.learnLanguageType)
-
                     if (!answerInitData.isActualVersion) {
                         liveDataIsActualVersion.value = answerInitData.isActualVersion
                     }
+
+                    if (answerInitData.words != null) {
+                        withContext(Dispatchers.IO) {
+                            RepositoryWord.getInstance().updateWords(answerInitData.words)
+                        }
+                        SharedHelper.setLearnStage0(HashSet())
+                        SharedHelper.setLearnStage1(HashSet())
+                        SharedHelper.setLearnStage2(HashSet())
+                        SharedHelper.setLearnStage3(HashSet())
+                    }
+
                     listener?.onResult(true)
                 } else if (answerInitData?.result != null) {
                     showToast(getErrorString(answerInitData.result))
@@ -140,7 +181,8 @@ class RepositoryUser private constructor() {
 
         val firebaseUser = RepositoryCommon.getInstance().firebaseUser
         val tokenId = RepositoryCommon.getInstance().tokenId
-        val updateResult = ApiHelper.requestUpdateUser(firebaseUser, tokenId, user)
+        val updateResult = ApiHelper.requestUpdateUser(firebaseUser, tokenId, user.notificationsTimeType,
+            user.receiveNotifications, user.learnLanguageType, user.selectedTag)
 
         return if (updateResult != null && updateResult.result !== null && !updateResult.result.isSuccess()) {
             showToast(getErrorString(updateResult.result))

@@ -1,6 +1,7 @@
 package relaxeddd.englishnotify.ui.dictionary
 
 import android.view.View
+import androidx.annotation.CallSuper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -114,6 +115,7 @@ open class ViewModelDictionary(protected val repositoryWord: RepositoryWord, pro
     }
 
     //------------------------------------------------------------------------------------------------------------------
+    @CallSuper
     protected open fun filterWords(items: HashSet<Word>) : HashSet<Word> {
         return items.filter { !it.isDeleted }.toHashSet()
     }

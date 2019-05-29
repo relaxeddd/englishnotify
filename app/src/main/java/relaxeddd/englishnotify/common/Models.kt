@@ -83,6 +83,9 @@ data class Result(val code: Int = RESULT_UNDEFINED, val message: String = "") {
 data class UpdateUserResult(val result: Result?, val user: User?)
 
 @Keep
+data class CreateWordResult(val result: Result?, val word: Word? = null)
+
+@Keep
 data class OwnWordsResult(val result: Result?, val words: List<Word>? = null)
 
 @Keep
@@ -93,6 +96,6 @@ data class PurchaseResult(val result: Result?, val userId: String = "", val toke
 data class RefillInfo(val subscriptionTime: Long = 0)
 
 @Keep
-data class InitData(val result: Result?, val user: User?, val isActualVersion: Boolean = true)
+data class InitData(val result: Result?, val user: User?, val words: List<Word>? = null, val isActualVersion: Boolean = true)
 
 data class CategoryItem(val key: String)

@@ -101,11 +101,11 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
     private class WordDiffCallback : DiffUtil.ItemCallback<Word>() {
 
         override fun areItemsTheSame(oldItem: Word, newItem: Word): Boolean {
-            return oldItem.eng == newItem.eng
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: Word, newItem: Word): Boolean {
-            return oldItem.learnStage == newItem.learnStage && oldItem.rus == newItem.rus
+            return oldItem.eng == newItem.eng && oldItem.learnStage == newItem.learnStage && oldItem.rus == newItem.rus
                     && oldItem.type == newItem.type && newItem.tags.containsAll(oldItem.tags)
                     && oldItem.tags.containsAll(newItem.tags) && oldItem.isCreatedByUser == newItem.isCreatedByUser
                     && oldItem.isOwnCategory == newItem.isOwnCategory && oldItem.isDeleted == newItem.isDeleted

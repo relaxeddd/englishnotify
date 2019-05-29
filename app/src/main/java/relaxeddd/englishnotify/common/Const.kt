@@ -12,19 +12,15 @@ const val SELECTED_ITEM = "selected_item"
 const val WORDS = "words"
 const val USERS = "users"
 
-const val FUNC_REQUEST_INIT = "requestInitNew2/"
+const val FUNC_REQUEST_INIT = "requestInit2/"
+const val FUNC_REQUEST_INSERT_OWN_WORD = "requestInsertOwnWord2/"
+const val FUNC_REQUEST_UPDATE_WORD_LEARN_STAGE = "requestUpdateWordLearnStage/"
+const val FUNC_REQUEST_UPDATE_WORDS = "requestUpdateWords/"
+
 const val FUNC_REQUEST_VERIFY_PURCHASE = "requestVerifyPurchase/"
 const val FUNC_REQUEST_SEND_FEEDBACK = "requestSendFeedback/"
 const val FUNC_REQUEST_UPDATE_USER = "requestUpdateUser/"
 const val FUNC_REQUEST_SEND_TEST_NOTIFICATION = "requestSendTestNotification/"
-const val FUNC_REQUEST_INSERT_OWN_WORD = "requestInsertOwnWord/"
-const val FUNC_REQUEST_DELETE_OWN_WORDS = "requestDeleteOwnWordsNew/"
-const val FUNC_REQUEST_GET_OWN_WORDS = "requestOwnWords/"
-const val FUNC_REQUEST_UPDATE_LEARN_STAGES = "requestUpdateLearnStages/"
-const val FUNC_REQUEST_SET_LEARN_STAGE = "requestSetLearnStage/"
-
-const val FUNC_REQUEST_UPDATE_WORD = "requestUpdateWord/"
-const val FUNC_REQUEST_UPDATE_WORDS = "requestUpdateWords/"
 
 const val EMPTY_RES = -1
 
@@ -60,6 +56,8 @@ const val RESULT_ERROR_OWN_DELETE_NO_IDS = 6308
 const val RESULT_ERROR_OWN_DELETE_NO_WORDS = 6309
 const val RESULT_ERROR_OWN_DELETE = 6310
 const val RESULT_ERROR_OWN_GET = 6311
+
+const val RESULT_ERROR_UPDATE_WORD_LEARN_STAGE = 6587
 
 const val RESULT_ERROR_NO_SUBSCRIPTION = 6401
 
