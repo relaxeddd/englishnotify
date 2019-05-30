@@ -10,7 +10,7 @@ data class User(
     val userId: String = "",
     val email: String = "",
     var receiveNotifications: Boolean = true,
-    var notificationsTimeType: Int = 1,
+    var notificationsTimeType: Int = 0,
     val tagsAvailable: List<String> = ArrayList(),
     var tagsSelected: List<String> = ArrayList(),
     var learnLanguageType: Int = 0,
@@ -28,14 +28,14 @@ data class Word(
 
     @PrimaryKey
     val eng: String = "",
-    val rus: String = "",
-    val transcription: String = "",
+    var rus: String = "",
+    var transcription: String = "",
     var tags: List<String> = ArrayList(),
     val sampleEng: String = "",
     val sampleRus: String = "",
     val v2: String = "",
     val v3: String = "",
-    var timestamp: Long = 0,
+    var timestamp: Long = 0L,
     var isDeleted: Boolean = false,
     var isLearned: Boolean = false,
     var saveType: Int = DICTIONARY,
@@ -79,7 +79,7 @@ open class Event<out T>(private val content: T) {
 data class AnimBlock(var isAnimating: Boolean = false)
 
 @Keep
-data class Result(val code: Int = RESULT_UNDEFINED, val msg: String = "", val message: String = "") {
+data class Result(val code: Int = RESULT_UNDEFINED, val message: String = "") {
     fun isSuccess() = code == RESULT_OK
 }
 

@@ -6,7 +6,7 @@ class ConverterListStr {
 
     @TypeConverter
     fun fromString(content: String?): List<String> {
-        return content?.split(";") ?: ArrayList()
+        return if (content?.isNotEmpty() == true) content.split(";") else ArrayList()
     }
 
     @TypeConverter

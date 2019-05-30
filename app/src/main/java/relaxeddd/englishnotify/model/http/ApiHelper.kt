@@ -52,7 +52,7 @@ object ApiHelper {
         return if (tokenId?.isNotEmpty() == true) {
             return executeRequest( suspend { api.requestSendFeedback(tokenId, requestId, userId, feedback) }, Result(RESULT_ERROR_INTERNET))
         } else {
-            Result(msg = ERROR_TOKEN_NOT_INIT)
+            Result(message = ERROR_TOKEN_NOT_INIT)
         }
     }
 
@@ -67,7 +67,7 @@ object ApiHelper {
         return if (tokenId?.isNotEmpty() == true) {
             return executeRequest( suspend { api.requestSendTestNotification(tokenId, requestId, userId) }, Result(RESULT_ERROR_INTERNET))
         } else {
-            Result(msg = ERROR_SEND_TEST_NOTIFICATION)
+            Result(message = ERROR_SEND_TEST_NOTIFICATION)
         }
     }
 

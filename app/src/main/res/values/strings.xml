@@ -237,6 +237,10 @@
     <string name="patch_notes_2_2_2">- When subscription is end you receive notifications more than once per 4 hours (before that you don`t receive it)
         \n- Libraries update</string>
 
+    <string name="patch_notes_2_2_3">- When subscription is end you receive notifications more than once per 4 hours (before that you don`t receive it)
+        \n- Libraries update
+        \n- Change receive notification time fix</string>
+
     <!-- =========================================================================================================== -->
     <string name="own">Own category (add words yourself in dictionary)</string>
     <string name="irregular">Irregular verbs</string>

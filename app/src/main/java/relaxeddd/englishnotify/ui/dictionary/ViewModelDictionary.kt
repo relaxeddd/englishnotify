@@ -15,16 +15,13 @@ open class ViewModelDictionary(protected val repositoryWord: RepositoryWord, pro
 
     val user: LiveData<User?> = repositoryUser.liveDataUser
     val sortByType = MutableLiveData<SortByType>(SortByType.getByName(SharedHelper.getSortByType()))
-    val filterTags = MutableLiveData<HashSet<String>>()
+    val filterTags = MutableLiveData<HashSet<String>>(HashSet())
     val tags = HashSet<String>()
     val wordsFiltered = MutableLiveData<List<Word>>(ArrayList())
     private val words: LiveData<List<Word>> = repositoryWord.words
     private val wordsObserver = Observer<List<Word>> { words ->
         tags.clear()
-        words?.forEach { it.tags.forEach { tag -> tags.add(tag) } }
-        if (filterTags.value == null) {
-            filterTags.value = tags
-        }
+        words?.forEach { it.tags.forEach { tag -> if (tag.isNotEmpty()) tags.add(tag) } }
         updateFilteredWords()
     }
     private val sortObserver = Observer<SortByType> { sort ->

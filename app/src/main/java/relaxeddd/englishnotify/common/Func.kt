@@ -143,7 +143,7 @@ fun getErrorString(result: Result?) : String {
         RESULT_ERROR_OWN_DELETE_NO_WORDS -> getAppString(R.string.error_own_word_delete)
         RESULT_ERROR_OWN_DELETE -> getAppString(R.string.error_own_word_delete)
         RESULT_ERROR_INTERNET -> getAppString(R.string.network_not_available)
-        else -> result.msg
+        else -> result.message
     }
 }
 

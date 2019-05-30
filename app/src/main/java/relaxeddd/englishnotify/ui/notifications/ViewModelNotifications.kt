@@ -125,7 +125,7 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
     fun onDialogRepeatTimeResult(receiveNotificationsTime: Int) {
         val user = repositoryUser.liveDataUser.value
 
-        if (receiveNotificationsTime < 4 && (user?.subscriptionTime ?: 0) < System.currentTimeMillis()) {
+        if (receiveNotificationsTime < 3 && (user?.subscriptionTime ?: 0) < System.currentTimeMillis()) {
             showToast(R.string.subscription_need)
         } else if (receiveNotificationsTime != user?.notificationsTimeType) {
             uiScope.launch {
