@@ -76,7 +76,7 @@
     <string name="no">No</string>
     <string name="no_exercises">Notifications with exercises have not received yet. Please select exercise category and wait</string>
     <string name="no_thanks">No, thanks / already</string>
-    <string name="no_training_category_words">There are no category words for training (probably it all the sentences or already learned words)</string>
+    <string name="no_training_category_words">There are not enough category words for training, need minimum 10 (probably it already learned words)</string>
     <string name="no_training_words">There are no words for training or it already learned or it is all the sentences</string>
     <string name="no_words">Notifications with new words have not received yet. Please, authorize and wait… (With default settings wait 1 hour)</string>
     <string name="no_words_default">Notifications with new words have not received yet. Please wait or try to use test notifications in Notifications section</string>

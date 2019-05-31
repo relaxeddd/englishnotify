@@ -26,10 +26,6 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
     private val ioScope = CoroutineScope(Dispatchers.IO)
     var words = wordDao.getAll()
 
-    fun updateWord(word : Word) {
-        wordDao.insertAll(word)
-    }
-
     fun clearDictionary() {
         wordDao.deleteAll()
     }
@@ -81,37 +77,31 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         return if (trainingWords.size >= 10) ArrayList(trainingWords.shuffled().subList(0, 10)) else ArrayList(trainingWords.shuffled())
     }
 
+    fun setWordLearnStage(word: Word, progress: Int, isRemoteSave: Boolean = true) {
+        ioScope.launch {
+            val saveWord = Word(word)
+            saveWord.learnStage = progress
+            updateWord(saveWord)
+            SharedHelper.setWordLearnStage(saveWord.id, progress)
+            if (isRemoteSave) requestSetLearnStage(saveWord.id, progress)
+        }
+    }
+
     fun updateWords(words: List<Word>) {
+        wordDao.deleteAll()
         words.forEach {
             wordDao.insertAll(it)
         }
     }
 
-    fun setWordLearnStageLocal(word: Word, progress: Int) {
-        ioScope.launch {
-            val saveWord = Word(word)
-            saveWord.learnStage = progress
-            SharedHelper.setWordLearnStage(saveWord.id, progress)
-            updateWord(saveWord)
-        }
-    }
-
-    fun setWordLearnStage(word: Word, progress: Int) {
-        ioScope.launch {
-            val saveWord = Word(word)
-            saveWord.learnStage = progress
-            updateWord(saveWord)
-            SharedHelper.setWordLearnStage(saveWord.id, progress)
-            requestSetLearnStage(saveWord.id, progress)
-        }
+    private fun updateWord(word : Word) {
+        wordDao.insertAll(word)
     }
 
     //------------------------------------------------------------------------------------------------------------------
     suspend fun insertOwnCategoryWord(wordId: String, eng: String, rus: String, transcription: String) : Boolean {
         if (FirebaseAuth.getInstance().currentUser == null) {
-            withContext(Dispatchers.Main) {
-                showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
-            }
+            withContext(Dispatchers.Main) { showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED)) }
             return false
         }
 
@@ -126,15 +116,11 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
                 true
             }
             answer?.result != null -> {
-                withContext(Dispatchers.Main) {
-                    showToast(getErrorString(answer.result))
-                }
+                withContext(Dispatchers.Main) { showToast(getErrorString(answer.result)) }
                 false
             }
             else -> {
-                withContext(Dispatchers.Main) {
-                    showToastLong(R.string.error_request)
-                }
+                withContext(Dispatchers.Main) { showToastLong(R.string.error_request) }
                 false
             }
         }
@@ -159,20 +145,14 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
 
     private suspend fun setIsOwnCategory(wordIds: List<String>, isOwnCategory: Boolean) : Boolean {
         if (FirebaseAuth.getInstance().currentUser == null) {
-            withContext(Dispatchers.Main) {
-                showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
-            }
+            withContext(Dispatchers.Main) { showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED)) }
             return false
         }
 
         val firebaseUser = RepositoryCommon.getInstance().firebaseUser
         val tokenId = RepositoryCommon.getInstance().tokenId
 
-        val answer = if (isOwnCategory) {
-            ApiHelper.requestAddToOwnWords(firebaseUser, tokenId, wordIds)
-        } else {
-            ApiHelper.requestRemoveFromOwnWords(firebaseUser, tokenId, wordIds)
-        }
+        val answer = ApiHelper.requestSetIsOwnCategoryWords(firebaseUser, tokenId, wordIds, isOwnCategory)
 
         return when {
             answer?.isSuccess() == true -> {
@@ -188,15 +168,11 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
                 true
             }
             answer != null -> {
-                withContext(Dispatchers.Main) {
-                    showToast(getErrorString(answer))
-                }
+                withContext(Dispatchers.Main) { showToast(getErrorString(answer)) }
                 false
             }
             else -> {
-                withContext(Dispatchers.Main) {
-                    showToastLong(R.string.error_request)
-                }
+                withContext(Dispatchers.Main) { showToastLong(R.string.error_request) }
                 false
             }
         }
@@ -209,9 +185,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
 
     suspend fun deleteWords(wordIds: List<String>) : Boolean {
         if (FirebaseAuth.getInstance().currentUser == null) {
-            withContext(Dispatchers.Main) {
-                showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
-            }
+            withContext(Dispatchers.Main) { showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED)) }
             return false
         }
 
@@ -234,15 +208,11 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
                 true
             }
             answer != null -> {
-                withContext(Dispatchers.Main) {
-                    showToast(getErrorString(answer))
-                }
+                withContext(Dispatchers.Main) { showToast(getErrorString(answer)) }
                 false
             }
             else -> {
-                withContext(Dispatchers.Main) {
-                    showToastLong(R.string.error_request)
-                }
+                withContext(Dispatchers.Main) { showToastLong(R.string.error_request) }
                 false
             }
         }
@@ -250,10 +220,9 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
 
     //------------------------------------------------------------------------------------------------------------------
     private suspend fun requestSetLearnStage(wordId: String, learnStage: Int) {
+        if (!isNetworkAvailable()) return
         if (FirebaseAuth.getInstance().currentUser == null) {
-            withContext(Dispatchers.Main) {
-                showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
-            }
+            withContext(Dispatchers.Main) { showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED)) }
             return
         }
 
@@ -263,18 +232,12 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         val answer = ApiHelper.requestUpdateWordLearnStage(firebaseUser, tokenId, wordId, learnStage)
 
         if (answer?.isSuccess() == true) {
-            withContext(Dispatchers.Main) {
-                SharedHelper.deleteWordLearnStage(wordId)
-            }
+            SharedHelper.deleteWordLearnStage(wordId)
         } else {
             if (answer != null && !answer.isSuccess()) {
-                withContext(Dispatchers.Main) {
-                    showToast(getErrorString(answer))
-                }
+                withContext(Dispatchers.Main) { showToast(getErrorString(answer)) }
             } else {
-                withContext(Dispatchers.Main) {
-                    showToastLong(R.string.error_request)
-                }
+                withContext(Dispatchers.Main) { showToastLong(R.string.error_request) }
             }
         }
     }

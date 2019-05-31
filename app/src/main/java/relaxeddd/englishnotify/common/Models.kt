@@ -28,7 +28,7 @@ data class Word(
 
     @PrimaryKey
     val id: String = "",
-    val eng: String = "",
+    var eng: String = "",
     var rus: String = "",
     var transcription: String = "",
     var tags: List<String> = ArrayList(),
@@ -40,7 +40,7 @@ data class Word(
     var isDeleted: Boolean = false,
     var learnStage: Int = 0,
     var type: String = "",
-    var isCreatedByUser: Boolean = false,
+    var isCreatedByUser: Boolean = true,
     var isOwnCategory: Boolean = false
 ) {
     constructor(word: Word) : this(word.id,  word.eng, word.rus, word.transcription, word.tags, word.sampleEng, word.sampleRus,
@@ -84,9 +84,6 @@ data class UpdateUserResult(val result: Result?, val user: User?)
 
 @Keep
 data class CreateWordResult(val result: Result?, val word: Word? = null)
-
-@Keep
-data class OwnWordsResult(val result: Result?, val words: List<Word>? = null)
 
 @Keep
 data class PurchaseResult(val result: Result?, val userId: String = "", val tokenId: String = "", val itemType: String = "",

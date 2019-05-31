@@ -27,7 +27,7 @@ fun parseWord(wordJson: JSONObject) : Word {
     val timestamp = if (wordJson.has(TIMESTAMP)) (wordJson[TIMESTAMP] as Long) else System.currentTimeMillis()
     val type = if (wordJson.has(TYPE)) (wordJson[TYPE] as String) else ""
     val isDeleted = if (wordJson.has(IS_DELETED)) (wordJson[IS_DELETED] as Boolean) else false
-    val isCreatedByUser = if (wordJson.has(IS_CREATED_BY_USER)) (wordJson[IS_CREATED_BY_USER] as Boolean) else false
+    val isCreatedByUser = if (wordJson.has(IS_CREATED_BY_USER)) (wordJson[IS_CREATED_BY_USER] as Boolean) else true
     val isOwnCategory = if (wordJson.has(IS_OWN_CATEGORY)) (wordJson[IS_OWN_CATEGORY] as Boolean) else false
     val learnStage = if (wordJson.has(LEARN_STAGE)) (wordJson[LEARN_STAGE] as Int) else 0
 

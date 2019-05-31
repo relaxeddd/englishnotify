@@ -128,7 +128,7 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
         open fun bind(word: Word, isSelectState: Boolean, checkList: java.util.HashSet<Word>,
                       clickListener: View.OnClickListener, longClickListener: View.OnLongClickListener,
                       checkedChangeListener: CompoundButton.OnCheckedChangeListener) {
-            itemView.tag = word.eng
+            itemView.tag = word.id
             getCardViewWord().setOnClickListener(clickListener)
             getCardViewWord().setOnLongClickListener(longClickListener)
 

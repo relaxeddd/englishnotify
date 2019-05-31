@@ -48,25 +48,25 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
             if (isSave) {
                 val wordDao = AppDatabase.getInstance(context).wordDao()
-                val existsWord = wordDao.findWordById(word.eng)
+                val existsWord = wordDao.findWordById(word.id)
 
                 if (existsWord != null) {
+                    existsWord.eng = word.eng
                     existsWord.rus = word.rus
                     existsWord.transcription = word.transcription
+                    existsWord.tags = word.tags
                 }
                 CoroutineScope(Dispatchers.IO).launch {
                     if (existsWord != null) {
                         wordDao.insertAll(existsWord)
                     } else {
-                        if (word.timestamp == 0L) {
-                            word.timestamp = System.currentTimeMillis()
-                        }
+                        if (word.timestamp == 0L) word.timestamp = System.currentTimeMillis()
                         wordDao.insertAll(word)
                     }
                 }
             }
 
-            showNotificationWord(context, word.eng, notificationText, title, isShowButtons)
+            showNotificationWord(context, word.id, notificationText, title, isShowButtons)
         }
 
         private fun showNotificationWord(ctx: Context, wordId: String, text: String, title: String, withButtons : Boolean) {
@@ -111,8 +111,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     knowIntent, PendingIntent.FLAG_UPDATE_CURRENT)
                 val action: NotificationCompat.Action = NotificationCompat.Action.Builder(R.drawable.ic_dictionary,
                     getAppString(R.string.i_know_it), replyPendingIntent)
-                        .addRemoteInput(remoteInput)
-                        .build()
+                    .addRemoteInput(remoteInput)
+                    .build()
                 notificationBuilder.addAction(action)
 
                 val notKnowPendingIntent: PendingIntent =

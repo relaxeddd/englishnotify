@@ -84,9 +84,11 @@ class RepositoryUser private constructor() {
                     }
                 }
 
-                val answerInitData = ApiHelper.requestInit(firebaseUser, tokenId, pushToken, learnStage0, learnStage1, learnStage2, learnStage3)
+                val answerInitData = ApiHelper.requestInit(firebaseUser, tokenId, pushToken, learnStage0, learnStage1,
+                    learnStage2, learnStage3)
 
-                if (answerInitData?.result != null && answerInitData.result.isSuccess() && answerInitData.user?.userId?.isNotEmpty() == true) {
+                if (answerInitData?.result != null && answerInitData.result.isSuccess()
+                    && answerInitData.user?.userId?.isNotEmpty() == true) {
                     liveDataUser.value = answerInitData.user
                     SharedHelper.setLearnLanguageType(answerInitData.user.learnLanguageType)
                     if (!answerInitData.isActualVersion) {

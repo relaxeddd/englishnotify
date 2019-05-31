@@ -91,14 +91,10 @@ object ApiHelper {
             isDeleted = true, isOwnCategory = false)
     }
 
-    suspend fun requestAddToOwnWords(firebaseUser: FirebaseUser?, tokenId: String?, wordIds: List<String>) : Result? {
+    suspend fun requestSetIsOwnCategoryWords(firebaseUser: FirebaseUser?, tokenId: String?, wordIds: List<String>,
+                                             isOwnCategory: Boolean) : Result? {
         return requestUpdateWords(firebaseUser, tokenId, wordIds, isChangeIsDeleted = false, isChangeIsOwnCategory = true,
-            isDeleted = false, isOwnCategory = true)
-    }
-
-    suspend fun requestRemoveFromOwnWords(firebaseUser: FirebaseUser?, tokenId: String?, wordIds: List<String>) : Result? {
-        return requestUpdateWords(firebaseUser, tokenId, wordIds, isChangeIsDeleted = false, isChangeIsOwnCategory = true,
-            isDeleted = false, isOwnCategory = false)
+            isDeleted = false, isOwnCategory = isOwnCategory)
     }
 
     private suspend fun requestUpdateWords(firebaseUser: FirebaseUser?, tokenId: String?, wordIds: List<String>,
@@ -119,7 +115,7 @@ object ApiHelper {
         } else if (isChangeIsDeleted) {
             executeRequest( suspend { api.requestDeleteWords(tokenId, userId, wordIdsJson) }, Result(RESULT_ERROR_INTERNET))
         } else {
-            executeRequest( suspend { api.requestRemoveFromOwnWords(tokenId, userId, wordIdsJson, isOwnCategory) }, Result(RESULT_ERROR_INTERNET))
+            executeRequest( suspend { api.requestSetIsOwnCategoryWords(tokenId, userId, wordIdsJson, isOwnCategory) }, Result(RESULT_ERROR_INTERNET))
         }
     }
 
@@ -230,7 +226,7 @@ object ApiHelper {
             return apiHelper.requestDeleteWordsAsync(tokenPrefix + tokenId, userId, wordIds).await()
         }
 
-        suspend fun requestRemoveFromOwnWords(tokenId: String, userId: String, wordIds: JSONArray, isOwnCategory: Boolean) : Result? {
+        suspend fun requestSetIsOwnCategoryWords(tokenId: String, userId: String, wordIds: JSONArray, isOwnCategory: Boolean) : Result? {
             return apiHelper.requestSetIsOwnCategoryWordsAsync(tokenPrefix + tokenId, userId, wordIds, isOwnCategory).await()
         }
     }

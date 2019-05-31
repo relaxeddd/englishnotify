@@ -12,7 +12,7 @@ import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.repository.RepositoryUser
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 
-open class ViewModelDictionary(protected val repositoryWord: RepositoryWord, protected val repositoryUser: RepositoryUser) : ViewModelBase() {
+open class ViewModelDictionary(private val repositoryWord: RepositoryWord, protected val repositoryUser: RepositoryUser) : ViewModelBase() {
 
     val user: LiveData<User?> = repositoryUser.liveDataUser
     val sortByType = MutableLiveData<SortByType>(SortByType.getByName(SharedHelper.getSortByType()))

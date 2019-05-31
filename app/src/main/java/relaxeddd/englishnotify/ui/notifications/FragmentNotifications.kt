@@ -48,11 +48,13 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
     override fun configureBinding() {
         super.configureBinding()
         binding.viewModel = viewModel
-        binding.clickListenerChangeCategory = Navigation.createNavigateOnClickListener(R.id.action_fragmentNotifications_to_fragmentCategories)
     }
 
     override fun onNavigationEvent(eventId: Int) {
         when (eventId) {
+            NAVIGATION_FRAGMENT_SELECT_CATEGORY -> {
+                Navigation.findNavController(view ?: return).navigate(R.id.action_fragmentNotifications_to_fragmentCategories)
+            }
             NAVIGATION_DIALOG_LEARN_ENGLISH -> {
                 val dialog = DialogLearnLanguage()
                 val args = Bundle()
@@ -96,7 +98,7 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
             }
             NAVIGATION_DIALOG_CONFIRM_DISABLE_NOTIFICATIONS -> {
                 if (isResumed) {
-                    val dialog = DialogConfirmDisableNotificaitons()
+                    val dialog = DialogConfirmDisableNotifications()
                     dialog.confirmListener = listenerConfirmDisableNotifications
                     dialog.show(this@FragmentNotifications.childFragmentManager, "Confirm disable push Dialog")
                 }

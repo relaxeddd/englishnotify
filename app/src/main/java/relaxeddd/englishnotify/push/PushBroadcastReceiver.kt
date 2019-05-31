@@ -68,7 +68,9 @@ class PushBroadcastReceiver : BroadcastReceiver() {
                     MyFirebaseMessagingService.handleWordNotification(context, word, false, SharedHelper.NOTIFICATIONS_VIEW_WITH_TRANSLATE)
                 }
             }
-            RepositoryWord.getInstance().setWordLearnStageLocal(saveWord, learnStage)
+            if (saveWord.learnStage != learnStage) {
+                RepositoryWord.getInstance().setWordLearnStage(saveWord, learnStage, false)
+            }
             if (notificationId != -1) {
                 notificationManager.cancel(notificationId)
             }

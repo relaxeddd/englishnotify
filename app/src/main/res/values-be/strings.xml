@@ -81,7 +81,7 @@
     <string name="no_words_know">У вас нет выученных слов в словаре</string>
     <string name="no_words_own">Вы пока еще не добавили слова в свою категорию</string>
     <string name="no_test_notifications">У вас не осталось тестовых уведомлений</string>
-    <string name="no_training_category_words">В этой категории нет слов для тренировки (вероятно там только предложения или уже выученные слова)</string>
+    <string name="no_training_category_words">В этой категории недостаточно слов для тренировки, необходимо минимум 10 слов (вероятно там уже выученные слова)</string>
     <string name="no_training_words">У вас нет слов для тренировки, либо они выучены или являются предложениями</string>
     <string name="not_show_notifications">Не показывать уведомления начиная с (24-часовой формат, число от 0 до 23)</string>
     <string name="notification_categories">Выбор категорий слов</string>

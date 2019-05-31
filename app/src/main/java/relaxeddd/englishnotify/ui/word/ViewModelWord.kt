@@ -5,7 +5,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
-import relaxeddd.englishnotify.model.repository.RepositoryUser
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 
 class ViewModelWord : ViewModelBase() {
