@@ -34,6 +34,11 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
             viewModel.onDialogTestNotificationsResult(result)
         }
     }
+    private val listenerConfirmDisableNotifications: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
+        override fun onResult(result: Boolean) {
+            viewModel.onDialogDisableNotificationsResult(result)
+        }
+    }
 
     override fun getLayoutResId() = R.layout.fragment_notifications
     override fun getToolbarTitleResId() = R.string.notifications
@@ -88,6 +93,13 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
                 dialog.arguments = args
                 dialog.confirmListener = listenerTestNotifications
                 dialog.show(this@FragmentNotifications.childFragmentManager, "Test Notifications Dialog")
+            }
+            NAVIGATION_DIALOG_CONFIRM_DISABLE_NOTIFICATIONS -> {
+                if (isResumed) {
+                    val dialog = DialogConfirmDisableNotificaitons()
+                    dialog.confirmListener = listenerConfirmDisableNotifications
+                    dialog.show(this@FragmentNotifications.childFragmentManager, "Confirm disable push Dialog")
+                }
             }
             else -> super.onNavigationEvent(eventId)
         }

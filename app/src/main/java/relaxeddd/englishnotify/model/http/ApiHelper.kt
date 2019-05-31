@@ -34,11 +34,8 @@ object ApiHelper {
 
     suspend fun requestSendFeedback(firebaseUser: FirebaseUser?, tokenId: String?, feedback: String) : Result? {
         val userId = firebaseUser?.uid ?: ""
-
-        return if (tokenId?.isNotEmpty() == true) {
-            return executeRequest( suspend { api.requestSendFeedback(tokenId, requestId, userId, feedback) }, Result(RESULT_ERROR_INTERNET))
-        } else {
-            Result(msg = ERROR_TOKEN_NOT_INIT)
+        if (!isNetworkAvailable() || tokenId?.isNotEmpty() != true || userId.isEmpty()) {
+            return Result(RESULT_ERROR_INTERNET)
         }
         return executeRequest( suspend { api.requestSendFeedback(tokenId, userId, feedback) }, Result(RESULT_ERROR_INTERNET))
     }
@@ -54,20 +51,11 @@ object ApiHelper {
     suspend fun requestUpdateUser(firebaseUser: FirebaseUser?, tokenId: String?, notificationsTimeType: Int,
                                   receiveNotifications: Boolean, learnLanguageType: Int, selectedTag: String) : UpdateUserResult? {
         val userId = firebaseUser?.uid ?: ""
-
-        return if (tokenId?.isNotEmpty() == true) {
-            return executeRequest( suspend { api.requestSendTestNotification(tokenId, requestId, userId) }, Result(RESULT_ERROR_INTERNET))
-        } else {
-            Result(msg = ERROR_SEND_TEST_NOTIFICATION)
-        }
-    }
-
-    suspend fun requestUpdateUser(firebaseUser: FirebaseUser?, tokenId: String?, user: User) : UpdateUserResult? {
-        if (!isNetworkAvailable()) {
+        if (!isNetworkAvailable() || tokenId?.isNotEmpty() != true || userId.isEmpty()) {
             return UpdateUserResult(Result(RESULT_ERROR_INTERNET), User())
         }
-        return executeRequest( suspend { api.requestUpdateUser(tokenId, userId, notificationsTimeType, receiveNotifications,
-            learnLanguageType, selectedTag) }, UpdateUserResult(Result(RESULT_ERROR_INTERNET), User()))
+        return executeRequest( suspend { api.requestUpdateUser(tokenId, userId, notificationsTimeType,
+            receiveNotifications, learnLanguageType, selectedTag) }, UpdateUserResult(Result(RESULT_ERROR_INTERNET), User()))
     }
 
     suspend fun requestVerifyPurchase(firebaseUser: FirebaseUser?, tokenId: String?, purchaseTokenId: String,
@@ -228,39 +216,6 @@ object ApiHelper {
         suspend fun requestInsertOwnWord(tokenId: String, userId: String, wordId: String, eng: String,
                                          rus: String, transcription: String) : CreateWordResult? {
             return apiHelper.requestInsertOwnWordAsync(tokenPrefix + tokenId, userId, wordId, eng, rus, transcription).await()
-        }
-
-        suspend fun requestUpdateWordLearnStage(tokenId: String, userId: String, wordId: String, learnStage: Int) : Result? {
-            return apiHelper.requestUpdateWordLearnStageAsync(tokenPrefix + tokenId, userId, wordId, learnStage).await()
-        }
-
-        suspend fun requestUpdateWords(tokenId: String, userId: String, wordIds: JSONArray, isDeleted: Boolean, isOwnCategory: Boolean) : Result? {
-            return apiHelper.requestUpdateWordsAsync(tokenPrefix + tokenId, userId, wordIds, isDeleted, isOwnCategory).await()
-        }
-
-        suspend fun requestDeleteWords(tokenId: String, userId: String, wordIds: JSONArray) : Result? {
-            return apiHelper.requestDeleteWordsAsync(tokenPrefix + tokenId, userId, wordIds).await()
-        }
-
-        suspend fun requestRemoveFromOwnWords(tokenId: String, userId: String, wordIds: JSONArray, isOwnCategory: Boolean) : Result? {
-            return apiHelper.requestSetIsOwnCategoryWordsAsync(tokenPrefix + tokenId, userId, wordIds, isOwnCategory).await()
-        }
-
-        suspend fun requestUpdateLearnStages(tokenId: String, requestId: String, userId: String, learnStage0: JSONArray,
-                                             learnStage1: JSONArray, learnStage2: JSONArray, learnStage3: JSONArray) : OwnWordsResult? {
-            return apiHelper.requestUpdateLearnStagesAsync(tokenPrefix + tokenId, requestId, userId, learnStage0,
-                learnStage1, learnStage2, learnStage3).await()
-        }
-
-        suspend fun requestSetLearnStage(tokenId: String, requestId: String, userId: String, wordId: String,
-                                             learnStage: Int) : Result? {
-            return apiHelper.requestSetLearnStageAsync(tokenPrefix + tokenId, requestId, userId, wordId, learnStage).await()
-        }
-
-        suspend fun requestUpdateWord(tokenId: String, userId: String, wordId: String, eng: String, rus: String, transcription: String,
-                                      isDeleted: Boolean, isOwnCategory: Boolean, learnStage: Int) : Result? {
-            return apiHelper.requestUpdateWordAsync(tokenPrefix + tokenId, userId, wordId, eng, rus, transcription,
-                isDeleted, isOwnCategory, learnStage).await()
         }
 
         suspend fun requestUpdateWordLearnStage(tokenId: String, userId: String, wordId: String, learnStage: Int) : Result? {

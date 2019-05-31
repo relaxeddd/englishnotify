@@ -7,7 +7,7 @@ import androidx.fragment.app.DialogFragment
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.ListenerResult
 
-class DialogConfirmLogout : DialogFragment() {
+class DialogConfirmDisableNotificaitons : DialogFragment() {
 
     var confirmListener: ListenerResult<Boolean>? = null
 
@@ -15,7 +15,7 @@ class DialogConfirmLogout : DialogFragment() {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
 
-            builder.setMessage(R.string.do_you_really_want_to_logout)
+            builder.setMessage(R.string.do_you_really_want_to_off_notifications)
                 .setPositiveButton(R.string.yes) { _, _ -> confirmListener?.onResult(true) }
                 .setNegativeButton(R.string.no) { _, _ -> confirmListener?.onResult(false) }
             builder.create()

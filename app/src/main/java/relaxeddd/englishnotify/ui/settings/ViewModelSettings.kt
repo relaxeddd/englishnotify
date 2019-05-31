@@ -68,7 +68,9 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
 
     fun onFeedbackDialogResult(feedback: String) {
         uiScope.launch {
+            navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
             RepositoryCommon.getInstance().sendFeedback(feedback)
+            navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
         }
     }
 

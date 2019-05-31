@@ -40,10 +40,11 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
 
     var checkedChangeListenerEnableNotifications = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
         if (isChecked != repositoryUser.liveDataUser.value?.receiveNotifications) {
-            uiScope.launch {
-                buttonView.isClickable = false
-                repositoryUser.setReceiveNotifications(isChecked)
-                buttonView.isClickable = true
+            if (!isChecked) {
+                buttonView.isChecked = true
+                navigateEvent.value = Event(NAVIGATION_DIALOG_CONFIRM_DISABLE_NOTIFICATIONS)
+            } else {
+                setNotificationsEnable(true)
             }
         }
     }
@@ -156,6 +157,18 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
             uiScope.launch {
                 repositoryUser.sendTestNotification()
             }
+        }
+    }
+
+    fun onDialogDisableNotificationsResult(result: Boolean) {
+        if (result) {
+            setNotificationsEnable(false)
+        }
+    }
+
+    private fun setNotificationsEnable(isEnabled: Boolean) {
+        uiScope.launch {
+            repositoryUser.setReceiveNotifications(isEnabled)
         }
     }
 }

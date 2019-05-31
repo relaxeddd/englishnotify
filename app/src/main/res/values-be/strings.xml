@@ -29,6 +29,7 @@
     <string name="dictionary">Словарь</string>
     <string name="do_you_really_want_to_logout">Вы действительно хотите выйти из аккаунта?</string>
     <string name="do_you_really_want_to_delete_words">Вы действительно хотите удалить выбранные слова?</string>
+    <string name="do_you_really_want_to_off_notifications">Вы действительно хотите отключить получение уведомлений?</string>
     <string name="duration_not_show">продолжительностью</string>
     <string name="enable_notifications">Включить уведомления</string>
     <string name="end">Закончить</string>
@@ -72,6 +73,7 @@
     <string name="next">Далее</string>
     <string name="night_time">Ночное время (без уведомлений)</string>
     <string name="night_time_value">С %s до %s</string>
+    <string name="no">Нет</string>
     <string name="no_exercises">Уведомления с упражнениями пока еще не пришли. Необходимо авторизоваться, выбрать категорию с упражнениями и подождать прихода уведомлений</string>
     <string name="no_thanks">Нет, спасибо / уже</string>
     <string name="no_words">Уведомления с новыми словами пока еще не пришли. Необходимо авторизоваться и подождать… (Со стандартными настройками один час)</string>
@@ -143,6 +145,7 @@
     <string name="words_not_selected">Слова не выбраны</string>
     <string name="words_removed_from_own">Слова удалены из своей категории</string>
     <string name="words_training">Тренировка слов</string>
+    <string name="yes">Да</string>
     <string name="you_sign_in_as">Вы вошли как: %s</string>
     <string name="your_answer">Ваш ответ: %s</string>
 
@@ -152,7 +155,7 @@
     <string name="text_own_category">\tСлова отсюда будут Вам приходить, если в настройках уведомлений выбрать "Своя категория".
         \n\n\tСюда можно добавить слова долгим нажатием на слово из словаря или нажатием на плюсик в правом нижнем углу экрана.
         \n\n\tМаксимальное количество слов - 1000</string>
-    <string name="text_info_words_training">\tТренировка слов увеличивает прогресс изучения слова. Если ответить неправльно - прогресс сбросится до 0.
+    <string name="text_info_words_training">\tДля тренировки перейдите в раздел словаря и выберите в верхнем меню иконку книжки.\n\n\tТренировка слов увеличивает прогресс изучения слова. Если ответить неправльно - прогресс сбросится до 0.
         \n\n\tДля тренировки подбираются слов, которые: 1. Не имеют максимального прогресса изучения 2. Не являются предложениями (состоят максимум из 3-х слов)</string>
 
     <string name="patch_notes_0_1_4">- Добавлено окно с описанием изменений после обновления (вот это как раз)
