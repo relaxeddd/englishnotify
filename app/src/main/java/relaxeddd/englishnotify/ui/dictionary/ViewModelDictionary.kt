@@ -1,6 +1,7 @@
 package relaxeddd.englishnotify.ui.dictionary
 
 import android.view.View
+import androidx.annotation.CallSuper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -11,7 +12,7 @@ import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.repository.RepositoryUser
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 
-open class ViewModelDictionary(protected val repositoryWord: RepositoryWord, protected val repositoryUser: RepositoryUser) : ViewModelBase() {
+open class ViewModelDictionary(private val repositoryWord: RepositoryWord, protected val repositoryUser: RepositoryUser) : ViewModelBase() {
 
     val user: LiveData<User?> = repositoryUser.liveDataUser
     val sortByType = MutableLiveData<SortByType>(SortByType.getByName(SharedHelper.getSortByType()))
@@ -65,25 +66,13 @@ open class ViewModelDictionary(protected val repositoryWord: RepositoryWord, pro
     }
 
     fun resetProgress(word: Word) {
-        ioScope.launch {
-            val saveWord = Word(word)
-            saveWord.learnStage = 0
-            repositoryWord.updateWord(saveWord)
-        }
-    }
-
-    fun setMaxProgress(word: Word) {
-        ioScope.launch {
-            val saveWord = Word(word)
-            saveWord.learnStage = LEARN_STAGE_MAX
-            repositoryWord.updateWord(saveWord)
-        }
+        repositoryWord.setWordLearnStage(word, 0)
     }
 
     fun addToOwn(word: Word) {
         navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
         ioScope.launch {
-            repositoryUser.insertOwnWord(word)
+            repositoryWord.addToOwn(word.id)
             withContext(Dispatchers.Main) {
                 navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
             }
@@ -93,7 +82,7 @@ open class ViewModelDictionary(protected val repositoryWord: RepositoryWord, pro
     fun removeFromOwnDict(word: Word) {
         navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
         ioScope.launch {
-            repositoryUser.deleteOwnWord(word.eng)
+            repositoryWord.removeFromOwn(word.id)
             withContext(Dispatchers.Main) {
                 navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
             }
@@ -101,15 +90,9 @@ open class ViewModelDictionary(protected val repositoryWord: RepositoryWord, pro
     }
 
     fun deleteWord(word: Word) {
-        if (word.saveType != Word.DICTIONARY) {
-            navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
-        }
+        navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
         ioScope.launch {
-            val deleteResult = repositoryUser.deleteOwnWord(word.eng)
-
-            if (deleteResult) {
-                repositoryWord.deleteWord(word)
-            }
+            repositoryWord.deleteWord(word.id)
             withContext(Dispatchers.Main) {
                 navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
             }
@@ -117,20 +100,13 @@ open class ViewModelDictionary(protected val repositoryWord: RepositoryWord, pro
     }
 
     fun deleteWords(words: Collection<Word>) {
-        for (word in words) {
-            if (word.saveType != Word.DICTIONARY) {
-                navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
-                break
-            }
-        }
+        navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
         ioScope.launch {
             val listIds = HashSet<String>()
 
-            words.forEach { if (it.saveType != Word.DICTIONARY) listIds.add(it.eng) }
-            val deleteResult = if (listIds.isNotEmpty()) repositoryUser.deleteOwnWords(listIds.toList()) else true
-
-            if (deleteResult) {
-                words.forEach { repositoryWord.deleteWord(it) }
+            words.forEach { listIds.add(it.id) }
+            if (listIds.isNotEmpty()) {
+                repositoryWord.deleteWords(listIds.toList())
             }
             withContext(Dispatchers.Main) {
                 navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
@@ -139,6 +115,7 @@ open class ViewModelDictionary(protected val repositoryWord: RepositoryWord, pro
     }
 
     //------------------------------------------------------------------------------------------------------------------
+    @CallSuper
     protected open fun filterWords(items: HashSet<Word>) : HashSet<Word> {
         return items.filter { !it.isDeleted }.toHashSet()
     }

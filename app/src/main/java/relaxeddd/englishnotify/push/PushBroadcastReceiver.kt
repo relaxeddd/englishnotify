@@ -13,6 +13,7 @@ import kotlinx.coroutines.withContext
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.db.AppDatabase
+import relaxeddd.englishnotify.model.repository.RepositoryWord
 
 class PushBroadcastReceiver : BroadcastReceiver() {
 
@@ -34,6 +35,7 @@ class PushBroadcastReceiver : BroadcastReceiver() {
             val word = wordDao.findWordById(wordId) ?: return@launch
             val languageType = SharedHelper.getLearnLanguageType()
             val saveWord = Word(word)
+            var learnStage = saveWord.learnStage
 
             if (isKnow == KNOW) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -41,10 +43,10 @@ class PushBroadcastReceiver : BroadcastReceiver() {
                     val answer = if (languageType == TYPE_PUSH_ENGLISH) word.rus else word.eng
                     val isCorrectAnswer = isCorrectAnswer(userText, answer)
 
-                    if (isCorrectAnswer && saveWord.learnStage != LEARN_STAGE_MAX) {
-                        saveWord.learnStage++
-                    } else if (saveWord.learnStage != LEARN_STAGE_MAX) {
-                        saveWord.learnStage = 0
+                    if (isCorrectAnswer && learnStage != LEARN_STAGE_MAX) {
+                        learnStage++
+                    } else if (learnStage != LEARN_STAGE_MAX) {
+                        learnStage = 0
                     }
 
                     withContext(Dispatchers.Main) {
@@ -58,15 +60,17 @@ class PushBroadcastReceiver : BroadcastReceiver() {
                     }
                 }
             } else {
-                if (saveWord.learnStage != LEARN_STAGE_MAX) {
-                    saveWord.learnStage = 0
+                if (learnStage != LEARN_STAGE_MAX) {
+                    learnStage = 0
                 }
 
                 withContext(Dispatchers.Main) {
                     MyFirebaseMessagingService.handleWordNotification(context, word, false, SharedHelper.NOTIFICATIONS_VIEW_WITH_TRANSLATE)
                 }
             }
-            wordDao.insertAll(saveWord)
+            if (saveWord.learnStage != learnStage) {
+                RepositoryWord.getInstance().setWordLearnStage(saveWord, learnStage, false)
+            }
             if (notificationId != -1) {
                 notificationManager.cancel(notificationId)
             }

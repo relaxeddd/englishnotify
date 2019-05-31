@@ -33,6 +33,7 @@ class AdapterDictionary(viewModel: ViewModelDictionary) : AdapterWords<AdapterDi
         override fun getTextTimestamp(): TextView = itemView.text_word_timestamp
         override fun getTextTags(): TextView = itemView.text_word_tags
         override fun getImageOwnWord(): ImageView = itemView.image_word_own
+        override fun getImageOwnCreatedWord(): ImageView = itemView.image_word_own_created
         override fun getCheckBoxSelect(): MaterialCheckBox = itemView.check_box_word_select
         override fun getProgressLearn(): ProgressBar = itemView.progress_bar_word_learn_stage
 

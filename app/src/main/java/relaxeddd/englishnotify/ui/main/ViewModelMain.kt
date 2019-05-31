@@ -24,7 +24,6 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
     val isShowHorizontalProgress = MutableLiveData<Boolean>(false)
     val isVisibleSecondaryBottomNavigationView = MutableLiveData<Boolean>(true)
     private var isRateDialogShown = false
-    private var isFirstLoad = true
 
     private val userObserver = Observer<User?> { user ->
         isShowGoogleAuth.value = user == null || RepositoryCommon.getInstance().firebaseUser == null
@@ -41,10 +40,6 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
                 SharedHelper.setPrivacyPolicyConfirmed(true)
             }
             navigateEvent.value = Event(NAVIGATION_INIT_BILLING)
-            if (isFirstLoad) {
-                updateOwnWords()
-                isFirstLoad = false
-            }
         }
     }
     private val actualVersionObserver = Observer<Boolean> { isActualVersion ->
@@ -94,7 +89,6 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
             ioScope.launch {
                 RepositoryWord.getInstance().clearDictionary()
                 withContext(Dispatchers.Main) {
-                    isFirstLoad = true
                     SharedHelper.setUserEmail("")
                     prepareInit()
                 }
@@ -111,21 +105,21 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
 
             if (savedEmail.isEmpty() || savedEmail == loginEmail) {
                 SharedHelper.setUserEmail(loginEmail)
-                requestInitUser()
+                requestInit()
             } else {
                 navigateEvent.value = Event(NAVIGATION_DIALOG_CHANGE_ACCOUNT)
             }
         }
     }
 
-    private fun requestInitUser() {
+    private fun requestInit() {
         if (repositoryUser.isAuthorized()) {
             isShowWarningNotifications.value = false
             isShowGoogleAuth.value = false
             isShowWarningSubscription.value = false
             isShowHorizontalProgress.value = true
             ioScope.launch {
-                repositoryUser.initUser(object: ListenerResult<Boolean> {
+                repositoryUser.init(object: ListenerResult<Boolean> {
                     override fun onResult(result: Boolean) {
                         if (!result) {
                             userObserver.onChanged(null)
@@ -134,12 +128,6 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
                     }
                 })
             }
-        }
-    }
-
-    private fun updateOwnWords() {
-        ioScope.launch {
-            repositoryUser.requestOwnWords()
         }
     }
 }

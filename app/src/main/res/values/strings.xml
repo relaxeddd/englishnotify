@@ -29,6 +29,7 @@
     <string name="dictionary">Dictionary</string>
     <string name="do_you_really_want_to_logout">Do you really want to exit?</string>
     <string name="do_you_really_want_to_delete_words">Do you really want to delete words?</string>
+    <string name="do_you_really_want_to_off_notifications">Do you really want disable notifications?</string>
     <string name="duration_not_show">with duration</string>
     <string name="enable_notifications">Enable notifications</string>
     <string name="end">End</string>
@@ -72,9 +73,10 @@
     <string name="next">Next</string>
     <string name="night_time">Night time (without notifications)</string>
     <string name="night_time_value">From %s to %s</string>
+    <string name="no">No</string>
     <string name="no_exercises">Notifications with exercises have not received yet. Please select exercise category and wait</string>
     <string name="no_thanks">No, thanks / already</string>
-    <string name="no_training_category_words">There are no category words for training (probably it all the sentences or already learned words)</string>
+    <string name="no_training_category_words">There are not enough category words for training, need minimum 10 (probably it already learned words)</string>
     <string name="no_training_words">There are no words for training or it already learned or it is all the sentences</string>
     <string name="no_words">Notifications with new words have not received yet. Please, authorize and wait… (With default settings wait 1 hour)</string>
     <string name="no_words_default">Notifications with new words have not received yet. Please wait or try to use test notifications in Notifications section</string>
@@ -143,6 +145,7 @@
     <string name="words_not_selected">Words not selected</string>
     <string name="words_removed_from_own">Words removed from own category</string>
     <string name="words_training">Words training</string>
+    <string name="yes">Yes</string>
     <string name="you_sign_in_as">You signed in as: %s</string>
     <string name="your_answer">Your answer: %s</string>
 
@@ -167,7 +170,7 @@
     <string name="text_own_category">\tYou will receive words from here if select "Own category" in notification settings
         \n\n\tYou can add words here from dictionary (long tap on word) or input via plus button
         \n\n\tMax words count - 1000</string>
-    <string name="text_info_words_training">\tThe words training increase word learn progress. If answer is wrong in training - word progress sets to 0.
+    <string name="text_info_words_training">\tClick at the book icon in dictionary tab to train words.\n\n\tThe words training increase word learn progress. If answer is wrong in training - word progress sets to 0.
         \n\n\tTraining word matches if: 1. Word has not max learn progress 2. It is not sentence (contains maximum 3 words)</string>
 
     <string name="patch_notes_0_1_4">- Added patch notes dialog (here it is)
@@ -334,5 +337,6 @@
     <string name="ic_main_warning_notifications" translatable="false">Warning notifications</string>
     <string name="ic_main_warning_subscription" translatable="false">Warning subscription</string>
     <string name="ic_own" translatable="false">Word in own category</string>
+    <string name="ic_own_created" translatable="false">Word in own category which created by you</string>
 
 </resources>

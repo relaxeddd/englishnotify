@@ -34,6 +34,11 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
             viewModel.onDialogTestNotificationsResult(result)
         }
     }
+    private val listenerConfirmDisableNotifications: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
+        override fun onResult(result: Boolean) {
+            viewModel.onDialogDisableNotificationsResult(result)
+        }
+    }
 
     override fun getLayoutResId() = R.layout.fragment_notifications
     override fun getToolbarTitleResId() = R.string.notifications
@@ -43,11 +48,13 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
     override fun configureBinding() {
         super.configureBinding()
         binding.viewModel = viewModel
-        binding.clickListenerChangeCategory = Navigation.createNavigateOnClickListener(R.id.action_fragmentNotifications_to_fragmentCategories)
     }
 
     override fun onNavigationEvent(eventId: Int) {
         when (eventId) {
+            NAVIGATION_FRAGMENT_SELECT_CATEGORY -> {
+                Navigation.findNavController(view ?: return).navigate(R.id.action_fragmentNotifications_to_fragmentCategories)
+            }
             NAVIGATION_DIALOG_LEARN_ENGLISH -> {
                 val dialog = DialogLearnLanguage()
                 val args = Bundle()
@@ -88,6 +95,13 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
                 dialog.arguments = args
                 dialog.confirmListener = listenerTestNotifications
                 dialog.show(this@FragmentNotifications.childFragmentManager, "Test Notifications Dialog")
+            }
+            NAVIGATION_DIALOG_CONFIRM_DISABLE_NOTIFICATIONS -> {
+                if (isResumed) {
+                    val dialog = DialogConfirmDisableNotifications()
+                    dialog.confirmListener = listenerConfirmDisableNotifications
+                    dialog.show(this@FragmentNotifications.childFragmentManager, "Confirm disable push Dialog")
+                }
             }
             else -> super.onNavigationEvent(eventId)
         }

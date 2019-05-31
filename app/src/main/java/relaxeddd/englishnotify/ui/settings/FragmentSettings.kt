@@ -59,7 +59,7 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
             NAVIGATION_DIALOG_CONFIRM_LOGOUT -> {
                 if (isResumed) {
                     val dialog = DialogConfirmLogout()
-                    dialog.setConfirmListener(listenerConfirmLogout)
+                    dialog.confirmListener = listenerConfirmLogout
                     dialog.show(this@FragmentSettings.childFragmentManager, "Confirm Logout Dialog")
                 }
             }

@@ -15,6 +15,9 @@ import relaxeddd.englishnotify.model.db.AppDatabase
 import relaxeddd.englishnotify.ui.main.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.repository.RepositoryWord
@@ -45,17 +48,25 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
             if (isSave) {
                 val wordDao = AppDatabase.getInstance(context).wordDao()
-                val existsWord = wordDao.findWordById(word.eng)
+                val existsWord = wordDao.findWordById(word.id)
 
-                if (existsWord == null) {
-                    wordDao.insertAll(word)
-                } else if (existsWord.saveType == Word.DICTIONARY) {
-                    word.learnStage = existsWord.learnStage
-                    wordDao.insertAll(word)
+                if (existsWord != null) {
+                    existsWord.eng = word.eng
+                    existsWord.rus = word.rus
+                    existsWord.transcription = word.transcription
+                    existsWord.tags = word.tags
+                }
+                CoroutineScope(Dispatchers.IO).launch {
+                    if (existsWord != null) {
+                        wordDao.insertAll(existsWord)
+                    } else {
+                        if (word.timestamp == 0L) word.timestamp = System.currentTimeMillis()
+                        wordDao.insertAll(word)
+                    }
                 }
             }
 
-            showNotificationWord(context, word.eng, notificationText, title, isShowButtons)
+            showNotificationWord(context, word.id, notificationText, title, isShowButtons)
         }
 
         private fun showNotificationWord(ctx: Context, wordId: String, text: String, title: String, withButtons : Boolean) {

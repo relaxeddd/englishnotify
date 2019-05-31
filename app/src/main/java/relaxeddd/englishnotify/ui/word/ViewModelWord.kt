@@ -5,7 +5,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
-import relaxeddd.englishnotify.model.repository.RepositoryUser
+import relaxeddd.englishnotify.model.repository.RepositoryWord
 
 class ViewModelWord : ViewModelBase() {
 
@@ -19,8 +19,7 @@ class ViewModelWord : ViewModelBase() {
         isWordCreating = true
         navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
         ioScope.launch {
-            val word = Word(eng, rus, transcription, timestamp = System.currentTimeMillis())
-            val result = RepositoryUser.getInstance().insertOwnWord(word)
+            val result = RepositoryWord.getInstance().insertOwnCategoryWord(eng, eng, rus, transcription)
 
             withContext(Dispatchers.Main) {
                 navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)

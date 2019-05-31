@@ -48,7 +48,7 @@ class ViewModelTrainingSetting : ViewModelBase(), ISelectCategory {
             showToast(R.string.error_category_select)
             return
         }
-        if (RepositoryWord.getInstance().getTrainingWordsByCategory(category).isEmpty()) {
+        if (RepositoryWord.getInstance().getTrainingWordsByCategory(category).size < 10) {
             showToastLong(R.string.no_training_category_words)
             return
         }
