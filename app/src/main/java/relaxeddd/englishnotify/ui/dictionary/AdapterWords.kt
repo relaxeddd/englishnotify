@@ -23,10 +23,6 @@ import kotlin.collections.HashSet
 
 abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewModelDictionary) : ListAdapter<Word, VH>(WordDiffCallback()) {
 
-    companion object {
-        var isHideLearnStage = SharedHelper.isHideLearnStage()
-    }
-
     var languageType = 0
         set(value) {
             if (field != value) {
@@ -90,7 +86,7 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
             true
         }
 
-        popupMenu.menu.findItem(R.id.item_menu_reset_progress)?.isVisible = word.learnStage > 0 && !isHideLearnStage
+        popupMenu.menu.findItem(R.id.item_menu_reset_progress)?.isVisible = word.learnStage > 0
         popupMenu.menu.findItem(R.id.item_menu_add_own)?.isVisible = !word.isOwnCategory
         popupMenu.menu.findItem(R.id.item_menu_delete_own)?.isVisible = word.isOwnCategory
         val menuHelper = MenuPopupHelper(view.context, popupMenu.menu as MenuBuilder, view)
@@ -147,14 +143,11 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
                 getCheckBoxSelect().isChecked = false
             }
 
-            getProgressLearn().visibility = if (isHideLearnStage) View.GONE else View.VISIBLE
-            if (!isHideLearnStage) {
-                getProgressLearn().progress = when (word.learnStage) {
-                    0 -> 4
-                    1 -> 32
-                    2 -> 68
-                    else -> 100
-                }
+            getProgressLearn().progress = when (word.learnStage) {
+                0 -> 4
+                1 -> 32
+                2 -> 68
+                else -> 100
             }
         }
     }

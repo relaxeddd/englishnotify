@@ -88,6 +88,7 @@ const val NAVIGATION_DIALOG_CHANGE_ACCOUNT = 1131
 const val NAVIGATION_DIALOG_SUBSCRIPTION_INFO = 1141
 const val NAVIGATION_DIALOG_CONFIRM_DISABLE_NOTIFICATIONS = 1181
 const val NAVIGATION_FRAGMENT_SELECT_CATEGORY = 1191
+const val NAVIGATION_FRAGMENT_STATISTIC = 1201
 
 const val NAVIGATION_LOADING_SHOW = 801
 const val NAVIGATION_LOADING_HIDE = 802
@@ -167,6 +168,7 @@ const val PRIVACY_POLICY_CONFIRMED = "privacyPolicyConfirmed"
 const val PUSH_LANGUAGE = "pushLanguage"
 const val PUSH_TOKEN = "pushToken"
 const val LAUNCH_COUNT = "launchCount"
+const val LEVEL = "level"
 const val NOTIFICATIONS_VIEW = "notificationsView"
 const val SELECTED_CATEGORY = "selectedCategory"
 const val SORT_BY_TYPE = "sortByType"

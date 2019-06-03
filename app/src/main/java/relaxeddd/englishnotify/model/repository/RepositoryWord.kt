@@ -12,6 +12,8 @@ import relaxeddd.englishnotify.model.db.AppDatabase
 import relaxeddd.englishnotify.model.db.WordDao
 import relaxeddd.englishnotify.model.http.ApiHelper
 import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 import kotlin.collections.HashSet
 
 class RepositoryWord private constructor(private val wordDao: WordDao) {
@@ -25,6 +27,8 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
 
     private val ioScope = CoroutineScope(Dispatchers.IO)
     var words = wordDao.getAll()
+    var tagsInfo: List<TagInfo> = ArrayList()
+        private set
 
     fun clearDictionary() {
         wordDao.deleteAll()
@@ -87,8 +91,55 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         }
     }
 
+    fun updateTagsInfo(tagsInfo: List<TagInfo>) {
+        val tagsInfoMap: HashMap<String, TagInfo> = HashMap()
+        val words = words.value ?: ArrayList()
+
+        for (tagInfo in tagsInfo) {
+            tagsInfoMap[tagInfo.key] = tagInfo
+        }
+
+        val tagInfoAll = tagsInfoMap[ALL_APP_WORDS] ?: TagInfo(ALL_APP_WORDS)
+        val tagInfoAll5 = tagsInfoMap[ALL_APP_WORDS_WITHOUT_SIMPLE] ?: TagInfo(ALL_APP_WORDS_WITHOUT_SIMPLE)
+        val tagInfoOwn = tagsInfoMap[OWN] ?: TagInfo(OWN)
+
+        for (word in words) {
+            for (tag in word.tags) {
+                val tagInfo = tagsInfoMap[tag] ?: continue
+
+                if (!word.isCreatedByUser) {
+                    tagInfoAll.received++
+                    if (word.level >= 5) tagInfoAll5.received++
+                    tagInfo.received++
+                } else {
+                    tagInfoOwn.received++
+                    tagInfoOwn.total++
+                }
+
+                if (word.learnStage == LEARN_STAGE_MAX) {
+                    if (!word.isCreatedByUser) {
+                        tagInfo.learned++
+                        tagInfoAll.learned++
+                        if (word.level >= 5) tagInfoAll5.learned++
+                    } else {
+                        tagInfoOwn.learned++
+                    }
+                }
+            }
+        }
+
+        this.tagsInfo = tagsInfo
+    }
+
     fun updateWords(words: List<Word>) {
-        wordDao.deleteAll()
+        val existWords = this.words.value
+        val idsSet = HashSet<String>()
+        var isAllExists = true
+
+        existWords?.forEach { idsSet.add(it.id) }
+        words.forEach { if (!idsSet.contains(it.id)) isAllExists = false; }
+
+        if (existWords == null || !isAllExists || existWords.size != words.size) wordDao.deleteAll()
         words.forEach {
             wordDao.insertAll(it)
         }

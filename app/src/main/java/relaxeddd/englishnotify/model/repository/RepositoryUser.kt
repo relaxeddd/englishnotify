@@ -98,6 +98,7 @@ class RepositoryUser private constructor() {
                     if (answerInitData.words != null) {
                         withContext(Dispatchers.IO) {
                             RepositoryWord.getInstance().updateWords(answerInitData.words)
+                            RepositoryWord.getInstance().updateTagsInfo(answerInitData.tagsInfo ?: ArrayList())
                         }
                         SharedHelper.setLearnStage0(HashSet())
                         SharedHelper.setLearnStage1(HashSet())

@@ -108,16 +108,6 @@ object SharedHelper {
         sPref.edit().putInt(DURATION_HOURS_OFF, count).apply()
     }
 
-    fun isHideLearnStage(context: Context = App.context) : Boolean {
-        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        return sPref.getBoolean(WORD_LEARN_STAGE, false)
-    }
-
-    fun setHideLearnStage(isHide: Boolean, context: Context = App.context) {
-        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        sPref.edit().putBoolean(WORD_LEARN_STAGE, isHide).apply()
-    }
-
     fun getUserEmail(context: Context = App.context) : String {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         return sPref.getString(USER_EMAIL, "") ?: ""
