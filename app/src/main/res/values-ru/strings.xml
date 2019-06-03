@@ -106,6 +106,7 @@
     <string name="reset_progress">Сбросить прогресс</string>
     <string name="russian_at_english">С руссокого на английский</string>
     <string name="show_only_one_last_notification">Показывать только одно последнее уведомление</string>
+    <string name="show_own_words">Показывать свои слова</string>
     <string name="show_translation">Я не знаю</string>
     <string name="show_word_progress">Показывать прогресс слов</string>
     <string name="search_words">Искать слова</string>

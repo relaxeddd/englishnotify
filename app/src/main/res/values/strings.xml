@@ -106,6 +106,7 @@
     <string name="reset_progress">Reset progress</string>
     <string name="russian_at_english">Russian at english</string>
     <string name="show_only_one_last_notification">Show only one last notification</string>
+    <string name="show_own_words">Show own words</string>
     <string name="show_translation">I don`t know</string>
     <string name="show_word_progress">Is show word progress</string>
     <string name="search_words">Search words</string>

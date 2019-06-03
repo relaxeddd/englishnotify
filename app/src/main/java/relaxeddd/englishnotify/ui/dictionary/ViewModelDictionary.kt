@@ -1,6 +1,7 @@
 package relaxeddd.englishnotify.ui.dictionary
 
 import android.view.View
+import android.widget.CompoundButton
 import androidx.annotation.CallSuper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -17,6 +18,7 @@ open class ViewModelDictionary(private val repositoryWord: RepositoryWord, prote
     val user: LiveData<User?> = repositoryUser.liveDataUser
     val sortByType = MutableLiveData<SortByType>(SortByType.getByName(SharedHelper.getSortByType()))
     val filterTags = MutableLiveData<HashSet<String>>(HashSet())
+    val isShowOwnWords = MutableLiveData<Boolean>(SharedHelper.isShowOwnWords())
     val tags = HashSet<String>()
     val wordsFiltered = MutableLiveData<List<Word>>(ArrayList())
     private val words: LiveData<List<Word>> = repositoryWord.words
@@ -27,6 +29,11 @@ open class ViewModelDictionary(private val repositoryWord: RepositoryWord, prote
     }
     private val sortObserver = Observer<SortByType> { sort ->
         SharedHelper.setSortByType(sort.name)
+    }
+    val checkedChangeListenerShowOwnWords = CompoundButton.OnCheckedChangeListener { _, isChecked ->
+        SharedHelper.setShowOwnWords(isChecked)
+        isShowOwnWords.value = isChecked
+        updateFilteredWords()
     }
 
     init {
