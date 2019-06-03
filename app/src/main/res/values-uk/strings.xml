@@ -232,6 +232,15 @@
         \n- Исправление с изменением времени прихода уведомлений</string>
 
     <!-- =========================================================================================================== -->
+    <string name="every_1_hour">Каждый час (с наличием подписки)</string>
+    <string name="every_2_hours">Каждые 2 часа (с наличием подписки)</string>
+    <string name="every_3_hours">Каждые 3 часа (с наличием подписки)</string>
+    <string name="every_4_hours">Каждые 4 часа</string>
+    <string name="every_5_hours">Каждые 5 часов</string>
+    <string name="every_6_hours">Каждые 6 часов</string>
+    <string name="every_7_hours">Каждые 7 часаов</string>
+    <string name="every_8_hours">Каждые 8 часов</string>
+
     <string name="own">Своя категория (добавлять слова самому в словаре)</string>
     <string name="irregular">Неправильные глаголы</string>
     <string name="hard">Сложные</string>

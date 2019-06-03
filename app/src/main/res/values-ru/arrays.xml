@@ -2,9 +2,9 @@
 <resources>
 
     <string-array name="array_time_repeat">
-        <item>Каждый час (с наличием подписки)</item>
-        <item>Каждые 2 часа (с наличием подписки)</item>
-        <item>Каждые 3 часа (с наличием подписки)</item>
+        <item>Каждый час</item>
+        <item>Каждые 2 часа</item>
+        <item>Каждые 3 часа</item>
         <item>Каждые 4 часов</item>
         <item>Каждые 5 часов</item>
         <item>Каждые 6 часов</item>

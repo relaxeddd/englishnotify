@@ -2,9 +2,9 @@
 <resources>
 
     <string-array name="array_time_repeat">
-        <item>Every 1 hour (with subscription)</item>
-        <item>Every 2 hours (with subscription)</item>
-        <item>Every 3 hours (with subscription)</item>
+        <item>Every 1 hour</item>
+        <item>Every 2 hours</item>
+        <item>Every 3 hours</item>
         <item>Every 4 hours</item>
         <item>Every 5 hours</item>
         <item>Every 6 hours</item>

@@ -69,6 +69,11 @@ object InjectorUtils {
         val repositoryWord = RepositoryFactory.getWordRepository(context)
         return StatisticViewModelFactory(repositoryWord)
     }
+
+    fun provideTimeViewModelFactory(): TimeViewModelFactory {
+        val repository = RepositoryFactory.getUserRepository()
+        return TimeViewModelFactory(repository)
+    }
 }
 
 object RepositoryFactory {

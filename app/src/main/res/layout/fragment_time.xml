@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="android.view.View"/>
+        <variable
+            name="viewModel"
+            type="relaxeddd.englishnotify.ui.time.ViewModelTime"/>
+
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RadioGroup
+            android:id="@+id/radio_group_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onCheckedChanged="@{viewModel.checkedChangeListenerTime}"
+            android:padding="@dimen/size_8">
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/every_1_hour"
+                android:tag="0"
+                android:enabled="@{safeUnbox(!viewModel.isDisableSubTime)}"
+                android:textSize="@dimen/font_18"/>
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/every_2_hours"
+                android:tag="1"
+                android:textSize="@dimen/font_18"
+                android:enabled="@{safeUnbox(!viewModel.isDisableSubTime)}"
+                android:layout_marginTop="@dimen/size_4"/>
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/every_3_hours"
+                android:tag="2"
+                android:textSize="@dimen/font_18"
+                android:enabled="@{safeUnbox(!viewModel.isDisableSubTime)}"
+                android:layout_marginTop="@dimen/size_4"/>
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/every_4_hours"
+                android:tag="3"
+                android:textSize="@dimen/font_18"
+                android:layout_marginTop="@dimen/size_4"/>
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/every_5_hours"
+                android:tag="4"
+                android:textSize="@dimen/font_18"
+                android:layout_marginTop="@dimen/size_4"/>
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/every_6_hours"
+                android:tag="5"
+                android:textSize="@dimen/font_18"
+                android:layout_marginTop="@dimen/size_4"/>
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/every_7_hours"
+                android:tag="6"
+                android:textSize="@dimen/font_18"
+                android:layout_marginTop="@dimen/size_4"/>
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/every_8_hours"
+                android:tag="7"
+                android:textSize="@dimen/font_18"
+                android:layout_marginTop="@dimen/size_4"/>
+
+        </RadioGroup>
+
+    </ScrollView>
+
+</layout>

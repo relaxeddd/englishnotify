@@ -14,11 +14,6 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
             viewModel.onDialogLearnLanguageResult(result)
         }
     }
-    private val listenerRepeatTime: ListenerResult<Int> = object: ListenerResult<Int> {
-        override fun onResult(result: Int) {
-            viewModel.onDialogRepeatTimeResult(result)
-        }
-    }
     private val listenerNotificationsView: ListenerResult<Int> = object: ListenerResult<Int> {
         override fun onResult(result: Int) {
             viewModel.onDialogNotificationsViewResult(result)
@@ -55,6 +50,9 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
             NAVIGATION_FRAGMENT_SELECT_CATEGORY -> {
                 Navigation.findNavController(view ?: return).navigate(R.id.action_fragmentNotifications_to_fragmentCategories)
             }
+            NAVIGATION_FRAGMENT_TIME -> {
+                Navigation.findNavController(view ?: return).navigate(R.id.action_fragmentNotifications_to_fragmentTime)
+            }
             NAVIGATION_DIALOG_LEARN_ENGLISH -> {
                 val dialog = DialogLearnLanguage()
                 val args = Bundle()
@@ -62,14 +60,6 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
                 dialog.arguments = args
                 dialog.listener = listenerLearnEnglish
                 dialog.show(this@FragmentNotifications.childFragmentManager, "Learn Language Dialog")
-            }
-            NAVIGATION_DIALOG_REPEAT -> {
-                val dialog = DialogSelectRepeatTime()
-                val args = Bundle()
-                args.putInt(SELECTED_ITEM, viewModel.user.value?.notificationsTimeType ?: 0)
-                dialog.arguments = args
-                dialog.listener = listenerRepeatTime
-                dialog.show(this@FragmentNotifications.childFragmentManager, "Repeat Dialog")
             }
             NAVIGATION_DIALOG_NOTIFICATIONS_VIEW -> {
                 val dialog = DialogNotificationsView()

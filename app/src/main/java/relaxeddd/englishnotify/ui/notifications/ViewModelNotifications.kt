@@ -72,7 +72,7 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
     }
     val clickListenerRepeatTime = View.OnClickListener {
         if (user.value != null) {
-            navigateEvent.value = Event(NAVIGATION_DIALOG_REPEAT)
+            navigateEvent.value = Event(NAVIGATION_FRAGMENT_TIME)
         } else {
             showToast(R.string.please_authorize)
         }
