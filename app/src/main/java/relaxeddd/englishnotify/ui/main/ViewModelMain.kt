@@ -74,7 +74,7 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
     }
 
     fun onViewCreate() {
-        prepareInit()
+        requestInit()
 
         if (!SharedHelper.isPatchNotesViewed(DialogPatchNotes.VERSION)) {
             navigateEvent.value = Event(NAVIGATION_DIALOG_PATCH_NOTES)
@@ -84,41 +84,20 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
 
     fun onViewResume() {}
 
-    fun onDialogChangeAccountResult(isConfirmed: Boolean) {
-        if (isConfirmed) {
-            ioScope.launch {
-                RepositoryWord.getInstance().clearDictionary()
-                withContext(Dispatchers.Main) {
-                    SharedHelper.setUserEmail("")
-                    prepareInit()
-                }
-            }
-        } else {
-            navigateEvent.value = Event(NAVIGATION_GOOGLE_LOGOUT)
-        }
-    }
-
-    fun prepareInit() {
-        if (repositoryUser.isAuthorized()) {
-            val loginEmail = FirebaseAuth.getInstance().currentUser?.email ?: ""
-            val savedEmail = SharedHelper.getUserEmail()
-
-            if (savedEmail.isEmpty() || savedEmail == loginEmail) {
-                SharedHelper.setUserEmail(loginEmail)
-                requestInit()
-            } else {
-                navigateEvent.value = Event(NAVIGATION_DIALOG_CHANGE_ACCOUNT)
-            }
-        }
-    }
-
-    private fun requestInit() {
+    fun requestInit() {
         if (repositoryUser.isAuthorized()) {
             isShowWarningNotifications.value = false
             isShowGoogleAuth.value = false
             isShowWarningSubscription.value = false
             isShowHorizontalProgress.value = true
             ioScope.launch {
+                val loginEmail = FirebaseAuth.getInstance().currentUser?.email ?: ""
+                val savedEmail = SharedHelper.getUserEmail()
+
+                if (savedEmail.isNotEmpty() && savedEmail != loginEmail) {
+                    RepositoryWord.getInstance().clearDictionary()
+                    SharedHelper.setUserEmail(loginEmail)
+                }
                 repositoryUser.init(object: ListenerResult<Boolean> {
                     override fun onResult(result: Boolean) {
                         if (!result) {

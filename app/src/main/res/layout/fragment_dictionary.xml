@@ -204,7 +204,7 @@
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/white"
                                 android:onCheckedChanged="@{viewModel.checkedChangeListenerShowOwnWords}"
-                                android:checked="@{viewModel.isShowOwnWords}"
+                                android:checked="@{safeUnbox(viewModel.isShowOwnWords)}"
                                 android:layout_marginEnd="32dp"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
