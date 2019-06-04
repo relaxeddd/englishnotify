@@ -13,7 +13,7 @@
           android:icon="@drawable/ic_notification"/>
 
     <item android:id="@id/fragmentSettings"
-          android:title="@string/settings"
+          android:title="@string/common"
           app:showAsAction="ifRoom"
           android:icon="@drawable/ic_settings"/>
 

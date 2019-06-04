@@ -22,6 +22,7 @@
     <string name="change_account_text">You login with another account. The dictionary will be cleared.</string>
     <string name="check_all">Check all</string>
     <string name="close">Close</string>
+    <string name="common">Common</string>
     <string name="confirm">Confirm</string>
     <string name="confirm_and_continue">Confirm and continue</string>
     <string name="correct_answer">Correct answer</string>
@@ -249,6 +250,12 @@
     <string name="patch_notes_2_2_3">- When subscription is end you receive notifications more than once per 4 hours (before that you don`t receive it)
         \n- Libraries update
         \n- Change receive notification time fix</string>
+
+    <string name="patch_notes_3_0_0">- New menu item Statistic in Common section.
+        \n- All received words store and save in your account now.
+        \n- Renamed section Settings -> Common.
+        \n- Changed design select receive notifications time window.
+        \n- Bug fixes.</string>
 
     <!-- =========================================================================================================== -->
     <string name="every_1_hour">Every hour (with subscription only)</string>
