@@ -20,7 +20,7 @@ const val FUNC_REQUEST_UPDATE_WORDS = "requestUpdateWords/"
 const val FUNC_REQUEST_VERIFY_PURCHASE = "requestVerifyPurchase/"
 const val FUNC_REQUEST_SEND_FEEDBACK = "requestSendFeedback/"
 const val FUNC_REQUEST_UPDATE_USER = "requestUpdateUser/"
-const val FUNC_REQUEST_SEND_TEST_NOTIFICATION = "requestSendTestNotification/"
+const val FUNC_REQUEST_SEND_TEST_NOTIFICATION = "requestTestNotification/"
 
 const val EMPTY_RES = -1
 
@@ -239,3 +239,14 @@ const val AUTO_5 = "auto_5"
 const val FREQUENT_VERBS = "frequent_verbs"
 const val FREQUENT_VERBS_5 = "frequent_verbs_5"
 const val EXERCISES_VERBS_FIRST = "exercises_verbs_first"
+
+const val EXERCISES_CONDITIONAL_SENTENCES_1 = "exercises_conditional_sentences_1"
+const val EXERCISES_COMPARISON_ADJECTIVES_1 = "exercises_comparison_adjectives_1"
+const val EXERCISES_PASSIVE_VOICE_1 = "exercises_passive_voice_1"
+const val EXERCISES_ARTICLES_1 = "exercises_articles_1"
+const val EXERCISES_MODAL_VERBS_1 = "exercises_modal_verbs_1"
+const val EXERCISES_INDIRECT_SPEECH_1 = "exercises_indirect_speech_1"
+const val EXERCISES_REFLEXIVE_1 = "exercises_reflexive_1"
+const val EXERCISES_VERBS_2 = "exercises_verbs_2"
+const val EXERCISES_PLACE_PRETEXTS_1 = "exercises_place_pretexts_1"
+

@@ -20,7 +20,7 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
     val timeStartOff = MutableLiveData<String>("20:00")
     val timeEndOff = MutableLiveData<String>("07:00")
     val selectedTagLiveData = MutableLiveData<String>("")
-    val isVisibleNotificationsView = MutableLiveData<Boolean>(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+    val isVisibleNotificationsView = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
 
     val textRepeatTime = MutableLiveData<String>("")
     val textLearnLanguage = MutableLiveData<String>("")
@@ -78,10 +78,10 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
         }
     }
     val clickListenerNotificationsView = View.OnClickListener {
-        if (user.value != null) {
-            navigateEvent.value = Event(NAVIGATION_DIALOG_NOTIFICATIONS_VIEW)
-        } else {
-            showToast(R.string.please_authorize)
+        when {
+            Build.VERSION.SDK_INT < Build.VERSION_CODES.N -> showToast(R.string.android_version_7_required)
+            user.value != null -> navigateEvent.value = Event(NAVIGATION_DIALOG_NOTIFICATIONS_VIEW)
+            else -> showToast(R.string.please_authorize)
         }
     }
     val clickListenerNightTime = View.OnClickListener {
