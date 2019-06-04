@@ -106,6 +106,9 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding,
 
     override fun onNavigationEvent(eventId: Int) {
         when (eventId) {
+            NAVIGATION_ACTION_HIDE_FILTER -> {
+                animateDropdown(getCardViewFilter(), false, animBlock)
+            }
             NAVIGATION_DIALOG_CHECK_TAGS -> {
                 val dialog = DialogCheckTags()
                 val args = Bundle()

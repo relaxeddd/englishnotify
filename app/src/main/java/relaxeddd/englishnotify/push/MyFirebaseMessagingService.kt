@@ -55,13 +55,20 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     existsWord.rus = word.rus
                     existsWord.transcription = word.transcription
                     existsWord.tags = word.tags
+                    existsWord.isDeleted = false
+                    existsWord.timestamp = System.currentTimeMillis()
+                    if (existsWord.isCreatedByUser) {
+                        existsWord.isCreatedByUser = false
+                        existsWord.learnStage = 0
+                    }
                 }
                 CoroutineScope(Dispatchers.IO).launch {
                     if (existsWord != null) {
-                        wordDao.insertAll(existsWord)
+                        RepositoryWord.getInstance().insertWord(existsWord, wordDao)
                     } else {
-                        if (word.timestamp == 0L) word.timestamp = System.currentTimeMillis()
-                        wordDao.insertAll(word)
+                        word.timestamp = System.currentTimeMillis()
+                        word.isCreatedByUser = false
+                        RepositoryWord.getInstance().insertWord(word, wordDao)
                     }
                 }
             }

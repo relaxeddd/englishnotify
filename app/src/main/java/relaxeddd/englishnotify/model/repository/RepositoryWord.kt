@@ -64,6 +64,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
     fun getWordCategories() : HashSet<String> {
         val categories = HashSet<String>()
         words.value?.forEach { it.tags.forEach { tag -> if (tag.isNotEmpty()) categories.add(tag) } }
+        categories.add(OWN)
         categories.add(ALL_APP_WORDS)
         return categories
     }
@@ -73,7 +74,8 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         val words = this@RepositoryWord.words.value ?: ArrayList()
 
         for (word in words) {
-            if ((word.tags.contains(category) || category == ALL_APP_WORDS) && word.learnStage != LEARN_STAGE_MAX) {
+            if ((word.tags.contains(category) || category == ALL_APP_WORDS || (category == OWN && word.isOwnCategory))
+                && word.learnStage != LEARN_STAGE_MAX && !word.isDeleted) {
                 trainingWords.add(word)
             }
         }
@@ -92,10 +94,17 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
     }
 
     fun updateTagsInfo(tagsInfo: List<TagInfo>) {
+        this.tagsInfo = tagsInfo
+    }
+
+    fun calculateTagsInfo() : List<TagInfo> {
+        val tagsInfo = ArrayList(this.tagsInfo)
         val tagsInfoMap: HashMap<String, TagInfo> = HashMap()
         val words = words.value ?: ArrayList()
 
         for (tagInfo in tagsInfo) {
+            tagInfo.learned = 0
+            tagInfo.received = 0
             tagsInfoMap[tagInfo.key] = tagInfo
         }
 
@@ -103,7 +112,15 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         val tagInfoAll5 = tagsInfoMap[ALL_APP_WORDS_WITHOUT_SIMPLE] ?: TagInfo(ALL_APP_WORDS_WITHOUT_SIMPLE)
         val tagInfoOwn = tagsInfoMap[OWN] ?: TagInfo(OWN)
 
+        if (!tagsInfo.contains(tagInfoOwn)) tagsInfo.add(tagInfoOwn)
+
         for (word in words) {
+            if (word.isCreatedByUser) {
+                tagInfoOwn.received++
+                tagInfoOwn.total++
+                if (word.learnStage == LEARN_STAGE_MAX) tagInfoOwn.learned++
+            }
+
             for (tag in word.tags) {
                 val tagInfo = tagsInfoMap[tag] ?: continue
 
@@ -111,24 +128,21 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
                     tagInfoAll.received++
                     if (word.level >= 5) tagInfoAll5.received++
                     tagInfo.received++
-                } else {
-                    tagInfoOwn.received++
-                    tagInfoOwn.total++
-                }
 
-                if (word.learnStage == LEARN_STAGE_MAX) {
-                    if (!word.isCreatedByUser) {
+                    if (word.learnStage == LEARN_STAGE_MAX) {
                         tagInfo.learned++
                         tagInfoAll.learned++
                         if (word.level >= 5) tagInfoAll5.learned++
-                    } else {
-                        tagInfoOwn.learned++
                     }
                 }
             }
         }
 
-        this.tagsInfo = tagsInfo
+        return ArrayList(tagsInfo)
+    }
+
+    fun insertWord(word : Word, wordDao: WordDao = this.wordDao) {
+        wordDao.insertAll(word)
     }
 
     fun updateWords(words: List<Word>) {

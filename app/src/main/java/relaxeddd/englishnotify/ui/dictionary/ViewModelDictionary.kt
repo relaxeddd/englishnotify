@@ -34,6 +34,7 @@ open class ViewModelDictionary(private val repositoryWord: RepositoryWord, prote
         SharedHelper.setShowOwnWords(isChecked)
         isShowOwnWords.value = isChecked
         updateFilteredWords()
+        navigateEvent.value = Event(NAVIGATION_ACTION_HIDE_FILTER)
     }
 
     init {

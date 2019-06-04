@@ -11,7 +11,7 @@ class ViewModelStatistic(repositoryWord: RepositoryWord) : ViewModelBase() {
     val tagsInfo: List<TagInfo>
 
     init {
-        var tagsInfo: List<TagInfo> = ArrayList(repositoryWord.tagsInfo)
+        var tagsInfo: List<TagInfo> = repositoryWord.calculateTagsInfo()
         tagsInfo = tagsInfo.sortedByDescending { it.received }
         var tagInfoAll: TagInfo? = null
         var tagInfoAll5: TagInfo? = null

@@ -103,7 +103,7 @@
                             android:ellipsize="end"/>
 
                         <TextView
-                                android:id="@+id/text_dictionary_filter_tags_values"
+                            android:id="@+id/text_dictionary_filter_tags_values"
                             android:text='@{!viewModel.filterTags.isEmpty() ? viewModel.filterTags.toString() : ""}'
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
