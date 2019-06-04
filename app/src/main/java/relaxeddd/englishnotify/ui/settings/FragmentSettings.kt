@@ -31,7 +31,7 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
     }
 
     override fun getLayoutResId() = R.layout.fragment_settings
-    override fun getToolbarTitleResId() = R.string.settings
+    override fun getToolbarTitleResId() = R.string.common
     override fun getViewModelFactory() = InjectorUtils.provideSettingsViewModelFactory()
     override fun getViewModelClass() = ViewModelSettings::class.java
 
