@@ -1,5 +1,6 @@
 package relaxeddd.englishnotify.ui.settings
 
+import androidx.navigation.Navigation
 import com.firebase.ui.auth.AuthUI
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
@@ -41,6 +42,9 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
 
     override fun onNavigationEvent(eventId: Int) {
         when (eventId) {
+            NAVIGATION_FRAGMENT_STATISTIC -> {
+                Navigation.findNavController(view ?: return).navigate(R.id.action_fragmentSettings_to_fragmentStatistic)
+            }
             NAVIGATION_DIALOG_APP_ABOUT -> {
                 if (isResumed) {
                     DialogAppAbout().show(this@FragmentSettings.childFragmentManager, "App Info Dialog")

@@ -41,10 +41,12 @@ data class Word(
     var learnStage: Int = 0,
     var type: String = "",
     var isCreatedByUser: Boolean = true,
-    var isOwnCategory: Boolean = false
+    var isOwnCategory: Boolean = false,
+    var level: Int = 0
 ) {
     constructor(word: Word) : this(word.id,  word.eng, word.rus, word.transcription, word.tags, word.sampleEng, word.sampleRus,
-        word.v2, word.v3, word.timestamp, word.isDeleted, word.learnStage, word.type, word.isCreatedByUser, word.isOwnCategory)
+        word.v2, word.v3, word.timestamp, word.isDeleted, word.learnStage, word.type, word.isCreatedByUser,
+        word.isOwnCategory, word.level)
 }
 
 @Keep
@@ -93,6 +95,10 @@ data class PurchaseResult(val result: Result?, val userId: String = "", val toke
 data class RefillInfo(val subscriptionTime: Long = 0)
 
 @Keep
-data class InitData(val result: Result?, val user: User?, val words: List<Word>? = null, val isActualVersion: Boolean = true)
+data class InitData(val result: Result?, val user: User?, val words: List<Word>? = null,
+                    val isActualVersion: Boolean = true, val tagsInfo: List<TagInfo>? = ArrayList())
 
 data class CategoryItem(val key: String)
+
+@Keep
+data class TagInfo(val key: String, var total: Int = 0, var learned: Int = 0, var received: Int = 0)

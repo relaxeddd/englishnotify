@@ -88,10 +88,10 @@
                         android:layout_height="wrap_content">
 
                         <TextView
+                            android:id="@+id/text_dictionary_filter_tags"
                             android:text="@string/notification_categories"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/text_dictionary_filter_tags"
                             android:textColor="@color/white"
                             android:textSize="@dimen/font_14"
                             app:layout_constraintTop_toTopOf="parent"
@@ -103,10 +103,11 @@
                             android:ellipsize="end"/>
 
                         <TextView
-                            android:text="@{viewModel.filterTags.toString()}"
+                            android:id="@+id/text_dictionary_filter_tags_values"
+                            android:text='@{!viewModel.filterTags.isEmpty() ? viewModel.filterTags.toString() : ""}'
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/text_dictionary_filter_tags_values"
+                            android:visibility="@{!viewModel.filterTags.isEmpty() ? View.VISIBLE : View.GONE}"
                             android:textSize="@dimen/font_10"
                             android:maxLines="1"
                             android:ellipsize="end"
@@ -160,6 +161,54 @@
                             android:ellipsize="end"
                             android:maxLines="1"
                             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="@+id/text_dictionary_sort_by"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_view_dictionary_filter_show_own_words"
+                        android:layout_width="match_parent"
+                        style="@style/StyleCardView"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        app:cardElevation="0dp"
+                        app:cardBackgroundColor="@android:color/transparent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/card_view_dictionary_filter_sort_by"
+                        app:layout_constraintStart_toStartOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                        <TextView
+                                android:id="@+id/text_dictionary_show_own_words"
+                                android:text="@string/show_own_words"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/font_14"
+                                android:layout_marginTop="16dp"
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:layout_marginStart="32dp"
+                                android:layout_marginBottom="16dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:ellipsize="end"
+                                android:maxLines="1"/>
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/check_box_dictionary_show_own_words"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:onCheckedChanged="@{viewModel.checkedChangeListenerShowOwnWords}"
+                                android:checked="@{safeUnbox(viewModel.isShowOwnWords)}"
+                                android:layout_marginEnd="32dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"/>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

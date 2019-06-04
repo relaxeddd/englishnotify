@@ -8,7 +8,7 @@ import androidx.room.TypeConverters
 import relaxeddd.englishnotify.common.Word
 import relaxeddd.englishnotify.common.DATABASE_TEST_APP
 
-@Database(entities = [Word::class], version = 13, exportSchema = false)
+@Database(entities = [Word::class], version = 14, exportSchema = false)
 @TypeConverters(ConverterListStr::class)
 abstract class AppDatabase : RoomDatabase() {
 

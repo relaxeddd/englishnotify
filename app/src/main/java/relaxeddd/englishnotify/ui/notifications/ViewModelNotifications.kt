@@ -57,7 +57,7 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
 
     val clickListenerSelectCategory = View.OnClickListener {
         if (user.value != null) {
-            navigateEvent.value = Event(NAVIGATION_DIALOG_LEARN_ENGLISH)
+            navigateEvent.value = Event(NAVIGATION_FRAGMENT_SELECT_CATEGORY)
         } else {
             showToast(R.string.please_authorize)
         }
@@ -72,7 +72,7 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
     }
     val clickListenerRepeatTime = View.OnClickListener {
         if (user.value != null) {
-            navigateEvent.value = Event(NAVIGATION_DIALOG_REPEAT)
+            navigateEvent.value = Event(NAVIGATION_FRAGMENT_TIME)
         } else {
             showToast(R.string.please_authorize)
         }

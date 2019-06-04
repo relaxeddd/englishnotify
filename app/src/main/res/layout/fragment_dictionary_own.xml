@@ -105,10 +105,10 @@
                             android:layout_height="wrap_content">
 
                         <TextView
+                                android:id="@+id/text_dictionary_filter_tags"
                                 android:text="@string/notification_categories"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/text_dictionary_filter_tags"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/font_14"
                                 app:layout_constraintTop_toTopOf="parent"
@@ -120,11 +120,12 @@
                                 android:ellipsize="end"/>
 
                         <TextView
-                                android:text="@{viewModel.filterTags.toString()}"
+                                android:id="@+id/text_dictionary_filter_tags_values"
+                                android:text='@{!viewModel.filterTags.isEmpty() ? viewModel.filterTags.toString() : ""}'
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/text_dictionary_filter_tags_values"
                                 android:textSize="@dimen/font_10"
+                                android:visibility="@{!viewModel.filterTags.isEmpty() ? View.VISIBLE : View.GONE}"
                                 android:maxLines="1"
                                 android:ellipsize="end"
                                 android:textColor="@color/white"

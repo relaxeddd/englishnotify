@@ -98,6 +98,7 @@ class RepositoryUser private constructor() {
                     if (answerInitData.words != null) {
                         withContext(Dispatchers.IO) {
                             RepositoryWord.getInstance().updateWords(answerInitData.words)
+                            RepositoryWord.getInstance().updateTagsInfo(answerInitData.tagsInfo ?: ArrayList())
                         }
                         SharedHelper.setLearnStage0(HashSet())
                         SharedHelper.setLearnStage1(HashSet())
@@ -137,10 +138,10 @@ class RepositoryUser private constructor() {
         updateUser(user, liveDataUser.value)
     }
 
-    suspend fun setNotificationsTimeType(timeType: Int) {
-        val user = User(liveDataUser.value ?: return)
+    suspend fun setNotificationsTimeType(timeType: Int) : Boolean {
+        val user = User(liveDataUser.value ?: return false)
         user.notificationsTimeType = timeType
-        updateUser(user, liveDataUser.value)
+        return updateUser(user, liveDataUser.value)
     }
 
     suspend fun setSelectedTag(selectedTag: String) : Boolean {

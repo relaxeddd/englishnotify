@@ -81,7 +81,7 @@
     <string name="no_words_know">У вас нет выученных слов в словаре</string>
     <string name="no_words_own">Вы пока еще не добавили слова в свою категорию</string>
     <string name="no_test_notifications">У вас не осталось тестовых уведомлений</string>
-    <string name="no_training_category_words">В этой категории недостаточно слов для тренировки, необходимо минимум 10 слов (вероятно там уже выученные слова)</string>
+    <string name="no_training_category_words">В этой категории недостаточно слов для тренировки, необходимо минимум 10 невыученных слов</string>
     <string name="no_training_words">У вас нет слов для тренировки, либо они выучены или являются предложениями</string>
     <string name="not_show_notifications">Не показывать уведомления начиная с (24-часовой формат, число от 0 до 23)</string>
     <string name="notification_categories">Выбор категорий слов</string>
@@ -106,6 +106,7 @@
     <string name="reset_progress">Сбросить прогресс</string>
     <string name="russian_at_english">С руссокого на английский</string>
     <string name="show_only_one_last_notification">Показывать только одно последнее уведомление</string>
+    <string name="show_own_words">Показывать свои слова</string>
     <string name="show_translation">Я не знаю</string>
     <string name="show_word_progress">Показывать прогресс слов</string>
     <string name="search_words">Искать слова</string>
@@ -114,6 +115,7 @@
     <string name="select">Выбрать</string>
     <string name="settings">Настройки</string>
     <string name="sort_by">Сортировать по</string>
+    <string name="statistic">Статистика</string>
     <string name="sub_advantages">Преимущества подписки</string>
     <string name="sub_advantages_info">- Получение уведомлений чаще чем раз в 4 часа</string>
     <string name="subscription_days">Дней подписки: %s</string>
@@ -157,6 +159,8 @@
         \n\n\tМаксимальное количество слов - 1000</string>
     <string name="text_info_words_training">\tДля тренировки перейдите в раздел словаря и выберите в верхнем меню иконку книжки.\n\n\tТренировка слов увеличивает прогресс изучения слова. Если ответить неправльно - прогресс сбросится до 0.
         \n\n\tДля тренировки подбираются слов, которые: 1. Не имеют максимального прогресса изучения 2. Не являются предложениями (состоят максимум из 3-х слов)</string>
+
+    <string name="text_info_statistic">k/m/n - k выучено, m получено, n всего</string>
 
     <string name="patch_notes_0_1_4">- Добавлено окно с описанием изменений после обновления (вот это как раз)
         \n- Исправлен баг, когда нельзя было выбрать алфавитную сортировку повторно
@@ -228,6 +232,15 @@
         \n- Исправление с изменением времени прихода уведомлений</string>
 
     <!-- =========================================================================================================== -->
+    <string name="every_1_hour">Каждый час (с наличием подписки)</string>
+    <string name="every_2_hours">Каждые 2 часа (с наличием подписки)</string>
+    <string name="every_3_hours">Каждые 3 часа (с наличием подписки)</string>
+    <string name="every_4_hours">Каждые 4 часа</string>
+    <string name="every_5_hours">Каждые 5 часов</string>
+    <string name="every_6_hours">Каждые 6 часов</string>
+    <string name="every_7_hours">Каждые 7 часаов</string>
+    <string name="every_8_hours">Каждые 8 часов</string>
+
     <string name="own">Своя категория (добавлять слова самому в словаре)</string>
     <string name="irregular">Неправильные глаголы</string>
     <string name="hard">Сложные</string>

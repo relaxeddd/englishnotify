@@ -1,7 +1,6 @@
 package relaxeddd.englishnotify.ui.settings
 
 import android.view.View
-import android.widget.CompoundButton
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -10,7 +9,6 @@ import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.model.repository.RepositoryCommon
 import relaxeddd.englishnotify.model.repository.RepositoryUser
-import relaxeddd.englishnotify.ui.dictionary.AdapterWords
 
 class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelBase() {
 
@@ -45,11 +43,9 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     val clickListenerInfoTraining = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_INFO_TRAINING)
     }
-    val checkedChangeListenerLearnStage = CompoundButton.OnCheckedChangeListener { _, isChecked ->
-        SharedHelper.setHideLearnStage(!isChecked)
-        AdapterWords.isHideLearnStage = !isChecked
+    val clickListenerStatistic = View.OnClickListener {
+        navigateEvent.value = Event(NAVIGATION_FRAGMENT_STATISTIC)
     }
-    val isShowLearnStage = MutableLiveData<Boolean>(!SharedHelper.isHideLearnStage())
 
     init {
         user.observeForever(userObserver)

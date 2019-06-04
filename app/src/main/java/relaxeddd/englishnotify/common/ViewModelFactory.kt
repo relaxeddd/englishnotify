@@ -13,6 +13,8 @@ import relaxeddd.englishnotify.ui.dictionary_own.ViewModelDictionaryOwn
 import relaxeddd.englishnotify.ui.main.ViewModelMain
 import relaxeddd.englishnotify.ui.notifications.ViewModelNotifications
 import relaxeddd.englishnotify.ui.settings.ViewModelSettings
+import relaxeddd.englishnotify.ui.statistic.ViewModelStatistic
+import relaxeddd.englishnotify.ui.time.ViewModelTime
 import relaxeddd.englishnotify.ui.training.ViewModelTraining
 import relaxeddd.englishnotify.ui.training_setting.ViewModelTrainingSetting
 import relaxeddd.englishnotify.ui.word.ViewModelWord
@@ -106,5 +108,21 @@ class TrainingViewModelFactory(private val repositoryWord: RepositoryWord) : Vie
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return ViewModelTraining(repositoryWord) as T
+    }
+}
+
+class StatisticViewModelFactory(private val repositoryWord: RepositoryWord) : ViewModelProvider.NewInstanceFactory() {
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return ViewModelStatistic(repositoryWord) as T
+    }
+}
+
+class TimeViewModelFactory(private val repositoryUser: RepositoryUser) : ViewModelProvider.NewInstanceFactory() {
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return ViewModelTime(repositoryUser) as T
     }
 }

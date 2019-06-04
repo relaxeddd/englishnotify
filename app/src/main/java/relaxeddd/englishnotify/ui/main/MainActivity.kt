@@ -19,7 +19,6 @@ import com.google.android.gms.common.GoogleApiAvailability
 import kotlinx.android.synthetic.main.main_activity.*
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.MainActivityBinding
-import relaxeddd.englishnotify.dialogs.DialogChangeAccount
 import relaxeddd.englishnotify.dialogs.DialogNewVersion
 import relaxeddd.englishnotify.dialogs.DialogPatchNotes
 import relaxeddd.englishnotify.dialogs.DialogRateApp
@@ -46,12 +45,6 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
             if (result) {
                 openWebApplication(this@MainActivity)
             }
-        }
-    }
-
-    private val listenerChangeAccount: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
-        override fun onResult(result: Boolean) {
-            viewModel.onDialogChangeAccountResult(result)
         }
     }
 
@@ -146,7 +139,7 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
 
                 if (resultCode == Activity.RESULT_OK) {
                     text_main_privacy_policy.visibility = View.GONE
-                    viewModel.prepareInit()
+                    viewModel.requestInit()
                 } else if (isMyResumed && response != null) {
                     AuthUI.getInstance().signOut(this).addOnCompleteListener {}
                     showToast(response.error.toString())
@@ -198,11 +191,6 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
                     dialogNewVersion?.confirmListener = listenerNewVersion
                     dialogNewVersion?.show(this@MainActivity.supportFragmentManager, "New version Dialog")
                 }
-            }
-            NAVIGATION_DIALOG_CHANGE_ACCOUNT -> {
-                val dialog = DialogChangeAccount()
-                dialog.confirmListener = listenerChangeAccount
-                dialog.show(this@MainActivity.supportFragmentManager, "Change account Dialog")
             }
             NAVIGATION_DIALOG_PATCH_NOTES -> {
                 val dialog = DialogPatchNotes()

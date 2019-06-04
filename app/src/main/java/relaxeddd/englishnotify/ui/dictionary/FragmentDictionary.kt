@@ -24,6 +24,7 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding,
     private val listenerCheckTags: ListenerResult<List<String>> = object: ListenerResult<List<String>> {
         override fun onResult(result: List<String>) {
             viewModel.setFilterTags(result)
+            animateDropdown(getCardViewFilter(), false, animBlock)
         }
     }
 
@@ -105,6 +106,9 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding,
 
     override fun onNavigationEvent(eventId: Int) {
         when (eventId) {
+            NAVIGATION_ACTION_HIDE_FILTER -> {
+                animateDropdown(getCardViewFilter(), false, animBlock)
+            }
             NAVIGATION_DIALOG_CHECK_TAGS -> {
                 val dialog = DialogCheckTags()
                 val args = Bundle()

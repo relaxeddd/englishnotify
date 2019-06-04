@@ -26,10 +26,10 @@ class ViewModelTrainingSetting : ViewModelBase(), ISelectCategory {
             if (tag == ALL_APP_WORDS && checkedItem == null) {
                 checkedItem = categoryItem
             }
-            if (tag == ALL_APP_WORDS) {
-                list.add(0, categoryItem)
-            } else {
-                list.add(categoryItem)
+            when (tag) {
+                ALL_APP_WORDS -> list.add(0, categoryItem)
+                OWN -> list.add(0, categoryItem)
+                else -> list.add(categoryItem)
             }
         }
         categories.postValue(list)

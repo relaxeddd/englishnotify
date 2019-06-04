@@ -108,16 +108,6 @@ object SharedHelper {
         sPref.edit().putInt(DURATION_HOURS_OFF, count).apply()
     }
 
-    fun isHideLearnStage(context: Context = App.context) : Boolean {
-        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        return sPref.getBoolean(WORD_LEARN_STAGE, false)
-    }
-
-    fun setHideLearnStage(isHide: Boolean, context: Context = App.context) {
-        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        sPref.edit().putBoolean(WORD_LEARN_STAGE, isHide).apply()
-    }
-
     fun getUserEmail(context: Context = App.context) : String {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         return sPref.getString(USER_EMAIL, "") ?: ""
@@ -196,6 +186,16 @@ object SharedHelper {
     fun setLearnStage3(value : MutableSet<String>, context: Context = App.context) {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         sPref.edit().putStringSet(LEARN_STAGE_3, value).apply()
+    }
+
+    fun isShowOwnWords(context: Context = App.context) : Boolean {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getBoolean(IS_SHOW_OWN_WORDS, true)
+    }
+
+    fun setShowOwnWords(isConfirmed : Boolean, context: Context = App.context) {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putBoolean(IS_SHOW_OWN_WORDS, isConfirmed).apply()
     }
 
     //------------------------------------------------------------------------------------------------------------------

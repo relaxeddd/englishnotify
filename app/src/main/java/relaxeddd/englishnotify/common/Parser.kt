@@ -30,7 +30,8 @@ fun parseWord(wordJson: JSONObject) : Word {
     val isCreatedByUser = if (wordJson.has(IS_CREATED_BY_USER)) (wordJson[IS_CREATED_BY_USER] as Boolean) else true
     val isOwnCategory = if (wordJson.has(IS_OWN_CATEGORY)) (wordJson[IS_OWN_CATEGORY] as Boolean) else false
     val learnStage = if (wordJson.has(LEARN_STAGE)) (wordJson[LEARN_STAGE] as Int) else 0
+    val level = if (wordJson.has(LEVEL)) (wordJson[LEVEL] as Int) else 0
 
     return Word(id, eng, rus, transcription, tags, sampleEng, sampleRus, v2, v3, timestamp, isDeleted,
-        learnStage, type, isCreatedByUser, isOwnCategory)
+        learnStage, type, isCreatedByUser, isOwnCategory, level)
 }
