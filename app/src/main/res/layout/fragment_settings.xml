@@ -19,6 +19,66 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_view_settings_rating"
+                android:layout_width="match_parent"
+                style="@style/StyleCardViewSettings"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:onClick="@{viewModel.user != null ? viewModel.clickListenerRating : null}"
+                android:alpha="@{viewModel.user != null ? 1f : 0.5f}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/text_settings_rating"
+                        android:text="@string/rating_users"
+                        android:layout_width="wrap_content"
+                        android:layout_height="18dp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/font_14"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/image_view_settings_rating"
+                        app:layout_constraintVertical_bias="0.0"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"/>
+
+                    <TextView
+                        android:id="@+id/text_settings_user_name"
+                        android:text="@{@string/your_name(viewModel.user.name)}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/font_12"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:visibility="@{(viewModel.user == null || viewModel.user.name.isEmpty()) ? View.GONE : View.VISIBLE}"
+                        app:layout_constraintTop_toBottomOf="@+id/text_settings_rating"
+                        app:layout_constraintStart_toStartOf="@+id/text_settings_rating"
+                        android:layout_marginBottom="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <ImageView
+                        android:id="@+id/image_view_settings_rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/ic_rating"
+                        android:contentDescription="@string/ic_rating"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="16dp"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_view_settings_statistic"
                 android:layout_width="match_parent"
                 style="@style/StyleCardViewSettings"
@@ -27,7 +87,7 @@
                 android:onClick="@{viewModel.user != null ? viewModel.clickListenerStatistic : null}"
                 android:alpha="@{viewModel.user != null ? 1f : 0.5f}"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/card_view_settings_rating"
                 app:layout_constraintStart_toStartOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -54,8 +114,8 @@
                         app:srcCompat="@drawable/ic_progress"
                         android:contentDescription="@string/ic_learn_stage_settings"
                         android:id="@+id/image_view_settings_statistic"
-                        app:layout_constraintTop_toTopOf="@+id/text_settings_statistic"
-                        app:layout_constraintBottom_toBottomOf="@+id/text_settings_statistic"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         android:layout_marginStart="16dp"/>
 

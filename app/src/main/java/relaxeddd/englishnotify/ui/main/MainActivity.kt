@@ -19,6 +19,7 @@ import com.google.android.gms.common.GoogleApiAvailability
 import kotlinx.android.synthetic.main.main_activity.*
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.MainActivityBinding
+import relaxeddd.englishnotify.dialogs.DialogEnterName
 import relaxeddd.englishnotify.dialogs.DialogNewVersion
 import relaxeddd.englishnotify.dialogs.DialogPatchNotes
 import relaxeddd.englishnotify.dialogs.DialogRateApp
@@ -45,6 +46,12 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
             if (result) {
                 openWebApplication(this@MainActivity)
             }
+        }
+    }
+
+    private val listenerEnterName: ListenerResult<String> = object: ListenerResult<String> {
+        override fun onResult(result: String) {
+            viewModel.onEnterNameResult(result)
         }
     }
 
@@ -196,6 +203,11 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
                 val dialog = DialogPatchNotes()
                 dialog.show(this@MainActivity.supportFragmentManager, "Patch Notes Dialog")
             }
+            NAVIGATION_DIALOG_ENTER_NAME -> {
+                val dialog = DialogEnterName()
+                dialog.confirmListener = listenerEnterName
+                dialog.show(this@MainActivity.supportFragmentManager, "Enter Name Dialog")
+            }
             NAVIGATION_INIT_BILLING -> {
                 if (isMyResumed && !isBillingInit) {
                     initBilling(object: ListenerResult<Boolean> {
@@ -213,6 +225,8 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
                     }
                 }
             }
+            NAVIGATION_LOADING_SHOW -> setLoadingVisible(true)
+            NAVIGATION_LOADING_HIDE -> setLoadingVisible(false)
             else -> super.onNavigationEvent(eventId)
         }
     }

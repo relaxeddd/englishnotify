@@ -15,6 +15,7 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.FragmentActivity
 import android.view.inputmethod.InputMethodManager
 import relaxeddd.englishnotify.R
+import java.util.regex.Pattern
 
 fun showToast(string: String) {
     Toast.makeText(App.context, string, Toast.LENGTH_SHORT).show()
@@ -144,6 +145,10 @@ fun getErrorString(result: Result?) : String {
         RESULT_ERROR_OWN_DELETE -> getAppString(R.string.error_own_word_delete)
         RESULT_ERROR_INTERNET -> getAppString(R.string.network_not_available)
         RESULT_ERROR_UPDATE_WORD_LEARN_STAGE -> "Error learn stage update: " + result.message
+        RESULT_ERROR_SET_NICKNAME -> "Error set name: " + result.message
+        RESULT_ERROR_SET_NICKNAME_EXISTS -> "Error set name: " + result.message
+        RESULT_ERROR_SET_NICKNAME_INVALID -> "Error set name: " + result.message
+        RESULT_ERROR_SET_NICKNAME_NOT_AVAILABLE -> "Error set name: " + result.message
         else -> result.message
     }
 }
@@ -159,4 +164,10 @@ fun isCorrectAnswer(userAnswer: String, trueAnswer: String) : Boolean {
     }
 
     return isCorrectAnswer
+}
+
+fun isValidNickname(nickname: String) : Boolean {
+    val pattern = Pattern.compile("^[a-zA-Zа-яА-Я][a-zA-Zа-яА-Я0-9_]{3,16}$")
+    val matcher = pattern.matcher(nickname)
+    return matcher.matches() && nickname != "null" && nickname != "NoName"
 }

@@ -178,6 +178,27 @@ class RepositoryUser private constructor() {
         }
     }
 
+    suspend fun setNickname(name: String) {
+        if (FirebaseAuth.getInstance().currentUser == null) {
+            showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
+            return
+        }
+
+        val firebaseUser = RepositoryCommon.getInstance().firebaseUser
+        val tokenId = RepositoryCommon.getInstance().tokenId
+
+        val answer = ApiHelper.requestSetNickname(firebaseUser, tokenId, name)
+
+        if (answer != null && answer.isSuccess()) {
+            liveDataUser.value?.name = name
+            showToast(android.R.string.ok)
+        }else if (answer != null) {
+            showToast(getErrorString(answer))
+        } else {
+            showToastLong(R.string.error_request)
+        }
+    }
+
     //------------------------------------------------------------------------------------------------------------------
     private suspend fun updateUser(user: User, oldUser: User?) : Boolean {
         liveDataUser.postValue(user)
