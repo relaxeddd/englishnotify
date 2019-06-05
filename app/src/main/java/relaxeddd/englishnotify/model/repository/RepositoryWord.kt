@@ -112,6 +112,13 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         val tagInfoAll5 = tagsInfoMap[ALL_APP_WORDS_WITHOUT_SIMPLE] ?: TagInfo(ALL_APP_WORDS_WITHOUT_SIMPLE)
         val tagInfoOwn = tagsInfoMap[OWN] ?: TagInfo(OWN)
 
+        tagInfoAll.received = 0
+        tagInfoAll.learned = 0
+        tagInfoAll5.received = 0
+        tagInfoAll5.learned = 0
+        tagInfoOwn.received = 0
+        tagInfoOwn.learned = 0
+
         if (!tagsInfo.contains(tagInfoOwn)) tagsInfo.add(tagInfoOwn)
 
         for (word in words) {
@@ -119,21 +126,21 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
                 tagInfoOwn.received++
                 tagInfoOwn.total++
                 if (word.learnStage == LEARN_STAGE_MAX) tagInfoOwn.learned++
+            } else {
+                tagInfoAll.received++
+                if (word.level >= 5) tagInfoAll5.received++
+                if (word.learnStage == LEARN_STAGE_MAX) {
+                    tagInfoAll.learned++
+                    if (word.level >= 5) tagInfoAll5.learned++
+                }
             }
 
             for (tag in word.tags) {
                 val tagInfo = tagsInfoMap[tag] ?: continue
 
                 if (!word.isCreatedByUser) {
-                    tagInfoAll.received++
-                    if (word.level >= 5) tagInfoAll5.received++
                     tagInfo.received++
-
-                    if (word.learnStage == LEARN_STAGE_MAX) {
-                        tagInfo.learned++
-                        tagInfoAll.learned++
-                        if (word.level >= 5) tagInfoAll5.learned++
-                    }
+                    if (word.learnStage == LEARN_STAGE_MAX) tagInfo.learned++
                 }
             }
         }

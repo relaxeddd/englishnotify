@@ -31,8 +31,8 @@ class ViewModelCategorySection(type: CategorySection, private val repositoryUser
             var isFit = isCategoryFit(tag, type)
 
             if (type == CategorySection.NEW && !isFit) {
-                isFit = !isCategoryFit(tag, CategorySection.MAIN) && !isCategoryFit(tag, CategorySection.EXERCISES)
-                        && !isCategoryFit(tag, CategorySection.OTHER)
+                isFit = (!isCategoryFit(tag, CategorySection.MAIN) && !isCategoryFit(tag, CategorySection.EXERCISES)
+                        && !isCategoryFit(tag, CategorySection.OTHER)) || !isCategoryTranslationExists(tag)
             }
             if (isFit) {
                 val categoryItem = CategoryItem(tag)
@@ -125,16 +125,11 @@ class ViewModelCategorySection(type: CategorySection, private val repositoryUser
         }
         CategorySection.NEW -> {
             when (category) {
-                TOURISTS, TOURISTS_5, FREQUENT_VERBS, FREQUENT_VERBS_5, EXERCISES_VERBS_FIRST -> true
+                EXERCISES_PLACE_PRETEXTS_1, EXERCISES_VERBS_2, EXERCISES_MODAL_VERBS_1, EXERCISES_PASSIVE_VOICE_1 -> true
                 else -> false
             }
         }
-        CategorySection.EXERCISES -> {
-            when (category) {
-                EXERCISES_VERBS_FIRST -> true
-                else -> category.contains(EXERCISE)
-            }
-        }
+        CategorySection.EXERCISES -> category.contains(EXERCISE)
         CategorySection.OTHER -> {
             when (category) {
                 TOURISTS, TOURISTS_5, PRONOUN, HUMAN_BODY, HUMAN_BODY_5, COLORS, COLORS_5, TIME, TIME_5, PHRASES, PHRASES_5, ANIMALS, ANIMALS_5,
@@ -145,5 +140,20 @@ class ViewModelCategorySection(type: CategorySection, private val repositoryUser
                 else -> false
             }
         }
+    }
+
+    private fun isCategoryTranslationExists(category: String) = when (category) {
+        ALL_APP_WORDS, ALL_APP_WORDS_WITHOUT_SIMPLE, OWN, IRREGULAR, PROVERB, HARD, HARD_5,
+
+        TOURISTS, TOURISTS_5, PRONOUN, HUMAN_BODY, HUMAN_BODY_5, COLORS, COLORS_5, TIME, TIME_5, PHRASES, PHRASES_5, ANIMALS, ANIMALS_5,
+        FAMILY, FAMILY_5, HUMAN_QUALITIES, HUMAN_QUALITIES_5, FEELINGS, FEELINGS_5, EMOTIONS, EMOTIONS_5, WORK, WORK_5,
+        MOVEMENT, MOVEMENT_5, PROFESSIONS, PROFESSIONS_5, FREQUENT, FREQUENT_5, EDUCATION, EDUCATION_5, FOOD, FOOD_5,
+        WEATHER, WEATHER_5, HOUSE, HOUSE_5, GEOGRAPHY, GEOGRAPHY_5, ENTERTAINMENT, ENTERTAINMENT_5, SPORT, SPORT_5,
+        AUTO, AUTO_5, FREQUENT_VERBS, FREQUENT_VERBS_5,
+
+        EXERCISES_PLACE_PRETEXTS_1, EXERCISES_VERBS_2, EXERCISES_MODAL_VERBS_1, EXERCISES_PASSIVE_VOICE_1, EXERCISES_REFLEXIVE_1,
+        EXERCISES_INDIRECT_SPEECH_1, EXERCISES_ARTICLES_1, EXERCISES_COMPARISON_ADJECTIVES_1, EXERCISES_CONDITIONAL_SENTENCES_1,
+        EXERCISES_VERBS_FIRST -> true
+        else -> false
     }
 }

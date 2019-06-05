@@ -10,6 +10,7 @@
     <string name="alphabetical_name">Алфавитный</string>
     <string name="alphabetical_translate">Алфавитный (перевод)</string>
     <string name="already_know">Уже знаю</string>
+    <string name="android_version_7_required">Необходима версия Android 7.0 или выше</string>
     <string name="another_operation">Другая операция</string>
     <string name="answer">Ответить</string>
     <string name="answer_exercise">Ответ: %s</string>
@@ -312,6 +313,7 @@
     <string name="exercises_indirect_speech_1">упр. Косвенная речь (1)</string>
     <string name="exercises_reflexive_1">упр. Возвратные местоимения (1)</string>
     <string name="exercises_verbs_2">упр. Глаголы (2)</string>
+    <string name="exercises_place_pretexts_1">упр. Предлоги места (1)</string>
 
     <string name="privacy_policy_text">Авторизируясь, вы соглашаетесь с нашей Политикой конфиденциальности</string>
     <!--

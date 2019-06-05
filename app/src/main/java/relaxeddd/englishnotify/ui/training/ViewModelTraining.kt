@@ -69,7 +69,8 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
         val isEngTraining = isEngTraining(word)
         val eng = word.eng
         val rus = word.rus
-        val transcriptionValue = if (word.type != EXERCISE) "[" + word.transcription + "]" else word.transcription
+        val transcriptionStr = if (word.transcription.isEmpty()) "-" else word.transcription
+        val transcriptionValue = if (word.type != EXERCISE) "[$transcriptionStr]" else transcriptionStr
         val currentResult = getResultLiveDataByIx(currentIx).value ?: 0
 
         wordText.value = if (isEngTraining) eng else rus
@@ -87,7 +88,7 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
         isVisibleTranslation.value = currentResult != STATE_ANSWER
         isVisibleInputAnswer.value = currentResult == STATE_ANSWER
         isVisibleAnswer.value = currentResult != STATE_ANSWER
-        isVisibleTranscription.value = isEngTraining || currentResult != STATE_ANSWER
+        isVisibleTranscription.value = (isEngTraining && word.type != EXERCISE) || currentResult != STATE_ANSWER
         isVisibleResultText.value = currentResult != STATE_ANSWER
 
         updateButtonOk()

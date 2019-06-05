@@ -41,7 +41,6 @@
                 android:layout_height="@dimen/size_16"
                 app:srcCompat="@drawable/ic_own"
                 android:contentDescription="@string/ic_own"
-                app:layout_constraintEnd_toStartOf="@+id/check_box_word_select"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
@@ -51,7 +50,8 @@
                 android:layout_height="@dimen/size_16"
                 app:srcCompat="@drawable/ic_dictionary_own"
                 android:contentDescription="@string/ic_own_created"
-                app:layout_constraintStart_toEndOf="@+id/image_word_own"
+                android:layout_marginEnd="@dimen/size_4"
+                app:layout_constraintEnd_toStartOf="@+id/image_word_own"
                 app:layout_constraintTop_toTopOf="parent"/>
 
         <com.google.android.material.checkbox.MaterialCheckBox

@@ -25,6 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:onClick="@{viewModel.clickListenerEnableNotifications}"
+                android:alpha="@{viewModel.user != null ? 1f : 0.5f}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -70,6 +71,7 @@
                 android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:onClick="@{viewModel.clickListenerSelectCategory}"
+                android:alpha="@{viewModel.user != null ? 1f : 0.5f}"
                 app:layout_constraintTop_toBottomOf="@+id/card_view_notifications_enable"
                 app:layout_constraintStart_toStartOf="parent">
 
@@ -125,6 +127,7 @@
                 android:layout_width="match_parent"
                 style="@style/StyleCardViewSettings"
                 android:onClick="@{viewModel.clickListenerRepeatTime}"
+                android:alpha="@{viewModel.user != null ? 1f : 0.5f}"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -179,6 +182,7 @@
                 android:layout_width="match_parent"
                 style="@style/StyleCardViewSettings"
                 android:onClick="@{viewModel.clickListenerLearnLanguage}"
+                android:alpha="@{viewModel.user != null ? 1f : 0.5f}"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -235,9 +239,9 @@
                     android:layout_width="match_parent"
                     style="@style/StyleCardViewSettings"
                     android:onClick="@{viewModel.clickListenerNotificationsView}"
+                    android:alpha="@{viewModel.user != null &amp;&amp; viewModel.isVisibleNotificationsView == true ? 1f : 0.5f}"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:visibility="@{safeUnbox(viewModel.isVisibleNotificationsView) == true ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/card_view_learn_language"
                     app:layout_constraintStart_toStartOf="parent">
@@ -336,6 +340,7 @@
                 android:layout_width="match_parent"
                 style="@style/StyleCardViewSettings"
                 android:onClick="@{viewModel.clickListenerNightTime}"
+                android:alpha="@{viewModel.user != null ? 1f : 0.5f}"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -391,6 +396,7 @@
                     android:layout_width="match_parent"
                     style="@style/StyleCardViewSettings"
                     android:onClick="@{viewModel.clickListenerTestNotifications}"
+                    android:alpha="@{viewModel.user != null ? 1f : 0.5f}"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     app:layout_constraintEnd_toEndOf="parent"

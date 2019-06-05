@@ -10,6 +10,7 @@
     <string name="alphabetical_name">Alphabetical name</string>
     <string name="alphabetical_translate">Alphabetical translate</string>
     <string name="already_know">Already know</string>
+    <string name="android_version_7_required">Available at Android 7.0 version or above</string>
     <string name="another_operation">Another operation</string>
     <string name="answer">Answer</string>
     <string name="answer_exercise">Answer: %s</string>
@@ -331,6 +332,7 @@
     <string name="exercises_indirect_speech_1">ex. Indirect speech (1)</string>
     <string name="exercises_reflexive_1">ex. Reflexive (1)</string>
     <string name="exercises_verbs_2">ex. Verbs (2)</string>
+    <string name="exercises_place_pretexts_1">ex. Place pretexts (1)</string>
 
     <string name="privacy_policy_text">Clicked authorize, you agree to our Privacy Policy</string>
 
