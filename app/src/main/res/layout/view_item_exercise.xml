@@ -59,6 +59,18 @@
                 android:layout_width="@dimen/size_36"
                 android:layout_height="@dimen/size_36"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/text_word"
+                android:visibility="gone"/>
+
+        <ImageView
+                android:id="@+id/image_word_play"
+                android:layout_width="@dimen/size_40"
+                android:layout_height="@dimen/size_40"
+                android:padding="@dimen/size_4"
+                app:srcCompat="@drawable/ic_volume"
+                android:contentDescription="@string/ic_play"
+                android:layout_marginEnd="@dimen/size_4"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/text_word"/>
 
         <androidx.constraintlayout.widget.Barrier
@@ -66,7 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:barrierDirection="left"
-                app:constraint_referenced_ids="check_box_word_select, image_word_own"/>
+                app:constraint_referenced_ids="check_box_word_select, image_word_own, image_word_play"/>
 
         <LinearLayout
                 android:id="@+id/constraint_word_drop_dawn"

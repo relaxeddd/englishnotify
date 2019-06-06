@@ -289,13 +289,28 @@
             android:text="@{viewModel.transcription}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:maxWidth="@dimen/size_240"
             android:visibility="@{safeUnbox(viewModel.isVisibleTranscription) == true ? View.VISIBLE : View.GONE}"
             android:layout_marginTop="8dp"
             android:paddingStart="@dimen/size_16"
             android:paddingEnd="@dimen/size_16"
             android:textSize="@dimen/font_16"
+            android:gravity="center"
             app:layout_constraintTop_toBottomOf="@+id/text_training_word" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"/>
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"/>
+
+        <ImageView
+            android:layout_width="@dimen/size_48"
+            android:layout_height="@dimen/size_48"
+            android:padding="@dimen/size_8"
+            app:srcCompat="@drawable/ic_volume"
+            android:onClick="@{viewModel.clickListenerPlayWord}"
+            android:visibility="@{safeUnbox(viewModel.isVisibleTranscription) == true ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toTopOf="@+id/text_training_transcription"
+            app:layout_constraintBottom_toBottomOf="@+id/text_training_transcription"
+            android:id="@+id/imageView"
+            app:layout_constraintStart_toEndOf="@+id/text_training_transcription" android:layout_marginStart="8dp"/>
 
         <TextView
             android:id="@+id/text_training_translation"

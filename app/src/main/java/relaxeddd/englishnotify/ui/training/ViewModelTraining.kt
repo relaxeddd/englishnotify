@@ -60,6 +60,12 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
     val clickListenerRadioButton9 = View.OnClickListener { current.value = 8 }
     val clickListenerRadioButton10 = View.OnClickListener { current.value = 9 }
 
+    val clickListenerPlayWord = View.OnClickListener {
+        val currentIx = current.value ?: trainingWords.size
+        if (currentIx >= trainingWords.size) return@OnClickListener
+        playWord(trainingWords[currentIx])
+    }
+
     private val currentObserver = Observer<Int> { currentIx ->
         if (trainingWords.size <= currentIx) {
             return@Observer

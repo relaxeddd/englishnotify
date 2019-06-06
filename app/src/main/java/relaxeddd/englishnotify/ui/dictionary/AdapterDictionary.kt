@@ -14,7 +14,6 @@ import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.TYPE_PUSH_ENGLISH
 import relaxeddd.englishnotify.common.TYPE_PUSH_RUSSIAN
 import relaxeddd.englishnotify.common.Word
-import java.util.*
 
 class AdapterDictionary(viewModel: ViewModelDictionary) : AdapterWords<AdapterDictionary.ViewHolder>(viewModel) {
 
@@ -23,8 +22,9 @@ class AdapterDictionary(viewModel: ViewModelDictionary) : AdapterWords<AdapterDi
     }
 
     override fun bind(holder: ViewHolder, item: Word, clickListener: View.OnClickListener,
-                      longListener: View.OnLongClickListener, checkListener: CompoundButton.OnCheckedChangeListener) {
-        holder.bind(item, languageType, isSelectState, checkList, clickListener, longListener, checkListener)
+                      longListener: View.OnLongClickListener, clickListenerPlay: View.OnClickListener,
+                      checkListener: CompoundButton.OnCheckedChangeListener) {
+        holder.bind(item, languageType, isSelectState, checkList, clickListener, longListener, clickListenerPlay, checkListener)
     }
 
     class ViewHolder(view: View) : AdapterWords.ViewHolder(view) {
@@ -35,12 +35,13 @@ class AdapterDictionary(viewModel: ViewModelDictionary) : AdapterWords<AdapterDi
         override fun getImageOwnWord(): ImageView = itemView.image_word_own
         override fun getImageOwnCreatedWord(): ImageView = itemView.image_word_own_created
         override fun getCheckBoxSelect(): MaterialCheckBox = itemView.check_box_word_select
+        override fun getImagePlay(): ImageView = itemView.image_word_play
         override fun getProgressLearn(): ProgressBar = itemView.progress_bar_word_learn_stage
 
         fun bind(word: Word, languageType: Int, isSelectState: Boolean, checkList: HashSet<Word>,
                  clickListener: View.OnClickListener, longClickListener: View.OnLongClickListener,
-                 checkedChangeListener: CompoundButton.OnCheckedChangeListener) {
-            super.bind(word, isSelectState, checkList, clickListener, longClickListener, checkedChangeListener)
+                 clickListenerPlay: View.OnClickListener, checkedChangeListener: CompoundButton.OnCheckedChangeListener) {
+            super.bind(word, isSelectState, checkList, clickListener, longClickListener, clickListenerPlay, checkedChangeListener)
 
             with(itemView) {
                 val transcription = if (word.transcription.isNotEmpty()) "[" + word.transcription + "]" else ""

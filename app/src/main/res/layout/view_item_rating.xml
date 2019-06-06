@@ -12,8 +12,7 @@
         android:id="@+id/text_rating_position"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/font_18"
-        android:text="12."/>
+        android:textSize="@dimen/font_18"/>
 
     <TextView
         android:id="@+id/text_rating_name"
@@ -23,15 +22,13 @@
         android:layout_toEndOf="@+id/text_rating_position"
         android:layout_toStartOf="@+id/text_rating_value"
         android:layout_marginStart="@dimen/size_12"
-        android:layout_marginEnd="@dimen/size_12"
-        android:text="Abilion"/>
+        android:layout_marginEnd="@dimen/size_12"/>
 
     <TextView
         android:id="@+id/text_rating_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/font_18"
-        android:layout_alignParentEnd="true"
-        android:text="123"/>
+        android:layout_alignParentEnd="true"/>
 
 </RelativeLayout>

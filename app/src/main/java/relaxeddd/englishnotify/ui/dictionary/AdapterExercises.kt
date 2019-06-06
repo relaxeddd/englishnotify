@@ -28,12 +28,13 @@ class AdapterExercises(viewModel: ViewModelDictionary) : AdapterWords<AdapterExe
         override fun getImageOwnWord(): ImageView = itemView.image_word_own
         override fun getImageOwnCreatedWord(): ImageView = itemView.image_word_own_created
         override fun getCheckBoxSelect(): MaterialCheckBox = itemView.check_box_word_select
+        override fun getImagePlay(): ImageView = itemView.image_word_play
         override fun getProgressLearn(): ProgressBar = itemView.progress_bar_word_learn_stage
 
         override fun bind(word: Word, isSelectState: Boolean, checkList: HashSet<Word>,
-                 clickListener: View.OnClickListener, longClickListener: View.OnLongClickListener,
-                 checkedChangeListener: CompoundButton.OnCheckedChangeListener) {
-            super.bind(word, isSelectState, checkList, clickListener, longClickListener, checkedChangeListener)
+                          clickListener: View.OnClickListener, longClickListener: View.OnLongClickListener,
+                          clickListenerPlay: View.OnClickListener, checkedChangeListener: CompoundButton.OnCheckedChangeListener) {
+            super.bind(word, isSelectState, checkList, clickListener, longClickListener, clickListenerPlay, checkedChangeListener)
 
             with(itemView) {
                 val transcription = if (word.transcription.isNotEmpty()) word.transcription else ""
