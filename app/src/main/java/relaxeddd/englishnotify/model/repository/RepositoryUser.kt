@@ -25,6 +25,8 @@ class RepositoryUser private constructor() {
 
     var liveDataUser = MutableLiveData<User>(null)
     val liveDataIsActualVersion = MutableLiveData<Boolean>(true)
+    var rating: List<RatingItem> = ArrayList()
+        private set
 
     fun isAuthorized() = FirebaseAuth.getInstance().currentUser != null
 
@@ -95,6 +97,7 @@ class RepositoryUser private constructor() {
                         liveDataIsActualVersion.value = answerInitData.isActualVersion
                     }
 
+                    if (answerInitData.rating != null) rating = answerInitData.rating
                     if (answerInitData.words != null) {
                         withContext(Dispatchers.IO) {
                             RepositoryWord.getInstance().updateWords(answerInitData.words)

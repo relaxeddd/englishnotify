@@ -44,6 +44,14 @@
             app:popEnterAnim="@anim/nav_default_enter_anim"
             app:popExitAnim="@anim/nav_default_exit_anim"/>
 
+        <action
+            android:id="@+id/action_fragmentSettings_to_fragmentRating"
+            app:destination="@id/fragmentRating"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_enter_anim"
+            app:popExitAnim="@anim/nav_default_exit_anim"/>
+
     </fragment>
 
     <fragment
@@ -145,6 +153,12 @@
         android:name="relaxeddd.englishnotify.ui.time.FragmentTime"
         android:label="@string/label_fragment_time"
         tools:layout="@layout/fragment_time"/>
+
+    <fragment
+        android:id="@+id/fragmentRating"
+        android:name="relaxeddd.englishnotify.ui.rating.FragmentRating"
+        android:label="@string/label_fragment_rating"
+        tools:layout="@layout/fragment_rating"/>
 
     <action
         android:id="@+id/action_global_fragmentDictionaryAll"

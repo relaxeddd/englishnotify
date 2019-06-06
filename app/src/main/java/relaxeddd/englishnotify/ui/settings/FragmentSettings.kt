@@ -45,6 +45,9 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
             NAVIGATION_FRAGMENT_STATISTIC -> {
                 Navigation.findNavController(view ?: return).navigate(R.id.action_fragmentSettings_to_fragmentStatistic)
             }
+            NAVIGATION_FRAGMENT_RATING -> {
+                Navigation.findNavController(view ?: return).navigate(R.id.action_fragmentSettings_to_fragmentRating)
+            }
             NAVIGATION_DIALOG_APP_ABOUT -> {
                 if (isResumed) {
                     DialogAppAbout().show(this@FragmentSettings.childFragmentManager, "App Info Dialog")

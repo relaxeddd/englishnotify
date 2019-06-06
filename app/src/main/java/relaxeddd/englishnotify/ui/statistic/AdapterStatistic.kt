@@ -35,12 +35,8 @@ class AdapterStatistic: ListAdapter<TagInfo, AdapterStatistic.ViewHolder>(TagInf
 
     private class TagInfoDiffCallback : DiffUtil.ItemCallback<TagInfo>() {
 
-        override fun areItemsTheSame(oldItem: TagInfo, newItem: TagInfo): Boolean {
-            return oldItem.key == newItem.key
-        }
-
-        override fun areContentsTheSame(oldItem: TagInfo, newItem: TagInfo): Boolean {
-            return oldItem.total == newItem.total && oldItem.learned == newItem.learned && oldItem.received == newItem.received
-        }
+        override fun areItemsTheSame(oldItem: TagInfo, newItem: TagInfo) = oldItem.key == newItem.key
+        override fun areContentsTheSame(oldItem: TagInfo, newItem: TagInfo) = oldItem.total == newItem.total
+                && oldItem.learned == newItem.learned && oldItem.received == newItem.received
     }
 }

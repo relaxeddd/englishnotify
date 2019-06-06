@@ -131,18 +131,6 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
         }
     }
 
-    fun onDialogRepeatTimeResult(receiveNotificationsTime: Int) {
-        val user = repositoryUser.liveDataUser.value
-
-        if (receiveNotificationsTime < 3 && (user?.subscriptionTime ?: 0) < System.currentTimeMillis()) {
-            showToast(R.string.subscription_need)
-        } else if (receiveNotificationsTime != user?.notificationsTimeType) {
-            uiScope.launch {
-                repositoryUser.setNotificationsTimeType(receiveNotificationsTime)
-            }
-        }
-    }
-
     fun onDialogPushOffTimeResult(result: Pair<Int, Int>) {
         val startHourStr = (if (result.first < 10) "0" else "") + result.first.toString() + ":00"
         val endHour = result.first + result.second - (if (result.first + result.second >= 24) 24 else 0)

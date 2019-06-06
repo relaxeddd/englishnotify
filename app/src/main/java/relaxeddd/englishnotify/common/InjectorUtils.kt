@@ -8,81 +8,24 @@ import relaxeddd.englishnotify.ui.categories.CategorySection
 
 object InjectorUtils {
 
-    fun provideMainViewModelFactory(): MainViewModelFactory {
-        val repository = RepositoryFactory.getUserRepository()
-        return MainViewModelFactory(repository)
-    }
-
-    fun provideDictionaryAllViewModelFactory(context: Context): DictionaryAllViewModelFactory {
-        val repositoryWord = RepositoryFactory.getWordRepository(context)
-        val repositoryUser = RepositoryFactory.getUserRepository()
-        return DictionaryAllViewModelFactory(repositoryWord, repositoryUser)
-    }
-
-    fun provideDictionaryOwnViewModelFactory(context: Context): DictionaryOwnViewModelFactory {
-        val repositoryWord = RepositoryFactory.getWordRepository(context)
-        val repositoryUser = RepositoryFactory.getUserRepository()
-        return DictionaryOwnViewModelFactory(repositoryWord, repositoryUser)
-    }
-
-    fun provideDictionaryExercisesViewModelFactory(context: Context): DictionaryExercisesViewModelFactory {
-        val repositoryWord = RepositoryFactory.getWordRepository(context)
-        val repositoryUser = RepositoryFactory.getUserRepository()
-        return DictionaryExercisesViewModelFactory(repositoryWord, repositoryUser)
-    }
-
-    fun provideDictionaryKnowViewModelFactory(context: Context): DictionaryKnowViewModelFactory {
-        val repositoryWord = RepositoryFactory.getWordRepository(context)
-        val repositoryUser = RepositoryFactory.getUserRepository()
-        return DictionaryKnowViewModelFactory(repositoryWord, repositoryUser)
-    }
-
-    fun provideNotificationsViewModelFactory(): NotificationsViewModelFactory {
-        val repository = RepositoryFactory.getUserRepository()
-        return NotificationsViewModelFactory(repository)
-    }
-
-    fun provideSettingsViewModelFactory(): SettingsViewModelFactory {
-        val repository = RepositoryFactory.getUserRepository()
-        return SettingsViewModelFactory(repository)
-    }
-
-    fun provideWordViewModelFactory(): WordViewModelFactory {
-        return WordViewModelFactory()
-    }
-
-    fun provideCategorySectionViewModelFactory(type: CategorySection): CategorySectionViewModelFactory {
-        val repository = RepositoryFactory.getUserRepository()
-        return CategorySectionViewModelFactory(type, repository)
-    }
-
-    fun provideTrainingSettingViewModelFactory(): TrainingSettingViewModelFactory {
-        return TrainingSettingViewModelFactory()
-    }
-
-    fun provideTrainingViewModelFactory(context: Context): TrainingViewModelFactory {
-        val repositoryWord = RepositoryFactory.getWordRepository(context)
-        return TrainingViewModelFactory(repositoryWord)
-    }
-
-    fun provideStatisticViewModelFactory(context: Context): StatisticViewModelFactory {
-        val repositoryWord = RepositoryFactory.getWordRepository(context)
-        return StatisticViewModelFactory(repositoryWord)
-    }
-
-    fun provideTimeViewModelFactory(): TimeViewModelFactory {
-        val repository = RepositoryFactory.getUserRepository()
-        return TimeViewModelFactory(repository)
-    }
+    fun provideMainViewModelFactory() = MainViewModelFactory(RepositoryFactory.getUserRepository())
+    fun provideDictionaryAllViewModelFactory(context: Context) = DictionaryAllViewModelFactory(RepositoryFactory.getWordRepository(context), RepositoryFactory.getUserRepository())
+    fun provideDictionaryOwnViewModelFactory(context: Context) = DictionaryOwnViewModelFactory(RepositoryFactory.getWordRepository(context), RepositoryFactory.getUserRepository())
+    fun provideDictionaryExercisesViewModelFactory(context: Context) = DictionaryExercisesViewModelFactory(RepositoryFactory.getWordRepository(context), RepositoryFactory.getUserRepository())
+    fun provideDictionaryKnowViewModelFactory(context: Context) = DictionaryKnowViewModelFactory(RepositoryFactory.getWordRepository(context), RepositoryFactory.getUserRepository())
+    fun provideNotificationsViewModelFactory() = NotificationsViewModelFactory(RepositoryFactory.getUserRepository())
+    fun provideSettingsViewModelFactory() = SettingsViewModelFactory(RepositoryFactory.getUserRepository())
+    fun provideWordViewModelFactory() = WordViewModelFactory()
+    fun provideCategorySectionViewModelFactory(type: CategorySection) = CategorySectionViewModelFactory(type, RepositoryFactory.getUserRepository())
+    fun provideTrainingSettingViewModelFactory() = TrainingSettingViewModelFactory()
+    fun provideTrainingViewModelFactory(context: Context) = TrainingViewModelFactory(RepositoryFactory.getWordRepository(context))
+    fun provideStatisticViewModelFactory(context: Context) = StatisticViewModelFactory(RepositoryFactory.getWordRepository(context))
+    fun provideTimeViewModelFactory() = TimeViewModelFactory(RepositoryFactory.getUserRepository())
+    fun provideRatingViewModelFactory() = RatingViewModelFactory(RepositoryFactory.getUserRepository())
 }
 
 object RepositoryFactory {
 
-    internal fun getUserRepository(): RepositoryUser {
-        return RepositoryUser.getInstance()
-    }
-
-    internal fun getWordRepository(context: Context): RepositoryWord {
-        return RepositoryWord.getInstance(AppDatabase.getInstance(context.applicationContext).wordDao())
-    }
+    internal fun getUserRepository() = RepositoryUser.getInstance()
+    internal fun getWordRepository(context: Context) = RepositoryWord.getInstance(AppDatabase.getInstance(context.applicationContext).wordDao())
 }
