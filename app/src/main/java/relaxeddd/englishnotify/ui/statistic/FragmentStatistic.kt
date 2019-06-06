@@ -21,9 +21,7 @@ class FragmentStatistic : BaseFragment<ViewModelStatistic, FragmentStatisticBind
     override fun getViewModelClass() = ViewModelStatistic::class.java
     override fun isHomeMenuButtonEnabled() = true
     override fun getHomeMenuButtonIconResId() = R.drawable.ic_back
-    override fun getHomeMenuButtonListener(): () -> Unit = {
-        onNavigationEvent(NAVIGATION_ACTIVITY_BACK)
-    }
+    override fun getHomeMenuButtonListener(): () -> Unit = { onNavigationEvent(NAVIGATION_ACTIVITY_BACK) }
 
     override fun configureBinding() {
         super.configureBinding()

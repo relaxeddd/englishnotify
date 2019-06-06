@@ -49,6 +49,7 @@
     <string name="error_own_word_delete">Error delete word from own category</string>
     <string name="error_purchase">Purchase error, write to for.gamer.develop@gmail.com</string>
     <string name="error_push_token">Push token error, please, try to restart app</string>
+    <string name="error_rating_not_load">Rating has not loaded</string>
     <string name="error_request">Error send request, please, check authorization and Internet connection</string>
     <string name="error_test_notification">Error request test notification</string>
     <string name="error_text_time">Wrong time</string>
@@ -157,6 +158,7 @@
     <string name="you_sign_in_as">You signed in as: %s</string>
     <string name="your_answer">Your answer: %s</string>
     <string name="your_name">Your name: %s</string>
+    <string name="your_name_in_rating">%s (You)</string>
 
     <string name="label_fragment_dictionary_main" translatable="false">LabelFragmentDictionaryMain</string>
     <string name="label_fragment_dictionary" translatable="false">LabelFragmentDictionary</string>
@@ -172,6 +174,7 @@
     <string name="label_fragment_dictionary_know" translatable="false">LabelFragmentDictionaryKnow</string>
     <string name="label_fragment_statistic" translatable="false">LabelFragmentStatistic</string>
     <string name="label_fragment_time" translatable="false">LabelFragmentTime</string>
+    <string name="label_fragment_rating" translatable="false">LabelFragmentRating</string>
 
     <string name="service_notifications_count_listener" translatable="false">NotificationsListenerService</string>
 
@@ -187,6 +190,11 @@
     <string name="text_enter_name">Enter the name, which will display in the rating table of learned words. The name should be not shorter than 3 symbols, contains only characters or numbers, starts with character. You can enter name when open app again if you don`t do that now.</string>
 
     <string name="text_info_statistic">k/m/n - k выучено, m получено, n всего</string>
+
+    <string name="text_rating_info">This rating table is bases on user words learned count.
+        \n\nThe rating table update every day at 23.00 Moscow time.
+        \n\nThe words which you add by yourself not including.
+        \n\nYou can up word learn progress by words training in Dictionary section or by correct answer in notification.</string>
 
     <string name="patch_notes_0_1_4">- Added patch notes dialog (here it is)
         \n- Fixed bug with alphabetical sort by in dictionary
@@ -259,11 +267,14 @@
         \n- Libraries update
         \n- Change receive notification time fix</string>
 
-    <string name="patch_notes_3_0_0">- New menu item Statistic in Common section.
+    <string name="patch_notes_3_0_0">
+        - New menu item Users rating in Common section. Now you can see your learn words progress between all app users.
+        \n- New menu item Statistic in Common section.
         \n- All received words store and save in your account now.
         \n- Renamed section Settings -> Common.
         \n- Changed design select receive notifications time window.
-        \n- Bug fixes.</string>
+        \n- Bug fixes.
+    </string>
 
     <!-- =========================================================================================================== -->
     <string name="every_1_hour">Every hour (with subscription only)</string>

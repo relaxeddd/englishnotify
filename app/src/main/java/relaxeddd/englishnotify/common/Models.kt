@@ -98,9 +98,13 @@ data class RefillInfo(val subscriptionTime: Long = 0)
 
 @Keep
 data class InitData(val result: Result?, val user: User?, val words: List<Word>? = null,
-                    val isActualVersion: Boolean = true, val tagsInfo: List<TagInfo>? = ArrayList())
+                    val isActualVersion: Boolean = true, val tagsInfo: List<TagInfo>? = ArrayList(),
+                    val rating: List<RatingItem>? = ArrayList())
 
 data class CategoryItem(val key: String)
 
 @Keep
 data class TagInfo(val key: String, var total: Int = 0, var learned: Int = 0, var received: Int = 0)
+
+@Keep
+data class RatingItem(val name: String, var value: Int = 0)

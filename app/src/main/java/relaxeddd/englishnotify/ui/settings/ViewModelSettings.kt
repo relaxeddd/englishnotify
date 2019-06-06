@@ -47,7 +47,11 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
         navigateEvent.value = Event(NAVIGATION_FRAGMENT_STATISTIC)
     }
     val clickListenerRating = View.OnClickListener {
-        navigateEvent.value = Event(NAVIGATION_FRAGMENT_RATING)
+        if (repositoryUser.rating.isNotEmpty()) {
+            navigateEvent.value = Event(NAVIGATION_FRAGMENT_RATING)
+        } else {
+            showToast(R.string.accept)
+        }
     }
 
     init {
