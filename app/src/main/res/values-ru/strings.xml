@@ -54,6 +54,7 @@
     <string name="error_test_notification">Ошибка запроса тестового уведомления</string>
     <string name="error_text_time">Неверное время</string>
     <string name="error_update">Ошибка обновления</string>
+    <string name="error_word_voice">Ошибка инициализации озвучки слов</string>
     <string name="exercises">Упражнения</string>
     <string name="expand_to_see_buttons">Разверните для показа кнопок</string>
     <string name="feedback_is_empty">Отзыв пуст</string>

@@ -18,7 +18,7 @@ import com.google.android.material.checkbox.MaterialCheckBox
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 import kotlin.collections.HashSet
 
 abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewModelDictionary) : ListAdapter<Word, VH>(WordDiffCallback()) {
@@ -53,13 +53,16 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
         val checkListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
             if (isChecked) checkList.add(word) else checkList.remove(word)
         }
+        val clickListenerPlay = View.OnClickListener {
+            viewModel.playWord(word)
+        }
 
-        bind(holder, word, clickListener, longListener, checkListener)
+        bind(holder, word, clickListener, longListener, clickListenerPlay, checkListener)
     }
 
     open fun bind(holder: VH, item: Word, clickListener: View.OnClickListener, longListener: View.OnLongClickListener,
-                  checkListener: CompoundButton.OnCheckedChangeListener) {
-        holder.bind(item, isSelectState, checkList, clickListener, longListener, checkListener)
+                  clickListenerPlay: View.OnClickListener, checkListener: CompoundButton.OnCheckedChangeListener) {
+        holder.bind(item, isSelectState, checkList, clickListener, longListener, clickListenerPlay, checkListener)
     }
 
     fun checkAll() {
@@ -118,15 +121,17 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
         abstract fun getImageOwnWord() : ImageView
         abstract fun getImageOwnCreatedWord() : ImageView
         abstract fun getCheckBoxSelect() : MaterialCheckBox
+        abstract fun getImagePlay() : ImageView
         abstract fun getProgressLearn() : ProgressBar
 
         @CallSuper
         open fun bind(word: Word, isSelectState: Boolean, checkList: java.util.HashSet<Word>,
                       clickListener: View.OnClickListener, longClickListener: View.OnLongClickListener,
-                      checkedChangeListener: CompoundButton.OnCheckedChangeListener) {
+                      clickListenerPlay: View.OnClickListener, checkedChangeListener: CompoundButton.OnCheckedChangeListener) {
             itemView.tag = word.id
             getCardViewWord().setOnClickListener(clickListener)
             getCardViewWord().setOnLongClickListener(longClickListener)
+            getImagePlay().setOnClickListener(clickListenerPlay)
 
             getTextTimestamp().text = SimpleDateFormat("hh:mm dd.MM", Locale.getDefault()).format(word.timestamp) ?: ""
             getTextTags().text = if (word.tags.isNotEmpty()) word.tags.toString() else ""
@@ -134,6 +139,7 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
             getImageOwnWord().visibility = if (word.isOwnCategory) View.VISIBLE else View.GONE
             getImageOwnCreatedWord().visibility = if (word.isCreatedByUser) View.VISIBLE else View.GONE
 
+            getImagePlay().visibility = if (!isSelectState) View.VISIBLE else View.GONE
             getCheckBoxSelect().visibility = if (isSelectState) View.VISIBLE else View.GONE
             getCheckBoxSelect().setOnCheckedChangeListener(null)
             if (isSelectState) {

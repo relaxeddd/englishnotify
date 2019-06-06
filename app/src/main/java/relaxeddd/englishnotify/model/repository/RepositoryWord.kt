@@ -27,8 +27,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
 
     private val ioScope = CoroutineScope(Dispatchers.IO)
     var words = wordDao.getAll()
-    var tagsInfo: List<TagInfo> = ArrayList()
-        private set
+    private var tagsInfo: List<TagInfo> = ArrayList()
 
     fun clearDictionary() {
         wordDao.deleteAll()

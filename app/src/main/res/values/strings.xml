@@ -54,6 +54,7 @@
     <string name="error_test_notification">Error request test notification</string>
     <string name="error_text_time">Wrong time</string>
     <string name="error_update">Error update</string>
+    <string name="error_word_voice">Error word voice</string>
     <string name="exercises">Exercises</string>
     <string name="expand_to_see_buttons">Expand to see buttons</string>
     <string name="feedback_is_empty">Feedback is empty</string>
@@ -381,5 +382,6 @@
     <string name="ic_own" translatable="false">Word in own category</string>
     <string name="ic_own_created" translatable="false">Word in own category which created by you</string>
     <string name="ic_rating" translatable="false">Users rating by learned words</string>
+    <string name="ic_play" translatable="false">Play word</string>
 
 </resources>

@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    style="@style/StyleCardViewSettings"
-    android:layout_marginTop="@dimen/size_8">
+        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/StyleCardViewSettings"
+        android:layout_marginTop="@dimen/size_8">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/size_8">
+        android:padding="@dimen/size_8"
+        tools:ignore="UnusedAttribute">
 
         <TextView
             android:id="@+id/text_tag_statistic_title"
@@ -33,7 +34,6 @@
             android:id="@+id/text_tag_statistic_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="77/348/1566"
             android:layout_gravity="center_horizontal"/>
 
     </LinearLayout>
