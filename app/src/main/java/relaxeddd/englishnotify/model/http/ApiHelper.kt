@@ -119,6 +119,14 @@ object ApiHelper {
         }
     }
 
+    suspend fun requestSetNickname(firebaseUser: FirebaseUser?, tokenId: String?, name: String) : Result? {
+        val userId = firebaseUser?.uid ?: ""
+        if (!isNetworkAvailable() || tokenId?.isNotEmpty() != true || userId.isEmpty()) {
+            return Result(RESULT_ERROR_INTERNET)
+        }
+        return executeRequest( suspend { api.requestSetNickname(tokenId, userId, name) }, Result(RESULT_ERROR_INTERNET))
+    }
+
     //------------------------------------------------------------------------------------------------------------------
     fun initUserTokenId(firebaseUser: FirebaseUser?, resultListener: (tokenId: Resource<String>) -> Unit) {
         firebaseUser?.getIdToken(false)?.addOnCompleteListener {
@@ -228,6 +236,10 @@ object ApiHelper {
 
         suspend fun requestSetIsOwnCategoryWords(tokenId: String, userId: String, wordIds: JSONArray, isOwnCategory: Boolean) : Result? {
             return apiHelper.requestSetIsOwnCategoryWordsAsync(tokenPrefix + tokenId, userId, wordIds, isOwnCategory).await()
+        }
+
+        suspend fun requestSetNickname(tokenId: String, userId: String, name: String) : Result? {
+            return apiHelper.requestSetNicknameAsync(tokenPrefix + tokenId, userId, name).await()
         }
     }
 }

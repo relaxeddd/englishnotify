@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/size_16">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_enter_name"/>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/edit_text_enter_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_16"
+        android:hint="@string/input_your_message"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_enter_name_apply"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_16"
+        android:text="@string/apply"/>
+
+</LinearLayout>

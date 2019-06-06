@@ -16,6 +16,7 @@
     <string name="answer_exercise">Answer: %s</string>
     <string name="app_info">App info</string>
     <string name="app_language">App language</string>
+    <string name="apply">Apply</string>
     <string name="answer_correct">Correct answer</string>
     <string name="answer_incorrect">Incorrect answer</string>
     <string name="cancel_check">Cancel check</string>
@@ -36,9 +37,11 @@
     <string name="enable_notifications">Enable notifications</string>
     <string name="end">End</string>
     <string name="english_at_russian">English at russian</string>
+    <string name="enter_name">Enter the name</string>
     <string name="enter_translation">Enter translation</string>
     <string name="error_category_select">Error category select</string>
     <string name="error_initialization">Initialization error</string>
+    <string name="error_name">Invalid name, please, try again</string>
     <string name="error_own_word_add">Error add word in Won category</string>
     <string name="error_own_word_exists">Error, world already added</string>
     <string name="error_own_word_limit">Error, own words limit (max 200)</string>
@@ -101,6 +104,7 @@
     <string name="purchase_consumed">Success purchase, thank you!</string>
     <string name="rate_app">Rate app</string>
     <string name="rate_app_pls">Rate app, please</string>
+    <string name="rating_users">Users rating</string>
     <string name="rate">Rate</string>
     <string name="receive_notifications_time">Receive notifications time</string>
     <string name="remove_from_own_category">Remove from own category</string>
@@ -152,6 +156,7 @@
     <string name="yes">Yes</string>
     <string name="you_sign_in_as">You signed in as: %s</string>
     <string name="your_answer">Your answer: %s</string>
+    <string name="your_name">Your name: %s</string>
 
     <string name="label_fragment_dictionary_main" translatable="false">LabelFragmentDictionaryMain</string>
     <string name="label_fragment_dictionary" translatable="false">LabelFragmentDictionary</string>
@@ -178,6 +183,8 @@
         \n\n\tMax words count - 1000</string>
     <string name="text_info_words_training">\tClick at the book icon in dictionary tab to train words.\n\n\tThe words training increase word learn progress. If answer is wrong in training - word progress sets to 0.
         \n\n\tTraining word matches if: 1. Word has not max learn progress 2. It is not sentence (contains maximum 3 words)</string>
+
+    <string name="text_enter_name">Enter the name, which will display in the rating table of learned words. The name should be not shorter than 3 symbols, contains only characters or numbers, starts with character. You can enter name when open app again if you don`t do that now.</string>
 
     <string name="text_info_statistic">k/m/n - k выучено, m получено, n всего</string>
 
@@ -362,5 +369,6 @@
     <string name="ic_main_warning_subscription" translatable="false">Warning subscription</string>
     <string name="ic_own" translatable="false">Word in own category</string>
     <string name="ic_own_created" translatable="false">Word in own category which created by you</string>
+    <string name="ic_rating" translatable="false">Users rating by learned words</string>
 
 </resources>

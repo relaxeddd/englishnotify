@@ -16,6 +16,7 @@
     <string name="answer_exercise">Ответ: %s</string>
     <string name="app_info">О приложении</string>
     <string name="app_language">Язык приложения</string>
+    <string name="apply">Применить</string>
     <string name="answer_correct">Правильный ответ</string>
     <string name="answer_incorrect">Неправильный ответ</string>
     <string name="cancel_check">Отменить выбранное</string>
@@ -36,9 +37,11 @@
     <string name="enable_notifications">Включить уведомления</string>
     <string name="end">Закончить</string>
     <string name="english_at_russian">С английского на русский</string>
+    <string name="enter_name">Введите имя</string>
     <string name="enter_translation">Ввести перевод</string>
     <string name="error_category_select">Ошибка выбора категории</string>
     <string name="error_initialization">Ошибка инициализации</string>
+    <string name="error_name">Неправильное имя, пожалуйста, попробуйте еще раз</string>
     <string name="error_own_word_add">Ошибка добавления в Свою категорию</string>
     <string name="error_own_word_exists">Ошибка, это слово уже добавлено</string>
     <string name="error_own_word_limit">Ошибка, превышен лимит в Своей категории (максимум 200)</string>
@@ -102,6 +105,7 @@
     <string name="rate">Оценить</string>
     <string name="rate_app">Оценить приложение</string>
     <string name="rate_app_pls">Оцените пожалуйста приложение</string>
+    <string name="rating_users">Рейтинг пользователей</string>
     <string name="receive_notifications_time">Получать уведомления</string>
     <string name="remove_from_own_category">Убрать из своей категории</string>
     <string name="renew_subscription">Продлить подписку</string>
@@ -152,6 +156,7 @@
     <string name="yes">Да</string>
     <string name="you_sign_in_as">Вы вошли как: %s</string>
     <string name="your_answer">Ваш ответ: %s</string>
+    <string name="your_name">Ваше имя: %s</string>
 
     <string name="text_rate_app">В комментариях пишите, что можно улучшить, какие новые категории слов нужно добавить</string>
     <string name="text_app_about">\tВыберите категории английских слов, которые хотите изучить, установите период получения уведомлений
@@ -161,6 +166,8 @@
         \n\n\tМаксимальное количество слов - 1000</string>
     <string name="text_info_words_training">\tДля тренировки перейдите в раздел словаря и выберите в верхнем меню иконку книжки.\n\n\tТренировка слов увеличивает прогресс изучения слова. Если ответить неправльно - прогресс сбросится до 0.
         \n\n\tДля тренировки подбираются слов, которые: 1. Не имеют максимального прогресса изучения 2. Не являются предложениями (состоят максимум из 3-х слов)</string>
+
+    <string name="text_enter_name">Введите имя, которое будет отображаться в таблице рейтинга по выученным словам. Имя должно быть не короче 3-х символов, содержать только буквы и цифры, начинаться с буквы. Вы можете ввести имя при повторном входе в приложение, если не сделаете это сейчас.</string>
 
     <string name="text_info_statistic">k/m/n - k выучено, m получено, n всего</string>
 

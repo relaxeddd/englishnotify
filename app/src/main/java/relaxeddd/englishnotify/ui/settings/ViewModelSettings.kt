@@ -46,6 +46,9 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     val clickListenerStatistic = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_FRAGMENT_STATISTIC)
     }
+    val clickListenerRating = View.OnClickListener {
+        navigateEvent.value = Event(NAVIGATION_FRAGMENT_RATING)
+    }
 
     init {
         user.observeForever(userObserver)

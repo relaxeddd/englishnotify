@@ -40,6 +40,9 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
                 SharedHelper.setPrivacyPolicyConfirmed(true)
             }
             navigateEvent.value = Event(NAVIGATION_INIT_BILLING)
+            if (user.name.isEmpty()) {
+                navigateEvent.value = Event(NAVIGATION_DIALOG_ENTER_NAME)
+            }
         }
     }
     private val actualVersionObserver = Observer<Boolean> { isActualVersion ->
@@ -71,6 +74,14 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
     override fun onCleared() {
         super.onCleared()
         repositoryUser.liveDataUser.removeObserver(userObserver)
+    }
+
+    fun onEnterNameResult(name: String) {
+        uiScope.launch {
+            navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
+            repositoryUser.setNickname(name)
+            navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
+        }
     }
 
     fun onViewCreate() {

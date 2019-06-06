@@ -79,4 +79,9 @@ interface IApi {
                                           @Query("userId") userId: String,
                                           @Query("wordIds") wordIds: JSONArray,
                                           @Query("isOwnCategory") isOwnCategory: Boolean) : Deferred<Result?>
+
+    @GET(FUNC_REQUEST_SET_NICKNAME)
+    fun requestSetNicknameAsync(@Header("Authorization") idToken: String,
+                                @Query("userId") userId: String,
+                                @Query("name") name: String) : Deferred<Result?>
 }
