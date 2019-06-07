@@ -269,7 +269,8 @@
         \n- Change receive notification time fix</string>
 
     <string name="patch_notes_3_0_0">
-        - New menu item Users rating in Common section. Now you can see your learn words progress between all app users.
+        - Added words voice
+        \n- New menu item Users rating in Common section. Now you can see your learn words progress between all app users.
         \n- New menu item Statistic in Common section.
         \n- All received words store and save in your account now.
         \n- Renamed section Settings -> Common.

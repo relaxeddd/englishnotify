@@ -7,6 +7,7 @@ import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.repository.RepositoryWord
+import relaxeddd.englishnotify.ui.main.MainActivity
 
 class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelBase() {
 
@@ -63,7 +64,7 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
     val clickListenerPlayWord = View.OnClickListener {
         val currentIx = current.value ?: trainingWords.size
         if (currentIx >= trainingWords.size) return@OnClickListener
-        playWord(trainingWords[currentIx])
+        MainActivity.playWord(trainingWords[currentIx])
     }
 
     private val currentObserver = Observer<Int> { currentIx ->

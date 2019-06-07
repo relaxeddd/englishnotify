@@ -2,7 +2,9 @@ package relaxeddd.englishnotify.ui.main
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.method.LinkMovementMethod
@@ -26,12 +28,36 @@ import relaxeddd.englishnotify.dialogs.DialogRateApp
 import relaxeddd.englishnotify.donate.ActivityBilling
 import relaxeddd.englishnotify.push.PushTokenHelper
 import java.util.*
+import kotlin.collections.HashMap
 
 class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
 
     companion object {
         const val REQUEST_SIGN_IN = 1312
         const val REQUEST_PLAY_SERVICES_RESULT = 7245
+
+        private var tts: TextToSpeech? = null
+        private var isTtsInit = false
+        private var lastVoiceWordId: String? = null
+        private var isFastLastSpeechSpeed = true
+
+        fun playWord(word: Word?) {
+            if (isTtsInit && word != null && word.eng.isNotEmpty()) {
+                if (word.id == lastVoiceWordId && isFastLastSpeechSpeed) {
+                    tts?.setSpeechRate(0.5f)
+                    isFastLastSpeechSpeed = false
+                } else if (!isFastLastSpeechSpeed) {
+                    tts?.setSpeechRate(1f)
+                    isFastLastSpeechSpeed = true
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    tts?.speak(word.eng.replace("___", ""), TextToSpeech.QUEUE_FLUSH, null, word.eng)
+                } else {
+                    tts?.speak(word.eng.replace("___", ""), TextToSpeech.QUEUE_FLUSH, HashMap())
+                }
+                lastVoiceWordId = word.id
+            }
+        }
     }
 
     private var selectedBottomMenuId: Int = R.id.fragmentDictionaryAll
@@ -136,6 +162,7 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
 
     override fun onResume() {
         super.onResume()
+        initTts()
         viewModel.onViewResume()
     }
 
@@ -280,5 +307,18 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
 
         spannableString.setSpan(clickableSpan, firstIndex, lastIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         spannableString.setSpan(UnderlineSpan(), firstIndex, lastIndex, 0)
+    }
+
+    private fun initTts() {
+        if (tts == null) {
+            tts = TextToSpeech(this, TextToSpeech.OnInitListener {
+                if (it == TextToSpeech.SUCCESS) {
+                    tts?.language = Locale.US
+                    isTtsInit = true
+                } else if (it == TextToSpeech.ERROR) {
+                    showToast(R.string.error_word_voice)
+                }
+            })
+        }
     }
 }

@@ -17,6 +17,7 @@ import com.google.android.material.card.MaterialCardView
 import com.google.android.material.checkbox.MaterialCheckBox
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
+import relaxeddd.englishnotify.ui.main.MainActivity
 import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlin.collections.HashSet
@@ -54,7 +55,7 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
             if (isChecked) checkList.add(word) else checkList.remove(word)
         }
         val clickListenerPlay = View.OnClickListener {
-            viewModel.playWord(word)
+            MainActivity.playWord(word)
         }
 
         bind(holder, word, clickListener, longListener, clickListenerPlay, checkListener)
