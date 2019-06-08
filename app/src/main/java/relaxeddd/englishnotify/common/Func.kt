@@ -158,7 +158,44 @@ fun isCorrectAnswer(userAnswer: String, trueAnswer: String) : Boolean {
     var isCorrectAnswer = false
 
     for (answerWord in answerWords) {
-        if (answerWord.trim().toLowerCase() == userAnswer.trim().toLowerCase()) {
+        val changedAnswer = answerWord.replace(".", "")
+            .replace("-", "")
+            .replace(" ", "")
+            .replace("ь", "")
+            .replace("сс", "с")
+            .replace("пп", "п")
+            .replace("и", "е")
+            .replace("й", "е")
+            .replace("э", "е")
+            .replace("а", "о")
+            .replace("ю", "у")
+            .replace("ё", "е")
+            .replace("д", "т")
+            .replace("г", "к")
+            .replace("б", "п")
+            .replace("з", "с")
+            .trim()
+            .toLowerCase()
+        val changedUserAnswer = userAnswer.replace(".", "")
+            .replace("-", "")
+            .replace(" ", "")
+            .replace("ь", "")
+            .replace("сс", "с")
+            .replace("пп", "п")
+            .replace("и", "е")
+            .replace("й", "е")
+            .replace("э", "е")
+            .replace("а", "о")
+            .replace("ю", "у")
+            .replace("ё", "е")
+            .replace("д", "т")
+            .replace("г", "к")
+            .replace("б", "п")
+            .replace("з", "с")
+            .trim()
+            .toLowerCase()
+
+        if (changedUserAnswer.contains(changedAnswer)) {
             isCorrectAnswer = true
         }
     }

@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.view_item_tag_statistic.view.*
 import relaxeddd.englishnotify.R
+import relaxeddd.englishnotify.common.OWN
 import relaxeddd.englishnotify.common.TagInfo
+import relaxeddd.englishnotify.common.getAppString
 import relaxeddd.englishnotify.common.getStringByResName
 
 class AdapterStatistic: ListAdapter<TagInfo, AdapterStatistic.ViewHolder>(TagInfoDiffCallback()) {
@@ -25,8 +27,9 @@ class AdapterStatistic: ListAdapter<TagInfo, AdapterStatistic.ViewHolder>(TagInf
 
         fun bind(tagInfo: TagInfo) {
             val textValue = "" + tagInfo.learned + " / " + tagInfo.received + " / " + tagInfo.total
+            val textTitle = if (tagInfo.key == OWN) getAppString(R.string.own_words) else getStringByResName(tagInfo.key)
 
-            itemView.text_tag_statistic_title.text = getStringByResName(tagInfo.key)
+            itemView.text_tag_statistic_title.text = textTitle
             itemView.text_tag_statistic_value.text = textValue
             itemView.progress_bar_tag_statistic.progress = (tagInfo.learned.toFloat() / tagInfo.total.toFloat() * 100).toInt()
             itemView.progress_bar_tag_statistic.secondaryProgress = (tagInfo.received.toFloat() / tagInfo.total.toFloat() * 100).toInt()

@@ -21,6 +21,7 @@ open class ViewModelDictionary(private val repositoryWord: RepositoryWord, prote
     val isShowOwnWords = MutableLiveData<Boolean>(SharedHelper.isShowOwnWords())
     val tags = HashSet<String>()
     val wordsFiltered = MutableLiveData<List<Word>>(ArrayList())
+    var playWord: Word? = null
     private val words: LiveData<List<Word>> = repositoryWord.words
     private val wordsObserver = Observer<List<Word>> { words ->
         tags.clear()
@@ -52,6 +53,11 @@ open class ViewModelDictionary(private val repositoryWord: RepositoryWord, prote
     }
     val clickListenerSortBy = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_SORT_BY)
+    }
+
+    fun playWord(word: Word?) {
+        playWord = word
+        navigateEvent.value = Event(NAVIGATION_PLAY_WORD)
     }
 
     fun setFilterTags(tags: List<String>) {

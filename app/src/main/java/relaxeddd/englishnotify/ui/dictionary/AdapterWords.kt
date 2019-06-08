@@ -55,7 +55,7 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
             if (isChecked) checkList.add(word) else checkList.remove(word)
         }
         val clickListenerPlay = View.OnClickListener {
-            MainActivity.playWord(word)
+            viewModel.playWord(word)
         }
 
         bind(holder, word, clickListener, longListener, clickListenerPlay, checkListener)

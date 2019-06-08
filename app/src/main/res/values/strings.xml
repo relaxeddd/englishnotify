@@ -54,7 +54,7 @@
     <string name="error_test_notification">Error request test notification</string>
     <string name="error_text_time">Wrong time</string>
     <string name="error_update">Error update</string>
-    <string name="error_word_voice">Error word voice</string>
+    <string name="error_word_voice">Error word voice: %s</string>
     <string name="exercises">Exercises</string>
     <string name="expand_to_see_buttons">Expand to see buttons</string>
     <string name="feedback_is_empty">Feedback is empty</string>
@@ -99,6 +99,7 @@
     <string name="notifications">Notifications</string>
     <string name="other">Other</string>
     <string name="own_category">Own category</string>
+    <string name="own_words">Own words</string>
     <string name="please_authorize">Please, sign in</string>
     <string name="please_wait">Please, wait</string>
     <string name="privacy_policy">Privacy Policy</string>
@@ -180,99 +181,38 @@
     <string name="service_notifications_count_listener" translatable="false">NotificationsListenerService</string>
 
     <string name="text_rate_app">Write comments and suggestions. What you want to see in the app</string>
-    <string name="text_app_about">\tSelect categories of words which you want to learn and you will receive English words in push notifications.
-        Categories of words adding without app update.\n\nВерсия приложения: %s</string>
-    <string name="text_own_category">\tYou will receive words from here if select "Own category" in notification settings
-        \n\n\tYou can add words here from dictionary (long tap on word) or input via plus button
-        \n\n\tMax words count - 1000</string>
-    <string name="text_info_words_training">\tClick at the book icon in dictionary tab to train words.\n\n\tThe words training increase word learn progress. If answer is wrong in training - word progress sets to 0.
-        \n\n\tTraining word matches if: 1. Word has not max learn progress 2. It is not sentence (contains maximum 3 words)</string>
+    <string name="text_app_about">
+        Select categories of words which you want to learn and you will receive English words in push notifications. Categories of words adding without app update.
+        \n\nВерсия приложения: %s</string>
+    <string name="text_own_category">
+        You will receive words from here if select "Own category" in notification settings
+        \n\nYou can add words here from dictionary (long tap on word) or input via plus button
+    </string>
+    <string name="text_info_words_training">
+        Click at the book icon in dictionary tab to train words.
+        \n\nThe words training increase word learn progress. If answer is wrong in training - word progress sets to 0.
+        \n\nTraining word matches if word has not max learn progress
+    </string>
 
-    <string name="text_enter_name">Enter the name, which will display in the rating table of learned words. The name should be not shorter than 3 symbols, contains only characters or numbers, starts with character. You can enter name when open app again if you don`t do that now.</string>
+    <string name="text_enter_name">
+        Enter the name, which will display in the rating table of learned words. The name should be not shorter than 3 symbols, contains only characters or numbers, starts with character. You can enter name when open app again if you don`t do that now.
+    </string>
 
     <string name="text_info_statistic">k/m/n - k выучено, m получено, n всего</string>
 
-    <string name="text_rating_info">This rating table is bases on user words learned count.
+    <string name="text_rating_info">
+        This rating table is bases on user words learned count.
         \n\nThe rating table update every day at 23.00 Moscow time.
         \n\nThe words which you add by yourself not including.
-        \n\nYou can up word learn progress by words training in Dictionary section or by correct answer in notification.</string>
-
-    <string name="patch_notes_0_1_4">- Added patch notes dialog (here it is)
-        \n- Fixed bug with alphabetical sort by in dictionary
-        \n- Added prices of subscriptions in dialog
-        \n- The button "Cancel" was removed from send feedback dialog</string>
-
-    <string name="patch_notes_1_0_0">- Added new notifications setting "night time" - you don`t receive notifications in selected time period</string>
-
-    <string name="patch_notes_1_1_0">- Now you can select only one words category. It needed to expand word categories. Thank you for understanding
-        \n- Added new category - phrases
-        \n- There are samples of use in new words category. Try it</string>
-
-    <string name="patch_notes_1_1_1">- Now you can select only one words category. It needed to expand word categories. Thank you for understanding
-        \n- Added new category - phrases
-        \n- There are samples of use in new words category. Try it
+        \n\nYou can up word learn progress by words training in Dictionary section or by correct answer in notification.
     </string>
 
-    <string name="patch_notes_1_1_3">- Add categories translation
-        \n- New app icon
-        \n- Fixes
-    </string>
-
-    <string name="patch_notes_1_2_0">- Add new function - send test notification in notifications tab
-        \n- Display notification fixes </string>
-
-    <string name="patch_notes_1_2_2">- Add new function - send test notification in notifications tab
-        \n- Added function of selecting words in dictionary
-        \n- Display notification fixes </string>
-
-    <string name="patch_notes_1_3_0">- Added "own category". You can add words to own category from dictionary (long tap on word) or input your words at Own category tab in dictionary
-        \n- Improved words view in dictionary
-        \n- Added learn word progress. It changes when you answer in notifications. You can disable it in settings
-        \n- Fixed delete several words bug
-        \n- Hided notification view type button for Android from 4.4 and below</string>
-
-    <string name="patch_notes_1_3_2">- Changes in select category window
-        \n- Changes in input word window in own category
-        \n- Added translations of new categories
-        \n- Fixes in receiving notifications</string>
-
-    <string name="patch_notes_2_0_0">- Added word trainings in Dictionary section
-        \n- Fix reselection current tab in bottom menu
-        \n- Fix search view when change tab in Dictionary section</string>
-
-    <string name="patch_notes_2_0_1">- Improved notifications view
-        \n- Added handle category with type `Exercise`
-        \n- Added option `Show only one last notification`</string>
-
-    <string name="patch_notes_2_0_2">- Added tab `Exercises` in dictionary
-        \n- Optimized Dictionary tab
-        \n- Added loader when authorize</string>
-
-    <string name="patch_notes_2_0_3">- Changed navigation in Dictionary section
-        \n- Added `Already know` tab in Dictionary section</string>
-
-    <string name="patch_notes_2_1_0">- Fixed bug with screen navigation
-        \n- New version available dialog set cancellable</string>
-
-    <string name="patch_notes_2_2_0">- Changed select category design. Now categories split on sections
-        \n- Fixed bug with screen navigation
-        \n- New version available dialog set cancellable</string>
-
-    <string name="patch_notes_2_2_1">- Tablet optimization
-        \n- Libraries update</string>
-
-    <string name="patch_notes_2_2_2">- When subscription is end you receive notifications more than once per 4 hours (before that you don`t receive it)
-        \n- Libraries update</string>
-
-    <string name="patch_notes_2_2_3">- When subscription is end you receive notifications more than once per 4 hours (before that you don`t receive it)
-        \n- Libraries update
-        \n- Change receive notification time fix</string>
-
-    <string name="patch_notes_3_0_0">
+    <string name="patch_notes">
         - Added words voice
         \n- New menu item Users rating in Common section. Now you can see your learn words progress between all app users.
         \n- New menu item Statistic in Common section.
         \n- All received words store and save in your account now.
+        \n- Improved check translation answer algorithm.
         \n- Renamed section Settings -> Common.
         \n- Changed design select receive notifications time window.
         \n- Bug fixes.
@@ -288,7 +228,7 @@
     <string name="every_7_hours">Every 7 hours</string>
     <string name="every_8_hours">Every 8 hours</string>
 
-    <string name="own">Own category (add words yourself in dictionary)</string>
+    <string name="own">Own category</string>
     <string name="irregular">Irregular verbs</string>
     <string name="hard">Hard</string>
     <string name="all_app_words">All app words</string>

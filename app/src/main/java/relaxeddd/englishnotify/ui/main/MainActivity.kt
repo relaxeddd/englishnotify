@@ -35,29 +35,6 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
     companion object {
         const val REQUEST_SIGN_IN = 1312
         const val REQUEST_PLAY_SERVICES_RESULT = 7245
-
-        private var tts: TextToSpeech? = null
-        private var isTtsInit = false
-        private var lastVoiceWordId: String? = null
-        private var isFastLastSpeechSpeed = true
-
-        fun playWord(word: Word?) {
-            if (isTtsInit && word != null && word.eng.isNotEmpty()) {
-                if (word.id == lastVoiceWordId && isFastLastSpeechSpeed) {
-                    tts?.setSpeechRate(0.5f)
-                    isFastLastSpeechSpeed = false
-                } else if (!isFastLastSpeechSpeed) {
-                    tts?.setSpeechRate(1f)
-                    isFastLastSpeechSpeed = true
-                }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    tts?.speak(word.eng.replace("___", ""), TextToSpeech.QUEUE_FLUSH, null, word.eng)
-                } else {
-                    tts?.speak(word.eng.replace("___", ""), TextToSpeech.QUEUE_FLUSH, HashMap())
-                }
-                lastVoiceWordId = word.id
-            }
-        }
     }
 
     private var selectedBottomMenuId: Int = R.id.fragmentDictionaryAll
@@ -66,6 +43,12 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
     private val providers: List<AuthUI.IdpConfig> = Arrays.asList(AuthUI.IdpConfig.GoogleBuilder().build())
     private var dialogNewVersion: DialogNewVersion? = null
     var isBillingInit = false
+
+    private var tts: TextToSpeech? = null
+    private var isTtsInit = false
+    private var isTtsInitFailed = false
+    private var lastVoiceWordId: String? = null
+    private var isFastSpeechSpeed = true
 
     private val listenerNewVersion: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
         override fun onResult(result: Boolean) {
@@ -162,8 +145,15 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
 
     override fun onResume() {
         super.onResume()
-        initTts()
         viewModel.onViewResume()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        tts?.shutdown()
+        tts = null
+        isTtsInit = false
+        isTtsInitFailed = false
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -262,6 +252,44 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
         viewModel.isShowLoading.value = isVisible
     }
 
+    fun playWord(word: Word?) {
+        if (tts == null || isTtsInitFailed) {
+            isTtsInitFailed = false
+
+            tts = TextToSpeech(this, TextToSpeech.OnInitListener {
+                if (it == TextToSpeech.SUCCESS) {
+                    tts?.language = Locale.US
+                    isTtsInit = true
+                    speak(word)
+                } else {
+                    isTtsInitFailed = true
+                    showToast(getString(R.string.error_word_voice, it.toString()))
+                }
+            })
+        } else if (isTtsInit && word != null && word.eng.isNotEmpty()) {
+            speak(word)
+        }
+    }
+
+    private fun speak(word: Word?) {
+        if (word == null || word.eng.isEmpty()) return
+        val textSpeech = word.eng.replace("_", "").replace("|", "")
+
+        if (word.id == lastVoiceWordId && isFastSpeechSpeed) {
+            tts?.setSpeechRate(0.5f)
+            isFastSpeechSpeed = false
+        } else if (!isFastSpeechSpeed) {
+            tts?.setSpeechRate(1f)
+            isFastSpeechSpeed = true
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            tts?.speak(textSpeech, TextToSpeech.QUEUE_FLUSH, null, null)
+        } else {
+            tts?.speak(textSpeech, TextToSpeech.QUEUE_FLUSH, null)
+        }
+        lastVoiceWordId = word.id
+    }
+
     private fun initGooglePlayServices() {
         val googleApiAvailability = GoogleApiAvailability.getInstance()
         val status = googleApiAvailability.isGooglePlayServicesAvailable(this)
@@ -307,18 +335,5 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
 
         spannableString.setSpan(clickableSpan, firstIndex, lastIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         spannableString.setSpan(UnderlineSpan(), firstIndex, lastIndex, 0)
-    }
-
-    private fun initTts() {
-        if (tts == null) {
-            tts = TextToSpeech(this, TextToSpeech.OnInitListener {
-                if (it == TextToSpeech.SUCCESS) {
-                    tts?.language = Locale.US
-                    isTtsInit = true
-                } else if (it == TextToSpeech.ERROR) {
-                    showToast(R.string.error_word_voice)
-                }
-            })
-        }
     }
 }
