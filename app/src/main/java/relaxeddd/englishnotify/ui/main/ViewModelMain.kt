@@ -38,9 +38,6 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
                 SharedHelper.setPrivacyPolicyConfirmed(true)
             }
             navigateEvent.value = Event(NAVIGATION_INIT_BILLING)
-            if (user.name.isEmpty()) {
-                navigateEvent.value = Event(NAVIGATION_DIALOG_ENTER_NAME)
-            }
         }
     }
     private val actualVersionObserver = Observer<Boolean> { isActualVersion ->
@@ -111,6 +108,11 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
                     override fun onResult(result: Boolean) {
                         if (!result) {
                             userObserver.onChanged(null)
+                        } else {
+                            val user = user.value
+                            if (user?.name?.isEmpty() == true) {
+                                navigateEvent.value = Event(NAVIGATION_DIALOG_ENTER_NAME)
+                            }
                         }
                         isShowHorizontalProgress.value = false
                     }

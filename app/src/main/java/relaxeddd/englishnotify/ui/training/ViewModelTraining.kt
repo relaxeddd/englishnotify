@@ -62,9 +62,7 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
     val clickListenerRadioButton10 = View.OnClickListener { current.value = 9 }
 
     val clickListenerPlayWord = View.OnClickListener {
-        val currentIx = current.value ?: trainingWords.size
-        if (currentIx >= trainingWords.size) return@OnClickListener
-        MainActivity.playWord(trainingWords[currentIx])
+        navigateEvent.value = Event(NAVIGATION_PLAY_WORD)
     }
 
     private val currentObserver = Observer<Int> { currentIx ->
@@ -123,6 +121,11 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
             currentIx >= (size - 1) -> navigateEvent.value = Event(NAVIGATION_ACTIVITY_BACK_TWICE)
             else -> current.value = currentIx + 1
         }
+    }
+
+    fun getCurrentWord() : Word? {
+        val currentIx = current.value ?: trainingWords.size
+        return if (currentIx < trainingWords.size) trainingWords[currentIx] else null
     }
 
     private fun checkResult(ix: Int, textAnswer: String) {

@@ -5,6 +5,7 @@ import kotlinx.android.synthetic.main.fragment_training.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.FragmentTrainingBinding
+import relaxeddd.englishnotify.ui.main.MainActivity
 
 class FragmentTraining : BaseFragment<ViewModelTraining, FragmentTrainingBinding>() {
 
@@ -36,5 +37,17 @@ class FragmentTraining : BaseFragment<ViewModelTraining, FragmentTrainingBinding
         binding.clickListenerOk = clickListenerOk
         binding.viewModel = viewModel
         viewModel.onBind()
+    }
+
+    override fun onNavigationEvent(eventId: Int) {
+        when (eventId) {
+            NAVIGATION_PLAY_WORD -> {
+                val ac = activity
+                if (ac is MainActivity) {
+                    ac.playWord(viewModel.getCurrentWord())
+                }
+            }
+            else -> super.onNavigationEvent(eventId)
+        }
     }
 }

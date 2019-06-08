@@ -14,6 +14,7 @@ import relaxeddd.englishnotify.dialogs.DialogCheckTags
 import relaxeddd.englishnotify.dialogs.DialogSortBy
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.dialogs.DialogDeleteWords
+import relaxeddd.englishnotify.ui.main.MainActivity
 
 abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding, A : AdapterWords<*>> : BaseFragment<VM, B>() {
 
@@ -108,6 +109,12 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding,
         when (eventId) {
             NAVIGATION_ACTION_HIDE_FILTER -> {
                 animateDropdown(getCardViewFilter(), false, animBlock)
+            }
+            NAVIGATION_PLAY_WORD -> {
+                val ac = activity
+                if (ac is MainActivity) {
+                    ac.playWord(viewModel.playWord)
+                }
             }
             NAVIGATION_DIALOG_CHECK_TAGS -> {
                 val dialog = DialogCheckTags()
