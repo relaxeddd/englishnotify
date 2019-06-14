@@ -128,8 +128,8 @@
     <string name="sub_advantages">Преимущества подписки</string>
     <string name="sub_advantages_info">- Получение уведомлений чаще чем раз в 4 часа</string>
     <string name="subscription_days">Дней подписки: %s</string>
-    <string name="subscription_time_error">Время подписки истекло, можно продлить для получения преимуществ</string>
-    <string name="subscription_need">Нужно продлить подписку</string>
+    <string name="subscription_time_error">Время подписки истекло, уведомления перестали ходить</string>
+    <string name="subscription_need">Необходимо продлить подписку</string>
     <string name="thank_you">Спасибо!</string>
     <string name="tags_should_not_be_empty">Вы должны выбрать как минимум 1 категорию</string>
     <string name="test_notification_sent">Тестовое уведомление отправлено</string>
@@ -203,9 +203,9 @@
     </string>
 
     <!-- =========================================================================================================== -->
-    <string name="every_1_hour">Каждый час (с наличием подписки)</string>
-    <string name="every_2_hours">Каждые 2 часа (с наличием подписки)</string>
-    <string name="every_3_hours">Каждые 3 часа (с наличием подписки)</string>
+    <string name="every_1_hour">Каждый час</string>
+    <string name="every_2_hours">Каждые 2 часа</string>
+    <string name="every_3_hours">Каждые 3 часа</string>
     <string name="every_4_hours">Каждые 4 часа</string>
     <string name="every_5_hours">Каждые 5 часов</string>
     <string name="every_6_hours">Каждые 6 часов</string>

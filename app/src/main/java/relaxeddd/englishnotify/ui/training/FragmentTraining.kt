@@ -25,7 +25,7 @@ class FragmentTraining : BaseFragment<ViewModelTraining, FragmentTrainingBinding
     override fun isHomeMenuButtonEnabled() = true
     override fun getHomeMenuButtonIconResId() = R.drawable.ic_back
     override fun getHomeMenuButtonListener(): () -> Unit = {
-        onNavigationEvent(NAVIGATION_ACTIVITY_BACK_TWICE)
+        onNavigationEvent(NAVIGATION_ACTIVITY_BACK)
     }
 
     override fun configureBinding() {

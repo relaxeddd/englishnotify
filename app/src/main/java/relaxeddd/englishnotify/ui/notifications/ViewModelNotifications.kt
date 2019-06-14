@@ -25,6 +25,7 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
     val textRepeatTime = MutableLiveData<String>("")
     val textLearnLanguage = MutableLiveData<String>("")
     val textNotificationsView = MutableLiveData<String>(App.context.resources.getStringArray(R.array.array_notifications_view)[SharedHelper.getNotificationsView()])
+    val isSelectRepeatTimeAvailable = MutableLiveData<Boolean>(false)
 
     val checkedChangeListenerShowOnlyOneNotification = CompoundButton.OnCheckedChangeListener { _, isChecked ->
         SharedHelper.setShowOnlyOneNotification(isChecked)
@@ -34,8 +35,9 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
     private val userObserver = Observer<User?> { user ->
         isEnableNotificationsClickable.value = user != null
         selectedTagLiveData.value = if (user != null) getStringByResName(user.selectedTag) else ""
-        textRepeatTime.value = App.context.resources.getStringArray(R.array.array_time_repeat)[user?.notificationsTimeType ?: 0]
         textLearnLanguage.value = App.context.resources.getStringArray(R.array.array_learn_language)[user?.learnLanguageType ?: 0]
+        textRepeatTime.value = if (user?.isSub() == true) App.context.resources.getStringArray(R.array.array_time_repeat)[user.notificationsTimeType] else ""
+        isSelectRepeatTimeAvailable.value = user?.isSub() == true
     }
 
     var checkedChangeListenerEnableNotifications = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
@@ -71,8 +73,14 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
         }
     }
     val clickListenerRepeatTime = View.OnClickListener {
-        if (user.value != null) {
-            navigateEvent.value = Event(NAVIGATION_FRAGMENT_TIME)
+        val userValue = user.value
+
+        if (userValue != null) {
+            if (userValue.isSub()) {
+                navigateEvent.value = Event(NAVIGATION_FRAGMENT_TIME)
+            } else {
+                showToast(R.string.subscription_need)
+            }
         } else {
             showToast(R.string.please_authorize)
         }
