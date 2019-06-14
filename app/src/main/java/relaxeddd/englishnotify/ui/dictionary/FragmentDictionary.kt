@@ -165,7 +165,6 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding,
         menu?.findItem(R.id.item_menu_check)?.isVisible = !isCheckMode
         menu?.findItem(getSearchMenuItemId())?.isVisible = !isCheckMode
         menu?.findItem(R.id.item_menu_filter)?.isVisible = !isCheckMode
-        menu?.findItem(R.id.item_menu_training)?.isVisible = !isCheckMode
         menu?.findItem(R.id.item_menu_dialog_own)?.isVisible = !isCheckMode
         menu?.findItem(R.id.item_menu_check_all)?.isVisible = isCheckMode
         menu?.findItem(R.id.item_menu_cancel_check)?.isVisible = isCheckMode

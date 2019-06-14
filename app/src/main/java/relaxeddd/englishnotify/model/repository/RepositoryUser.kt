@@ -52,8 +52,6 @@ class RepositoryUser private constructor() {
                 }
                 if (pushToken.isEmpty()) {
                     showToast(R.string.error_push_token)
-                    listener?.onResult(false)
-                    return@launch
                 }
                 if (firebaseUser == null) {
                     showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
@@ -101,8 +99,8 @@ class RepositoryUser private constructor() {
                     if (answerInitData.words != null) {
                         withContext(Dispatchers.IO) {
                             RepositoryWord.getInstance().updateWords(answerInitData.words)
-                            RepositoryWord.getInstance().updateTagsInfo(answerInitData.tagsInfo ?: ArrayList())
                         }
+                        RepositoryWord.getInstance().updateTagsInfo(answerInitData.tagsInfo ?: ArrayList())
                         SharedHelper.setLearnStage0(HashSet())
                         SharedHelper.setLearnStage1(HashSet())
                         SharedHelper.setLearnStage2(HashSet())
