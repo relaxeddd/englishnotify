@@ -1,5 +1,6 @@
 package relaxeddd.englishnotify.model.http
 
+import android.system.ErrnoException
 import com.google.firebase.auth.FirebaseUser
 import okhttp3.OkHttpClient
 import relaxeddd.englishnotify.BuildConfig
@@ -164,6 +165,8 @@ object ApiHelper {
     } catch (e: ConnectException) {
         defaultAnswer
     } catch (e: SSLHandshakeException) {
+        defaultAnswer
+    } catch (e: ErrnoException) {
         defaultAnswer
     }
 

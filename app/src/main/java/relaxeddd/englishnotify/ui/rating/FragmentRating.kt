@@ -1,6 +1,7 @@
 package relaxeddd.englishnotify.ui.rating
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.MenuItem
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,7 +37,7 @@ class FragmentRating : BaseFragment<ViewModelRating, FragmentRatingBinding>() {
         recycler_view_rating.layoutManager = LinearLayoutManager(context)
         recycler_view_rating.isNestedScrollingEnabled = false
         recycler_view_rating.adapter = adapter
-        adapter.submitList(viewModel.rating)
+        Handler().postDelayed({ adapter.submitList(viewModel.rating) }, 400)
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {

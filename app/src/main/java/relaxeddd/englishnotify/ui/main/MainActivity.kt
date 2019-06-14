@@ -114,6 +114,7 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
                         else -> return@setOnNavigationItemSelectedListener false
                     }
                 }
+                R.id.fragmentTrainingSetting -> navController.navigate(R.id.action_global_fragmentTrainingSetting)
                 R.id.fragmentNotifications -> navController.navigate(R.id.action_global_fragmentNotifications)
                 R.id.fragmentSettings -> navController.navigate(R.id.action_global_fragmentSettings)
                 else -> return@setOnNavigationItemSelectedListener false
@@ -182,12 +183,12 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
         when (eventId) {
             NAVIGATION_FRAGMENT_NOTIFICATIONS -> {
                 if (navController.currentDestination?.label != getString(R.string.label_fragment_notifications)) {
-                    navController.navigate(R.id.fragmentNotifications)
+                    navController.navigate(R.id.action_global_fragmentNotifications)
                 }
             }
             NAVIGATION_FRAGMENT_SETTINGS -> {
                 if (navController.currentDestination?.label != getString(R.string.label_fragment_settings)) {
-                    navController.navigate(R.id.fragmentSettings)
+                    navController.navigate(R.id.action_global_fragmentSettings)
                 }
             }
             NAVIGATION_DIALOG_RATE_APP -> {

@@ -83,7 +83,7 @@
     <string name="no">No</string>
     <string name="no_exercises">Notifications with exercises have not received yet. Please select exercise category and wait</string>
     <string name="no_thanks">No, thanks / already</string>
-    <string name="no_training_category_words">There are not enough category words for training, need minimum 10 (probably it already learned words)</string>
+    <string name="no_training_category_words">There are not enough category words for training, need minimum 5 (probably it already learned words)</string>
     <string name="no_training_words">There are no words for training or it already learned or it is all the sentences</string>
     <string name="no_words">Notifications with new words have not received yet. Please, authorize and wait… (With default settings wait 1 hour)</string>
     <string name="no_words_default">Notifications with new words have not received yet. Please wait or try to use test notifications in Notifications section</string>
@@ -208,14 +208,10 @@
     </string>
 
     <string name="patch_notes">
-        - Added words voice
-        \n- New menu item Users rating in Common section. Now you can see your learn words progress between all app users.
-        \n- New menu item Statistic in Common section.
-        \n- All received words store and save in your account now.
-        \n- Improved check translation answer algorithm.
-        \n- Renamed section Settings -> Common.
-        \n- Changed design select receive notifications time window.
-        \n- Bug fixes.
+        - Improved check translation answer algorithm
+        \n- Added word training icon at main menu
+        \n- Bug fix
+        \n- Train words and up at rating table (Main -> Users rating)
     </string>
 
     <!-- =========================================================================================================== -->

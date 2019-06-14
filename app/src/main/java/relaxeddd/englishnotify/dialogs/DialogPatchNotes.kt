@@ -9,7 +9,7 @@ import relaxeddd.englishnotify.R
 class DialogPatchNotes : DialogFragment() {
 
     companion object {
-        const val VERSION = "3.0.0"
+        const val VERSION = "3.0.1"
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

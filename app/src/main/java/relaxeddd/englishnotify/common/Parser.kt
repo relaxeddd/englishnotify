@@ -2,6 +2,7 @@ package relaxeddd.englishnotify.common
 
 import org.json.JSONArray
 import org.json.JSONObject
+import java.lang.ClassCastException
 import java.util.ArrayList
 
 fun parseWord(wordJson: JSONObject) : Word {
@@ -26,11 +27,26 @@ fun parseWord(wordJson: JSONObject) : Word {
     val v3 = if (wordJson.has(V3)) (wordJson[V3] as String) else ""
     val timestamp = if (wordJson.has(TIMESTAMP)) (wordJson[TIMESTAMP] as Long) else System.currentTimeMillis()
     val type = if (wordJson.has(TYPE)) (wordJson[TYPE] as String) else ""
-    val isDeleted = if (wordJson.has(IS_DELETED)) (wordJson[IS_DELETED] as Boolean) else false
-    val isCreatedByUser = if (wordJson.has(IS_CREATED_BY_USER)) (wordJson[IS_CREATED_BY_USER] as Boolean) else true
-    val isOwnCategory = if (wordJson.has(IS_OWN_CATEGORY)) (wordJson[IS_OWN_CATEGORY] as Boolean) else false
-    val learnStage = if (wordJson.has(LEARN_STAGE)) (wordJson[LEARN_STAGE] as Int) else 0
-    val level = if (wordJson.has(LEVEL)) (wordJson[LEVEL] as Int) else 0
+
+    val isDeleted = try {
+        if (wordJson.has(IS_DELETED)) (wordJson[IS_DELETED] as Boolean) else false
+    } catch (e: ClassCastException) { false }
+
+    val isCreatedByUser = try {
+        if (wordJson.has(IS_CREATED_BY_USER)) (wordJson[IS_CREATED_BY_USER] as Boolean) else true
+    } catch (e: ClassCastException) { true }
+
+    val isOwnCategory = try {
+        if (wordJson.has(IS_OWN_CATEGORY)) (wordJson[IS_OWN_CATEGORY] as Boolean) else false
+    } catch (e: ClassCastException) { false }
+
+    val level = try {
+        if (wordJson.has(LEVEL)) (wordJson[LEVEL] as Int) else 0
+    } catch (e: ClassCastException) { 0 }
+
+    val learnStage = try {
+        if (wordJson.has(LEARN_STAGE)) (wordJson[LEARN_STAGE] as Int) else 0
+    } catch (e: ClassCastException) { 0 }
 
     return Word(id, eng, rus, transcription, tags, sampleEng, sampleRus, v2, v3, timestamp, isDeleted,
         learnStage, type, isCreatedByUser, isOwnCategory, level)

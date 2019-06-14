@@ -7,6 +7,11 @@
           app:showAsAction="ifRoom"
           android:icon="@drawable/ic_dictionary"/>
 
+    <item android:id="@id/fragmentTrainingSetting"
+          android:title="@string/training"
+          app:showAsAction="ifRoom"
+          android:icon="@drawable/ic_training"/>
+
     <item android:id="@id/fragmentNotifications"
           android:title="@string/notifications"
           app:showAsAction="ifRoom"
