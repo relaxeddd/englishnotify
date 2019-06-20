@@ -11,6 +11,7 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.UnderlineSpan
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import relaxeddd.englishnotify.R
@@ -249,6 +250,15 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
         }
     }
 
+    override fun setupThemeColors() {
+        super.setupThemeColors()
+        navigation_view_main.setBackgroundColor(getPrimaryColorResId())
+        navigation_view_main.itemBackgroundResource = getPrimaryColorResId()
+        navigation_view_main_secondary.setBackgroundColor(getPrimaryColorResId())
+        navigation_view_main_secondary.itemBackgroundResource = getPrimaryColorResId()
+        view_main_bottom_separator.setBackgroundColor(getPrimaryDarkColorResId())
+    }
+
     fun setLoadingVisible(isVisible: Boolean) {
         viewModel.isShowLoading.value = isVisible
     }
@@ -286,6 +296,7 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             tts?.speak(textSpeech, TextToSpeech.QUEUE_FLUSH, null, null)
         } else {
+            @Suppress("DEPRECATION")
             tts?.speak(textSpeech, TextToSpeech.QUEUE_FLUSH, null)
         }
         lastVoiceWordId = word.id

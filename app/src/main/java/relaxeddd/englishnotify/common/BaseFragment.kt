@@ -42,6 +42,7 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
     protected open fun onSearchTextChanged(searchText: String) {}
     protected open fun getSearchMenuItemId() = EMPTY_RES
     protected open fun getToolbarElevation() = 4f
+    protected open fun setupThemeColors() {}
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, getLayoutResId(), null, false)

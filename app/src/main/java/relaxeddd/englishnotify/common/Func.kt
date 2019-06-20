@@ -17,6 +17,21 @@ import android.view.inputmethod.InputMethodManager
 import relaxeddd.englishnotify.R
 import java.util.regex.Pattern
 
+fun getPrimaryColorResId() = when (SharedHelper.getAppThemeType()) {
+    THEME_BLUE -> R.color.colorPrimary2
+    else -> R.color.colorPrimary
+}
+
+fun getPrimaryDarkColorResId() = when (SharedHelper.getAppThemeType()) {
+    THEME_BLUE -> R.color.colorPrimaryDark2
+    else -> R.color.colorPrimaryDark
+}
+
+fun getAccentColorResId() = when (SharedHelper.getAppThemeType()) {
+    THEME_BLUE -> R.color.colorAccent2
+    else -> R.color.colorPrimary
+}
+
 fun showToast(string: String) {
     Toast.makeText(App.context, string, Toast.LENGTH_SHORT).show()
 }
@@ -86,6 +101,7 @@ internal fun <T> Collection<T>.print() : String {
     return string
 }
 
+@Suppress("DEPRECATION")
 fun isNetworkAvailable(): Boolean {
     val connectivityManager = App.context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
     val activeNetworkInfo = connectivityManager!!.activeNetworkInfo

@@ -9,6 +9,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
+import kotlinx.android.synthetic.main.fragment_dictionary.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.dialogs.DialogCheckTags
 import relaxeddd.englishnotify.dialogs.DialogSortBy
@@ -140,6 +141,10 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding,
     override fun onSearchTextChanged(searchText: String) {
         super.onSearchTextChanged(searchText)
         viewModel.applySearch(searchText)
+    }
+
+    override fun setupThemeColors() {
+        card_view_dictionary_filter.setCardBackgroundColor(getPrimaryColorResId())
     }
 
     open fun onFragmentSelected() {}

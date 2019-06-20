@@ -16,6 +16,7 @@
     <string name="answer_exercise">Answer: %s</string>
     <string name="app_info">App info</string>
     <string name="app_language">App language</string>
+    <string name="app_theme">App theme</string>
     <string name="apply">Apply</string>
     <string name="answer_correct">Correct answer</string>
     <string name="answer_incorrect">Incorrect answer</string>
@@ -208,10 +209,8 @@
     </string>
 
     <string name="patch_notes">
-        - Improved check translation answer algorithm
-        \n- Added word training icon at main menu
-        \n- Bug fix
-        \n- Train words and up at rating table (Main -> Users rating)
+        - Translation of all app words was updated
+        \n- Added app theme change function in Common tab
     </string>
 
     <!-- =========================================================================================================== -->
@@ -320,5 +319,6 @@
     <string name="ic_own_created" translatable="false">Word in own category which created by you</string>
     <string name="ic_rating" translatable="false">Users rating by learned words</string>
     <string name="ic_play" translatable="false">Play word</string>
+    <string name="ic_theme" translatable="false">App theme</string>
 
 </resources>
