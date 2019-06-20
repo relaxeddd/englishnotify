@@ -7,10 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import kotlinx.android.synthetic.main.fragment_word.*
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.BaseFragment
-import relaxeddd.englishnotify.common.InjectorUtils
-import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK
-import relaxeddd.englishnotify.common.hideKeyboard
+import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.FragmentWordBinding
 
 class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
@@ -86,5 +83,11 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
                 text_input_transcription.error = null
             }
         })
+    }
+
+    override fun setupThemeColors() {
+        container_text_word_input_word.boxStrokeColor = getPrimaryColorResId()
+        container_text_word_input_transcription.boxStrokeColor = getPrimaryColorResId()
+        container_text_word_input_translation.boxStrokeColor = getPrimaryColorResId()
     }
 }

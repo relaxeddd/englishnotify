@@ -178,6 +178,7 @@
             app:itemBackground="@color/colorPrimary"/>
 
         <View
+            android:id="@+id/view_main_bottom_separator"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_1"
             android:background="@color/colorPrimaryDark"

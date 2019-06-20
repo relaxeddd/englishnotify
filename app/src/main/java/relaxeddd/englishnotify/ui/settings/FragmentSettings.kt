@@ -89,6 +89,12 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
                     dialog.show(this@FragmentSettings.childFragmentManager, "Send feedback Dialog")
                 }
             }
+            NAVIGATION_DIALOG_THEME -> {
+                if (isResumed) {
+                    val dialog = DialogAppTheme()
+                    dialog.show(this@FragmentSettings.childFragmentManager, "Theme Dialog")
+                }
+            }
             NAVIGATION_DIALOG_SUBSCRIPTION -> {
                 val activity = activity
 

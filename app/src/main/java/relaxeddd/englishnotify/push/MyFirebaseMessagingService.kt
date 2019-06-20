@@ -129,7 +129,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 notificationBuilder.setSmallIcon(R.drawable.ic_stat_onesignal_default)
-                notificationBuilder.color = ContextCompat.getColor(ctx, R.color.colorPrimary)
+                notificationBuilder.color = ContextCompat.getColor(ctx, getPrimaryColorResId())
             } else {
                 notificationBuilder.setSmallIcon(R.drawable.ic_stat_onesignal_default)
             }
@@ -176,7 +176,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 notificationBuilder.setSmallIcon(R.drawable.ic_stat_onesignal_default)
-                notificationBuilder.color = ContextCompat.getColor(ctx, R.color.colorPrimary)
+                notificationBuilder.color = ContextCompat.getColor(ctx, getPrimaryColorResId())
             } else {
                 notificationBuilder.setSmallIcon(R.drawable.ic_stat_onesignal_default)
             }
@@ -307,7 +307,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     }
 
                     if (data.containsKey(CONTENT) && data[CONTENT] != null) {
-                        val word = parseWord(JSONObject(data[CONTENT]))
+                        val word = parseWord(JSONObject(data[CONTENT] ?: ""))
                         handleWordNotification(this, word, viewType = SharedHelper.getNotificationsView(this))
                     }
                 }

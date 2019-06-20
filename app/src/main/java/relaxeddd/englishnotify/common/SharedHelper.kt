@@ -198,6 +198,16 @@ object SharedHelper {
         sPref.edit().putBoolean(IS_SHOW_OWN_WORDS, isConfirmed).apply()
     }
 
+    fun getAppThemeType(context: Context = App.context) : Int {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getInt(APP_THEME, THEME_STANDARD)
+    }
+
+    fun setAppThemeType(value : Int, context: Context = App.context) {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putInt(APP_THEME, value).apply()
+    }
+
     //------------------------------------------------------------------------------------------------------------------
     fun setWordLearnStage(wordId: String, learnStage: Int) {
         deleteWordLearnStage(wordId)

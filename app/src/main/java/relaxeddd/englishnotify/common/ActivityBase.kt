@@ -11,6 +11,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import relaxeddd.englishnotify.R
 
 abstract class ActivityBase<VM : ViewModelBase, B : ViewDataBinding> : AppCompatActivity(), LifecycleOwner {
 
@@ -24,9 +25,11 @@ abstract class ActivityBase<VM : ViewModelBase, B : ViewDataBinding> : AppCompat
     abstract fun getViewModelFactory() : ViewModelProvider.NewInstanceFactory
     abstract fun getViewModelClass(): Class<VM>
     protected open fun onNavigationEvent(eventId: Int) {}
+    protected open fun setupThemeColors() {}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setupTheme()
 
         val factory = getViewModelFactory()
 
@@ -35,6 +38,8 @@ abstract class ActivityBase<VM : ViewModelBase, B : ViewDataBinding> : AppCompat
         configureBinding()
         binding.lifecycleOwner = this
         binding.executePendingBindings()
+
+        setupThemeColors()
     }
 
     override fun onResume() {
@@ -47,7 +52,7 @@ abstract class ActivityBase<VM : ViewModelBase, B : ViewDataBinding> : AppCompat
         isMyResumed = false
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?) = when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         android.R.id.home -> {
             listenerHomeMenuButton.invoke()
             true
@@ -69,5 +74,12 @@ abstract class ActivityBase<VM : ViewModelBase, B : ViewDataBinding> : AppCompat
         supportActionBar?.setHomeAsUpIndicator(homeMenuButtonIconResId)
         supportActionBar?.elevation = elevation
         listenerHomeMenuButton = clickListener
+    }
+
+    private fun setupTheme() {
+        when (SharedHelper.getAppThemeType(this)) {
+            THEME_STANDARD -> setTheme(R.style.AppTheme)
+            THEME_BLUE -> setTheme(R.style.AppTheme2)
+        }
     }
 }

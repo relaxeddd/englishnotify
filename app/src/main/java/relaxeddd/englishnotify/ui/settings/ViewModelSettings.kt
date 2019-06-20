@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import kotlinx.coroutines.launch
+import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.model.repository.RepositoryCommon
@@ -21,6 +22,7 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
 
     val user: LiveData<User?> = repositoryUser.liveDataUser
     val liveDataSubDays = MutableLiveData("")
+    val textTheme: String = App.context.resources.getStringArray(R.array.array_themes)[SharedHelper.getAppThemeType()]
     
     val clickListenerAppInfo = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_APP_ABOUT)
@@ -45,6 +47,9 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     }
     val clickListenerStatistic = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_FRAGMENT_STATISTIC)
+    }
+    val clickListenerTheme = View.OnClickListener {
+        navigateEvent.value = Event(NAVIGATION_DIALOG_THEME)
     }
     val clickListenerRating = View.OnClickListener {
         if (repositoryUser.rating.isNotEmpty()) {

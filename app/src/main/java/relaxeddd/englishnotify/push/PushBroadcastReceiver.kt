@@ -29,7 +29,7 @@ class PushBroadcastReceiver : BroadcastReceiver() {
         CoroutineScope(Dispatchers.IO).launch {
             val wordDao = AppDatabase.getInstance(context).wordDao()
             val notificationId = intent.getIntExtra(NOTIFICATION_ID, -1)
-            val wordId = intent.getStringExtra(WORD_ID)
+            val wordId = intent.getStringExtra(WORD_ID) ?: ""
             val isKnow = intent.getIntExtra(IS_KNOW, NOT_KNOW)
             val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             val word = wordDao.findWordById(wordId) ?: return@launch

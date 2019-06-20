@@ -23,6 +23,11 @@
         <item>Russian-english</item>
     </string-array>
 
+    <string-array name="array_themes">
+        <item>Standard</item>
+        <item>Dark-blue</item>
+    </string-array>
+
     <string-array name="array_notifications_view">
         <item>With translation in notification</item>
         <item>Enter translation into notification</item>
