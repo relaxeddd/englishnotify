@@ -129,7 +129,7 @@
     <string name="sub_advantages">Subscription advantages</string>
     <string name="sub_advantages_info">- Receive notifications more than once per 4 hours</string>
     <string name="subscription_days">Subscription days: %s</string>
-    <string name="subscription_time_error">Subscription time is up, you can renew it to receive notifications</string>
+    <string name="subscription_time_error">Subscription time is up, you can renew it to get advantages</string>
     <string name="subscription_need">You need renew subscription</string>
     <string name="thank_you">Thank you!</string>
     <string name="tags_should_not_be_empty">Tags should not be empty</string>
@@ -211,14 +211,15 @@
     <string name="patch_notes">
         - Translation of all app words was updated
         \n- Added app theme change function in Common tab
+        \n- Free notifications without subscription every 6 hours
     </string>
 
     <!-- =========================================================================================================== -->
-    <string name="every_1_hour">Every hour</string>
-    <string name="every_2_hours">Every 2 hours</string>
-    <string name="every_3_hours">Every 3 hours</string>
-    <string name="every_4_hours">Every 4 hours</string>
-    <string name="every_5_hours">Every 5 hours</string>
+    <string name="every_1_hour">Every hour (with subscription)</string>
+    <string name="every_2_hours">Every 2 hours (with subscription)</string>
+    <string name="every_3_hours">Every 3 hours (with subscription)</string>
+    <string name="every_4_hours">Every 4 hours (with subscription)</string>
+    <string name="every_5_hours">Every 5 hours (with subscription)</string>
     <string name="every_6_hours">Every 6 hours</string>
     <string name="every_7_hours">Every 7 hours</string>
     <string name="every_8_hours">Every 8 hours</string>

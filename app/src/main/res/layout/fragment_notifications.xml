@@ -127,7 +127,6 @@
                 android:layout_width="match_parent"
                 style="@style/StyleCardViewSettings"
                 android:onClick="@{viewModel.clickListenerRepeatTime}"
-                android:alpha="@{safeUnbox(viewModel.isSelectRepeatTimeAvailable) == true ? 1f : 0.5f}"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
