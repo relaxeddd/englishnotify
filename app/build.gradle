@@ -11,7 +11,7 @@ android {
         config {
             keyAlias 'english'
             keyPassword 'd9M8aek'
-            storeFile file('D:/Android/keystore.jks')
+            storeFile file('E:/Android/keystore.jks')
             storePassword 'm3nkb9'
         }
     }
@@ -20,8 +20,8 @@ android {
         applicationId 'relaxeddd.englishnotify'
         minSdkVersion 17
         targetSdkVersion 29
-        versionCode 38
-        versionName "3.0.4"
+        versionCode 39
+        versionName "3.0.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
@@ -67,8 +67,8 @@ dependencies {
     //firebase
     implementation 'com.firebaseui:firebase-ui-auth:4.3.2'
     implementation 'com.google.firebase:firebase-auth:18.0.0'
-    implementation 'com.google.firebase:firebase-firestore:20.0.0'
-    implementation 'com.google.firebase:firebase-messaging:19.0.0'
+    implementation 'com.google.firebase:firebase-firestore:20.1.0'
+    implementation 'com.google.firebase:firebase-messaging:19.0.1'
     //Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.google.code.gson:gson:2.8.4'
