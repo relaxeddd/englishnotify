@@ -149,6 +149,7 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
                 current.value = currentIx + 1
             }
         } else {
+            navigateEvent.value = Event(NAVIGATION_HIDE_KEYBOARD)
             repositoryWord.setWordLearnStage(word, 0)
             current.value = currentIx
         }

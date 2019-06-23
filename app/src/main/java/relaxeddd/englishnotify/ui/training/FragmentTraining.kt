@@ -14,7 +14,6 @@ class FragmentTraining : BaseFragment<ViewModelTraining, FragmentTrainingBinding
     private val clickListenerOk = View.OnClickListener {
         val answer = edit_text_training_answer.text.toString()
         edit_text_training_answer.setText("")
-        hideKeyboard(edit_text_training_answer)
         viewModel.onClickOk(answer)
     }
 
@@ -41,6 +40,7 @@ class FragmentTraining : BaseFragment<ViewModelTraining, FragmentTrainingBinding
 
     override fun onNavigationEvent(eventId: Int) {
         when (eventId) {
+            NAVIGATION_HIDE_KEYBOARD -> hideKeyboard(edit_text_training_answer)
             NAVIGATION_PLAY_WORD -> {
                 val ac = activity
                 if (ac is MainActivity) {
