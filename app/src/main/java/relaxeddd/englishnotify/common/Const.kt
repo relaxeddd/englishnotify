@@ -104,6 +104,7 @@ const val NAVIGATION_DIALOG_ENTER_NAME = 1251
 const val NAVIGATION_FRAGMENT_RATING = 1261
 const val NAVIGATION_PLAY_WORD = 1271
 const val NAVIGATION_DIALOG_THEME = 1291
+const val NAVIGATION_HIDE_KEYBOARD = 1301
 
 const val NAVIGATION_LOADING_SHOW = 801
 const val NAVIGATION_LOADING_HIDE = 802
@@ -175,7 +176,7 @@ const val TIMESTAMP = "timestamp"
 const val TYPE = "type"
 const val TITLE = "title"
 const val TEXT = "text"
-const val CANCELLED_RATE_DIALOG = "cancelledRateDialog10"
+const val CANCELLED_RATE_DIALOG = "cancelledRateDialog11"
 const val WORD_LEARN_STAGE = "wordLearnStage"
 const val IS_SHOW_ONLY_ONE_NOTIFICATION = "isShowOnlyOneNotification"
 const val IS_SHOW_OWN_WORDS = "isShowOwnWords"
