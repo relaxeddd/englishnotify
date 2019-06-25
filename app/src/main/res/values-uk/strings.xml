@@ -20,6 +20,7 @@
     <string name="apply">Применить</string>
     <string name="answer_correct">Правильный ответ</string>
     <string name="answer_incorrect">Неправильный ответ</string>
+    <string name="background_start">Запуск в фоновом режиме</string>
     <string name="cancel_check">Отменить выбранное</string>
     <string name="category_own_not_selected">Категоря не выбрана. Сначала добавьте слова в "Свою категорию"</string>
     <string name="change_account_text">Вы заходите под другим аккаунтом. Словарь будет очищен.</string>
@@ -65,6 +66,7 @@
     <string name="hours_off_time">Часов (0–23)</string>
     <string name="i_not_know_it">Я не знаю</string>
     <string name="i_know_it">Я знаю это</string>
+    <string name="if_notifications_not_receive">Если не ходят уведомления</string>
     <string name="incorrect_answer">Неправильный ответ</string>
     <string name="information">Информация</string>
     <string name="input_your_message">Введите сообщение</string>
@@ -159,9 +161,12 @@
     <string name="words_training">Тренировка слов</string>
     <string name="yes">Да</string>
     <string name="you_sign_in_as">Вы вошли как: %s</string>
+    <string name="you_receive_notifications">Вам приходят уведомления?</string>
     <string name="your_answer">Ваш ответ: %s</string>
     <string name="your_name">Ваше имя: %s</string>
     <string name="your_name_in_rating">%s (Вы)</string>
+
+    <string name="text_dialog_receive_help">Вы включили опцию запуска в фоновом режиме. Включение опции вероятно исправляет проблему получения уведомлений. Ее можно отключить в Android Настройки -> Приложения, либо путем переустановки приложения</string>
 
     <string name="text_rate_app">В комментариях пишите, что можно улучшить, какие новые категории слов нужно добавить</string>
 
@@ -196,7 +201,7 @@
     <string name="text_info_statistic">k/m/n - k выучено, m получено, n всего</string>
 
     <string name="patch_notes">
-        - Исправлен баг разметки на экране тренировки слов
+        - Добавлен пункт меню в раздел Общее - Если не ходят уведомления
     </string>
 
     <!-- =========================================================================================================== -->

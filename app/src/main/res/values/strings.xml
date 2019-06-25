@@ -20,6 +20,7 @@
     <string name="apply">Apply</string>
     <string name="answer_correct">Correct answer</string>
     <string name="answer_incorrect">Incorrect answer</string>
+    <string name="background_start">Background starting</string>
     <string name="cancel_check">Cancel check</string>
     <string name="category_own_not_selected">Category not selected. Firstly, add words to "Own category"</string>
     <string name="change_account_text">You login with another account. The dictionary will be cleared.</string>
@@ -65,6 +66,7 @@
     <string name="hours_off_time">Hours (0–23)</string>
     <string name="i_not_know_it">I don`t know</string>
     <string name="i_know_it">I know it</string>
+    <string name="if_notifications_not_receive">If not receive notifications</string>
     <string name="incorrect_answer">Incorrect answer</string>
     <string name="information">Information</string>
     <string name="input_your_message">Input your message</string>
@@ -159,6 +161,7 @@
     <string name="words_training">Words training</string>
     <string name="yes">Yes</string>
     <string name="you_sign_in_as">You signed in as: %s</string>
+    <string name="you_receive_notifications">You receive notifications?</string>
     <string name="your_answer">Your answer: %s</string>
     <string name="your_name">Your name: %s</string>
     <string name="your_name_in_rating">%s (You)</string>
@@ -181,7 +184,10 @@
 
     <string name="service_notifications_count_listener" translatable="false">NotificationsListenerService</string>
 
+    <string name="text_dialog_receive_help">You have turned on background starting option. It may fix receive notifications bug. You can disable it in Android Settings -> Applications or reinstall app</string>
+
     <string name="text_rate_app">Write comments and suggestions. What you want to see in the app</string>
+
     <string name="text_app_about">
         Select categories of words which you want to learn and you will receive English words in push notifications. Categories of words adding without app update.
         \n\nВерсия приложения: %s</string>
@@ -209,7 +215,7 @@
     </string>
 
     <string name="patch_notes">
-        - Fixed markup bug of training screen
+        - Added menu item in Common tab - If not receive notifications
     </string>
 
     <!-- =========================================================================================================== -->

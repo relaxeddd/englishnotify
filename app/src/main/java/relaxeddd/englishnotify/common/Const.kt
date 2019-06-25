@@ -22,6 +22,7 @@ const val FUNC_REQUEST_SEND_FEEDBACK = "requestSendFeedback/"
 const val FUNC_REQUEST_UPDATE_USER = "requestUpdateUser/"
 const val FUNC_REQUEST_SEND_TEST_NOTIFICATION = "requestTestNotification/"
 const val FUNC_REQUEST_SET_NICKNAME = "requestSetNickname/"
+const val FUNC_REQUEST_VOTE = "requestSendTestNotification/"
 
 const val EMPTY_RES = -1
 
@@ -105,6 +106,8 @@ const val NAVIGATION_FRAGMENT_RATING = 1261
 const val NAVIGATION_PLAY_WORD = 1271
 const val NAVIGATION_DIALOG_THEME = 1291
 const val NAVIGATION_HIDE_KEYBOARD = 1301
+const val NAVIGATION_DIALOG_RECEIVE_HELP = 1311
+const val NAVIGATION_DIALOG_VOTE_RECEIVE_NOTIFICATIONS = 1321
 
 const val NAVIGATION_LOADING_SHOW = 801
 const val NAVIGATION_LOADING_HIDE = 802
@@ -198,6 +201,8 @@ const val USER_EMAIL = "userEmail"
 const val TRAINING_LANGUAGE = "trainingLanguage"
 const val COUNT = "count"
 const val TRAINING_TYPE = "trainingType"
+const val VOTE_RECEIVE_NOTIFICATIONS = "voteReceiveNotifications"
+const val VOTE_RECEIVE_NOTIFICATIONS_VALUE = "voteReceiveNotificationsValue"
 
 const val ENGLISH_WORDS_NOTIFICATIONS_CHANNEL = "EnglishWordsNotificationsChannel"
 

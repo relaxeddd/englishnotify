@@ -1,5 +1,6 @@
 package relaxeddd.englishnotify.ui.settings
 
+import android.os.Build
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,6 +11,7 @@ import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.model.repository.RepositoryCommon
 import relaxeddd.englishnotify.model.repository.RepositoryUser
+import relaxeddd.englishnotify.ui.main.MainActivity
 
 class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelBase() {
 
@@ -23,6 +25,7 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     val user: LiveData<User?> = repositoryUser.liveDataUser
     val liveDataSubDays = MutableLiveData("")
     val textTheme: String = App.context.resources.getStringArray(R.array.array_themes)[SharedHelper.getAppThemeType()]
+    val isVisibleReceiveHelp = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
     
     val clickListenerAppInfo = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_APP_ABOUT)
@@ -44,6 +47,12 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     }
     val clickListenerInfoTraining = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_INFO_TRAINING)
+    }
+    val clickListenerVoteReceiveNotifications = View.OnClickListener {
+        navigateEvent.value = Event(NAVIGATION_DIALOG_VOTE_RECEIVE_NOTIFICATIONS)
+    }
+    val clickListenerReceiveHelp = View.OnClickListener {
+        navigateEvent.value = Event(NAVIGATION_DIALOG_RECEIVE_HELP)
     }
     val clickListenerStatistic = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_FRAGMENT_STATISTIC)

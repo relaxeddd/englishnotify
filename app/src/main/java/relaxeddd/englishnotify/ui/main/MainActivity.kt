@@ -11,7 +11,6 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.UnderlineSpan
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import relaxeddd.englishnotify.R
@@ -22,14 +21,10 @@ import com.google.android.gms.common.GoogleApiAvailability
 import kotlinx.android.synthetic.main.main_activity.*
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.MainActivityBinding
-import relaxeddd.englishnotify.dialogs.DialogEnterName
-import relaxeddd.englishnotify.dialogs.DialogNewVersion
-import relaxeddd.englishnotify.dialogs.DialogPatchNotes
-import relaxeddd.englishnotify.dialogs.DialogRateApp
+import relaxeddd.englishnotify.dialogs.*
 import relaxeddd.englishnotify.donate.ActivityBilling
 import relaxeddd.englishnotify.push.PushTokenHelper
 import java.util.*
-import kotlin.collections.HashMap
 
 class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
 
@@ -50,6 +45,7 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
     private var isTtsInitFailed = false
     private var lastVoiceWordId: String? = null
     private var isFastSpeechSpeed = true
+    private var isShowDialogVote = false
 
     private val listenerNewVersion: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
         override fun onResult(result: Boolean) {
@@ -121,6 +117,10 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
                 else -> return@setOnNavigationItemSelectedListener false
             }
             selectedBottomMenuId = it.itemId
+
+            if (!SharedHelper.isVoteViewed(this) && !isShowDialogVote) {
+                showVoteDialog()
+            }
 
             return@setOnNavigationItemSelectedListener true
         }
@@ -280,6 +280,19 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
         } else if (isTtsInit && word != null && word.eng.isNotEmpty()) {
             speak(word)
         }
+    }
+
+    fun showVoteDialog() {
+        val dialog = DialogVote()
+
+        dialog.listener = object: ListenerResult<Int> {
+            override fun onResult(result: Int) {
+                viewModel.onVoteResult(result)
+            }
+        }
+        dialog.show(supportFragmentManager, "Vote Dialog")
+
+        isShowDialogVote = true
     }
 
     private fun speak(word: Word?) {
