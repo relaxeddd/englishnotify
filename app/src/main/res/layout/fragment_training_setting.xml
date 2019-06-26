@@ -21,7 +21,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/english_at_russian"
-                android:layoutDirection="rtl"
                 android:textSize="@dimen/font_16"/>
 
             <RadioButton
@@ -29,7 +28,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/russian_at_english"
-                android:layoutDirection="rtl"
                 android:textSize="@dimen/font_16"/>
 
         </RadioGroup>

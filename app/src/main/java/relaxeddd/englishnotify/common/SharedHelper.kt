@@ -88,6 +88,26 @@ object SharedHelper {
         sPref.edit().putBoolean(version, true).apply()
     }
 
+    fun isVoteViewed(context: Context = App.context) : Boolean {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getBoolean(VOTE_RECEIVE_NOTIFICATIONS, false)
+    }
+
+    fun setVoteViewed(context: Context = App.context) {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putBoolean(VOTE_RECEIVE_NOTIFICATIONS, true).apply()
+    }
+
+    fun getVoteReceiveNotificationsValue(context: Context = App.context) : Int {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getInt(VOTE_RECEIVE_NOTIFICATIONS_VALUE, -1)
+    }
+
+    fun setVoteReceiveNotificationsValue(value : Int, context: Context = App.context) {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putInt(VOTE_RECEIVE_NOTIFICATIONS_VALUE, value).apply()
+    }
+
     fun getStartHour(context: Context = App.context) : Int {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         return sPref.getInt(START_HOUR_OFF, 0)

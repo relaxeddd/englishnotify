@@ -384,6 +384,50 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_view_settings_receive_help"
+                android:layout_width="match_parent"
+                style="@style/StyleCardViewSettings"
+                android:onClick="@{viewModel.clickListenerReceiveHelp}"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:visibility="@{viewModel.isVisibleReceiveHelp ? View.VISIBLE : View.GONE}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/card_view_settings_theme"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/text_settings_receive_help"
+                        android:text="@string/if_notifications_not_receive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/font_14"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/image_settings_receive_help"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" app:srcCompat="@drawable/ic_info"
+                        android:contentDescription="@string/ic_training_words_information"
+                        android:id="@+id/image_settings_receive_help" app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintTop_toTopOf="@+id/text_settings_receive_help"
+                        android:scaleType="centerInside"
+                        app:layout_constraintBottom_toBottomOf="@+id/text_settings_receive_help"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_view_settings_info_training"
                 android:layout_width="match_parent"
                 style="@style/StyleCardViewSettings"
@@ -391,7 +435,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/card_view_settings_theme"
+                app:layout_constraintTop_toBottomOf="@+id/card_view_settings_receive_help"
                 app:layout_constraintStart_toStartOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -427,6 +471,50 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_view_settings_vote_receive_notifications"
+                    android:layout_width="match_parent"
+                    style="@style/StyleCardViewSettings"
+                    android:onClick="@{viewModel.clickListenerVoteReceiveNotifications}"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/card_view_settings_info_training"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <TextView
+                            android:id="@+id/text_settings_vote_receive_notifications"
+                            android:text="@string/you_receive_notifications"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/font_14"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginStart="16dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/image_settings_vote_receive_notifications"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="16dp"/>
+
+                    <ImageView
+                            android:id="@+id/image_settings_vote_receive_notifications"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" app:srcCompat="@drawable/ic_question"
+                            android:contentDescription="@string/ic_training_words_information"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:layout_marginStart="16dp"
+                            app:layout_constraintTop_toTopOf="@+id/text_settings_vote_receive_notifications"
+                            android:scaleType="centerInside"
+                            app:layout_constraintBottom_toBottomOf="@+id/text_settings_vote_receive_notifications"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_view_settings_logout"
                 android:layout_width="match_parent"
                 style="@style/StyleCardViewSettings"
@@ -435,7 +523,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/card_view_settings_info_training"
+                app:layout_constraintTop_toBottomOf="@+id/card_view_settings_vote_receive_notifications"
                 app:layout_constraintStart_toStartOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout

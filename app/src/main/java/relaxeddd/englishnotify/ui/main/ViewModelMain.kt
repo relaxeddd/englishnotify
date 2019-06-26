@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.dialogs.DialogPatchNotes
+import relaxeddd.englishnotify.dialogs.DialogVote
 import relaxeddd.englishnotify.model.repository.RepositoryCommon
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 
@@ -118,6 +119,24 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
                     }
                 })
             }
+        }
+    }
+
+    fun onVoteResult(vote: Int) {
+        uiScope.launch {
+            navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
+
+            if (vote != SharedHelper.getVoteReceiveNotificationsValue()) {
+                val result = RepositoryCommon.getInstance().sendVote(vote)
+                if (result && (vote == DialogVote.VOTE_YES || vote == DialogVote.VOTE_YES_OPTION)) {
+                    SharedHelper.setVoteViewed()
+                    SharedHelper.setVoteReceiveNotificationsValue(vote)
+                }
+            } else {
+                SharedHelper.setVoteViewed()
+            }
+
+            navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
         }
     }
 }

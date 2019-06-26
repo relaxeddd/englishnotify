@@ -1,5 +1,6 @@
 package relaxeddd.englishnotify.ui.settings
 
+import android.annotation.SuppressLint
 import androidx.navigation.Navigation
 import com.firebase.ui.auth.AuthUI
 import relaxeddd.englishnotify.common.*
@@ -7,6 +8,12 @@ import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.databinding.FragmentSettingsBinding
 import relaxeddd.englishnotify.dialogs.*
 import relaxeddd.englishnotify.ui.main.MainActivity
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
+import android.os.PowerManager
+import androidx.core.content.ContextCompat.getSystemService
+import android.os.Build
 
 class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding>() {
 
@@ -40,6 +47,7 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
         binding.viewModel = viewModel
     }
 
+    @SuppressLint("BatteryLife")
     override fun onNavigationEvent(eventId: Int) {
         when (eventId) {
             NAVIGATION_FRAGMENT_STATISTIC -> {
@@ -61,6 +69,21 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
             NAVIGATION_DIALOG_INFO_TRAINING -> {
                 if (isResumed) {
                     DialogInfoTraining().show(this@FragmentSettings.childFragmentManager, "Info Training Dialog")
+                }
+            }
+            NAVIGATION_DIALOG_RECEIVE_HELP -> {
+                val ctx = context ?: return
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    val pkg = ctx.packageName
+                    val pm = getSystemService(ctx, PowerManager::class.java) ?: return
+
+                    if (!pm.isIgnoringBatteryOptimizations(pkg)) {
+                        val i = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).setData(Uri.parse("package:$pkg"))
+                        startActivity(i)
+                    } else {
+                        DialogInfoReceiveHelp().show(this@FragmentSettings.childFragmentManager, "Receive help Dialog")
+                    }
                 }
             }
             NAVIGATION_DIALOG_CONFIRM_LOGOUT -> {
