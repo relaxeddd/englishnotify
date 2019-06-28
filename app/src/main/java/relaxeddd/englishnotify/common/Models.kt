@@ -22,8 +22,6 @@ data class User(
     constructor(user: User) : this(user.userId, user.email, user.receiveNotifications, user.notificationsTimeType,
         user.tagsAvailable, user.tagsSelected, user.learnLanguageType, user.subscriptionTime, user.selectedTag,
         user.testCount, user.name)
-
-    fun isSub() = subscriptionTime > System.currentTimeMillis()
 }
 
 @Entity(tableName = WORDS)

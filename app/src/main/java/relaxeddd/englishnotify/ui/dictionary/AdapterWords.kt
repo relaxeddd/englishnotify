@@ -17,7 +17,6 @@ import com.google.android.material.card.MaterialCardView
 import com.google.android.material.checkbox.MaterialCheckBox
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
-import relaxeddd.englishnotify.ui.main.MainActivity
 import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlin.collections.HashSet

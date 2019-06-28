@@ -14,17 +14,13 @@ import android.provider.Settings
 import android.os.PowerManager
 import androidx.core.content.ContextCompat.getSystemService
 import android.os.Build
+import java.lang.Exception
 
 class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding>() {
 
     private val listenerConfirmLogout: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
         override fun onResult(result: Boolean) {
             viewModel.onLogoutDialogResult(result)
-        }
-    }
-    private val listenerFeedbackDialog: ListenerResult<String> = object: ListenerResult<String> {
-        override fun onResult(result: String) {
-            viewModel.onFeedbackDialogResult(result)
         }
     }
     private val listenerSubscription: ListenerResult<Int> = object: ListenerResult<Int> {
@@ -79,8 +75,9 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
                     val pm = getSystemService(ctx, PowerManager::class.java) ?: return
 
                     if (!pm.isIgnoringBatteryOptimizations(pkg)) {
-                        val i = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).setData(Uri.parse("package:$pkg"))
-                        startActivity(i)
+                        try {
+                            startActivity(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).setData(Uri.parse("package:$pkg")))
+                        } catch (e: Exception) {}
                     } else {
                         DialogInfoReceiveHelp().show(this@FragmentSettings.childFragmentManager, "Receive help Dialog")
                     }
@@ -104,13 +101,6 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
             }
             NAVIGATION_WEB_PLAY_MARKET -> {
                 openWebApplication(activity)
-            }
-            NAVIGATION_DIALOG_SEND_FEEDBACK -> {
-                if (isResumed) {
-                    val dialog = DialogSendFeedback()
-                    dialog.setConfirmListener(listenerFeedbackDialog)
-                    dialog.show(this@FragmentSettings.childFragmentManager, "Send feedback Dialog")
-                }
             }
             NAVIGATION_DIALOG_THEME -> {
                 if (isResumed) {

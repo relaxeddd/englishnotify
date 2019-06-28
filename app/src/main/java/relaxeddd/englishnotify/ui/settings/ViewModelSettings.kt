@@ -9,9 +9,7 @@ import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.model.repository.RepositoryCommon
 import relaxeddd.englishnotify.model.repository.RepositoryUser
-import relaxeddd.englishnotify.ui.main.MainActivity
 
 class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelBase() {
 
@@ -48,9 +46,6 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     val clickListenerInfoTraining = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_INFO_TRAINING)
     }
-    val clickListenerVoteReceiveNotifications = View.OnClickListener {
-        navigateEvent.value = Event(NAVIGATION_DIALOG_VOTE_RECEIVE_NOTIFICATIONS)
-    }
     val clickListenerReceiveHelp = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_RECEIVE_HELP)
     }
@@ -80,14 +75,6 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     fun onLogoutDialogResult(isConfirmed: Boolean) {
         if (isConfirmed) {
             navigateEvent.value = Event(NAVIGATION_GOOGLE_LOGOUT)
-        }
-    }
-
-    fun onFeedbackDialogResult(feedback: String) {
-        uiScope.launch {
-            navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
-            RepositoryCommon.getInstance().sendFeedback(feedback)
-            navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
         }
     }
 

@@ -84,15 +84,4 @@ interface IApi {
     fun requestSetNicknameAsync(@Header("Authorization") idToken: String,
                                 @Query("userId") userId: String,
                                 @Query("name") name: String) : Deferred<Result?>
-
-    @GET(FUNC_REQUEST_VOTE)
-    fun requestVoteAsync(@Header("Authorization") idToken: String,
-                         @Query("userId") userId: String,
-                         @Query("vote") vote: Int,
-                         @Query("sdk") sdk: Int,
-                         @Query("model") model: String,
-                         @Query("manufacturer") manufacturer: String,
-                         @Query("device") device: String,
-                         @Query("brand") brand: String,
-                         @Query("product") product: String) : Deferred<Result?>
 }

@@ -33,18 +33,6 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         wordDao.deleteAll()
     }
 
-    fun isTrainingWordsExists() : Boolean {
-        val words = this@RepositoryWord.words.value ?: ArrayList()
-
-        for (word in words) {
-            if (word.learnStage != LEARN_STAGE_MAX) {
-                return true
-            }
-        }
-
-        return false
-    }
-
     fun getOwnWords() : List<Word> {
         val allWords = words.value
         val ownWords = ArrayList<Word>()
@@ -191,7 +179,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
                 false
             }
             else -> {
-                withContext(Dispatchers.Main) { showToastLong(R.string.error_request) }
+                withContext(Dispatchers.Main) { showToast(R.string.error_request) }
                 false
             }
         }
@@ -243,7 +231,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
                 false
             }
             else -> {
-                withContext(Dispatchers.Main) { showToastLong(R.string.error_request) }
+                withContext(Dispatchers.Main) { showToast(R.string.error_request) }
                 false
             }
         }
@@ -283,7 +271,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
                 false
             }
             else -> {
-                withContext(Dispatchers.Main) { showToastLong(R.string.error_request) }
+                withContext(Dispatchers.Main) { showToast(R.string.error_request) }
                 false
             }
         }
@@ -308,7 +296,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
             if (answer != null && !answer.isSuccess()) {
                 withContext(Dispatchers.Main) { showToast(getErrorString(answer)) }
             } else {
-                withContext(Dispatchers.Main) { showToastLong(R.string.error_request) }
+                withContext(Dispatchers.Main) { showToast(R.string.error_request) }
             }
         }
     }

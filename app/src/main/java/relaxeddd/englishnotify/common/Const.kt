@@ -108,6 +108,7 @@ const val NAVIGATION_DIALOG_THEME = 1291
 const val NAVIGATION_HIDE_KEYBOARD = 1301
 const val NAVIGATION_DIALOG_RECEIVE_HELP = 1311
 const val NAVIGATION_DIALOG_VOTE_RECEIVE_NOTIFICATIONS = 1321
+const val NAVIGATION_DIALOG_LIKE_APP = 1332
 
 const val NAVIGATION_LOADING_SHOW = 801
 const val NAVIGATION_LOADING_HIDE = 802
@@ -125,6 +126,9 @@ const val LEARN_STAGE_MAX = 3
 
 const val THEME_STANDARD = 0
 const val THEME_BLUE = 1
+
+const val NOTIFICATIONS_VIEW_STANDARD = 0
+const val NOTIFICATIONS_VIEW_INPUT = 1
 
 const val ENG = "eng"
 const val RUS = "rus"
@@ -179,7 +183,7 @@ const val TIMESTAMP = "timestamp"
 const val TYPE = "type"
 const val TITLE = "title"
 const val TEXT = "text"
-const val CANCELLED_RATE_DIALOG = "cancelledRateDialog11"
+const val CANCELLED_RATE_DIALOG = "cancelledRateDialog15"
 const val WORD_LEARN_STAGE = "wordLearnStage"
 const val IS_SHOW_ONLY_ONE_NOTIFICATION = "isShowOnlyOneNotification"
 const val IS_SHOW_OWN_WORDS = "isShowOwnWords"
@@ -202,7 +206,7 @@ const val TRAINING_LANGUAGE = "trainingLanguage"
 const val COUNT = "count"
 const val TRAINING_TYPE = "trainingType"
 const val VOTE_RECEIVE_NOTIFICATIONS = "voteReceiveNotifications"
-const val VOTE_RECEIVE_NOTIFICATIONS_VALUE = "voteReceiveNotificationsValue"
+const val IS_ONGOING = "isOngoing"
 
 const val ENGLISH_WORDS_NOTIFICATIONS_CHANNEL = "EnglishWordsNotificationsChannel"
 

@@ -353,9 +353,12 @@
                     android:text="@{viewModel.transcription}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/size_8"
+                    android:layout_marginStart="@dimen/size_40"
+                    android:layout_marginEnd="@dimen/size_16"
                     android:lines="2"
-                    android:gravity="center_horizontal"
+                    android:drawableEnd="@drawable/ic_volume"
+                    android:gravity="center"
+                    android:onClick="@{viewModel.clickListenerPlayWord}"
                     android:visibility="@{safeUnbox(viewModel.isVisibleTranscription) == true ? View.VISIBLE : View.INVISIBLE}"
                     android:textSize="@dimen/font_16"/>
 
@@ -368,8 +371,9 @@
                     android:visibility="@{safeUnbox(viewModel.isVisibleTranslation) == true ? View.VISIBLE : View.INVISIBLE}"
                     android:textSize="@dimen/font_20"
                     android:gravity="center_horizontal"
-                    android:lines="3"
-                    android:layout_margin="@dimen/size_16"/>
+                    android:lines="4"
+                    android:layout_marginStart="@dimen/size_16"
+                    android:layout_marginEnd="@dimen/size_16"/>
 
                 <TextView
                     android:id="@+id/text_training_answer"
@@ -379,7 +383,8 @@
                     android:visibility="@{safeUnbox(viewModel.isVisibleAnswer) == true ? View.VISIBLE : View.INVISIBLE}"
                     android:textSize="@dimen/font_18"
                     android:gravity="center_horizontal"
-                    android:layout_margin="@dimen/size_16"
+                    android:layout_marginStart="@dimen/size_16"
+                    android:layout_marginEnd="@dimen/size_16"
                     android:ellipsize="end"
                     android:lines="1"/>
 
@@ -392,7 +397,8 @@
                     android:textSize="@dimen/font_14"
                     android:lines="1"
                     android:gravity="center_horizontal"
-                    android:layout_margin="@dimen/size_16"/>
+                    android:layout_marginStart="@dimen/size_16"
+                    android:layout_marginEnd="@dimen/size_16"/>
 
             </LinearLayout>
 

@@ -9,19 +9,18 @@ import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.dialogs.DialogPatchNotes
-import relaxeddd.englishnotify.dialogs.DialogVote
 import relaxeddd.englishnotify.model.repository.RepositoryCommon
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 
 class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase() {
 
     val user = repositoryUser.liveDataUser
-    val isShowWarningNotifications = MutableLiveData<Boolean>(false)
-    val isShowGoogleAuth = MutableLiveData<Boolean>(false)
-    val isShowWarningSubscription = MutableLiveData<Boolean>(false)
-    val isShowLoading = MutableLiveData<Boolean>(false)
-    val isShowHorizontalProgress = MutableLiveData<Boolean>(false)
-    val isVisibleSecondaryBottomNavigationView = MutableLiveData<Boolean>(true)
+    val isShowWarningNotifications = MutableLiveData(false)
+    val isShowGoogleAuth = MutableLiveData(false)
+    val isShowWarningSubscription = MutableLiveData(false)
+    val isShowLoading = MutableLiveData(false)
+    val isShowHorizontalProgress = MutableLiveData(false)
+    val isVisibleSecondaryBottomNavigationView = MutableLiveData(true)
     private var isRateDialogShown = false
 
     private val userObserver = Observer<User?> { user ->
@@ -30,9 +29,9 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
         isShowWarningSubscription.value = user != null && user.subscriptionTime <= System.currentTimeMillis()
 
         val launchCount = SharedHelper.getLaunchCount()
-        if (user != null && !isRateDialogShown && !SharedHelper.isCancelledRateDialog() && launchCount % 3 == 0) {
+        if (user != null && !isRateDialogShown && !SharedHelper.isCancelledRateDialog() && launchCount % 2 == 0) {
             isRateDialogShown = true
-            navigateEvent.value = Event(NAVIGATION_DIALOG_RATE_APP)
+            navigateEvent.value = Event(NAVIGATION_DIALOG_LIKE_APP)
         }
         if (user != null) {
             if (user.email.isNotEmpty()) {
@@ -60,7 +59,6 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
         }
         navigateEvent.value = Event(NAVIGATION_GOOGLE_AUTH)
     }
-    val clickListenerLoading = View.OnClickListener {}
 
     init {
         repositoryUser.liveDataUser.observeForever(userObserver)
@@ -76,6 +74,14 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
         uiScope.launch {
             navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
             repositoryUser.setNickname(name)
+            navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
+        }
+    }
+
+    fun onFeedbackDialogResult(feedback: String) {
+        uiScope.launch {
+            navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
+            RepositoryCommon.getInstance().sendFeedback(feedback)
             navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
         }
     }
@@ -119,24 +125,6 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
                     }
                 })
             }
-        }
-    }
-
-    fun onVoteResult(vote: Int) {
-        uiScope.launch {
-            navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
-
-            if (vote != SharedHelper.getVoteReceiveNotificationsValue()) {
-                val result = RepositoryCommon.getInstance().sendVote(vote)
-                if (result && (vote == DialogVote.VOTE_YES || vote == DialogVote.VOTE_YES_OPTION)) {
-                    SharedHelper.setVoteViewed()
-                    SharedHelper.setVoteReceiveNotificationsValue(vote)
-                }
-            } else {
-                SharedHelper.setVoteViewed()
-            }
-
-            navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
         }
     }
 }

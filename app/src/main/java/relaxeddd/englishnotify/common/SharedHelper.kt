@@ -70,7 +70,7 @@ object SharedHelper {
 
     fun getNotificationsView(context: Context = App.context) : Int {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        return sPref.getInt(NOTIFICATIONS_VIEW, 0)
+        return sPref.getInt(NOTIFICATIONS_VIEW, NOTIFICATIONS_VIEW_STANDARD)
     }
 
     fun setNotificationsView(viewType : Int, context: Context = App.context) {
@@ -86,26 +86,6 @@ object SharedHelper {
     fun setPatchNotesViewed(version: String, context: Context = App.context) {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         sPref.edit().putBoolean(version, true).apply()
-    }
-
-    fun isVoteViewed(context: Context = App.context) : Boolean {
-        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        return sPref.getBoolean(VOTE_RECEIVE_NOTIFICATIONS, false)
-    }
-
-    fun setVoteViewed(context: Context = App.context) {
-        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        sPref.edit().putBoolean(VOTE_RECEIVE_NOTIFICATIONS, true).apply()
-    }
-
-    fun getVoteReceiveNotificationsValue(context: Context = App.context) : Int {
-        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        return sPref.getInt(VOTE_RECEIVE_NOTIFICATIONS_VALUE, -1)
-    }
-
-    fun setVoteReceiveNotificationsValue(value : Int, context: Context = App.context) {
-        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        sPref.edit().putInt(VOTE_RECEIVE_NOTIFICATIONS_VALUE, value).apply()
     }
 
     fun getStartHour(context: Context = App.context) : Int {
@@ -216,6 +196,16 @@ object SharedHelper {
     fun setShowOwnWords(isConfirmed : Boolean, context: Context = App.context) {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         sPref.edit().putBoolean(IS_SHOW_OWN_WORDS, isConfirmed).apply()
+    }
+
+    fun isOngoing(context: Context = App.context) : Boolean {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getBoolean(IS_ONGOING, false)
+    }
+
+    fun setOngoing(value : Boolean, context: Context = App.context) {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putBoolean(IS_ONGOING, value).apply()
     }
 
     fun getAppThemeType(context: Context = App.context) : Int {

@@ -17,6 +17,10 @@ import relaxeddd.englishnotify.common.Word
 
 class AdapterDictionary(viewModel: ViewModelDictionary) : AdapterWords<AdapterDictionary.ViewHolder>(viewModel) {
 
+    companion object {
+        const val MAX_TRANSLATIONS_COUNT = 4
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_item_word, parent, false))
     }
@@ -48,20 +52,48 @@ class AdapterDictionary(viewModel: ViewModelDictionary) : AdapterWords<AdapterDi
                 val textV2 = if (word.v2.isNotEmpty()) "v2: " + word.v2 else ""
                 val textV3 = if (word.v3.isNotEmpty()) "v3: " + word.v3 else ""
 
+                val translations = word.rus.split(',')
+                var textTranslation1 = ""
+                var textTranslation2 = ""
+
+                if (translations.size > MAX_TRANSLATIONS_COUNT) {
+                    for ((ix, translation) in translations.withIndex()) {
+                        if (ix < MAX_TRANSLATIONS_COUNT) {
+                            textTranslation1 += "$translation, "
+                        } else {
+                            textTranslation2 += "$translation, "
+                        }
+                    }
+                    textTranslation1 = textTranslation1.substring(0, textTranslation1.length - 2) + "..."
+                    textTranslation2 = textTranslation2.substring(0, textTranslation2.length - 2)
+                }
+
                 when (languageType) {
                     TYPE_PUSH_ENGLISH -> {
                         text_word.text = word.eng
                         text_word_transcription.text = transcription
-                        text_word_translation.text = word.rus
                         text_word_transcription.visibility = View.VISIBLE
                         text_word_transcription_translation.visibility = View.GONE
+
+                        if (translations.size <= MAX_TRANSLATIONS_COUNT) {
+                            text_word_translation.text = word.rus
+                        } else {
+                            text_word_translation.text = textTranslation1
+                            text_word_translation_2.text = textTranslation2
+                        }
                     }
                     TYPE_PUSH_RUSSIAN -> {
-                        text_word.text = word.rus
                         text_word_transcription_translation.text = transcription
                         text_word_translation.text = word.eng
                         text_word_transcription.visibility = View.GONE
                         text_word_transcription_translation.visibility = View.VISIBLE
+
+                        if (translations.size <= MAX_TRANSLATIONS_COUNT) {
+                            text_word.text = word.rus
+                        } else {
+                            text_word.text = textTranslation1
+                            text_word_translation_2.text = textTranslation2
+                        }
                     }
                 }
 

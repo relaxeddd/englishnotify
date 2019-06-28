@@ -7,7 +7,6 @@ import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.repository.RepositoryWord
-import relaxeddd.englishnotify.ui.main.MainActivity
 
 class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelBase() {
 
@@ -26,18 +25,18 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
     var current = MutableLiveData(0)
     val wordsSize = MutableLiveData(0)
 
-    val resultText = MutableLiveData<String>("")
-    val answer = MutableLiveData<String>("")
-    val wordText = MutableLiveData<String>("")
-    val transcription = MutableLiveData<String>("")
-    val translation = MutableLiveData<String>("")
-    val textButtonOk = MutableLiveData<String>(App.context.getString(R.string.confirm))
-    val isVisibleTranscription = MutableLiveData<Boolean>(false)
-    val isVisibleTranslation = MutableLiveData<Boolean>(false)
-    val isVisibleButtonOk = MutableLiveData<Boolean>(true)
-    val isVisibleInputAnswer = MutableLiveData<Boolean>(true)
-    val isVisibleAnswer = MutableLiveData<Boolean>(false)
-    val isVisibleResultText = MutableLiveData<Boolean>(false)
+    val resultText = MutableLiveData("")
+    val answer = MutableLiveData("")
+    val wordText = MutableLiveData("")
+    val transcription = MutableLiveData("")
+    val translation = MutableLiveData("")
+    val textButtonOk = MutableLiveData(App.context.getString(R.string.confirm))
+    val isVisibleTranscription = MutableLiveData(false)
+    val isVisibleTranslation = MutableLiveData(false)
+    val isVisibleButtonOk = MutableLiveData(true)
+    val isVisibleInputAnswer = MutableLiveData(true)
+    val isVisibleAnswer = MutableLiveData(false)
+    val isVisibleResultText = MutableLiveData(false)
 
     val result1 = MutableLiveData(STATE_ANSWER)
     val result2 = MutableLiveData(STATE_ANSWER)

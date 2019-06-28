@@ -24,7 +24,7 @@ class RepositoryUser private constructor() {
     }
 
     var liveDataUser = MutableLiveData<User>(null)
-    val liveDataIsActualVersion = MutableLiveData<Boolean>(true)
+    val liveDataIsActualVersion = MutableLiveData(true)
     var rating: List<RatingItem> = ArrayList()
         private set
 
@@ -122,7 +122,6 @@ class RepositoryUser private constructor() {
     suspend fun deleteUserInfo() {
         withContext(Dispatchers.Main) {
             liveDataUser.value = null
-            showToast(R.string.logout_success)
         }
     }
 
@@ -169,13 +168,13 @@ class RepositoryUser private constructor() {
 
         when {
             answer?.isSuccess() == true -> {
-                showToastLong(R.string.test_notification_sent)
+                showToast(R.string.test_notification_sent)
                 val user = User(liveDataUser.value ?: return)
                 user.testCount -= 1
                 liveDataUser.postValue(user)
             }
             answer != null -> showToast(getErrorString(answer))
-            else -> showToastLong(R.string.error_request)
+            else -> showToast(R.string.error_request)
         }
     }
 
@@ -196,7 +195,7 @@ class RepositoryUser private constructor() {
         }else if (answer != null) {
             showToast(getErrorString(answer))
         } else {
-            showToastLong(R.string.error_request)
+            showToast(R.string.error_request)
         }
     }
 

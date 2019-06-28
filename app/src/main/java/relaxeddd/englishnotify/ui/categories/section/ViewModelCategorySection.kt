@@ -17,7 +17,7 @@ class ViewModelCategorySection(type: CategorySection, private val repositoryUser
         val mapCategoryRadioButtons = HashMap<String, ArrayList<MaterialRadioButton>>()
     }
 
-    val title = MutableLiveData<String>("")
+    val title = MutableLiveData("")
     val categories = MutableLiveData<List<CategoryItem>>(ArrayList())
 
     init {
@@ -97,7 +97,7 @@ class ViewModelCategorySection(type: CategorySection, private val repositoryUser
             return
         }
         if (category == OWN && RepositoryWord.getInstance().getOwnWords().isEmpty()) {
-            showToastLong(R.string.category_own_not_selected)
+            showToast(R.string.category_own_not_selected)
             return
         }
 

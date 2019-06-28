@@ -27,7 +27,8 @@
             tools:ignore="GoogleAppIndexingWarning">
 
         <activity android:name="relaxeddd.englishnotify.ui.main.MainActivity"
-                  android:windowSoftInputMode="adjustPan">
+                  android:windowSoftInputMode="adjustPan"
+                  android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -62,6 +63,7 @@
                 <action android:name="relaxeddd.englishnotify.KNOW"/>
             </intent-filter>
         </receiver>
+
     </application>
 
 </manifest>

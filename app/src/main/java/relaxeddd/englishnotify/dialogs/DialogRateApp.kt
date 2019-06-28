@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.SharedHelper
 import relaxeddd.englishnotify.common.openWebApplication
 
 class DialogRateApp : DialogFragment() {
@@ -14,14 +13,11 @@ class DialogRateApp : DialogFragment() {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
 
-            builder.setTitle(R.string.rate_app_pls)
-                .setMessage(R.string.text_rate_app)
+            builder.setTitle(R.string.rate_app_question)
                 .setPositiveButton(R.string.rate) { _, _ ->
-                    SharedHelper.setCancelledRateDialog(true)
                     openWebApplication(activity)
                 }
-                .setNeutralButton(R.string.no_thanks) { _, _ -> SharedHelper.setCancelledRateDialog(true) }
-                .setNegativeButton(R.string.later) { _, _ -> }
+                .setNegativeButton(R.string.no) { _, _ -> }
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
     }
