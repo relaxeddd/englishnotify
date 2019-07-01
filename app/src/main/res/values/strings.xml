@@ -220,11 +220,11 @@
 
     <string name="patch_notes">
         - Added menu item in Common tab - If not receive notifications
-        - Added menu item in Notifications tab - Disable swipe delete notifications
-        - When there are too many translation words, some words show when you click at word in dictionary
-        - Click notifications fix the app is launched
-        - Central progress bar fix, when you can click at bottom menu
-        - Added speech icon at training window
+        \n- Added menu item in Notifications tab - Disable swipe delete notifications
+        \n- When there are too many translation words, some words show when you click at word in dictionary
+        \n- Click notifications fix the app is launched
+        \n- Central progress bar fix, when you can click at bottom menu
+        \n- Added speech icon at training window
     </string>
 
     <!-- =========================================================================================================== -->
