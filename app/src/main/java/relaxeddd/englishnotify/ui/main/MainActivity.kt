@@ -25,6 +25,7 @@ import relaxeddd.englishnotify.dialogs.*
 import relaxeddd.englishnotify.donate.ActivityBilling
 import relaxeddd.englishnotify.push.PushTokenHelper
 import java.util.*
+import kotlin.system.exitProcess
 
 class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
 
@@ -36,7 +37,7 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
     private var selectedBottomMenuId: Int = R.id.fragmentDictionaryAll
     private var selectedSecondaryBottomMenuId: Int = R.id.fragmentDictionaryAll
     private lateinit var navController: NavController
-    private val providers: List<AuthUI.IdpConfig> = Arrays.asList(AuthUI.IdpConfig.GoogleBuilder().build())
+    private val providers: List<AuthUI.IdpConfig> = listOf(AuthUI.IdpConfig.GoogleBuilder().build())
     private var dialogNewVersion: DialogNewVersion? = null
     var isBillingInit = false
 
@@ -45,7 +46,6 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
     private var isTtsInitFailed = false
     private var lastVoiceWordId: String? = null
     private var isFastSpeechSpeed = true
-    private var isShowDialogVote = false
 
     private val listenerNewVersion: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
         override fun onResult(result: Boolean) {
@@ -58,6 +58,22 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
     private val listenerEnterName: ListenerResult<String> = object: ListenerResult<String> {
         override fun onResult(result: String) {
             viewModel.onEnterNameResult(result)
+        }
+    }
+
+    private val listenerFeedbackDialog: ListenerResult<String> = object: ListenerResult<String> {
+        override fun onResult(result: String) {
+            viewModel.onFeedbackDialogResult(result)
+        }
+    }
+
+    private val listenerLikeApp: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
+        override fun onResult(result: Boolean) {
+            if (result) {
+                onNavigationEvent(NAVIGATION_DIALOG_RATE_APP)
+            } else {
+                onNavigationEvent(NAVIGATION_DIALOG_SEND_FEEDBACK)
+            }
         }
     }
 
@@ -118,10 +134,6 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
             }
             selectedBottomMenuId = it.itemId
 
-            if (!SharedHelper.isVoteViewed(this) && !isShowDialogVote) {
-                showVoteDialog()
-            }
-
             return@setOnNavigationItemSelectedListener true
         }
         navigation_view_main_secondary.setOnNavigationItemSelectedListener {
@@ -156,6 +168,14 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
         tts = null
         isTtsInit = false
         isTtsInitFailed = false
+    }
+
+    override fun onBackPressed() {
+        if (viewModel.isShowLoading.value == true) {
+            viewModel.isShowLoading.value = false
+        } else {
+            super.onBackPressed()
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -200,7 +220,7 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
             }
             NAVIGATION_EXIT -> {
                 finishAffinity()
-                System.exit(0)
+                exitProcess(0)
             }
             NAVIGATION_GOOGLE_AUTH -> {
                 startActivityForResult(
@@ -244,6 +264,16 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
                     }
                 }
             }
+            NAVIGATION_DIALOG_LIKE_APP -> {
+                val dialog = DialogLikeApp()
+                dialog.confirmListener = listenerLikeApp
+                dialog.show(this@MainActivity.supportFragmentManager, "Like app Dialog")
+            }
+            NAVIGATION_DIALOG_SEND_FEEDBACK -> {
+                val dialog = DialogSendFeedback()
+                dialog.setConfirmListener(listenerFeedbackDialog)
+                dialog.show(this.supportFragmentManager, "Send feedback Dialog")
+            }
             NAVIGATION_LOADING_SHOW -> setLoadingVisible(true)
             NAVIGATION_LOADING_HIDE -> setLoadingVisible(false)
             else -> super.onNavigationEvent(eventId)
@@ -280,19 +310,6 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
         } else if (isTtsInit && word != null && word.eng.isNotEmpty()) {
             speak(word)
         }
-    }
-
-    fun showVoteDialog() {
-        val dialog = DialogVote()
-
-        dialog.listener = object: ListenerResult<Int> {
-            override fun onResult(result: Int) {
-                viewModel.onVoteResult(result)
-            }
-        }
-        dialog.show(supportFragmentManager, "Vote Dialog")
-
-        isShowDialogVote = true
     }
 
     private fun speak(word: Word?) {

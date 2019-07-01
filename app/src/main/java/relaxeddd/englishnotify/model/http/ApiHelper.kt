@@ -128,16 +128,6 @@ object ApiHelper {
         return executeRequest( suspend { api.requestSetNickname(tokenId, userId, name) }, Result(RESULT_ERROR_INTERNET))
     }
 
-    suspend fun requestVote(firebaseUser: FirebaseUser?, tokenId: String?, vote: Int, sdk: Int, model: String,
-                            manufacturer: String, device: String, brand: String, product: String) : Result? {
-        val userId = firebaseUser?.uid ?: ""
-        if (!isNetworkAvailable() || tokenId?.isNotEmpty() != true || userId.isEmpty()) {
-            return Result(RESULT_ERROR_INTERNET)
-        }
-        return executeRequest( suspend { api.requestVote(tokenId, userId, vote, sdk, model, manufacturer, device, brand,
-            product) }, Result(RESULT_ERROR_INTERNET))
-    }
-
     //------------------------------------------------------------------------------------------------------------------
     fun initUserTokenId(firebaseUser: FirebaseUser?, resultListener: (tokenId: Resource<String>) -> Unit) {
         firebaseUser?.getIdToken(false)?.addOnCompleteListener {
@@ -253,12 +243,6 @@ object ApiHelper {
 
         suspend fun requestSetNickname(tokenId: String, userId: String, name: String) : Result? {
             return apiHelper.requestSetNicknameAsync(tokenPrefix + tokenId, userId, name).await()
-        }
-
-        suspend fun requestVote(tokenId: String, userId: String, vote: Int, sdk: Int, model: String,
-                                manufacturer: String, device: String, brand: String, product: String) : Result? {
-            return apiHelper.requestVoteAsync(tokenPrefix + tokenId, userId, vote, sdk, model, manufacturer,
-                device, brand, product).await()
         }
     }
 }

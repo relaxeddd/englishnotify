@@ -16,9 +16,9 @@ import relaxeddd.englishnotify.model.repository.RepositoryWord
 open class ViewModelDictionary(private val repositoryWord: RepositoryWord, protected val repositoryUser: RepositoryUser) : ViewModelBase() {
 
     val user: LiveData<User?> = repositoryUser.liveDataUser
-    val sortByType = MutableLiveData<SortByType>(SortByType.getByName(SharedHelper.getSortByType()))
+    val sortByType = MutableLiveData(SortByType.getByName(SharedHelper.getSortByType()))
     val filterTags = MutableLiveData<HashSet<String>>(HashSet())
-    val isShowOwnWords = MutableLiveData<Boolean>(SharedHelper.isShowOwnWords())
+    val isShowOwnWords = MutableLiveData(SharedHelper.isShowOwnWords())
     val tags = HashSet<String>()
     val wordsFiltered = MutableLiveData<List<Word>>(ArrayList())
     var playWord: Word? = null

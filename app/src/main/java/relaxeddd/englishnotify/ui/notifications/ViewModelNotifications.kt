@@ -15,21 +15,22 @@ import relaxeddd.englishnotify.R
 class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewModelBase() {
 
     val user: LiveData<User?> = repositoryUser.liveDataUser
-    val isEnableNotificationsClickable = MutableLiveData<Boolean>(false)
-    val timeDurationOffValue = MutableLiveData<Int>(SharedHelper.getDurationHours())
-    val timeStartOff = MutableLiveData<String>("20:00")
-    val timeEndOff = MutableLiveData<String>("07:00")
-    val selectedTagLiveData = MutableLiveData<String>("")
+    val isEnableNotificationsClickable = MutableLiveData(false)
+    val timeDurationOffValue = MutableLiveData(SharedHelper.getDurationHours())
+    val timeStartOff = MutableLiveData("20:00")
+    val timeEndOff = MutableLiveData("07:00")
+    val selectedTagLiveData = MutableLiveData("")
     val isVisibleNotificationsView = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
 
-    val textRepeatTime = MutableLiveData<String>("")
-    val textLearnLanguage = MutableLiveData<String>("")
+    val textRepeatTime = MutableLiveData("")
+    val textLearnLanguage = MutableLiveData("")
     val textNotificationsView = MutableLiveData<String>(App.context.resources.getStringArray(R.array.array_notifications_view)[SharedHelper.getNotificationsView()])
 
     val checkedChangeListenerShowOnlyOneNotification = CompoundButton.OnCheckedChangeListener { _, isChecked ->
         SharedHelper.setShowOnlyOneNotification(isChecked)
     }
-    val isShowOnlyOneNotification = MutableLiveData<Boolean>(SharedHelper.isShowOnlyOneNotification())
+    val isShowOnlyOneNotification = MutableLiveData(SharedHelper.isShowOnlyOneNotification())
+    val isNotDeletable = MutableLiveData(SharedHelper.isOngoing())
 
     private val userObserver = Observer<User?> { user ->
         isEnableNotificationsClickable.value = user != null
@@ -46,6 +47,15 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
             } else {
                 setNotificationsEnable(true)
             }
+        }
+    }
+
+    var checkedChangeListenerDeletable = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+        if (isChecked && SharedHelper.getNotificationsView() == NOTIFICATIONS_VIEW_STANDARD) {
+            buttonView.isChecked = false
+            showToast(R.string.enable_notification_translation_input)
+        } else {
+            SharedHelper.setOngoing(isChecked)
         }
     }
 

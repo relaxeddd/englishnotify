@@ -37,6 +37,7 @@
     <string name="do_you_really_want_to_off_notifications">Do you really want disable notifications?</string>
     <string name="duration_not_show">with duration</string>
     <string name="enable_notifications">Enable notifications</string>
+    <string name="enable_notification_translation_input">Enable notification translation input</string>
     <string name="end">End</string>
     <string name="english_at_russian">English at russian</string>
     <string name="enter_name">Enter the name</string>
@@ -110,6 +111,7 @@
     <string name="purchase_consumed">Success purchase, thank you!</string>
     <string name="rate_app">Rate app</string>
     <string name="rate_app_pls">Rate app, please</string>
+    <string name="rate_app_question">Do you want rate app?</string>
     <string name="rating_users">Users rating</string>
     <string name="rate">Rate</string>
     <string name="receive_notifications_time">Receive notifications time</string>
@@ -133,6 +135,7 @@
     <string name="subscription_days">Subscription days: %s</string>
     <string name="subscription_time_error">Subscription time is up, you can renew it to get advantages</string>
     <string name="subscription_need">You need renew subscription</string>
+    <string name="swipe_delete_disable">Notifications swipe delete disable</string>
     <string name="thank_you">Thank you!</string>
     <string name="tags_should_not_be_empty">Tags should not be empty</string>
     <string name="test_notification_sent">Test notifications has been sent</string>
@@ -160,6 +163,7 @@
     <string name="words_removed_from_own">Words removed from own category</string>
     <string name="words_training">Words training</string>
     <string name="yes">Yes</string>
+    <string name="you_like_app">Do you like this app?</string>
     <string name="you_sign_in_as">You signed in as: %s</string>
     <string name="you_receive_notifications">You receive notifications?</string>
     <string name="your_answer">Your answer: %s</string>
@@ -216,6 +220,11 @@
 
     <string name="patch_notes">
         - Added menu item in Common tab - If not receive notifications
+        - Added menu item in Notifications tab - Disable swipe delete notifications
+        - When there are too many translation words, some words show when you click at word in dictionary
+        - Click notifications fix the app is launched
+        - Central progress bar fix, when you can click at bottom menu
+        - Added speech icon at training window
     </string>
 
     <!-- =========================================================================================================== -->

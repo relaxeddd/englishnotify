@@ -49,7 +49,7 @@ class ViewModelTrainingSetting : ViewModelBase(), ISelectCategory {
             return
         }
         if (RepositoryWord.getInstance().getTrainingWordsByCategory(category).size < 5) {
-            showToastLong(R.string.no_training_category_words)
+            showToast(R.string.no_training_category_words)
             return
         }
 

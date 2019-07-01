@@ -113,17 +113,17 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
                     activity?.onBackPressed()
                 }
             }
-            NAVIGATION_DIALOG_VOTE_RECEIVE_NOTIFICATIONS -> {
-                if (activity is MainActivity && (activity as MainActivity).isMyResumed) {
-                    (activity as MainActivity).showVoteDialog()
-                }
-            }
             NAVIGATION_ACTIVITY_BACK_TWICE -> {
                 try {
                     val navController = Navigation.findNavController(activity ?: return, R.id.fragment_navigation_host)
                     navController.popBackStack()
                     onNavigationEvent(NAVIGATION_ACTIVITY_BACK)
                 } catch (e: IllegalStateException) {}
+            }
+            else -> {
+                if (activity is MainActivity) {
+                    (activity as MainActivity).onNavigationEvent(eventId)
+                }
             }
         }
     }

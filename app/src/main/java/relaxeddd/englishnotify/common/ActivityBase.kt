@@ -24,7 +24,7 @@ abstract class ActivityBase<VM : ViewModelBase, B : ViewDataBinding> : AppCompat
     abstract fun getLayoutResId() : Int
     abstract fun getViewModelFactory() : ViewModelProvider.NewInstanceFactory
     abstract fun getViewModelClass(): Class<VM>
-    protected open fun onNavigationEvent(eventId: Int) {}
+    open fun onNavigationEvent(eventId: Int) {}
     protected open fun setupThemeColors() {}
 
     override fun onCreate(savedInstanceState: Bundle?) {

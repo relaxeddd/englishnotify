@@ -1,10 +1,8 @@
 package relaxeddd.englishnotify.ui.dictionary_own
 
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +11,6 @@ import kotlinx.android.synthetic.main.fragment_dictionary_own.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.InjectorUtils
 import relaxeddd.englishnotify.common.NAVIGATION_DIALOG_OWN_CATEGORY
-import relaxeddd.englishnotify.common.getAccentColorResId
 import relaxeddd.englishnotify.common.getPrimaryColorResId
 import relaxeddd.englishnotify.databinding.FragmentDictionaryOwnBinding
 import relaxeddd.englishnotify.dialogs.DialogOwnCategory

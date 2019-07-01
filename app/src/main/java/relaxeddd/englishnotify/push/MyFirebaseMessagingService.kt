@@ -121,6 +121,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     .addRemoteInput(remoteInput)
                     .build()
                 notificationBuilder.addAction(action)
+                notificationBuilder.setOngoing(SharedHelper.isOngoing())
 
                 val notKnowPendingIntent: PendingIntent =
                     PendingIntent.getBroadcast(ctx, Random.nextInt(1000), notKnowIntent, 0)
