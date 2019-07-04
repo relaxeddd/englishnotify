@@ -28,12 +28,14 @@ abstract class ActivityBilling<VM : ViewModelBase, B : ViewDataBinding> : Activi
     private var attemptConnect = 0
 
     //------------------------------------------------------------------------------------------------------------------
-    override fun onPurchasesUpdated(responseCode: Int, purchases: MutableList<Purchase>?) {
-        if (responseCode == BillingClient.BillingResponse.OK && purchases != null) {
+    override fun onPurchasesUpdated(billingResult: BillingResult, purchases: MutableList<Purchase>?) {
+        if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
             for (purchase in purchases) {
-                requestVerify(purchase)
+                if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
+                    requestVerify(purchase)
+                }
             }
-        } else if (responseCode == BillingClient.BillingResponse.USER_CANCELED) {
+        } else if (billingResult.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
 
         } else {
             showToast(R.string.error_purchase)
@@ -45,7 +47,9 @@ abstract class ActivityBilling<VM : ViewModelBase, B : ViewDataBinding> : Activi
 
         if (purchasesInfo?.purchasesList?.isNotEmpty() == true) {
             for (purchase in purchasesInfo.purchasesList) {
-                requestVerify(purchase)
+                if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
+                    requestVerify(purchase)
+                }
             }
         }
         if (listSkuDetails.isNotEmpty()) {
@@ -60,17 +64,17 @@ abstract class ActivityBilling<VM : ViewModelBase, B : ViewDataBinding> : Activi
         skuList.add(SUB_2)
         skuList.add(SUB_3)
         params.setSkusList(skuList).setType(BillingClient.SkuType.INAPP)
-        billingClient?.querySkuDetailsAsync(params.build()) { responseCode, skuDetailsList ->
-            if (responseCode == BillingClient.BillingResponse.OK) {
+        billingClient?.querySkuDetailsAsync(params.build()) { billingResult, skuDetailsList ->
+            if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
                 listSkuDetails = skuDetailsList
             }
-            resultListener?.onResult(responseCode == BillingClient.BillingResponse.OK)
+            resultListener?.onResult(billingResult.responseCode == BillingClient.BillingResponseCode.OK)
         }
     }
 
     fun initBilling(resultListener: ListenerResult<Boolean>? = null) {
         if (billingClient == null) {
-            billingClient = BillingClient.newBuilder(this).setListener(this).build()
+            billingClient = BillingClient.newBuilder(this).enablePendingPurchases().setListener(this).build()
         }
         if (isBillingServiceConnected) {
             requestSkuDetails(resultListener)
@@ -78,14 +82,14 @@ abstract class ActivityBilling<VM : ViewModelBase, B : ViewDataBinding> : Activi
         }
 
         billingClient?.startConnection(object : BillingClientStateListener {
-            override fun onBillingSetupFinished(@BillingClient.BillingResponse billingResponseCode: Int) {
-                if (billingResponseCode == BillingClient.BillingResponse.OK) {
+            override fun onBillingSetupFinished(billingResult: BillingResult) {
+                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
                     isBillingServiceConnected = true
                     requestSkuDetails(resultListener)
-                } else if (billingResponseCode == BillingClient.BillingResponse.BILLING_UNAVAILABLE) {
+                } else if (billingResult.responseCode == BillingClient.BillingResponseCode.BILLING_UNAVAILABLE) {
                     showToast("Billing unavailable")
                     resultListener?.onResult(false)
-                } else if (billingResponseCode == BillingClient.BillingResponse.DEVELOPER_ERROR) {
+                } else if (billingResult.responseCode == BillingClient.BillingResponseCode.DEVELOPER_ERROR) {
                     if (attemptConnect <= 3) {
                         showToast(R.string.loading)
                         attemptConnect++
@@ -146,8 +150,10 @@ abstract class ActivityBilling<VM : ViewModelBase, B : ViewDataBinding> : Activi
     }
 
     private fun consumePurchase(purchaseResult: PurchaseResult) {
-        billingClient?.consumeAsync(purchaseResult.tokenId) { responseCode, _ ->
-            if (responseCode == BillingClient.BillingResponse.OK) {
+        val consumeParams = ConsumeParams.newBuilder().setPurchaseToken(purchaseResult.tokenId).build()
+
+        billingClient?.consumeAsync(consumeParams) { billingResult, _ ->
+            if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
                 showToast(R.string.purchase_consumed)
             }
         }

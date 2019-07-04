@@ -333,6 +333,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <ProgressBar
+                    android:id="@+id/progress_bar_training_word_stage"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="@dimen/size_120"
+                    android:layout_height="wrap_content"
+                    android:progress="@{viewModel.wordProgress}"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/size_16"/>
+
                 <TextView
                     android:id="@+id/text_training_word"
                     android:text="@{viewModel.wordText}"
@@ -346,7 +355,7 @@
                     android:paddingEnd="@dimen/size_16"
                     android:lines="3"
                     android:textSize="@dimen/font_18"
-                    android:layout_marginTop="@dimen/size_16"/>
+                    android:layout_marginTop="@dimen/size_2"/>
 
                 <TextView
                     android:id="@+id/text_training_transcription"

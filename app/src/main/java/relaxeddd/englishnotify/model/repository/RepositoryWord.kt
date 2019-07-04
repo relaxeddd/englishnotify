@@ -71,8 +71,10 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
     }
 
     fun setWordLearnStage(word: Word, progress: Int, isRemoteSave: Boolean = true) {
+        word.learnStage = progress
         ioScope.launch {
             val saveWord = Word(word)
+
             saveWord.learnStage = progress
             updateWord(saveWord)
             SharedHelper.setWordLearnStage(saveWord.id, progress)

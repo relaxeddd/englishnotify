@@ -22,10 +22,16 @@ class ViewModelTime(private val repositoryUser: RepositoryUser) : ViewModelBase(
 
         if (receiveNotificationsTime < 3 && (user.subscriptionTime) < System.currentTimeMillis()) {
             showToast(R.string.subscription_need)
-        } else if (receiveNotificationsTime != user.notificationsTimeType) {
+        } else {
             uiScope.launch {
                 navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
-                val result = repositoryUser.setNotificationsTimeType(receiveNotificationsTime)
+
+                val result = if (receiveNotificationsTime != user.notificationsTimeType) {
+                    repositoryUser.setNotificationsTimeType(receiveNotificationsTime)
+                } else {
+                    true
+                }
+
                 navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
 
                 if (result) {
