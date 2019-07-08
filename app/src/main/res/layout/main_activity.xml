@@ -162,6 +162,8 @@
             app:menu="@menu/menu_main_navigation_secondary"
             app:layout_constraintBottom_toTopOf="@+id/navigation_view_main" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:backgroundTint="@color/colorPrimary"
+            android:backgroundTintMode="src_over"
             android:background="@color/colorPrimary"
             app:itemBackground="@color/colorPrimary"/>
 
@@ -174,6 +176,8 @@
             app:menu="@menu/menu_main_navigation"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:backgroundTint="@color/colorPrimary"
+            android:backgroundTintMode="src_over"
             android:background="@color/colorPrimary"
             app:itemBackground="@color/colorPrimary"/>
 

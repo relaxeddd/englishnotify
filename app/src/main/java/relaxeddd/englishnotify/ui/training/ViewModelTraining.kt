@@ -37,6 +37,7 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
     val isVisibleInputAnswer = MutableLiveData(true)
     val isVisibleAnswer = MutableLiveData(false)
     val isVisibleResultText = MutableLiveData(false)
+    val wordProgress = MutableLiveData(0)
 
     val result1 = MutableLiveData(STATE_ANSWER)
     val result2 = MutableLiveData(STATE_ANSWER)
@@ -80,6 +81,7 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
         wordText.value = if (isEngTraining) eng else rus
         translation.value = if (isEngTraining) rus else eng
         transcription.value = transcriptionValue
+        wordProgress.value = 100 / 3 * word.learnStage
         resultText.value = if (currentResult == STATE_SUCCESS) getAppString(R.string.correct_answer) else getAppString(R.string.incorrect_answer)
         if (answers.size > currentIx) {
             var savedAnswer = answers[currentIx]
