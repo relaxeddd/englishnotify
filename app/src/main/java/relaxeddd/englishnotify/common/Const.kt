@@ -121,11 +121,13 @@ const val TYPE_PUSH_RUSSIAN = 1
 
 const val TRAINING_ENG_TO_RUS = 0
 const val TRAINING_RUS_TO_ENG = 1
+const val TRAINING_MIXED = 2
 
 const val LEARN_STAGE_MAX = 3
 
 const val THEME_STANDARD = 0
 const val THEME_BLUE = 1
+const val THEME_BLACK = 2
 
 const val NOTIFICATIONS_VIEW_STANDARD = 0
 const val NOTIFICATIONS_VIEW_INPUT = 1

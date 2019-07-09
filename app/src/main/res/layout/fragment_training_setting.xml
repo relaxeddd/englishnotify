@@ -30,6 +30,13 @@
                 android:text="@string/russian_at_english"
                 android:textSize="@dimen/font_16"/>
 
+            <RadioButton
+                android:id="@+id/radio_button_training_setting_mixed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/mixed"
+                android:textSize="@dimen/font_16"/>
+
         </RadioGroup>
 
         <View

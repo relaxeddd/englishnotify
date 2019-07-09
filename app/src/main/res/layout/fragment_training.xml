@@ -338,7 +338,7 @@
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="@dimen/size_120"
                     android:layout_height="wrap_content"
-                    android:progress="@{viewModel.wordProgress}"
+                    android:progress="@{safeUnbox(viewModel.wordProgress)}"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/size_16"/>
 

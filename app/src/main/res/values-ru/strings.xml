@@ -78,6 +78,7 @@
     <string name="logout_error">Ошибка выхода из аккаунта</string>
     <string name="logout_success">Вы вышли из аккаунта</string>
     <string name="main">Основные</string>
+    <string name="mixed">Смешанная</string>
     <string name="new_categories">Новые</string>
     <string name="new_version">Новая версия</string>
     <string name="network_not_available">Ошибка интернет соединения</string>
@@ -205,7 +206,8 @@
     <string name="text_info_statistic">k/m/n - k выучено, m получено, n всего</string>
 
     <string name="patch_notes">
-        - В окне тренировки слов теперь отображается текущий прогресс изучения слова
+        - Добавлен смешанный тип тренировки
+        - Добавлена темная тема приложения
         \n- Добавлен пункт меню в раздел Общее - Если не ходят уведомления
     </string>
 

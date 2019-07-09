@@ -34,6 +34,7 @@
     <string-array name="array_themes">
         <item>Standard</item>
         <item>Dark-blue</item>
+        <item>Dark</item>
     </string-array>
 
     <string-array name="array_notifications_view">

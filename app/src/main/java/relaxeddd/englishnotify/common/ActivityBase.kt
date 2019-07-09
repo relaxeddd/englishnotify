@@ -80,6 +80,7 @@ abstract class ActivityBase<VM : ViewModelBase, B : ViewDataBinding> : AppCompat
         when (SharedHelper.getAppThemeType(this)) {
             THEME_STANDARD -> setTheme(R.style.AppTheme)
             THEME_BLUE -> setTheme(R.style.AppTheme2)
+            THEME_BLACK -> setTheme(R.style.AppTheme3)
         }
     }
 }
