@@ -17,8 +17,8 @@ android {
         applicationId 'relaxeddd.englishnotify'
         minSdkVersion 17
         targetSdkVersion 29
-        versionCode 43
-        versionName "3.0.9"
+        versionCode 44
+        versionName "3.0.10"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
@@ -39,6 +39,10 @@ android {
         }
     }
     productFlavors {
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 

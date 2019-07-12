@@ -19,16 +19,19 @@ import java.util.regex.Pattern
 
 fun getPrimaryColorResId() = when (SharedHelper.getAppThemeType()) {
     THEME_BLUE -> R.color.colorPrimary2
+    THEME_BLACK -> R.color.colorPrimary3
     else -> R.color.colorPrimary
 }
 
 fun getPrimaryDarkColorResId() = when (SharedHelper.getAppThemeType()) {
     THEME_BLUE -> R.color.colorPrimaryDark2
+    THEME_BLACK -> R.color.colorPrimary3
     else -> R.color.colorPrimaryDark
 }
 
 fun getAccentColorResId() = when (SharedHelper.getAppThemeType()) {
     THEME_BLUE -> R.color.colorAccent2
+    THEME_BLACK -> R.color.colorPrimary3
     else -> R.color.colorPrimary
 }
 

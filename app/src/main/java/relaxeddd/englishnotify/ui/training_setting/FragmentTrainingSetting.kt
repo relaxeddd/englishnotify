@@ -47,6 +47,7 @@ class FragmentTrainingSetting : BaseFragment<ViewModelTrainingSetting, FragmentT
 
         when (viewModel.trainingLanguage) {
             TRAINING_RUS_TO_ENG -> radio_button_training_setting_ru_to_en.isChecked = true
+            TRAINING_MIXED -> radio_button_training_setting_mixed.isChecked = true
             else -> radio_button_training_setting_en_to_ru.isChecked = true
         }
         radio_button_training_setting_ru_to_en.setOnCheckedChangeListener { _, isChecked ->
@@ -54,6 +55,9 @@ class FragmentTrainingSetting : BaseFragment<ViewModelTrainingSetting, FragmentT
         }
         radio_button_training_setting_en_to_ru.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) viewModel.trainingLanguage = TRAINING_ENG_TO_RUS
+        }
+        radio_button_training_setting_mixed.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) viewModel.trainingLanguage = TRAINING_MIXED
         }
     }
 

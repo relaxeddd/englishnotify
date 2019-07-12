@@ -7,6 +7,7 @@ import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.repository.RepositoryWord
+import kotlin.random.Random
 
 class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelBase() {
 
@@ -18,6 +19,7 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
 
     var category = ALL_APP_WORDS
     var trainingType = TRAINING_ENG_TO_RUS
+    private var isCurrentEngTraining = true
 
     private var trainingWords = ArrayList<Word>()
     private var answers = ArrayList<String>()
@@ -70,16 +72,16 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
             return@Observer
         }
 
+        val currentResult = getResultLiveDataByIx(currentIx).value ?: 0
         val word = trainingWords[currentIx]
-        val isEngTraining = isEngTraining(word)
+        isCurrentEngTraining = isEngTraining(word, currentResult)
         val eng = word.eng
         val rus = word.rus
         val transcriptionStr = if (word.transcription.isEmpty()) "-" else word.transcription
         val transcriptionValue = if (word.type != EXERCISE) "[$transcriptionStr]" else transcriptionStr
-        val currentResult = getResultLiveDataByIx(currentIx).value ?: 0
 
-        wordText.value = if (isEngTraining) eng else rus
-        translation.value = if (isEngTraining) rus else eng
+        wordText.value = if (isCurrentEngTraining) eng else rus
+        translation.value = if (isCurrentEngTraining) rus else eng
         transcription.value = transcriptionValue
         wordProgress.value = 100 / 3 * word.learnStage
         resultText.value = if (currentResult == STATE_SUCCESS) getAppString(R.string.correct_answer) else getAppString(R.string.incorrect_answer)
@@ -94,7 +96,7 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
         isVisibleTranslation.value = currentResult != STATE_ANSWER
         isVisibleInputAnswer.value = currentResult == STATE_ANSWER
         isVisibleAnswer.value = currentResult != STATE_ANSWER
-        isVisibleTranscription.value = (isEngTraining && word.type != EXERCISE) || currentResult != STATE_ANSWER
+        isVisibleTranscription.value = (isCurrentEngTraining && word.type != EXERCISE) || currentResult != STATE_ANSWER
         isVisibleResultText.value = currentResult != STATE_ANSWER
 
         updateButtonOk()
@@ -135,7 +137,7 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
         }
 
         val word = trainingWords[ix]
-        val answer = if (isEngTraining(word)) word.rus else word.eng
+        val answer = if (isCurrentEngTraining) word.rus else word.eng
         val isCorrectAnswer = isCorrectAnswer(textAnswer, answer)
         val result = if (isCorrectAnswer) STATE_SUCCESS else STATE_WRONG
         val currentIx = current.value ?: 0
@@ -182,5 +184,9 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
         else -> result10
     }
 
-    private fun isEngTraining(word: Word) = trainingType == TRAINING_ENG_TO_RUS || word.type == EXERCISE
+    private fun isEngTraining(word: Word, state: Int) = when (trainingType) {
+        TRAINING_RUS_TO_ENG -> state != STATE_ANSWER || word.type == EXERCISE
+        TRAINING_MIXED -> state != STATE_ANSWER || word.type == EXERCISE || Random.nextInt(2) == 0
+        else -> true
+    }
 }
