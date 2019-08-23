@@ -12,7 +12,6 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.ui.main.MainActivity
@@ -46,7 +45,7 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, getLayoutResId(), null, false)
-        viewModel = ViewModelProviders.of(this, getViewModelFactory()).get(getViewModelClass())
+        viewModel = ViewModelProvider(this, getViewModelFactory()).get(getViewModelClass())
 
         configureMenu()
         configureBinding()
