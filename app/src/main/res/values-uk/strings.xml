@@ -36,6 +36,7 @@
     <string name="do_you_really_want_to_delete_words">Вы действительно хотите удалить выбранные слова?</string>
     <string name="do_you_really_want_to_off_notifications">Вы действительно хотите отключить получение уведомлений?</string>
     <string name="duration_not_show">продолжительностью</string>
+    <string name="edit">Редактировать</string>
     <string name="enable_notifications">Включить уведомления</string>
     <string name="enable_notification_translation_input">Включите ввод перевода в уведомлении</string>
     <string name="end">Закончить</string>
@@ -206,9 +207,8 @@
     <string name="text_info_statistic">k/m/n - k выучено, m получено, n всего</string>
 
     <string name="patch_notes">
-        - Добавлен смешанный тип тренировки
-        - Добавлена темная тема приложения
-        \n- Добавлен пункт меню в раздел Общее - Если не ходят уведомления
+        - Добавлена возможность редактирования добавленных слов
+        \n- Исправлен баг прихода удаленных слов в своем словаре
     </string>
 
     <!-- =========================================================================================================== -->

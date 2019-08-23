@@ -117,6 +117,17 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding,
                     ac.playWord(viewModel.playWord)
                 }
             }
+            NAVIGATION_FRAGMENT_WORD -> {
+                val editWord = viewModel.editWord ?: return
+                val args = Bundle()
+
+                viewModel.editWord = null
+                args.putString(ID, editWord.id)
+                args.putString(ENG, editWord.eng)
+                args.putString(TRANSCRIPTION, editWord.transcription)
+                args.putString(RUS, editWord.rus)
+                navigate(R.id.action_global_fragmentEditWord, args)
+            }
             NAVIGATION_DIALOG_CHECK_TAGS -> {
                 val dialog = DialogCheckTags()
                 val args = Bundle()

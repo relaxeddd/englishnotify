@@ -22,6 +22,7 @@ open class ViewModelDictionary(private val repositoryWord: RepositoryWord, prote
     val tags = HashSet<String>()
     val wordsFiltered = MutableLiveData<List<Word>>(ArrayList())
     var playWord: Word? = null
+    var editWord: Word? = null
     private val words: LiveData<List<Word>> = repositoryWord.words
     private val wordsObserver = Observer<List<Word>> { words ->
         tags.clear()
@@ -81,6 +82,11 @@ open class ViewModelDictionary(private val repositoryWord: RepositoryWord, prote
 
     fun resetProgress(word: Word) {
         repositoryWord.setWordLearnStage(word, 0)
+    }
+
+    fun edit(word: Word) {
+        editWord = word
+        navigateEvent.value = Event(NAVIGATION_FRAGMENT_WORD)
     }
 
     fun addToOwn(word: Word) {

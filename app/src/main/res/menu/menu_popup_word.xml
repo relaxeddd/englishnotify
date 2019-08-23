@@ -3,6 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item android:id="@+id/item_menu_edit"
+          android:title="@string/edit"
+          android:icon="@drawable/ic_edit"
+          app:showAsAction="never"/>
+
     <item android:id="@+id/item_menu_add_own"
           android:title="@string/add_to_own_category"
           android:icon="@drawable/ic_own"
