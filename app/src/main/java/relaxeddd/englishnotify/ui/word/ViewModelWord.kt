@@ -3,7 +3,6 @@ package relaxeddd.englishnotify.ui.word
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 

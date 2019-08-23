@@ -10,7 +10,6 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import relaxeddd.englishnotify.R
 
 abstract class ActivityBase<VM : ViewModelBase, B : ViewDataBinding> : AppCompatActivity(), LifecycleOwner {
@@ -34,7 +33,7 @@ abstract class ActivityBase<VM : ViewModelBase, B : ViewDataBinding> : AppCompat
         val factory = getViewModelFactory()
 
         binding = DataBindingUtil.setContentView(this, getLayoutResId())
-        viewModel = ViewModelProviders.of(this, factory).get(getViewModelClass())
+        viewModel = ViewModelProvider(this, factory).get(getViewModelClass())
         configureBinding()
         binding.lifecycleOwner = this
         binding.executePendingBindings()
