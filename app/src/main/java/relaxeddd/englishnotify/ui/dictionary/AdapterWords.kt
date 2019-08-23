@@ -81,6 +81,7 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
         popupMenu.inflate(R.menu.menu_popup_word)
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
+                R.id.item_menu_edit -> viewModel.edit(word)
                 R.id.item_menu_delete -> viewModel.deleteWord(word)
                 R.id.item_menu_add_own -> viewModel.addToOwn(word)
                 R.id.item_menu_delete_own -> viewModel.removeFromOwnDict(word)
@@ -89,6 +90,7 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
             true
         }
 
+        popupMenu.menu.findItem(R.id.item_menu_edit)?.isVisible = word.isCreatedByUser
         popupMenu.menu.findItem(R.id.item_menu_reset_progress)?.isVisible = word.learnStage > 0
         popupMenu.menu.findItem(R.id.item_menu_add_own)?.isVisible = !word.isOwnCategory
         popupMenu.menu.findItem(R.id.item_menu_delete_own)?.isVisible = word.isOwnCategory

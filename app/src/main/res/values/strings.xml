@@ -36,6 +36,7 @@
     <string name="do_you_really_want_to_delete_words">Do you really want to delete words?</string>
     <string name="do_you_really_want_to_off_notifications">Do you really want disable notifications?</string>
     <string name="duration_not_show">with duration</string>
+    <string name="edit">Edit</string>
     <string name="enable_notifications">Enable notifications</string>
     <string name="enable_notification_translation_input">Enable notification translation input</string>
     <string name="end">End</string>
@@ -220,9 +221,8 @@
     </string>
 
     <string name="patch_notes">
-        - Added mixed training type
-        - Added dark app theme
-        \n- Added menu item in Common tab - If not receive notifications
+        - Now you can edit own words
+        \n- Bug fix of receiving deleted words
     </string>
 
     <!-- =========================================================================================================== -->

@@ -62,6 +62,17 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val id = arguments?.getString(ID) ?: ""
+        val eng = arguments?.getString(ENG) ?: ""
+        val transcription = arguments?.getString(TRANSCRIPTION) ?: ""
+        val rus = arguments?.getString(RUS) ?: ""
+
+        viewModel.wordId = id
+        text_input_word.setText(eng)
+        text_input_translation.setText(transcription)
+        text_input_transcription.setText(rus)
+
         text_input_word.addTextChangedListener(object: TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(p0: Editable?) {}

@@ -245,72 +245,73 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     //------------------------------------------------------------------------------------------------------------------
-    override fun onNewToken(p0: String?) {
+    override fun onNewToken(p0: String) {
         super.onNewToken(p0)
-        pushToken = p0 ?: ""
-        if (p0 != null && p0.isNotEmpty()) {
+        pushToken = p0
+        if (p0.isNotEmpty()) {
             SharedHelper.setPushToken(p0, this)
         }
     }
 
-    override fun onMessageReceived(remoteMessage: RemoteMessage?) {
+    override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
 
-        val data = remoteMessage?.data
+        val data = remoteMessage.data
 
-        if (data != null) {
-            when (if (data.containsKey(TYPE)) data[TYPE] else "") {
-                SYSTEM -> {
-                    val title = if (data.containsKey(TITLE)) data[TITLE] ?: "" else ""
-                    val text = if (data.containsKey(TEXT)) data[TEXT] ?: "" else ""
+        when (if (data.containsKey(TYPE)) data[TYPE] else "") {
+            SYSTEM -> {
+                val title = if (data.containsKey(TITLE)) data[TITLE] ?: "" else ""
+                val text = if (data.containsKey(TEXT)) data[TEXT] ?: "" else ""
 
-                    showNotification(this, title, text)
+                showNotification(this, title, text)
+            }
+            OWN_WORD -> {
+                if (isNightTime()) {
+                    return
                 }
-                OWN_WORD -> {
-                    if (isNightTime()) {
-                        return
-                    }
 
-                    val wordDao = AppDatabase.getInstance(this).wordDao()
-                    var words = RepositoryWord.getInstance(wordDao).getOwnWords()
-                    val sortByLearnStage = HashMap<Int, ArrayList<Word>>()
+                val wordDao = AppDatabase.getInstance(this).wordDao()
+                var words = RepositoryWord.getInstance(wordDao).getOwnWords()
+                val sortByLearnStage = HashMap<Int, ArrayList<Word>>()
 
-                    if (words.isEmpty()) {
-                        words = wordDao.getAllItems()
-                    }
-                    for (word in words) {
-                        if (!sortByLearnStage.containsKey(word.learnStage)) {
-                            val list = ArrayList<Word>()
-                            list.add(word)
-                            sortByLearnStage[word.learnStage] = list
-                        } else {
-                            sortByLearnStage[word.learnStage]?.add(word)
-                        }
-                    }
-                    for (learnStage in 0..2) {
-                        if (sortByLearnStage.containsKey(learnStage)) {
-                            words = sortByLearnStage[learnStage] ?: ArrayList()
-                            break
-                        }
-                    }
+                if (words.isEmpty()) {
+                    words = wordDao.getAllItems()
+                }
 
-                    if (words.isNotEmpty()) {
-                        val wordIx = (0 until words.size).random()
+                words.filter { !it.isDeleted }
 
-                        if (wordIx >= 0 && wordIx < words.size) {
-                            handleWordNotification(this, words[wordIx], false, viewType = SharedHelper.getNotificationsView(this))
-                        }
+                for (word in words) {
+                    if (!sortByLearnStage.containsKey(word.learnStage)) {
+                        val list = ArrayList<Word>()
+                        list.add(word)
+                        sortByLearnStage[word.learnStage] = list
+                    } else {
+                        sortByLearnStage[word.learnStage]?.add(word)
                     }
                 }
-                PUSH -> {
-                    if (isNightTime()) {
-                        return
+                for (learnStage in 0..2) {
+                    if (sortByLearnStage.containsKey(learnStage)) {
+                        words = sortByLearnStage[learnStage] ?: ArrayList()
+                        break
                     }
+                }
 
-                    if (data.containsKey(CONTENT) && data[CONTENT] != null) {
-                        val word = parseWord(JSONObject(data[CONTENT] ?: ""))
-                        handleWordNotification(this, word, viewType = SharedHelper.getNotificationsView(this))
+                if (words.isNotEmpty()) {
+                    val wordIx = (0 until words.size).random()
+
+                    if (wordIx >= 0 && wordIx < words.size) {
+                        handleWordNotification(this, words[wordIx], false, viewType = SharedHelper.getNotificationsView(this))
                     }
+                }
+            }
+            PUSH -> {
+                if (isNightTime()) {
+                    return
+                }
+
+                if (data.containsKey(CONTENT) && data[CONTENT] != null) {
+                    val word = parseWord(JSONObject(data[CONTENT] ?: ""))
+                    handleWordNotification(this, word, viewType = SharedHelper.getNotificationsView(this))
                 }
             }
         }

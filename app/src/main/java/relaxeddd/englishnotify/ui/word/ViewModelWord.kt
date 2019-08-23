@@ -10,6 +10,7 @@ import relaxeddd.englishnotify.model.repository.RepositoryWord
 class ViewModelWord : ViewModelBase() {
 
     private var isWordCreating: Boolean = false
+    var wordId = ""
 
     fun createOwnWord(eng: String, transcription: String, rus: String) {
         if (isWordCreating) {
@@ -19,12 +20,18 @@ class ViewModelWord : ViewModelBase() {
         isWordCreating = true
         navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
         ioScope.launch {
-            val result = RepositoryWord.getInstance().insertOwnCategoryWord(eng, eng, rus, transcription)
+            val wordId = if (wordId.isEmpty()) eng else wordId
+            val result = RepositoryWord.getInstance().insertOwnCategoryWord(wordId, eng, rus, transcription)
 
             withContext(Dispatchers.Main) {
                 navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
                 if (result) {
-                    showToast(R.string.word_added)
+                    if (eng != wordId) {
+                        withContext(Dispatchers.IO) {
+                            RepositoryWord.getInstance().removeWordFromDb(wordId)
+                        }
+                    }
+                    showToast(android.R.string.ok)
                     navigateEvent.value = Event(NAVIGATION_ACTIVITY_BACK)
                 }
                 isWordCreating = false

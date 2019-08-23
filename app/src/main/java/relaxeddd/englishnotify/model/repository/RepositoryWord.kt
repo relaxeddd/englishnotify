@@ -240,6 +240,10 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
     }
 
     //------------------------------------------------------------------------------------------------------------------
+    suspend fun removeWordFromDb(wordId: String) {
+        wordDao.deleteById(wordId)
+    }
+
     suspend fun deleteWord(wordId: String) : Boolean {
         return deleteWords(Collections.singletonList(wordId))
     }

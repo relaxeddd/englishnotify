@@ -17,8 +17,8 @@ android {
         applicationId 'relaxeddd.englishnotify'
         minSdkVersion 17
         targetSdkVersion 29
-        versionCode 44
-        versionName "3.0.10"
+        versionCode 45
+        versionName "3.0.11"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
@@ -48,32 +48,32 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.40"
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.50'
     implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta2'
-    implementation 'com.google.android.material:material:1.1.0-alpha07'
-    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0-alpha02"
-    kapt "androidx.lifecycle:lifecycle-compiler:2.2.0-alpha02"
+    implementation 'com.google.android.material:material:1.1.0-alpha09'
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0-alpha03"
+    kapt "androidx.lifecycle:lifecycle-compiler:2.2.0-alpha03"
     implementation "android.arch.navigation:navigation-fragment:1.0.0"
     implementation "android.arch.navigation:navigation-ui:1.0.0"
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1'
-    implementation "androidx.room:room-runtime:2.1.0"
+    implementation 'androidx.room:room-runtime:2.2.0-alpha02'
     implementation "androidx.room:room-coroutines:2.1.0-alpha04"
-    kapt "androidx.room:room-compiler:2.1.0"
+    kapt 'androidx.room:room-compiler:2.2.0-alpha02'
     //googleAuth
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
-    implementation 'com.google.gms:google-services:4.3.0'
+    implementation 'com.google.gms:google-services:4.3.1'
     //firebase
     implementation 'com.firebaseui:firebase-ui-auth:4.3.2'
-    implementation 'com.google.firebase:firebase-auth:18.0.0'
-    implementation 'com.google.firebase:firebase-firestore:20.1.0'
-    implementation 'com.google.firebase:firebase-messaging:19.0.1'
+    implementation 'com.google.firebase:firebase-auth:19.0.0'
+    implementation 'com.google.firebase:firebase-firestore:21.0.0'
+    implementation 'com.google.firebase:firebase-messaging:20.0.0'
     //Retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.6.1'
     implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.1'
     //billing
     implementation 'com.android.billingclient:billing:2.0.1'
 }
