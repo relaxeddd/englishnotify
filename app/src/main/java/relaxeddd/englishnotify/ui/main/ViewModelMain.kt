@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer
 import com.google.firebase.auth.FirebaseAuth
 import relaxeddd.englishnotify.model.repository.RepositoryUser
 import kotlinx.coroutines.launch
+import relaxeddd.englishnotify.BuildConfig
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.dialogs.DialogPatchNotes
@@ -89,9 +90,9 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
     fun onViewCreate() {
         requestInit()
 
-        if (!SharedHelper.isPatchNotesViewed(DialogPatchNotes.VERSION)) {
+        if (!SharedHelper.isPatchNotesViewed(BuildConfig.VERSION_NAME)) {
             navigateEvent.value = Event(NAVIGATION_DIALOG_PATCH_NOTES)
-            SharedHelper.setPatchNotesViewed(DialogPatchNotes.VERSION)
+            SharedHelper.setPatchNotesViewed(BuildConfig.VERSION_NAME)
         }
     }
 
