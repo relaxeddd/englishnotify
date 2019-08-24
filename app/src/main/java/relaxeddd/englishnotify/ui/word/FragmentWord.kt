@@ -70,8 +70,8 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
 
         viewModel.wordId = id
         text_input_word.setText(eng)
-        text_input_translation.setText(transcription)
-        text_input_transcription.setText(rus)
+        text_input_transcription.setText(transcription)
+        text_input_translation.setText(rus)
 
         text_input_word.addTextChangedListener(object: TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
