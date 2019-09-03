@@ -221,8 +221,7 @@
     </string>
 
     <string name="patch_notes">
-        - Now you can edit own words
-        \n- Bug fix of receiving deleted words
+        - Fixed bug when you receive words not from only "Own category" if this category is selected
         \n- Note: you get the main profit of app when you will use "Own category" words
     </string>
 
