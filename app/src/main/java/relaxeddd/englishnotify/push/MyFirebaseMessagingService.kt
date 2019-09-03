@@ -271,14 +271,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 }
 
                 val wordDao = AppDatabase.getInstance(this).wordDao()
-                var words = RepositoryWord.getInstance(wordDao).getOwnWords()
+                var words = wordDao.getAllItems()
                 val sortByLearnStage = HashMap<Int, ArrayList<Word>>()
 
-                if (words.isEmpty()) {
-                    words = wordDao.getAllItems()
-                }
-
-                words.filter { !it.isDeleted }
+                words = words.filter { !it.isDeleted && it.isOwnCategory }
 
                 for (word in words) {
                     if (!sortByLearnStage.containsKey(word.learnStage)) {
@@ -297,7 +293,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 }
 
                 if (words.isNotEmpty()) {
-                    val wordIx = (0 until words.size).random()
+                    val wordIx = (words.indices).random()
 
                     if (wordIx >= 0 && wordIx < words.size) {
                         handleWordNotification(this, words[wordIx], false, viewType = SharedHelper.getNotificationsView(this))
