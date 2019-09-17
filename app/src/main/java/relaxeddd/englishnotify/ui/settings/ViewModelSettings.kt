@@ -55,13 +55,6 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     val clickListenerTheme = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_THEME)
     }
-    val clickListenerRating = View.OnClickListener {
-        if (repositoryUser.rating.isNotEmpty()) {
-            navigateEvent.value = Event(NAVIGATION_FRAGMENT_RATING)
-        } else {
-            showToast(R.string.accept)
-        }
-    }
 
     init {
         user.observeForever(userObserver)

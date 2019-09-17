@@ -26,6 +26,9 @@ interface WordDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg words: Word)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(word: Word)
+
     @Delete
     fun delete(word: Word)
 

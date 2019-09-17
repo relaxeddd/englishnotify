@@ -148,46 +148,6 @@ object SharedHelper {
         sPref.edit().putBoolean(IS_SHOW_ONLY_ONE_NOTIFICATION, value).apply()
     }
 
-    fun getLearnStage0(context: Context = App.context) : MutableSet<String> {
-        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        return sPref.getStringSet(LEARN_STAGE_0, HashSet<String>()) ?: HashSet()
-    }
-
-    fun setLearnStage0(value : MutableSet<String>, context: Context = App.context) {
-        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        sPref.edit().putStringSet(LEARN_STAGE_0, value).apply()
-    }
-
-    fun getLearnStage1(context: Context = App.context) : MutableSet<String> {
-        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        return sPref.getStringSet(LEARN_STAGE_1, HashSet<String>()) ?: HashSet()
-    }
-
-    fun setLearnStage1(value : MutableSet<String>, context: Context = App.context) {
-        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        sPref.edit().putStringSet(LEARN_STAGE_1, value).apply()
-    }
-
-    fun getLearnStage2(context: Context = App.context) : MutableSet<String> {
-        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        return sPref.getStringSet(LEARN_STAGE_2, HashSet<String>()) ?: HashSet()
-    }
-
-    fun setLearnStage2(value : MutableSet<String>, context: Context = App.context) {
-        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        sPref.edit().putStringSet(LEARN_STAGE_2, value).apply()
-    }
-
-    fun getLearnStage3(context: Context = App.context) : MutableSet<String> {
-        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        return sPref.getStringSet(LEARN_STAGE_3, HashSet<String>()) ?: HashSet()
-    }
-
-    fun setLearnStage3(value : MutableSet<String>, context: Context = App.context) {
-        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        sPref.edit().putStringSet(LEARN_STAGE_3, value).apply()
-    }
-
     fun isShowOwnWords(context: Context = App.context) : Boolean {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         return sPref.getBoolean(IS_SHOW_OWN_WORDS, true)
@@ -216,56 +176,5 @@ object SharedHelper {
     fun setAppThemeType(value : Int, context: Context = App.context) {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         sPref.edit().putInt(APP_THEME, value).apply()
-    }
-
-    //------------------------------------------------------------------------------------------------------------------
-    fun setWordLearnStage(wordId: String, learnStage: Int) {
-        deleteWordLearnStage(wordId)
-        when(learnStage) {
-            0 -> {
-                val learnStage0 = HashSet(getLearnStage0())
-                learnStage0.add(wordId)
-                setLearnStage0(learnStage0)
-            }
-            1 -> {
-                val learnStage1 = HashSet(getLearnStage1())
-                learnStage1.add(wordId)
-                setLearnStage1(learnStage1)
-            }
-            2 -> {
-                val learnStage2 = HashSet(getLearnStage2())
-                learnStage2.add(wordId)
-                setLearnStage2(learnStage2)
-            }
-            3 -> {
-                val learnStage3 = HashSet(getLearnStage3())
-                learnStage3.add(wordId)
-                setLearnStage3(learnStage3)
-            }
-        }
-    }
-
-    fun deleteWordLearnStage(wordId: String) {
-        val learnStage0 = HashSet(getLearnStage0())
-        val learnStage1 = HashSet(getLearnStage1())
-        val learnStage2 = HashSet(getLearnStage2())
-        val learnStage3 = HashSet(getLearnStage3())
-
-        if (learnStage0.contains(wordId)) {
-            learnStage0.remove(wordId)
-            setLearnStage0(learnStage0)
-        }
-        if (learnStage1.contains(wordId)) {
-            learnStage1.remove(wordId)
-            setLearnStage1(learnStage1)
-        }
-        if (learnStage2.contains(wordId)) {
-            learnStage2.remove(wordId)
-            setLearnStage2(learnStage2)
-        }
-        if (learnStage3.contains(wordId)) {
-            learnStage3.remove(wordId)
-            setLearnStage3(learnStage3)
-        }
     }
 }

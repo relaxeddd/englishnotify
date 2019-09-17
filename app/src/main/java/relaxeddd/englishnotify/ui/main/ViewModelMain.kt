@@ -30,7 +30,7 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
         isShowWarningSubscription.value = user != null && user.subscriptionTime <= System.currentTimeMillis()
 
         val launchCount = SharedHelper.getLaunchCount()
-        if (user != null && !isRateDialogShown && !SharedHelper.isCancelledRateDialog() && launchCount % 2 == 0) {
+        if (user != null && !isRateDialogShown && !SharedHelper.isCancelledRateDialog() && launchCount % 3 == 0) {
             isRateDialogShown = true
             navigateEvent.value = Event(NAVIGATION_DIALOG_LIKE_APP)
         }
@@ -71,14 +71,6 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
         repositoryUser.liveDataUser.removeObserver(userObserver)
     }
 
-    fun onEnterNameResult(name: String) {
-        uiScope.launch {
-            navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
-            repositoryUser.setNickname(name)
-            navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
-        }
-    }
-
     fun onFeedbackDialogResult(feedback: String) {
         uiScope.launch {
             navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
@@ -116,11 +108,6 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
                     override fun onResult(result: Boolean) {
                         if (!result) {
                             userObserver.onChanged(null)
-                        } else {
-                            val user = user.value
-                            if (user?.name?.isEmpty() == true) {
-                                navigateEvent.value = Event(NAVIGATION_DIALOG_ENTER_NAME)
-                            }
                         }
                         isShowHorizontalProgress.value = false
                     }

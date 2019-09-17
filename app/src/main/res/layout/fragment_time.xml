@@ -54,7 +54,6 @@
                 android:text="@string/every_4_hours"
                 android:tag="3"
                 android:textSize="@dimen/font_18"
-                android:enabled="@{safeUnbox(!viewModel.isDisableSubTime)}"
                 android:layout_marginTop="@dimen/size_4"/>
 
             <com.google.android.material.radiobutton.MaterialRadioButton
@@ -63,7 +62,6 @@
                 android:text="@string/every_5_hours"
                 android:tag="4"
                 android:textSize="@dimen/font_18"
-                android:enabled="@{safeUnbox(!viewModel.isDisableSubTime)}"
                 android:layout_marginTop="@dimen/size_4"/>
 
             <com.google.android.material.radiobutton.MaterialRadioButton

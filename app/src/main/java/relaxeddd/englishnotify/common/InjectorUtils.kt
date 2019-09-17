@@ -21,7 +21,6 @@ object InjectorUtils {
     fun provideTrainingViewModelFactory(context: Context) = TrainingViewModelFactory(RepositoryFactory.getWordRepository(context))
     fun provideStatisticViewModelFactory(context: Context) = StatisticViewModelFactory(RepositoryFactory.getWordRepository(context))
     fun provideTimeViewModelFactory() = TimeViewModelFactory(RepositoryFactory.getUserRepository())
-    fun provideRatingViewModelFactory() = RatingViewModelFactory(RepositoryFactory.getUserRepository())
 }
 
 object RepositoryFactory {

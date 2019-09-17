@@ -55,12 +55,6 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
         }
     }
 
-    private val listenerEnterName: ListenerResult<String> = object: ListenerResult<String> {
-        override fun onResult(result: String) {
-            viewModel.onEnterNameResult(result)
-        }
-    }
-
     private val listenerFeedbackDialog: ListenerResult<String> = object: ListenerResult<String> {
         override fun onResult(result: String) {
             viewModel.onFeedbackDialogResult(result)
@@ -241,11 +235,6 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
             NAVIGATION_DIALOG_PATCH_NOTES -> {
                 val dialog = DialogPatchNotes()
                 dialog.show(this@MainActivity.supportFragmentManager, "Patch Notes Dialog")
-            }
-            NAVIGATION_DIALOG_ENTER_NAME -> {
-                val dialog = DialogEnterName()
-                dialog.confirmListener = listenerEnterName
-                dialog.show(this@MainActivity.supportFragmentManager, "Enter Name Dialog")
             }
             NAVIGATION_INIT_BILLING -> {
                 if (isMyResumed && !isBillingInit) {
