@@ -16,12 +16,11 @@ data class User(
     var learnLanguageType: Int = 0,
     var subscriptionTime: Long = 0,
     var selectedTag: String = IRREGULAR,
-    var testCount: Int = 0,
-    var name: String = ""
+    var testCount: Int = 0
 ) {
     constructor(user: User) : this(user.userId, user.email, user.receiveNotifications, user.notificationsTimeType,
         user.tagsAvailable, user.tagsSelected, user.learnLanguageType, user.subscriptionTime, user.selectedTag,
-        user.testCount, user.name)
+        user.testCount)
 }
 
 @Entity(tableName = WORDS)

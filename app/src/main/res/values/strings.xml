@@ -221,7 +221,10 @@
     </string>
 
     <string name="patch_notes">
-        - Fixed bug when you receive words not from only "Own category" if this category is selected
+        - Decreased receiving words time without subscription from 6 hours to 4 hours
+        \n- Now you can add own words without internet connection
+        \n- Removed rating tab
+        \n- Fixed bug when you receive words not from only "Own category" if this category is selected
         \n- Note: you get the main profit of app when you will use "Own category" words
     </string>
 
@@ -229,8 +232,8 @@
     <string name="every_1_hour">Every hour (with subscription)</string>
     <string name="every_2_hours">Every 2 hours (with subscription)</string>
     <string name="every_3_hours">Every 3 hours (with subscription)</string>
-    <string name="every_4_hours">Every 4 hours (with subscription)</string>
-    <string name="every_5_hours">Every 5 hours (with subscription)</string>
+    <string name="every_4_hours">Every 4 hours</string>
+    <string name="every_5_hours">Every 5 hours</string>
     <string name="every_6_hours">Every 6 hours</string>
     <string name="every_7_hours">Every 7 hours</string>
     <string name="every_8_hours">Every 8 hours</string>

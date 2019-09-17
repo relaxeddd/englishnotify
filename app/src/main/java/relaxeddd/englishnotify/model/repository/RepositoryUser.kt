@@ -59,33 +59,7 @@ class RepositoryUser private constructor() {
                     return@launch
                 }
 
-                val learnStage0 = JSONArray()
-                for (learnStage in SharedHelper.getLearnStage0()) {
-                    if (learnStage.isNotEmpty()) {
-                        learnStage0.put(learnStage)
-                    }
-                }
-                val learnStage1 = JSONArray()
-                for (learnStage in SharedHelper.getLearnStage1()) {
-                    if (learnStage.isNotEmpty()) {
-                        learnStage1.put(learnStage)
-                    }
-                }
-                val learnStage2 = JSONArray()
-                for (learnStage in SharedHelper.getLearnStage2()) {
-                    if (learnStage.isNotEmpty()) {
-                        learnStage2.put(learnStage)
-                    }
-                }
-                val learnStage3 = JSONArray()
-                for (learnStage in SharedHelper.getLearnStage3()) {
-                    if (learnStage.isNotEmpty()) {
-                        learnStage3.put(learnStage)
-                    }
-                }
-
-                val answerInitData = ApiHelper.requestInit(firebaseUser, tokenId, pushToken, learnStage0, learnStage1,
-                    learnStage2, learnStage3)
+                val answerInitData = ApiHelper.requestInit(firebaseUser, tokenId, pushToken)
 
                 if (answerInitData?.result != null && answerInitData.result.isSuccess()
                     && answerInitData.user?.userId?.isNotEmpty() == true) {
@@ -101,10 +75,6 @@ class RepositoryUser private constructor() {
                             RepositoryWord.getInstance().updateWords(answerInitData.words)
                         }
                         RepositoryWord.getInstance().updateTagsInfo(answerInitData.tagsInfo ?: ArrayList())
-                        SharedHelper.setLearnStage0(HashSet())
-                        SharedHelper.setLearnStage1(HashSet())
-                        SharedHelper.setLearnStage2(HashSet())
-                        SharedHelper.setLearnStage3(HashSet())
                     }
 
                     listener?.onResult(true)
@@ -175,27 +145,6 @@ class RepositoryUser private constructor() {
             }
             answer != null -> showToast(getErrorString(answer))
             else -> showToast(R.string.error_request)
-        }
-    }
-
-    suspend fun setNickname(name: String) {
-        if (FirebaseAuth.getInstance().currentUser == null) {
-            showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
-            return
-        }
-
-        val firebaseUser = RepositoryCommon.getInstance().firebaseUser
-        val tokenId = RepositoryCommon.getInstance().tokenId
-
-        val answer = ApiHelper.requestSetNickname(firebaseUser, tokenId, name)
-
-        if (answer != null && answer.isSuccess()) {
-            liveDataUser.value?.name = name
-            showToast(android.R.string.ok)
-        }else if (answer != null) {
-            showToast(getErrorString(answer))
-        } else {
-            showToast(R.string.error_request)
         }
     }
 

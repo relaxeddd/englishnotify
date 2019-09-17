@@ -36,8 +36,7 @@ object ApiHelper {
         apiHelper = retrofit.create(IApi::class.java)
     }
 
-    suspend fun requestInit(firebaseUser: FirebaseUser?, tokenId: String?, pushToken: String, learnStage0: JSONArray,
-                            learnStage1: JSONArray, learnStage2: JSONArray, learnStage3: JSONArray) : InitData? {
+    suspend fun requestInit(firebaseUser: FirebaseUser?, tokenId: String?, pushToken: String) : InitData? {
         val userId = firebaseUser?.uid ?: ""
         val email = firebaseUser?.email ?: ""
 
@@ -46,8 +45,7 @@ object ApiHelper {
         }
 
         return executeRequest( suspend {
-            apiHelper.requestInit(TOKEN_PREFIX + tokenId, userId, BuildConfig.VERSION_CODE, pushToken,
-                email, learnStage0, learnStage1, learnStage2, learnStage3)
+            apiHelper.requestInit(TOKEN_PREFIX + tokenId, userId, BuildConfig.VERSION_CODE, pushToken, email)
         }, InitData(Result(RESULT_ERROR_INTERNET), User()))
     }
 
@@ -101,82 +99,6 @@ object ApiHelper {
             apiHelper.requestVerifyPurchase(TOKEN_PREFIX + tokenId, userId, purchaseTokenId, signature,
                 originalJson, itemType)
         }, PurchaseResult(Result(RESULT_ERROR_INTERNET)))
-    }
-
-    suspend fun requestInsertOwnWord(firebaseUser: FirebaseUser?, tokenId: String?, wordId: String, eng: String,
-                                     rus: String, transcription: String) : CreateWordResult? {
-        val userId = firebaseUser?.uid ?: ""
-
-        if (!isNetworkAvailable() || tokenId?.isNotEmpty() != true || userId.isEmpty()) {
-            return CreateWordResult(Result(RESULT_ERROR_INTERNET))
-        }
-
-        return executeRequest( suspend {
-            apiHelper.requestInsertOwnWord(TOKEN_PREFIX + tokenId, userId, wordId, eng, rus, transcription)
-        }, CreateWordResult(Result(RESULT_ERROR_INTERNET)))
-    }
-
-    suspend fun requestUpdateWordLearnStage(firebaseUser: FirebaseUser?, tokenId: String?, wordId: String, learnStage: Int) : Result? {
-        val userId = firebaseUser?.uid ?: ""
-
-        if (!isNetworkAvailable() || tokenId?.isNotEmpty() != true || userId.isEmpty()) {
-            return Result(RESULT_ERROR_INTERNET)
-        }
-
-        return executeRequest( suspend {
-            apiHelper.requestUpdateWordLearnStage(TOKEN_PREFIX + tokenId, userId, wordId, learnStage)
-        }, Result(RESULT_ERROR_INTERNET))
-    }
-
-    suspend fun requestDeleteWords(firebaseUser: FirebaseUser?, tokenId: String?, wordIds: List<String>) : Result? {
-        return requestUpdateWords(firebaseUser, tokenId, wordIds, isChangeIsDeleted = true, isChangeIsOwnCategory = false,
-            isDeleted = true, isOwnCategory = false)
-    }
-
-    suspend fun requestSetIsOwnCategoryWords(firebaseUser: FirebaseUser?, tokenId: String?, wordIds: List<String>,
-                                             isOwnCategory: Boolean) : Result? {
-        return requestUpdateWords(firebaseUser, tokenId, wordIds, isChangeIsDeleted = false, isChangeIsOwnCategory = true,
-            isDeleted = false, isOwnCategory = isOwnCategory)
-    }
-
-    private suspend fun requestUpdateWords(firebaseUser: FirebaseUser?, tokenId: String?, wordIds: List<String>,
-                                   isChangeIsDeleted: Boolean, isChangeIsOwnCategory: Boolean,
-                                   isDeleted: Boolean = false, isOwnCategory: Boolean = false) : Result? {
-        val userId = firebaseUser?.uid ?: ""
-        val wordIdsJson = JSONArray()
-        for (wordId in wordIds) {
-            if (wordId.isNotEmpty()) wordIdsJson.put(wordId)
-        }
-
-        if (!isNetworkAvailable() || tokenId?.isNotEmpty() != true || userId.isEmpty() || wordIds.isEmpty()) {
-            return Result(RESULT_ERROR_INTERNET)
-        }
-
-        return if (isChangeIsDeleted && isChangeIsOwnCategory) {
-            executeRequest( suspend {
-                apiHelper.requestUpdateWords(TOKEN_PREFIX + tokenId, userId, wordIdsJson, isDeleted, isOwnCategory)
-            }, Result(RESULT_ERROR_INTERNET))
-        } else if (isChangeIsDeleted) {
-            executeRequest( suspend {
-                apiHelper.requestDeleteWords(TOKEN_PREFIX + tokenId, userId, wordIdsJson)
-            }, Result(RESULT_ERROR_INTERNET))
-        } else {
-            executeRequest( suspend {
-                apiHelper.requestSetIsOwnCategoryWords(TOKEN_PREFIX + tokenId, userId, wordIdsJson, isOwnCategory)
-            }, Result(RESULT_ERROR_INTERNET))
-        }
-    }
-
-    suspend fun requestSetNickname(firebaseUser: FirebaseUser?, tokenId: String?, name: String) : Result? {
-        val userId = firebaseUser?.uid ?: ""
-
-        if (!isNetworkAvailable() || tokenId?.isNotEmpty() != true || userId.isEmpty()) {
-            return Result(RESULT_ERROR_INTERNET)
-        }
-
-        return executeRequest( suspend {
-            apiHelper.requestSetNickname(TOKEN_PREFIX + tokenId, userId, name)
-        }, Result(RESULT_ERROR_INTERNET))
     }
 
     //------------------------------------------------------------------------------------------------------------------
