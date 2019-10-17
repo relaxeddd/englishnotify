@@ -58,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:barrierDirection="bottom"
-                app:constraint_referenced_ids="text_word_transcription, text_word_transcription_translation"/>
+                app:constraint_referenced_ids="text_word_transcription,text_word_transcription_translation"/>
 
         <ImageView
                 android:id="@+id/image_word_own"
@@ -102,7 +102,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:barrierDirection="left"
-                app:constraint_referenced_ids="check_box_word_select, image_word_own, image_word_play"/>
+                app:constraint_referenced_ids="check_box_word_select,image_word_own,image_word_play"/>
 
         <LinearLayout
                 android:id="@+id/constraint_word_drop_dawn"

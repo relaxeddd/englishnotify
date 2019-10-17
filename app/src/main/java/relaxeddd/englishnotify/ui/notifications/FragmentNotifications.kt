@@ -1,7 +1,9 @@
 package relaxeddd.englishnotify.ui.notifications
 
 import android.os.Bundle
+import android.view.View
 import androidx.navigation.Navigation
+import kotlinx.android.synthetic.main.fragment_notifications.*
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.databinding.FragmentNotificationsBinding
@@ -43,6 +45,14 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
     override fun configureBinding() {
         super.configureBinding()
         binding.viewModel = viewModel
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        switch_notifications_enable.setOnCheckedChangeListener(viewModel.checkedChangeListenerEnableNotifications)
+        switch_notifications_deletable.setOnCheckedChangeListener(viewModel.checkedChangeListenerDeletable)
+        switch_notifications_show_only_one.setOnCheckedChangeListener(viewModel.checkedChangeListenerShowOnlyOneNotification)
     }
 
     override fun onNavigationEvent(eventId: Int) {

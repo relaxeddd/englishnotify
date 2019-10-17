@@ -35,9 +35,7 @@ abstract class ActivityBilling<VM : ViewModelBase, B : ViewDataBinding> : Activi
                     requestVerify(purchase)
                 }
             }
-        } else if (billingResult.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
-
-        } else {
+        } else if (billingResult.responseCode != BillingClient.BillingResponseCode.USER_CANCELED) {
             showToast(R.string.error_purchase)
         }
     }

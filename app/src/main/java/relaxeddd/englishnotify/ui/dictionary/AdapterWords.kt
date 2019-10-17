@@ -21,7 +21,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlin.collections.HashSet
 
-abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewModelDictionary) : ListAdapter<Word, VH>(WordDiffCallback()) {
+abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewModelDictionary) : ListAdapter<Word, VH>(WordDiffCallback) {
 
     var languageType = 0
         set(value) {
@@ -99,7 +99,7 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
         menuHelper.show()
     }
 
-    private class WordDiffCallback : DiffUtil.ItemCallback<Word>() {
+    private object WordDiffCallback : DiffUtil.ItemCallback<Word>() {
 
         override fun areItemsTheSame(oldItem: Word, newItem: Word): Boolean {
             return oldItem.id == newItem.id

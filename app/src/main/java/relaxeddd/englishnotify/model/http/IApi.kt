@@ -1,7 +1,6 @@
 package relaxeddd.englishnotify.model.http
 
 import androidx.annotation.Keep
-import org.json.JSONArray
 import relaxeddd.englishnotify.common.*
 import retrofit2.http.GET
 import retrofit2.http.Header

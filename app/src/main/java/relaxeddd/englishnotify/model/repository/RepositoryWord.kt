@@ -6,11 +6,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import relaxeddd.englishnotify.App
-import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.db.AppDatabase
 import relaxeddd.englishnotify.model.db.WordDao
-import relaxeddd.englishnotify.model.http.ApiHelper
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -178,7 +176,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
     }
 
     //------------------------------------------------------------------------------------------------------------------
-    suspend fun removeWordFromDb(wordId: String) {
+    fun removeWordFromDb(wordId: String) {
         wordDao.deleteById(wordId)
     }
 

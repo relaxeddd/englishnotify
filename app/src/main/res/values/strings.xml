@@ -68,7 +68,7 @@
     <string name="hours_off_time">Hours (0–23)</string>
     <string name="i_not_know_it">I don`t know</string>
     <string name="i_know_it">I know it</string>
-    <string name="if_notifications_not_receive">If not receive notifications</string>
+    <string name="if_notifications_not_receive">If you do not receive notifications</string>
     <string name="incorrect_answer">Incorrect answer</string>
     <string name="information">Information</string>
     <string name="input_your_message">Input your message</string>
@@ -221,10 +221,8 @@
     </string>
 
     <string name="patch_notes">
-        - Decreased receiving words time without subscription from 6 hours to 4 hours
-        \n- Now you can add own words without internet connection
-        \n- Removed rating tab
-        \n- Fixed bug when you receive words not from only "Own category" if this category is selected
+        - Fixed bug after own word creating
+        \n- Changed logic setting "If you do not receive notifications"
         \n- Note: you get the main profit of app when you will use "Own category" words
     </string>
 
