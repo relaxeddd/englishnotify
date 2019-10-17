@@ -8,7 +8,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.json.JSONArray
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.push.MyFirebaseMessagingService
@@ -25,8 +24,6 @@ class RepositoryUser private constructor() {
 
     var liveDataUser = MutableLiveData<User>(null)
     val liveDataIsActualVersion = MutableLiveData(true)
-    var rating: List<RatingItem> = ArrayList()
-        private set
 
     fun isAuthorized() = FirebaseAuth.getInstance().currentUser != null
 
@@ -69,7 +66,6 @@ class RepositoryUser private constructor() {
                         liveDataIsActualVersion.value = answerInitData.isActualVersion
                     }
 
-                    if (answerInitData.rating != null) rating = answerInitData.rating
                     if (answerInitData.words != null) {
                         withContext(Dispatchers.IO) {
                             RepositoryWord.getInstance().updateWords(answerInitData.words)

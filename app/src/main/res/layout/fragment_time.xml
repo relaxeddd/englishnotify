@@ -19,7 +19,6 @@
             android:id="@+id/radio_group_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onCheckedChanged="@{viewModel.checkedChangeListenerTime}"
             android:padding="@dimen/size_8">
 
             <com.google.android.material.radiobutton.MaterialRadioButton

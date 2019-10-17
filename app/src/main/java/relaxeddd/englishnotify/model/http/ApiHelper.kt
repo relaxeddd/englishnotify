@@ -10,7 +10,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import com.google.firebase.iid.FirebaseInstanceId
 import okhttp3.internal.http2.StreamResetException
-import org.json.JSONArray
 import retrofit2.HttpException
 import java.net.ConnectException
 import java.net.SocketTimeoutException

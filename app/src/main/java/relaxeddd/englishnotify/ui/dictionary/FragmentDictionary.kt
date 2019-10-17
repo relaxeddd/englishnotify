@@ -6,7 +6,6 @@ import android.os.Handler
 import android.view.MenuItem
 import android.view.View
 import androidx.databinding.ViewDataBinding
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import kotlinx.android.synthetic.main.fragment_dictionary.*
@@ -45,16 +44,15 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding,
     abstract fun getCardViewFilter() : MaterialCardView
     override fun getLayoutResId() = R.layout.fragment_dictionary
 
-    override fun configureBinding() {
-        super.configureBinding()
-        adapter = createWordsAdapter()
-    }
-
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        getRecyclerViewWords().layoutManager = LinearLayoutManager(context)
+        adapter = createWordsAdapter()
+
+        if (check_box_dictionary_show_own_words != null) {
+            check_box_dictionary_show_own_words.setOnCheckedChangeListener(viewModel.checkedChangeListenerShowOwnWords)
+        }
         getRecyclerViewWords().adapter = adapter
         getRecyclerViewWords().setOnTouchListener { _, _ ->
             animateDropdown(getCardViewFilter(), false, animBlock)

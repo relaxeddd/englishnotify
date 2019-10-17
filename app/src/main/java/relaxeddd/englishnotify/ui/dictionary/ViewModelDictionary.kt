@@ -44,11 +44,6 @@ open class ViewModelDictionary(private val repositoryWord: RepositoryWord, prote
         sortByType.observeForever(sortObserver)
     }
 
-    override fun onFragmentResume() {
-        super.onFragmentResume()
-        updateFilteredWords()
-    }
-
     override fun onCleared() {
         super.onCleared()
         repositoryWord.words.removeObserver(wordsObserver)

@@ -78,7 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:barrierDirection="left"
-                app:constraint_referenced_ids="check_box_word_select, image_word_own, image_word_play"/>
+                app:constraint_referenced_ids="check_box_word_select,image_word_own,image_word_play"/>
 
         <LinearLayout
                 android:id="@+id/constraint_word_drop_dawn"

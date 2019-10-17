@@ -34,9 +34,6 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     val clickListenerSubscriptionInfo = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_SUBSCRIPTION_INFO)
     }
-    val clickListenerSendFeedback = View.OnClickListener {
-        navigateEvent.value = Event(NAVIGATION_DIALOG_SEND_FEEDBACK)
-    }
     val clickListenerLogout = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_CONFIRM_LOGOUT)
     }

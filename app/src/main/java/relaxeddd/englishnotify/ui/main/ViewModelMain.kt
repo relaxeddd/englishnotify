@@ -9,7 +9,6 @@ import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.BuildConfig
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.dialogs.DialogPatchNotes
 import relaxeddd.englishnotify.model.repository.RepositoryCommon
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 
@@ -22,18 +21,12 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
     val isShowLoading = MutableLiveData(false)
     val isShowHorizontalProgress = MutableLiveData(false)
     val isVisibleSecondaryBottomNavigationView = MutableLiveData(true)
-    private var isRateDialogShown = false
 
     private val userObserver = Observer<User?> { user ->
         isShowGoogleAuth.value = user == null || RepositoryCommon.getInstance().firebaseUser == null
         isShowWarningNotifications.value = isShowGoogleAuth.value == false && (user == null || !user.receiveNotifications)
         isShowWarningSubscription.value = user != null && user.subscriptionTime <= System.currentTimeMillis()
 
-        val launchCount = SharedHelper.getLaunchCount()
-        if (user != null && !isRateDialogShown && !SharedHelper.isCancelledRateDialog() && launchCount % 3 == 0) {
-            isRateDialogShown = true
-            navigateEvent.value = Event(NAVIGATION_DIALOG_LIKE_APP)
-        }
         if (user != null) {
             if (user.email.isNotEmpty()) {
                 SharedHelper.setPrivacyPolicyConfirmed(true)

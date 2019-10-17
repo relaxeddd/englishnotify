@@ -196,6 +196,9 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
 
     override fun onNavigationEvent(eventId: Int) {
         when (eventId) {
+            NAVIGATION_ACTIVITY_BACK -> {
+                onBackPressed()
+            }
             NAVIGATION_FRAGMENT_NOTIFICATIONS -> {
                 if (navController.currentDestination?.label != getString(R.string.label_fragment_notifications)) {
                     navController.navigate(R.id.action_global_fragmentNotifications)
@@ -252,11 +255,6 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
                         viewModel.isShowLoading.value = false
                     }
                 }
-            }
-            NAVIGATION_DIALOG_LIKE_APP -> {
-                val dialog = DialogLikeApp()
-                dialog.confirmListener = listenerLikeApp
-                dialog.show(this@MainActivity.supportFragmentManager, "Like app Dialog")
             }
             NAVIGATION_DIALOG_SEND_FEEDBACK -> {
                 val dialog = DialogSendFeedback()

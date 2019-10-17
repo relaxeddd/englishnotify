@@ -35,13 +35,12 @@
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switch_notifications_enable"
                         android:text="@string/enable_notifications"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:clickable="@{safeUnbox(viewModel.isEnableNotificationsClickable)}"
                         android:checked="@{viewModel.user.receiveNotifications}"
-                        android:onCheckedChanged="@{viewModel.checkedChangeListenerEnableNotifications}"
-                        android:id="@+id/switch_notifications_enable"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -313,7 +312,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:checked="@{safeUnbox(viewModel.isNotDeletable)}"
-                        android:onCheckedChanged="@{viewModel.checkedChangeListenerDeletable}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -356,7 +354,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:checked="@{safeUnbox(viewModel.isShowOnlyOneNotification)}"
-                        android:onCheckedChanged="@{viewModel.checkedChangeListenerShowOnlyOneNotification}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"

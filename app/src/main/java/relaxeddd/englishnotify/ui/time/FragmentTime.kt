@@ -32,6 +32,7 @@ class FragmentTime : BaseFragment<ViewModelTime, FragmentTimeBinding>() {
         super.onViewCreated(view, savedInstanceState)
         val checkedRadioButton = radio_group_time.getChildAt(viewModel.receiveNotificationsTime)
 
+        radio_group_time.setOnCheckedChangeListener(viewModel.checkedChangeListenerTime)
         if (checkedRadioButton != null) {
             radio_group_time.check(checkedRadioButton.id)
         }

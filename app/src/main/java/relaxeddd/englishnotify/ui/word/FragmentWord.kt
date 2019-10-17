@@ -9,8 +9,11 @@ import kotlinx.android.synthetic.main.fragment_word.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.FragmentWordBinding
+import android.os.Handler
 
 class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
+
+    private val handler = Handler()
 
     override fun getLayoutResId() = R.layout.fragment_word
     override fun getToolbarTitleResId() = R.string.word
@@ -26,8 +29,6 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.item_menu_accept -> {
-                hideKeyboard(text_input_word)
-
                 val eng = text_input_word.text.toString()
                 val rus = text_input_translation.text.toString()
                 val transcription = text_input_transcription.text.toString()
@@ -53,7 +54,13 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
                     return true
                 }
 
-                viewModel.createOwnWord(eng, transcription, rus)
+                hideKeyboard()
+                //Wait to keyboard hide
+                onNavigationEvent(NAVIGATION_LOADING_SHOW)
+                handler.postDelayed({
+                    onNavigationEvent(NAVIGATION_LOADING_HIDE)
+                    viewModel.createOwnWord(eng, transcription, rus)
+                }, 500)
                 return true
             }
             else -> return super.onOptionsItemSelected(item)
@@ -100,5 +107,13 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
         container_text_word_input_word.boxStrokeColor = getPrimaryColorResId()
         container_text_word_input_transcription.boxStrokeColor = getPrimaryColorResId()
         container_text_word_input_translation.boxStrokeColor = getPrimaryColorResId()
+    }
+
+    private fun hideKeyboard() {
+       when {
+            text_input_word.hasFocus() -> hideKeyboard(text_input_word)
+            text_input_translation.hasFocus() -> hideKeyboard(text_input_translation)
+            text_input_transcription.hasFocus() -> hideKeyboard(text_input_transcription)
+       }
     }
 }
