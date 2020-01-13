@@ -174,10 +174,10 @@ fun getErrorString(result: Result?) : String {
 
 fun isCorrectAnswer(userAnswer: String, trueAnswer: String) : Boolean {
     val answerWords = trueAnswer.split(",")
-    var isCorrectAnswer = false
 
     for (answerWord in answerWords) {
         val changedAnswer = answerWord
+            .toLowerCase()
             .replace(".", "")
             .replace("-", "")
             .replace("?", "")
@@ -206,9 +206,9 @@ fun isCorrectAnswer(userAnswer: String, trueAnswer: String) : Boolean {
             .replace("г", "к")
             .replace("б", "п")
             .replace("з", "с")
-            .toLowerCase()
             .trim()
         val changedUserAnswer = userAnswer
+            .toLowerCase()
             .replace(".", "")
             .replace("-", "")
             .replace("?", "")
@@ -237,15 +237,14 @@ fun isCorrectAnswer(userAnswer: String, trueAnswer: String) : Boolean {
             .replace("г", "к")
             .replace("б", "п")
             .replace("з", "с")
-            .toLowerCase()
             .trim()
 
         if (changedUserAnswer.contains(changedAnswer)) {
-            isCorrectAnswer = true
+            return true
         }
     }
 
-    return isCorrectAnswer
+    return false
 }
 
 fun isValidNickname(nickname: String) : Boolean {
