@@ -5,9 +5,10 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.card.MaterialCardView
 import kotlinx.android.synthetic.main.fragment_dictionary.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.dialogs.DialogCheckTags
@@ -41,7 +42,7 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding,
     //------------------------------------------------------------------------------------------------------------------
     abstract fun createWordsAdapter() : A
     abstract fun getRecyclerViewWords() : RecyclerView
-    abstract fun getCardViewFilter() : MaterialCardView
+    abstract fun getCardViewFilter() : ViewGroup
     override fun getLayoutResId() = R.layout.fragment_dictionary
 
     @SuppressLint("ClickableViewAccessibility")
@@ -153,7 +154,7 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding,
     }
 
     override fun setupThemeColors() {
-        card_view_dictionary_filter.setCardBackgroundColor(getPrimaryColorResId())
+        container_dictionary_filter.setBackgroundResource(getPrimaryColorResId())
     }
 
     open fun onFragmentSelected() {}
@@ -167,10 +168,12 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding,
 
     protected fun updateAdapter(words: List<Word>?) {
         if (words != null && words.isNotEmpty()) {
-            if (words.size > 3 && adapter.currentList.isEmpty()) {
-                handler.postDelayed({ adapter.submitList(words) }, 400)
-            } else {
-                adapter.submitList(words)
+            val isScroll = adapter.currentList.size != words.size
+            adapter.submitList(words)
+            if (isScroll) {
+                handler.postDelayed({
+                    (getRecyclerViewWords().layoutManager as LinearLayoutManager?)?.scrollToPositionWithOffset(0, 0)
+                }, 50)
             }
         }
     }

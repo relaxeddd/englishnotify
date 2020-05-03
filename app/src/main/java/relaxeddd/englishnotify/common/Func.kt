@@ -14,7 +14,11 @@ import android.net.Uri
 import androidx.annotation.StringRes
 import androidx.fragment.app.FragmentActivity
 import android.view.inputmethod.InputMethodManager
+import androidx.annotation.IdRes
+import androidx.navigation.NavController
 import relaxeddd.englishnotify.R
+import java.lang.IllegalStateException
+import java.util.*
 import java.util.regex.Pattern
 
 fun getPrimaryColorResId() = when (SharedHelper.getAppThemeType()) {
@@ -176,70 +180,7 @@ fun isCorrectAnswer(userAnswer: String, trueAnswer: String) : Boolean {
     val answerWords = trueAnswer.split(",")
 
     for (answerWord in answerWords) {
-        val changedAnswer = answerWord
-            .toLowerCase()
-            .replace(".", "")
-            .replace("-", "")
-            .replace("?", "")
-            .replace("!", "")
-            .replace(",", "")
-            .replace("`", "")
-            .replace("'", "")
-            .replace("\"", "")
-            .replace("’", "")
-            .replace("«", "")
-            .replace("»", "")
-            .replace("“", "")
-            .replace("”", "")
-            .replace(" ", "")
-            .replace("ь", "")
-            .replace("ъ", "")
-            .replace("сс", "с")
-            .replace("пп", "п")
-            .replace("и", "е")
-            .replace("й", "е")
-            .replace("э", "е")
-            .replace("а", "о")
-            .replace("ю", "у")
-            .replace("ё", "е")
-            .replace("д", "т")
-            .replace("г", "к")
-            .replace("б", "п")
-            .replace("з", "с")
-            .trim()
-        val changedUserAnswer = userAnswer
-            .toLowerCase()
-            .replace(".", "")
-            .replace("-", "")
-            .replace("?", "")
-            .replace("!", "")
-            .replace(",", "")
-            .replace("`", "")
-            .replace("'", "")
-            .replace("\"", "")
-            .replace("’", "")
-            .replace("«", "")
-            .replace("»", "")
-            .replace("“", "")
-            .replace("”", "")
-            .replace(" ", "")
-            .replace("ь", "")
-            .replace("ъ", "")
-            .replace("сс", "с")
-            .replace("пп", "п")
-            .replace("и", "е")
-            .replace("й", "е")
-            .replace("э", "е")
-            .replace("а", "о")
-            .replace("ю", "у")
-            .replace("ё", "е")
-            .replace("д", "т")
-            .replace("г", "к")
-            .replace("б", "п")
-            .replace("з", "с")
-            .trim()
-
-        if (changedUserAnswer.contains(changedAnswer)) {
+        if (getDefaultWord(answerWord) == getDefaultWord(userAnswer)) {
             return true
         }
     }
@@ -247,8 +188,50 @@ fun isCorrectAnswer(userAnswer: String, trueAnswer: String) : Boolean {
     return false
 }
 
+private fun getDefaultWord(word: String) = word
+    .toLowerCase()
+    .replace(".", "")
+    .replace("-", "")
+    .replace("?", "")
+    .replace("!", "")
+    .replace(",", "")
+    .replace("`", "")
+    .replace("'", "")
+    .replace("\"", "")
+    .replace("’", "")
+    .replace("«", "")
+    .replace("»", "")
+    .replace("“", "")
+    .replace("”", "")
+    .replace(" ", "")
+    .replace("ь", "")
+    .replace("ъ", "")
+    .replace("сс", "с")
+    .replace("пп", "п")
+    .replace("и", "е")
+    .replace("й", "е")
+    .replace("э", "е")
+    .replace("а", "о")
+    .replace("ю", "у")
+    .replace("ё", "е")
+    .replace("д", "т")
+    .replace("г", "к")
+    .replace("б", "п")
+    .replace("з", "с")
+    .trim()
+
 fun isValidNickname(nickname: String) : Boolean {
     val pattern = Pattern.compile("^[a-zA-Zа-яА-Я][a-zA-Zа-яА-Я0-9_]{3,16}$")
     val matcher = pattern.matcher(nickname)
     return matcher.matches() && nickname != "null" && nickname != "NoName"
+}
+
+internal fun String.toLowerCase() : String {
+    return toLowerCase(Locale.getDefault())
+}
+
+internal fun NavController.myNavigate(@IdRes resId: Int) {
+    try {
+        navigate(resId)
+    } catch (e: IllegalStateException) {}
 }

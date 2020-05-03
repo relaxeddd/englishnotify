@@ -12,15 +12,12 @@ class ViewModelWord : ViewModelBase() {
 
     fun createOwnWord(eng: String, transcription: String, rus: String) {
         ioScope.launch {
-            if (wordId.isEmpty()) {
-                RepositoryWord.getInstance().insertOwnCategoryWord(eng, eng, rus, transcription)
-            } else {
-                RepositoryWord.getInstance().insertOwnCategoryWord(eng, eng, rus, transcription)
+            RepositoryWord.getInstance().insertOwnCategoryWord(eng, eng, rus, transcription)
+            if (wordId.isNotEmpty()) {
                 if (eng != this@ViewModelWord.wordId) {
                     RepositoryWord.getInstance().removeWordFromDb(this@ViewModelWord.wordId)
                 }
             }
-
             withContext(Dispatchers.Main) {
                 navigateEvent.value = Event(NAVIGATION_ACTIVITY_BACK)
             }

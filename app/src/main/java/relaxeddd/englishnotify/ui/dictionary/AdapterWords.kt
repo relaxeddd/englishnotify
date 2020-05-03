@@ -2,6 +2,7 @@ package relaxeddd.englishnotify.ui.dictionary
 
 import android.annotation.SuppressLint
 import android.view.View
+import android.view.ViewGroup
 import android.widget.CompoundButton
 import android.widget.ImageView
 import android.widget.ProgressBar
@@ -13,12 +14,12 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.card.MaterialCardView
 import com.google.android.material.checkbox.MaterialCheckBox
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.*
+import relaxeddd.englishnotify.common.Word
+import relaxeddd.englishnotify.common.animateDropdown
 import java.text.SimpleDateFormat
-import java.util.Locale
+import java.util.*
 import kotlin.collections.HashSet
 
 abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewModelDictionary) : ListAdapter<Word, VH>(WordDiffCallback) {
@@ -117,7 +118,7 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
 
         var isOpen = false
 
-        abstract fun getCardViewWord() : MaterialCardView
+        abstract fun getWordMainContainer() : ViewGroup
         abstract fun getTextTimestamp() : TextView
         abstract fun getTextTags() : TextView
         abstract fun getImageOwnWord() : ImageView
@@ -131,8 +132,8 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
                       clickListener: View.OnClickListener, longClickListener: View.OnLongClickListener,
                       clickListenerPlay: View.OnClickListener, checkedChangeListener: CompoundButton.OnCheckedChangeListener) {
             itemView.tag = word.id
-            getCardViewWord().setOnClickListener(clickListener)
-            getCardViewWord().setOnLongClickListener(longClickListener)
+            getWordMainContainer().setOnClickListener(clickListener)
+            getWordMainContainer().setOnLongClickListener(longClickListener)
             getImagePlay().setOnClickListener(clickListenerPlay)
 
             getTextTimestamp().text = SimpleDateFormat("hh:mm dd.MM", Locale.getDefault()).format(word.timestamp) ?: ""

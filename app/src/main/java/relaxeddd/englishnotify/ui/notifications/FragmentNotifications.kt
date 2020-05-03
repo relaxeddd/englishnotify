@@ -58,10 +58,10 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
     override fun onNavigationEvent(eventId: Int) {
         when (eventId) {
             NAVIGATION_FRAGMENT_SELECT_CATEGORY -> {
-                Navigation.findNavController(view ?: return).navigate(R.id.action_fragmentNotifications_to_fragmentCategories)
+                Navigation.findNavController(view ?: return).myNavigate(R.id.action_fragmentNotifications_to_fragmentCategories)
             }
             NAVIGATION_FRAGMENT_TIME -> {
-                Navigation.findNavController(view ?: return).navigate(R.id.action_fragmentNotifications_to_fragmentTime)
+                Navigation.findNavController(view ?: return).myNavigate(R.id.action_fragmentNotifications_to_fragmentTime)
             }
             NAVIGATION_DIALOG_LEARN_ENGLISH -> {
                 val dialog = DialogLearnLanguage()

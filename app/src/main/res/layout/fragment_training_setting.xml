@@ -3,9 +3,10 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <RadioGroup
             android:id="@+id/radio_group_training_setting_language"
@@ -43,8 +44,7 @@
             android:id="@+id/view_training_setting_separator"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_1"
-            android:background="@color/gray"
-            android:layout_below="@+id/radio_group_training_setting_language"/>
+            android:background="@color/gray"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_training_setting_categories"
@@ -52,9 +52,8 @@
             android:layout_height="match_parent"
             android:clipToPadding="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/view_item_category"
-            android:layout_below="@+id/view_training_setting_separator"/>
+            tools:listitem="@layout/view_item_category"/>
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </layout>

@@ -24,7 +24,7 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
 
     val textRepeatTime = MutableLiveData("")
     val textLearnLanguage = MutableLiveData("")
-    val textNotificationsView = MutableLiveData<String>(App.context.resources.getStringArray(R.array.array_notifications_view)[SharedHelper.getNotificationsView()])
+    val textNotificationsView = MutableLiveData(App.context.resources.getStringArray(R.array.array_notifications_view)[SharedHelper.getNotificationsView()])
 
     val checkedChangeListenerShowOnlyOneNotification = CompoundButton.OnCheckedChangeListener { _, isChecked ->
         SharedHelper.setShowOnlyOneNotification(isChecked)

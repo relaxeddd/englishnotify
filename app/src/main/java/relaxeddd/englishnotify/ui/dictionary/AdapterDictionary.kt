@@ -7,7 +7,6 @@ import android.widget.CompoundButton
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import com.google.android.material.card.MaterialCardView
 import com.google.android.material.checkbox.MaterialCheckBox
 import kotlinx.android.synthetic.main.view_item_word.view.*
 import relaxeddd.englishnotify.R
@@ -33,7 +32,7 @@ class AdapterDictionary(viewModel: ViewModelDictionary) : AdapterWords<AdapterDi
 
     class ViewHolder(view: View) : AdapterWords.ViewHolder(view) {
 
-        override fun getCardViewWord(): MaterialCardView = itemView.card_view_word
+        override fun getWordMainContainer(): ViewGroup = itemView.card_view_word
         override fun getTextTimestamp(): TextView = itemView.text_word_timestamp
         override fun getTextTags(): TextView = itemView.text_word_tags
         override fun getImageOwnWord(): ImageView = itemView.image_word_own

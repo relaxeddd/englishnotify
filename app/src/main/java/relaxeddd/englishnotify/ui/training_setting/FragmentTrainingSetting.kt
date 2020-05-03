@@ -36,6 +36,7 @@ class FragmentTrainingSetting : BaseFragment<ViewModelTrainingSetting, FragmentT
     override fun configureBinding() {
         super.configureBinding()
         adapter = AdapterCategories(viewModel)
+        binding.recyclerViewTrainingSettingCategories.itemAnimator = null
         binding.recyclerViewTrainingSettingCategories.adapter = adapter
         viewModel.categories.observe(viewLifecycleOwner, Observer { items ->
             if (items != null && items.isNotEmpty()) adapter.submitList(items)

@@ -2,6 +2,7 @@ package relaxeddd.englishnotify.ui.dictionary
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
@@ -11,7 +12,7 @@ import relaxeddd.englishnotify.databinding.FragmentDictionaryBinding
 abstract class FragmentDictionaryDefault<VM : ViewModelDictionary, A : AdapterWords<*>> : FragmentDictionary<VM, FragmentDictionaryBinding, A>() {
 
     override fun getRecyclerViewWords(): RecyclerView = recycler_view_dictionary
-    override fun getCardViewFilter() : MaterialCardView = card_view_dictionary_filter
+    override fun getCardViewFilter() : ViewGroup = container_dictionary_filter
 
     override fun configureBinding() {
         super.configureBinding()
