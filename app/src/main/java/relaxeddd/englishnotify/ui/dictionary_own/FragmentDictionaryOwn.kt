@@ -3,10 +3,10 @@ package relaxeddd.englishnotify.ui.dictionary_own
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.card.MaterialCardView
 import kotlinx.android.synthetic.main.fragment_dictionary_own.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.InjectorUtils
@@ -27,22 +27,22 @@ class FragmentDictionaryOwn : FragmentDictionary<ViewModelDictionaryOwn, Fragmen
     override fun getSearchMenuItemId() = R.id.item_menu_search_dictionary_own
     override fun createWordsAdapter() = AdapterDictionary(viewModel)
     override fun getRecyclerViewWords(): RecyclerView = recycler_view_dictionary
-    override fun getCardViewFilter() : MaterialCardView = card_view_dictionary_filter
+    override fun getCardViewFilter() : ViewGroup = card_view_dictionary_filter
 
     override fun configureBinding() {
         super.configureBinding()
 
         binding.viewModel = viewModel
         binding.clickListenerCloseFilter = clickListenerCloseFilter
-        binding.clickListenerAddOwnWord = Navigation.createNavigateOnClickListener(R.id.action_fragmentDictionaryOwn_to_fragmentWord)
-        viewModel.user.observe(viewLifecycleOwner, Observer { user ->
-            adapter.languageType = user?.learnLanguageType ?: 0
-        })
+        binding.clickListenerAddWord = Navigation.createNavigateOnClickListener(R.id.action_fragmentDictionaryOwn_to_fragmentWord)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.user.observe(viewLifecycleOwner, Observer { user ->
+            adapter.languageType = user?.learnLanguageType ?: 0
+        })
         viewModel.wordsFiltered.observe(viewLifecycleOwner, Observer { words ->
             binding.hasWords = (words != null && words.isNotEmpty())
             updateAdapter(words)
@@ -67,6 +67,6 @@ class FragmentDictionaryOwn : FragmentDictionary<ViewModelDictionaryOwn, Fragmen
     }
 
     override fun setupThemeColors() {
-        card_view_dictionary_filter.setCardBackgroundColor(getPrimaryColorResId())
+        card_view_dictionary_filter.setBackgroundResource(getPrimaryColorResId())
     }
 }

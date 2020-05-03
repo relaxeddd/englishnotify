@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.RemoteInput
 import androidx.core.content.ContextCompat
 import relaxeddd.englishnotify.R
@@ -30,7 +31,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     companion object {
         var pushToken: String = ""
 
-        fun handleWordNotification(context: Context, word: Word, isSave: Boolean = true, viewType: Int, withWrongTitle: Boolean = false) {
+        fun handleWordNotification(context: Context, word: Word, isSave: Boolean = true, viewType: Int,
+                                   withWrongTitle: Boolean = false, notificationId: Int = -1) {
             val languageType = SharedHelper.getLearnLanguageType(context)
 
             val wordTitle = getWordTitle(word, languageType)
@@ -73,11 +75,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 }
             }
 
-            showNotificationWord(context, word.id, notificationText, title, isShowButtons)
+            showNotificationWord(context, word.id, notificationText, title, isShowButtons, notificationId)
         }
 
-        private fun showNotificationWord(ctx: Context, wordId: String, text: String, title: String, withButtons : Boolean) {
-            val notificationId = Random.nextInt(10000)
+        private fun showNotificationWord(ctx: Context, wordId: String, text: String, title: String,
+                                         withButtons : Boolean, existsNotificationId: Int = -1) {
+            val notificationId = if (existsNotificationId != -1) existsNotificationId else Random.nextInt(10000)
             val intent = Intent(ctx, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             val pendingIntent = PendingIntent.getActivity(ctx, 0, intent, PendingIntent.FLAG_ONE_SHOT)
@@ -121,7 +124,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     .addRemoteInput(remoteInput)
                     .build()
                 notificationBuilder.addAction(action)
-                notificationBuilder.setOngoing(SharedHelper.isOngoing())
 
                 val notKnowPendingIntent: PendingIntent =
                     PendingIntent.getBroadcast(ctx, Random.nextInt(1000), notKnowIntent, 0)
@@ -135,7 +137,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 notificationBuilder.setSmallIcon(R.drawable.ic_stat_onesignal_default)
             }
 
-            val notificationManager = ctx.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager?
+            val notificationManager = NotificationManagerCompat.from(ctx.applicationContext)
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val channel = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -143,7 +145,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 } else null
 
                 if (channel != null) {
-                    notificationManager?.createNotificationChannel(channel)
+                    notificationManager.createNotificationChannel(channel)
                 }
             } else {
                 @Suppress("DEPRECATION")
@@ -151,9 +153,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             }
 
             if (SharedHelper.isShowOnlyOneNotification(ctx)) {
-                notificationManager?.cancelAll()
+                notificationManager.cancelAll()
             }
-            notificationManager?.notify(notificationId, notificationBuilder.build())
+            notificationManager.notify(wordId, notificationId, notificationBuilder.build())
         }
 
         private fun showNotification(ctx: Context, title: String, text: String) {
@@ -182,7 +184,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 notificationBuilder.setSmallIcon(R.drawable.ic_stat_onesignal_default)
             }
 
-            val notificationManager = ctx.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager?
+            val notificationManager = NotificationManagerCompat.from(ctx.applicationContext)
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val channel = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -190,14 +192,14 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 } else null
 
                 if (channel != null) {
-                    notificationManager?.createNotificationChannel(channel)
+                    notificationManager.createNotificationChannel(channel)
                 }
             } else {
                 @Suppress("DEPRECATION")
                 notificationBuilder.priority = Notification.PRIORITY_HIGH
             }
 
-            notificationManager?.notify(notificationId, notificationBuilder.build())
+            notificationManager.notify(notificationId, notificationBuilder.build())
         }
 
         private fun getFullNotificationText(word: Word, languageType: Int, withoutWordText: Boolean) : String {

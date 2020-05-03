@@ -24,6 +24,7 @@
 -keepattributes RuntimeInvisibleAnnotations
 -keepattributes RuntimeVisibleParameterAnnotations
 -keepattributes RuntimeInvisibleParameterAnnotations
+-keepnames class androidx.navigation.fragment.NavHostFragment
 
 # Ignore annotation used for build tooling.
 #-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement

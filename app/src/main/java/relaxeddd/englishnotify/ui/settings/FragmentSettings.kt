@@ -63,7 +63,7 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
     override fun onNavigationEvent(eventId: Int) {
         when (eventId) {
             NAVIGATION_FRAGMENT_STATISTIC -> {
-                Navigation.findNavController(view ?: return).navigate(R.id.action_fragmentSettings_to_fragmentStatistic)
+                Navigation.findNavController(view ?: return).myNavigate(R.id.action_fragmentSettings_to_fragmentStatistic)
             }
             NAVIGATION_DIALOG_APP_ABOUT -> {
                 if (isResumed) {

@@ -55,8 +55,8 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val title = if (getToolbarTitleResId() != EMPTY_RES) getString(getToolbarTitleResId()) else getToolbarTitle()
         (activity as AppCompatActivity).supportActionBar?.title = title
     }
@@ -124,7 +124,7 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
 
     @CallSuper
     protected open fun configureBinding() {
-        viewModel.navigation.observe(this, Observer {
+        viewModel.navigation.observe(viewLifecycleOwner, Observer {
             it.getContentIfNotHandled()?.let {eventId ->
                 onNavigationEvent(eventId)
             }

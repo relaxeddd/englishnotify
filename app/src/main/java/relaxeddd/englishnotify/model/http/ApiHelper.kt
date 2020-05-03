@@ -1,6 +1,5 @@
 package relaxeddd.englishnotify.model.http
 
-import android.system.ErrnoException
 import com.google.firebase.auth.FirebaseUser
 import okhttp3.OkHttpClient
 import relaxeddd.englishnotify.BuildConfig
@@ -9,12 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import com.google.firebase.iid.FirebaseInstanceId
-import okhttp3.internal.http2.StreamResetException
-import retrofit2.HttpException
-import java.net.ConnectException
-import java.net.SocketTimeoutException
-import java.net.UnknownHostException
-import javax.net.ssl.SSLHandshakeException
+import java.lang.Exception
 
 object ApiHelper {
 
@@ -126,19 +120,7 @@ object ApiHelper {
     //------------------------------------------------------------------------------------------------------------------
     private suspend fun <T> executeRequest(request: suspend () -> T, defaultAnswer: T) = try {
         request()
-    } catch (e: UnknownHostException) {
-        defaultAnswer
-    } catch (e: SocketTimeoutException) {
-        defaultAnswer
-    } catch (e: StreamResetException) {
-        defaultAnswer
-    } catch (e: HttpException) {
-        defaultAnswer
-    } catch (e: ConnectException) {
-        defaultAnswer
-    } catch (e: SSLHandshakeException) {
-        defaultAnswer
-    } catch (e: ErrnoException) {
+    } catch (e: Exception) {
         defaultAnswer
     }
 }

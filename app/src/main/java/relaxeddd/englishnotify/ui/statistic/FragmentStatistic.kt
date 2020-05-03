@@ -1,7 +1,6 @@
 package relaxeddd.englishnotify.ui.statistic
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_statistic.*
@@ -34,6 +33,6 @@ class FragmentStatistic : BaseFragment<ViewModelStatistic, FragmentStatisticBind
         recycler_view_statistic.layoutManager = LinearLayoutManager(context)
         recycler_view_statistic.isNestedScrollingEnabled = false
         recycler_view_statistic.adapter = adapter
-        Handler().postDelayed({ adapter.submitList(viewModel.tagsInfo) }, 400)
+        adapter.submitList(viewModel.tagsInfo)
     }
 }

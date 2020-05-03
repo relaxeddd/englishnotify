@@ -12,7 +12,7 @@ import android.text.style.ClickableSpan
 import android.text.style.UnderlineSpan
 import android.view.View
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
 import relaxeddd.englishnotify.R
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
@@ -86,7 +86,9 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
         PushTokenHelper.initChannelNotifications(this)
         initGooglePlayServices()
 
-        navController = Navigation.findNavController(this, R.id.fragment_navigation_host)
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_navigation_host) as NavHostFragment
+        navController = navHostFragment.navController
+
         navController.addOnDestinationChangedListener { _, destination, _ ->
             val isDictionaryTab = isDictionaryTab(destination.id)
             viewModel.isVisibleSecondaryBottomNavigationView.value = isDictionaryTab
@@ -114,16 +116,16 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
             when (it.itemId) {
                 R.id.fragmentDictionaryAll -> {
                     when (selectedSecondaryBottomMenuId) {
-                        R.id.fragmentDictionaryAll -> navController.navigate(R.id.action_global_fragmentDictionaryAll)
-                        R.id.fragmentDictionaryOwn -> navController.navigate(R.id.action_global_fragmentDictionaryOwn)
-                        R.id.fragmentDictionaryExercises -> navController.navigate(R.id.action_global_fragmentDictionaryExercises)
-                        R.id.fragmentDictionaryKnow -> navController.navigate(R.id.action_global_fragmentDictionaryKnow)
+                        R.id.fragmentDictionaryAll -> navController.myNavigate(R.id.action_global_fragmentDictionaryAll)
+                        R.id.fragmentDictionaryOwn -> navController.myNavigate(R.id.action_global_fragmentDictionaryOwn)
+                        R.id.fragmentDictionaryExercises -> navController.myNavigate(R.id.action_global_fragmentDictionaryExercises)
+                        R.id.fragmentDictionaryKnow -> navController.myNavigate(R.id.action_global_fragmentDictionaryKnow)
                         else -> return@setOnNavigationItemSelectedListener false
                     }
                 }
-                R.id.fragmentTrainingSetting -> navController.navigate(R.id.action_global_fragmentTrainingSetting)
-                R.id.fragmentNotifications -> navController.navigate(R.id.action_global_fragmentNotifications)
-                R.id.fragmentSettings -> navController.navigate(R.id.action_global_fragmentSettings)
+                R.id.fragmentTrainingSetting -> navController.myNavigate(R.id.action_global_fragmentTrainingSetting)
+                R.id.fragmentNotifications -> navController.myNavigate(R.id.action_global_fragmentNotifications)
+                R.id.fragmentSettings -> navController.myNavigate(R.id.action_global_fragmentSettings)
                 else -> return@setOnNavigationItemSelectedListener false
             }
             selectedBottomMenuId = it.itemId
@@ -136,10 +138,10 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
             }
 
             when (it.itemId) {
-                R.id.fragmentDictionaryAll -> navController.navigate(R.id.action_global_fragmentDictionaryAll)
-                R.id.fragmentDictionaryOwn -> navController.navigate(R.id.action_global_fragmentDictionaryOwn)
-                R.id.fragmentDictionaryExercises -> navController.navigate(R.id.action_global_fragmentDictionaryExercises)
-                R.id.fragmentDictionaryKnow -> navController.navigate(R.id.action_global_fragmentDictionaryKnow)
+                R.id.fragmentDictionaryAll -> navController.myNavigate(R.id.action_global_fragmentDictionaryAll)
+                R.id.fragmentDictionaryOwn -> navController.myNavigate(R.id.action_global_fragmentDictionaryOwn)
+                R.id.fragmentDictionaryExercises -> navController.myNavigate(R.id.action_global_fragmentDictionaryExercises)
+                R.id.fragmentDictionaryKnow -> navController.myNavigate(R.id.action_global_fragmentDictionaryKnow)
                 else -> return@setOnNavigationItemSelectedListener false
             }
             selectedSecondaryBottomMenuId = it.itemId
@@ -201,12 +203,12 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
             }
             NAVIGATION_FRAGMENT_NOTIFICATIONS -> {
                 if (navController.currentDestination?.label != getString(R.string.label_fragment_notifications)) {
-                    navController.navigate(R.id.action_global_fragmentNotifications)
+                    navController.myNavigate(R.id.action_global_fragmentNotifications)
                 }
             }
             NAVIGATION_FRAGMENT_SETTINGS -> {
                 if (navController.currentDestination?.label != getString(R.string.label_fragment_settings)) {
-                    navController.navigate(R.id.action_global_fragmentSettings)
+                    navController.myNavigate(R.id.action_global_fragmentSettings)
                 }
             }
             NAVIGATION_DIALOG_RATE_APP -> {

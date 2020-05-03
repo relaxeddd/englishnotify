@@ -1,73 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
-                android:orientation="vertical"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/add_to_own_category"
+                android:layout_marginStart="@dimen/size_12"
+                android:layout_marginEnd="@dimen/size_12"
+                android:layout_marginTop="@dimen/size_16"
+                android:textSize="@dimen/font_16"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/container_text_word_input_word"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/container_text_word_input_word"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxStrokeColor="@color/colorPrimary"
-                    android:layout_marginStart="@dimen/size_12"
-                    android:layout_marginEnd="@dimen/size_12"
-                    android:layout_marginTop="@dimen/size_16">
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxStrokeColor="@color/colorPrimary"
+                android:layout_marginStart="@dimen/size_12"
+                android:layout_marginEnd="@dimen/size_12"
+                android:layout_marginTop="@dimen/size_16">
 
                 <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/text_input_word"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:singleLine="true"
-                        android:maxLength="200"
-                        android:hint="@string/word"/>
+                    android:id="@+id/text_input_word"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:maxLength="200"
+                    android:hint="@string/word"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/container_text_word_input_transcription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxStrokeColor="@color/colorPrimary"
-                    android:layout_marginStart="@dimen/size_12"
-                    android:layout_marginEnd="@dimen/size_12"
-                    android:layout_marginTop="@dimen/size_16">
+                android:id="@+id/container_text_word_input_transcription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxStrokeColor="@color/colorPrimary"
+                android:layout_marginStart="@dimen/size_12"
+                android:layout_marginEnd="@dimen/size_12"
+                android:layout_marginTop="@dimen/size_16">
 
                 <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/text_input_transcription"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:singleLine="true"
-                        android:maxLength="200"
-                        android:hint="@string/transcription"/>
+                    android:id="@+id/text_input_transcription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:maxLength="200"
+                    android:hint="@string/transcription"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/container_text_word_input_translation"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxStrokeColor="@color/colorPrimary"
-                    android:layout_marginStart="@dimen/size_12"
-                    android:layout_marginEnd="@dimen/size_12"
-                    android:layout_marginTop="@dimen/size_16">
+                android:id="@+id/container_text_word_input_translation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxStrokeColor="@color/colorPrimary"
+                android:layout_marginStart="@dimen/size_12"
+                android:layout_marginEnd="@dimen/size_12"
+                android:layout_marginTop="@dimen/size_16">
 
                 <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/text_input_translation"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:singleLine="true"
-                        android:maxLength="200"
-                        android:hint="@string/translation"/>
+                    android:id="@+id/text_input_translation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:maxLength="200"
+                    android:hint="@string/translation"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 

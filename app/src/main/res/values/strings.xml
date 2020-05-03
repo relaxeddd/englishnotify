@@ -6,6 +6,7 @@
     <string name="about_app">About app</string>
     <string name="accept">Accept</string>
     <string name="add_to_own_category">Add to own category</string>
+    <string name="add_word">Add word</string>
     <string name="all_words">All words</string>
     <string name="alphabetical_name">Alphabetical name</string>
     <string name="alphabetical_translate">Alphabetical translate</string>
@@ -79,7 +80,7 @@
     <string name="logout_error">Logout error</string>
     <string name="logout_success">Logout success</string>
     <string name="main">Main</string>
-    <string name="mixed">Смешанная</string>
+    <string name="mixed">Mixed</string>
     <string name="new_categories">New</string>
     <string name="new_version">New version</string>
     <string name="network_not_available">Network error</string>
@@ -221,9 +222,9 @@
     </string>
 
     <string name="patch_notes">
-        - Fixed bug after own word creating
-        \n- Changed logic setting "If you do not receive notifications"
-        \n- Note: you get the main profit of app when you will use "Own category" words
+        - Optimization
+        \n- Take attention on \"If you do not receive notifications\" in settings tab
+        \n- It might be better to add words in \"Own category\"
     </string>
 
     <!-- =========================================================================================================== -->
@@ -308,7 +309,7 @@
         This is the name that users will see when interacting with this channel.
         It should describe the category of notifications that will be sent through this channel
      -->
-    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="default_notification_channel_id" translatable="false">channel_id_relaxeddd_pushenglish</string>
 
     <!--Content descriptions-->
     <string name="ic_notifications_enable" translatable="false">Enable notifications option</string>
