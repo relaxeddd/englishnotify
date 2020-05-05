@@ -1,11 +1,13 @@
 package relaxeddd.englishnotify.ui.dictionary
 
 import android.annotation.SuppressLint
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.Handler
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -154,6 +156,8 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding,
     }
 
     override fun setupThemeColors() {
+        val context = context ?: return
+        button_dictionary_add_word?.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, getPrimaryColorResId()))
         container_dictionary_filter.setBackgroundResource(getPrimaryColorResId())
     }
 

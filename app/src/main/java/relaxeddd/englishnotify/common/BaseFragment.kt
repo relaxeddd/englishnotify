@@ -59,6 +59,7 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
         super.onViewCreated(view, savedInstanceState)
         val title = if (getToolbarTitleResId() != EMPTY_RES) getString(getToolbarTitleResId()) else getToolbarTitle()
         (activity as AppCompatActivity).supportActionBar?.title = title
+        setupThemeColors()
     }
 
     override fun onResume() {
