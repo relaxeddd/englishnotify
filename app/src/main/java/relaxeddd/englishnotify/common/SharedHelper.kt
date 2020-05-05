@@ -1,6 +1,7 @@
 package relaxeddd.englishnotify.common
 
 import android.content.Context
+import android.os.Build
 import relaxeddd.englishnotify.App
 
 object SharedHelper {
@@ -70,7 +71,7 @@ object SharedHelper {
 
     fun getNotificationsView(context: Context = App.context) : Int {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        return sPref.getInt(NOTIFICATIONS_VIEW, NOTIFICATIONS_VIEW_STANDARD)
+        return sPref.getInt(NOTIFICATIONS_VIEW, if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) NOTIFICATIONS_VIEW_STANDARD else NOTIFICATIONS_VIEW_INPUT)
     }
 
     fun setNotificationsView(viewType : Int, context: Context = App.context) {

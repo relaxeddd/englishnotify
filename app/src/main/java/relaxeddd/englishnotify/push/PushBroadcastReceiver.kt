@@ -33,11 +33,13 @@ class PushBroadcastReceiver : BroadcastReceiver() {
             val saveWord = Word(word)
             var learnStage = saveWord.learnStage
             var isRemove = true
+            val isRemovableViaDelay = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
 
             if (isKnow == KNOW) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     val userText = RemoteInput.getResultsFromIntent(intent)?.getCharSequence(KEY_TEXT_REPLY).toString().toLowerCase()
                     val answer = if (languageType == TYPE_PUSH_ENGLISH) word.rus else word.eng
+                    val title = if (languageType == TYPE_PUSH_ENGLISH) word.eng else word.rus
                     val isCorrectAnswer = isCorrectAnswer(userText, answer)
 
                     if (isCorrectAnswer && learnStage != LEARN_STAGE_MAX) {
@@ -50,10 +52,15 @@ class PushBroadcastReceiver : BroadcastReceiver() {
                     withContext(Dispatchers.Main) {
                         if (isCorrectAnswer) {
                             showToast(R.string.answer_correct)
+                            if (isRemovableViaDelay) {
+                                //Update notification to cancel it it after that
+                                MyFirebaseMessagingService.showNotificationWord(context, wordId, "", title, false, notificationId)
+                            }
                         } else {
                             showToast(R.string.answer_incorrect)
                             MyFirebaseMessagingService.handleWordNotification(context, word, false,
-                                SharedHelper.NOTIFICATIONS_VIEW_WITH_TRANSLATE, withWrongTitle = true, notificationId = notificationId)
+                                SharedHelper.NOTIFICATIONS_VIEW_WITH_TRANSLATE, withWrongTitle = true,
+                                notificationId = notificationId, isShowAnswer = true)
                         }
                     }
                 }
@@ -65,15 +72,18 @@ class PushBroadcastReceiver : BroadcastReceiver() {
 
                 withContext(Dispatchers.Main) {
                     MyFirebaseMessagingService.handleWordNotification(context, word, false,
-                        SharedHelper.NOTIFICATIONS_VIEW_WITH_TRANSLATE, notificationId = notificationId)
+                        SharedHelper.NOTIFICATIONS_VIEW_WITH_TRANSLATE, notificationId = notificationId, isShowAnswer = true)
                 }
             }
             if (saveWord.learnStage != learnStage) {
                 RepositoryWord.getInstance().setWordLearnStage(saveWord, learnStage, false)
             }
             if (isRemove && notificationId != -1) {
-                val notificationCompat = NotificationManagerCompat.from(context.applicationContext)
-                notificationCompat.cancel(wordId, notificationId)
+                withContext(Dispatchers.Main) {
+                    if (isRemovableViaDelay) delay(700)
+                    val notificationCompat = NotificationManagerCompat.from(context.applicationContext)
+                    notificationCompat.cancel(wordId, notificationId)
+                }
             }
         }
     }

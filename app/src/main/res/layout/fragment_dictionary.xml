@@ -52,6 +52,7 @@
             android:onClick="@{clickListenerAddWord}"
             android:src="@drawable/ic_plus"
             app:tint="@color/white"
+            app:borderWidth="0dp"
             android:visibility="gone"
             android:layout_marginBottom="@dimen/size_32"
             android:layout_marginEnd="@dimen/size_24"/>

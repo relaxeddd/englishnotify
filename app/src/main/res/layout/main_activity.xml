@@ -135,6 +135,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:gravity="center"
+                android:background="@color/white"
                 android:text="@string/privacy_policy_text"
                 android:textSize="@dimen/font_12"/>
 

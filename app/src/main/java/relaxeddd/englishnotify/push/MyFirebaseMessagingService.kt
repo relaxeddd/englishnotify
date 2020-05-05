@@ -32,17 +32,18 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         var pushToken: String = ""
 
         fun handleWordNotification(context: Context, word: Word, isSave: Boolean = true, viewType: Int,
-                                   withWrongTitle: Boolean = false, notificationId: Int = -1) {
+                                   withWrongTitle: Boolean = false, notificationId: Int = -1, isShowAnswer: Boolean = false) {
             val languageType = SharedHelper.getLearnLanguageType(context)
+            val isShowTranslation = (languageType == TYPE_PUSH_RUSSIAN && !isShowAnswer || (languageType == TYPE_PUSH_ENGLISH && isShowAnswer))
+                    && word.type != EXERCISE
 
-            val wordTitle = getWordTitle(word, languageType)
+            val wordTitle = getWordTitle(word, isShowTranslation)
             val isLongWord = wordTitle.length > 16
-            val title = if (withWrongTitle) context.getString(R.string.answer_incorrect) else if (isLongWord) "" else wordTitle
+            val title = if (isLongWord) "" else wordTitle
 
             val notificationText = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N
-                || viewType == SharedHelper.NOTIFICATIONS_VIEW_WITH_TRANSLATE
-                || withWrongTitle) {
-                getFullNotificationText(word, languageType, !isLongWord && !withWrongTitle)
+                    || viewType == SharedHelper.NOTIFICATIONS_VIEW_WITH_TRANSLATE || withWrongTitle) {
+                getFullNotificationText(context, word, isShowTranslation, !isLongWord, withWrongTitle)
             } else if (isLongWord) wordTitle else ""
 
             val isShowButtons = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
@@ -78,8 +79,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             showNotificationWord(context, word.id, notificationText, title, isShowButtons, notificationId)
         }
 
-        private fun showNotificationWord(ctx: Context, wordId: String, text: String, title: String,
-                                         withButtons : Boolean, existsNotificationId: Int = -1) {
+        fun showNotificationWord(ctx: Context, wordId: String, text: String, title: String,
+                                 withButtons : Boolean, existsNotificationId: Int = -1) {
             val notificationId = if (existsNotificationId != -1) existsNotificationId else Random.nextInt(10000)
             val intent = Intent(ctx, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -124,6 +125,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     .addRemoteInput(remoteInput)
                     .build()
                 notificationBuilder.addAction(action)
+                notificationBuilder.setOngoing(SharedHelper.isOngoing())
 
                 val notKnowPendingIntent: PendingIntent =
                     PendingIntent.getBroadcast(ctx, Random.nextInt(1000), notKnowIntent, 0)
@@ -152,9 +154,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 notificationBuilder.priority = Notification.PRIORITY_HIGH
             }
 
-            if (SharedHelper.isShowOnlyOneNotification(ctx)) {
-                notificationManager.cancelAll()
-            }
             notificationManager.notify(wordId, notificationId, notificationBuilder.build())
         }
 
@@ -202,33 +201,38 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             notificationManager.notify(notificationId, notificationBuilder.build())
         }
 
-        private fun getFullNotificationText(word: Word, languageType: Int, withoutWordText: Boolean) : String {
+        private fun getFullNotificationText(context: Context, word: Word, isShowTranslation: Boolean, withoutWordText: Boolean,
+                                            isIncorrectAnswer: Boolean) : String {
             var notificationText = ""
 
             if (!withoutWordText) {
-                if (languageType == TYPE_PUSH_RUSSIAN && word.type != EXERCISE) {
+                if (isShowTranslation) {
                     if (word.rus.isNotEmpty()) {
-                        notificationText += word.rus + "\n"
+                        notificationText += word.rus
                     }
                 } else if (word.eng.isNotEmpty()) {
-                    notificationText += word.eng + "\n"
+                    notificationText += word.eng
                 }
             }
 
             if (word.transcription.isNotEmpty()) {
-                notificationText += if (word.type != EXERCISE) "\n[" + word.transcription + "]" + "\n" else "\n" + word.transcription + "\n"
+                if (notificationText.isNotEmpty()) notificationText += "\n"
+                notificationText += if (word.type != EXERCISE) "[" + word.transcription + "]" else word.transcription
             }
 
             if (word.v2.isNotEmpty() && word.v3.isNotEmpty()) {
-                notificationText += "\n" + word.v2 + " - " + word.v3
+                if (notificationText.isNotEmpty()) notificationText += "\n"
+                notificationText += word.v2 + " - " + word.v3
             }
 
-            if (languageType == TYPE_PUSH_RUSSIAN && word.type != EXERCISE) {
+            if (isShowTranslation) {
                 if (word.eng.isNotEmpty()) {
-                    notificationText += "\n" + word.eng
+                    if (notificationText.isNotEmpty()) notificationText += "\n"
+                    notificationText += word.eng
                 }
             } else if (word.rus.isNotEmpty()) {
-                notificationText += "\n" + word.rus
+                if (notificationText.isNotEmpty()) notificationText += "\n"
+                notificationText += word.rus
             }
 
             if (word.sampleEng.isNotEmpty()) {
@@ -237,12 +241,16 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             if (word.sampleRus.isNotEmpty()) {
                 notificationText += "\n" + word.sampleRus
             }
+            if (isIncorrectAnswer) {
+                if (notificationText.isNotEmpty()) notificationText += "\n"
+                notificationText += "(" + context.getString(R.string.answer_incorrect) + ")"
+            }
 
             return notificationText
         }
 
-        private fun getWordTitle(word: Word, languageType: Int) : String {
-            return if (languageType == TYPE_PUSH_RUSSIAN && word.type != EXERCISE) word.rus else word.eng
+        private fun getWordTitle(word: Word, isShowTranslation: Boolean) : String {
+            return if (isShowTranslation) word.rus else word.eng
         }
     }
 
@@ -298,6 +306,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     val wordIx = (words.indices).random()
 
                     if (wordIx >= 0 && wordIx < words.size) {
+                        if (SharedHelper.isShowOnlyOneNotification(this)) {
+                            NotificationManagerCompat.from(applicationContext).cancelAll()
+                        }
                         handleWordNotification(this, words[wordIx], false, viewType = SharedHelper.getNotificationsView(this))
                     }
                 }
@@ -309,6 +320,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
                 if (data.containsKey(CONTENT) && data[CONTENT] != null) {
                     val word = parseWord(JSONObject(data[CONTENT] ?: ""))
+
+                    if (SharedHelper.isShowOnlyOneNotification(this)) {
+                        NotificationManagerCompat.from(applicationContext).cancelAll()
+                    }
                     handleWordNotification(this, word, viewType = SharedHelper.getNotificationsView(this))
                 }
             }
