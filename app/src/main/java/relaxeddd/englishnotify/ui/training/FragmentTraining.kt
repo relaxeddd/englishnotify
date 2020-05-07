@@ -35,6 +35,14 @@ class FragmentTraining : BaseFragment<ViewModelTraining, FragmentTrainingBinding
         viewModel.trainingType = arguments?.getInt(TRAINING_TYPE) ?: TRAINING_ENG_TO_RUS
         binding.clickListenerOk = clickListenerOk
         binding.viewModel = viewModel
+        binding.editTextTrainingAnswer.setOnEditorActionListener { view, _, event ->
+            if (event == null || !event.isShiftPressed) {
+                clickListenerOk.onClick(view)
+                true
+            } else {
+                false
+            }
+        }
         viewModel.onBind()
     }
 
