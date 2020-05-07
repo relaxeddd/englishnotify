@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Английские слова через уведомления</string>
+    <string name="app_name">Иностранные слова через уведомления</string>
 
     <string name="about_app">О приложении</string>
     <string name="accept">Принять</string>
@@ -41,7 +41,7 @@
     <string name="enable_notifications">Включить уведомления</string>
     <string name="enable_notification_translation_input">Включите ввод перевода в уведомлении</string>
     <string name="end">Закончить</string>
-    <string name="english_at_russian">С английского на русский</string>
+    <string name="english_at_russian">Слово-перевод</string>
     <string name="enter_name">Введите имя</string>
     <string name="enter_translation">Ввести перевод</string>
     <string name="error_category_select">Ошибка выбора категории</string>
@@ -121,7 +121,7 @@
     <string name="remove_from_own_category">Убрать из своей категории</string>
     <string name="renew_subscription">Продлить подписку</string>
     <string name="reset_progress">Сбросить прогресс</string>
-    <string name="russian_at_english">С руссокого на английский</string>
+    <string name="russian_at_english">Перевод-слово</string>
     <string name="show_only_one_last_notification">Показывать только одно последнее уведомление</string>
     <string name="show_own_words">Показывать свои слова</string>
     <string name="show_translation">Я не знаю</string>
@@ -173,7 +173,7 @@
     <string name="your_name">Ваше имя: %s</string>
     <string name="your_name_in_rating">%s (Вы)</string>
 
-    <string name="text_dialog_receive_help">Вы включили опцию запуска в фоновом режиме. Включение опции вероятно исправляет проблему получения уведомлений. Ее можно отключить в Android Настройки -> Приложения, либо путем переустановки приложения</string>
+    <string name="text_dialog_receive_help">Вы включили опцию запуска в фоновом режиме. Включение опции вероятно исправляет проблему получения уведомлений. Ее можно отключить в Android Настройки -> Приложения, либо путем переустановки приложения. Если это не помогло https://dontkillmyapp.com (Solution for users)</string>
 
     <string name="text_rate_app">В комментариях пишите, что можно улучшить, какие новые категории слов нужно добавить</string>
 

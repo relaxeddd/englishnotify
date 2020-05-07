@@ -29,6 +29,11 @@ class RepositoryUser private constructor() {
 
     //------------------------------------------------------------------------------------------------------------------
     suspend fun init(listener: ListenerResult<Boolean>? = null) {
+        if (liveDataUser.value != null) {
+            withContext(Dispatchers.Main) { listener?.onResult(true) }
+            return
+        }
+
         RepositoryCommon.getInstance().initFirebase { isSuccess ->
             CoroutineScope(Dispatchers.Main).launch {
                 if (!isSuccess) {
@@ -59,7 +64,7 @@ class RepositoryUser private constructor() {
                 val answerInitData = ApiHelper.requestInit(firebaseUser, tokenId, pushToken)
 
                 if (answerInitData?.result != null && answerInitData.result.isSuccess()
-                    && answerInitData.user?.userId?.isNotEmpty() == true) {
+                        && answerInitData.user?.userId?.isNotEmpty() == true) {
                     liveDataUser.value = answerInitData.user
                     SharedHelper.setLearnLanguageType(answerInitData.user.learnLanguageType)
                     if (!answerInitData.isActualVersion) {
@@ -67,9 +72,7 @@ class RepositoryUser private constructor() {
                     }
 
                     if (answerInitData.words != null) {
-                        withContext(Dispatchers.IO) {
-                            RepositoryWord.getInstance().updateWords(answerInitData.words)
-                        }
+                        withContext(Dispatchers.IO) { RepositoryWord.getInstance().updateWords(answerInitData.words) }
                         RepositoryWord.getInstance().updateTagsInfo(answerInitData.tagsInfo ?: ArrayList())
                     }
 

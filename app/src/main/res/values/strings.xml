@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">English Words Notifications</string>
+    <string name="app_name">Language Words Notifications</string>
 
     <string name="about_app">About app</string>
     <string name="accept">Accept</string>
@@ -41,7 +41,7 @@
     <string name="enable_notifications">Enable notifications</string>
     <string name="enable_notification_translation_input">Enable notification translation input</string>
     <string name="end">End</string>
-    <string name="english_at_russian">English at russian</string>
+    <string name="english_at_russian">Word-translation</string>
     <string name="enter_name">Enter the name</string>
     <string name="enter_translation">Enter translation</string>
     <string name="error_category_select">Error category select</string>
@@ -121,7 +121,7 @@
     <string name="remove_from_own_category">Remove from own category</string>
     <string name="renew_subscription">Renew subscription</string>
     <string name="reset_progress">Reset progress</string>
-    <string name="russian_at_english">Russian at english</string>
+    <string name="russian_at_english">Translation-word</string>
     <string name="show_only_one_last_notification">Show only one last notification</string>
     <string name="show_own_words">Show own words</string>
     <string name="show_translation">I don`t know</string>
@@ -191,7 +191,7 @@
 
     <string name="service_notifications_count_listener" translatable="false">NotificationsListenerService</string>
 
-    <string name="text_dialog_receive_help">You have turned on background starting option. It may fix receive notifications bug. You can disable it in Android Settings -> Applications or reinstall app</string>
+    <string name="text_dialog_receive_help">You have turned on background starting option. It may fix receive notifications bug. You can disable it in Android Settings -> Applications or reinstall app. If it does not help see https://dontkillmyapp.com (Solution for users)</string>
 
     <string name="text_rate_app">Write comments and suggestions. What you want to see in the app</string>
 
