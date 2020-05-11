@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Language Words Notifications</string>
+    <string name="app_name">Word Notifications</string>
 
     <string name="about_app">About app</string>
     <string name="accept">Accept</string>
@@ -159,6 +159,7 @@
     <string name="user_not_found">User not found</string>
     <string name="word">Word</string>
     <string name="word_added">Word has been added</string>
+    <string name="word_already_exists">Word already exists</string>
     <string name="word_category_select">Category select</string>
     <string name="word_length_limit">The max length is 200 symbols</string>
     <string name="word_should_not_be_empty">Word should not be empty</string>
@@ -222,7 +223,7 @@
     </string>
 
     <string name="patch_notes">
-        - Optimization
+        - Already exists word check
         \n- Take attention on \"If you do not receive notifications\" in settings tab
         \n- It might be better to add words in \"Own category\"
     </string>

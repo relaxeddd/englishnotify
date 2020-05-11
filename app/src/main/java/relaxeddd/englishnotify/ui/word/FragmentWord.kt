@@ -42,7 +42,7 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
         val transcription = arguments?.getString(TRANSCRIPTION) ?: ""
         val rus = arguments?.getString(RUS) ?: ""
 
-        viewModel.wordId = id
+        viewModel.existsWordId = id
         text_input_word.setText(eng)
         text_input_transcription.setText(transcription)
         text_input_translation.setText(rus)
@@ -82,6 +82,15 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
         container_text_word_input_word.boxStrokeColor = getPrimaryColorResId()
         container_text_word_input_transcription.boxStrokeColor = getPrimaryColorResId()
         container_text_word_input_translation.boxStrokeColor = getPrimaryColorResId()
+    }
+
+    override fun onNavigationEvent(eventId: Int) {
+        when (eventId) {
+            NAVIGATION_WORD_EXISTS_ERROR -> {
+                text_input_word.error = getString(R.string.word_already_exists)
+            }
+            else -> super.onNavigationEvent(eventId)
+        }
     }
 
     private fun hideKeyboard() {

@@ -17,8 +17,8 @@ android {
         applicationId 'relaxeddd.englishnotify'
         minSdkVersion 18
         targetSdkVersion 29
-        versionCode 54
-        versionName "3.2.2"
+        versionCode 56
+        versionName "3.2.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
@@ -50,7 +50,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.72'
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta4'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta5'
     implementation 'com.google.android.material:material:1.2.0-alpha06'
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
     kapt "androidx.lifecycle:lifecycle-common-java8:2.2.0"
@@ -69,7 +69,7 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-auth:4.3.2'
     implementation 'com.google.firebase:firebase-auth:19.3.1'
     implementation 'com.google.firebase:firebase-firestore:21.4.3'
-    implementation 'com.google.firebase:firebase-messaging:20.1.6'
+    implementation 'com.google.firebase:firebase-messaging:20.1.7'
     //Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.8.1'
     implementation 'com.google.code.gson:gson:2.8.6'
@@ -77,7 +77,7 @@ dependencies {
     //billing
     implementation 'com.android.billingclient:billing:2.2.0'
 
-    implementation 'com.github.judemanutd:autostarter:1.0.3'
+    implementation 'com.github.judemanutd:autostarter:1.0.8'
 }
 
 // ADD THIS AT THE BOTTOM

@@ -37,7 +37,7 @@ class PushBroadcastReceiver : BroadcastReceiver() {
 
             if (isKnow == KNOW) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    val userText = RemoteInput.getResultsFromIntent(intent)?.getCharSequence(KEY_TEXT_REPLY).toString().toLowerCase()
+                    val userText = (RemoteInput.getResultsFromIntent(intent)?.getCharSequence(KEY_TEXT_REPLY) ?: "").toString().toLowerCase()
                     val answer = if (languageType == TYPE_PUSH_ENGLISH) word.rus else word.eng
                     val title = if (languageType == TYPE_PUSH_ENGLISH) word.eng else word.rus
                     val isCorrectAnswer = isCorrectAnswer(userText, answer)
@@ -60,7 +60,7 @@ class PushBroadcastReceiver : BroadcastReceiver() {
                             showToast(R.string.answer_incorrect)
                             MyFirebaseMessagingService.handleWordNotification(context, word, false,
                                 SharedHelper.NOTIFICATIONS_VIEW_WITH_TRANSLATE, withWrongTitle = true,
-                                notificationId = notificationId, isShowAnswer = true)
+                                notificationId = notificationId, isShowAnswer = true, userAnswer = userText)
                         }
                     }
                 }

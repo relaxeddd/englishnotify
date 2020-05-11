@@ -32,7 +32,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         var pushToken: String = ""
 
         fun handleWordNotification(context: Context, word: Word, isSave: Boolean = true, viewType: Int,
-                                   withWrongTitle: Boolean = false, notificationId: Int = -1, isShowAnswer: Boolean = false) {
+                                   withWrongTitle: Boolean = false, notificationId: Int = -1, isShowAnswer: Boolean = false, userAnswer: String = "") {
             val languageType = SharedHelper.getLearnLanguageType(context)
             val isShowTranslation = (languageType == TYPE_PUSH_RUSSIAN && !isShowAnswer || (languageType == TYPE_PUSH_ENGLISH && isShowAnswer))
                     && word.type != EXERCISE
@@ -43,7 +43,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
             val notificationText = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N
                     || viewType == SharedHelper.NOTIFICATIONS_VIEW_WITH_TRANSLATE || withWrongTitle) {
-                getFullNotificationText(context, word, isShowTranslation, !isLongWord, withWrongTitle)
+                getFullNotificationText(context, word, isShowTranslation, !isLongWord, withWrongTitle, userAnswer)
             } else if (isLongWord) wordTitle else ""
 
             val isShowButtons = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
@@ -202,7 +202,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
 
         private fun getFullNotificationText(context: Context, word: Word, isShowTranslation: Boolean, withoutWordText: Boolean,
-                                            isIncorrectAnswer: Boolean) : String {
+                                            isIncorrectAnswer: Boolean, userAnswer: String) : String {
             var notificationText = ""
 
             if (!withoutWordText) {
@@ -227,10 +227,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
             if (isShowTranslation) {
                 if (word.eng.isNotEmpty()) {
+                    if (!isIncorrectAnswer) notificationText += "\n"
                     if (notificationText.isNotEmpty()) notificationText += "\n"
                     notificationText += word.eng
                 }
             } else if (word.rus.isNotEmpty()) {
+                if (!isIncorrectAnswer) notificationText += "\n"
                 if (notificationText.isNotEmpty()) notificationText += "\n"
                 notificationText += word.rus
             }
@@ -241,9 +243,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             if (word.sampleRus.isNotEmpty()) {
                 notificationText += "\n" + word.sampleRus
             }
-            if (isIncorrectAnswer) {
-                if (notificationText.isNotEmpty()) notificationText += "\n"
-                notificationText += "(" + context.getString(R.string.answer_incorrect) + ")"
+            if (isIncorrectAnswer && userAnswer.isNotEmpty()) {
+                if (notificationText.isNotEmpty()) notificationText += "\n\n"
+                notificationText += context.getString(R.string.your_answer, userAnswer)
             }
 
             return notificationText

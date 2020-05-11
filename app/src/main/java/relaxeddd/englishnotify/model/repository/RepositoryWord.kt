@@ -176,6 +176,8 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
     }
 
     //------------------------------------------------------------------------------------------------------------------
+    fun getWord(wordId: String) = wordDao.findWordById(wordId)
+
     fun removeWordFromDb(wordId: String) {
         wordDao.deleteById(wordId)
     }
