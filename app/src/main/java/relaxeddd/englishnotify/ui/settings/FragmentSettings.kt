@@ -19,21 +19,6 @@ import java.lang.Exception
 
 class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding>() {
 
-    companion object {
-
-        private const val BRAND_XIAOMI = "xiaomi"
-        private const val BRAND_LETV = "letv"
-        private const val BRAND_ASUS = "asus"
-        private const val BRAND_HONOR = "honor"
-        private const val BRAND_OPPO = "oppo"
-        private const val BRAND_VIVO = "vivo"
-        private const val BRAND_NOKIA = "nokia"
-    }
-
-    private val isAutoStartLibPermissionAvailable: Boolean = when (Build.BRAND.toLowerCase()) {
-        BRAND_ASUS, BRAND_XIAOMI, BRAND_LETV, BRAND_HONOR, BRAND_OPPO, BRAND_VIVO, BRAND_NOKIA -> true
-        else -> false
-    }
     private val listenerConfirmLogout: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
         override fun onResult(result: Boolean) {
             viewModel.onLogoutDialogResult(result)
@@ -83,7 +68,7 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
             NAVIGATION_DIALOG_RECEIVE_HELP -> {
                 val ctx = context ?: return
 
-                if (isAutoStartLibPermissionAvailable) {
+                if (AutoStartPermissionHelper.getInstance().isAutoStartPermissionAvailable(ctx)) {
                     AutoStartPermissionHelper.getInstance().getAutoStartPermission(ctx)
                 } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     val pkg = ctx.packageName

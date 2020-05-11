@@ -8,16 +8,30 @@ import relaxeddd.englishnotify.model.repository.RepositoryWord
 
 class ViewModelWord : ViewModelBase() {
 
-    var wordId = ""
+    var existsWordId = ""
 
     fun createOwnWord(eng: String, transcription: String, rus: String) {
         ioScope.launch {
-            RepositoryWord.getInstance().insertOwnCategoryWord(eng, eng, rus, transcription)
-            if (wordId.isNotEmpty()) {
-                if (eng != this@ViewModelWord.wordId) {
-                    RepositoryWord.getInstance().removeWordFromDb(this@ViewModelWord.wordId)
+            val existsWord = RepositoryWord.getInstance().getWord(eng)
+
+            if (existsWordId.isNotEmpty()) {
+                if (existsWord == null || existsWord.eng != eng || existsWord.rus != rus || existsWord.transcription != transcription) {
+                    RepositoryWord.getInstance().insertOwnCategoryWord(eng, eng, rus, transcription)
+                    if (eng != this@ViewModelWord.existsWordId) {
+                        RepositoryWord.getInstance().removeWordFromDb(this@ViewModelWord.existsWordId)
+                    }
+                }
+            } else {
+                if (existsWord != null) {
+                    withContext(Dispatchers.Main) {
+                        navigateEvent.value = Event(NAVIGATION_WORD_EXISTS_ERROR)
+                    }
+                    return@launch
+                } else {
+                    RepositoryWord.getInstance().insertOwnCategoryWord(eng, eng, rus, transcription)
                 }
             }
+
             withContext(Dispatchers.Main) {
                 navigateEvent.value = Event(NAVIGATION_ACTIVITY_BACK)
             }

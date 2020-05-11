@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Иностранные слова через уведомления</string>
+    <string name="app_name">Слова через уведомления</string>
 
     <string name="about_app">О приложении</string>
     <string name="accept">Принять</string>
@@ -159,6 +159,7 @@
     <string name="user_not_found">Пользователь не найден</string>
     <string name="word">Слово</string>
     <string name="word_added">Слово добавлено</string>
+    <string name="word_already_exists">Такое слово уже есть</string>
     <string name="word_category_select">Выбор категории</string>
     <string name="word_length_limit">Длина не должна превышать 200 символов</string>
     <string name="word_should_not_be_empty">Слово не должно быть пустым</string>
@@ -208,7 +209,7 @@
     <string name="text_info_statistic">k/m/n - k выучено, m получено, n всего</string>
 
     <string name="patch_notes">
-        - Оптимизация
+        - Проверка на добавление уже добавленного слова
         \n- Опция \"Если не ходят уведомления\" в настройках.
         \n- Вы можете заносить слова в \"Своя категория\" для последующего изучения.
     </string>
