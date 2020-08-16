@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.card.MaterialCardView
 import kotlinx.android.synthetic.main.fragment_dictionary.*
 import relaxeddd.englishnotify.databinding.FragmentDictionaryBinding
 

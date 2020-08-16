@@ -7,7 +7,6 @@ import android.widget.CompoundButton
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import com.google.android.material.card.MaterialCardView
 import com.google.android.material.checkbox.MaterialCheckBox
 import kotlinx.android.synthetic.main.view_item_exercise.view.*
 import relaxeddd.englishnotify.R

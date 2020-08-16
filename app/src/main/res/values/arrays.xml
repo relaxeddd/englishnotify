@@ -18,14 +18,6 @@
         <item>For 6 month (-50%)</item>
     </string-array>
 
-    <string-array name="array_dialog_receive_notifications">
-        <item>I don`t know</item>
-        <item>No, I don`t receive notifications and I don`t try `If not receive notifications` option in Common tab</item>
-        <item>Yes, I receive notifications without `If not receive notifications` option</item>
-        <item>No, I don`t receive notifications and `If not receive notifications` option is useless</item>
-        <item>Yes, I receive notifications, because I turned on option `If not receive notifications`</item>
-    </string-array>
-
     <string-array name="array_learn_language">
         <item>Word-translation</item>
         <item>Translation-word</item>

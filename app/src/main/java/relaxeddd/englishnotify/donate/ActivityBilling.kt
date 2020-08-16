@@ -44,7 +44,7 @@ abstract class ActivityBilling<VM : ViewModelBase, B : ViewDataBinding> : Activi
         val purchasesInfo = billingClient?.queryPurchases(BillingClient.SkuType.INAPP)
 
         if (purchasesInfo?.purchasesList?.isNotEmpty() == true) {
-            for (purchase in purchasesInfo.purchasesList) {
+            purchasesInfo.purchasesList?.forEach { purchase ->
                 if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
                     requestVerify(purchase)
                 }
@@ -64,7 +64,7 @@ abstract class ActivityBilling<VM : ViewModelBase, B : ViewDataBinding> : Activi
         params.setSkusList(skuList).setType(BillingClient.SkuType.INAPP)
         billingClient?.querySkuDetailsAsync(params.build()) { billingResult, skuDetailsList ->
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                listSkuDetails = skuDetailsList
+                listSkuDetails = skuDetailsList ?: emptyList()
             }
             resultListener?.onResult(billingResult.responseCode == BillingClient.BillingResponseCode.OK)
         }
@@ -116,10 +116,14 @@ abstract class ActivityBilling<VM : ViewModelBase, B : ViewDataBinding> : Activi
             }
         }
 
-        val flowParams = BillingFlowParams.newBuilder()
-            .setSkuDetails(buySkuDetails)
-            .build()
-        billingClient?.launchBillingFlow(this, flowParams)
+        if (buySkuDetails != null) {
+            val flowParams = BillingFlowParams.newBuilder()
+                .setSkuDetails(buySkuDetails)
+                .build()
+            billingClient?.launchBillingFlow(this, flowParams)
+        } else {
+            showToast(R.string.error_purchase)
+        }
     }
 
     private fun requestVerify(purchase: Purchase?) {
