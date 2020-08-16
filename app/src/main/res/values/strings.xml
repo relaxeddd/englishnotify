@@ -223,9 +223,10 @@
     </string>
 
     <string name="patch_notes">
-        - Already exists word check
+        - Scrollbar in the dictionary screen
         \n- Take attention on \"If you do not receive notifications\" in settings tab
         \n- It might be better to add words in \"Own category\"
+        \n- Libraries update
     </string>
 
     <!-- =========================================================================================================== -->

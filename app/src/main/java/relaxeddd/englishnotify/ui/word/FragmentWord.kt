@@ -25,12 +25,12 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+        return when (item.itemId) {
             R.id.item_menu_accept -> {
                 text_input_translation.onEditorAction(EditorInfo.IME_ACTION_DONE)
-                return true
+                true
             }
-            else -> return super.onOptionsItemSelected(item)
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -106,19 +106,16 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
         val rus = text_input_translation.text.toString()
         val transcription = text_input_transcription.text.toString()
 
-        if (eng.isEmpty()) {
-            text_input_word.error = getString(R.string.word_should_not_be_empty)
-        } else if (rus.isEmpty()) {
-            text_input_translation.error = getString(R.string.word_should_not_be_empty)
-        } else if (eng.length > 200) {
-            text_input_word.error = getString(R.string.word_length_limit)
-        } else if (rus.length > 200) {
-            text_input_translation.error = getString(R.string.word_length_limit)
-        } else if (transcription.length > 200) {
-            text_input_transcription.error = getString(R.string.word_length_limit)
-        } else {
-            hideKeyboard()
-            viewModel.createOwnWord(eng, transcription, rus)
+        when {
+            eng.isEmpty() -> text_input_word.error = getString(R.string.word_should_not_be_empty)
+            rus.isEmpty() -> text_input_translation.error = getString(R.string.word_should_not_be_empty)
+            eng.length > 200 -> text_input_word.error = getString(R.string.word_length_limit)
+            rus.length > 200 -> text_input_translation.error = getString(R.string.word_length_limit)
+            transcription.length > 200 -> text_input_transcription.error = getString(R.string.word_length_limit)
+            else -> {
+                hideKeyboard()
+                viewModel.createOwnWord(eng, transcription, rus)
+            }
         }
     }
 }

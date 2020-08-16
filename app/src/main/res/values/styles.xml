@@ -19,16 +19,4 @@
         <item name="colorAccent">@color/colorAccent3</item>
     </style>
 
-    <style name="StyleCardView" parent="Widget.MaterialComponents.CardView">
-        <item name="android:clickable">true</item>
-        <item name="android:focusable">true</item>
-    </style>
-
-    <style name="StyleCardViewSettings" parent="Widget.MaterialComponents.CardView">
-        <item name="cardElevation">8dp</item>
-        <item name="cardBackgroundColor">@color/white</item>
-        <item name="android:clickable">true</item>
-        <item name="android:focusable">true</item>
-    </style>
-
 </resources>

@@ -64,16 +64,6 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
         }
     }
 
-    private val listenerLikeApp: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
-        override fun onResult(result: Boolean) {
-            if (result) {
-                onNavigationEvent(NAVIGATION_DIALOG_RATE_APP)
-            } else {
-                onNavigationEvent(NAVIGATION_DIALOG_SEND_FEEDBACK)
-            }
-        }
-    }
-
     override fun getLayoutResId() = R.layout.main_activity
     override fun getViewModelFactory() = InjectorUtils.provideMainViewModelFactory()
     override fun getViewModelClass(): Class<ViewModelMain> = ViewModelMain::class.java
