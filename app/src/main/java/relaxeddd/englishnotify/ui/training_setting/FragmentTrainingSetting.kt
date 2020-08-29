@@ -38,6 +38,7 @@ class FragmentTrainingSetting : BaseFragment<ViewModelTrainingSetting, FragmentT
         adapter = AdapterCategories(viewModel)
         binding.recyclerViewTrainingSettingCategories.itemAnimator = null
         binding.recyclerViewTrainingSettingCategories.adapter = adapter
+        binding.buttonTrainingSettingStart.setOnClickListener { viewModel.onClickAccept() }
         viewModel.categories.observe(viewLifecycleOwner, Observer { items ->
             if (items != null && items.isNotEmpty()) adapter.submitList(items)
         })

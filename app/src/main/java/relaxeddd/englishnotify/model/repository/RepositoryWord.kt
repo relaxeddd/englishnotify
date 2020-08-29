@@ -101,7 +101,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         if (!tagsInfo.contains(tagInfoOwn)) tagsInfo.add(tagInfoOwn)
 
         for (word in words) {
-            if (word.isCreatedByUser) {
+            if (word.isCreatedByUser && !word.isDeleted) {
                 tagInfoOwn.received++
                 tagInfoOwn.total++
                 if (word.learnStage == LEARN_STAGE_MAX) tagInfoOwn.learned++

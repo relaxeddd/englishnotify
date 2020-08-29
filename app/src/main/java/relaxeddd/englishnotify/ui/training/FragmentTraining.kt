@@ -17,6 +17,10 @@ class FragmentTraining : BaseFragment<ViewModelTraining, FragmentTrainingBinding
         viewModel.onClickOk(answer)
     }
 
+    private val clickListenerOneMore = View.OnClickListener {
+        viewModel.onClickOneMore()
+    }
+
     override fun getLayoutResId() = R.layout.fragment_training
     override fun getToolbarTitle() = toolbarTitleTraining
     override fun getViewModelFactory() = InjectorUtils.provideTrainingViewModelFactory(requireContext())
@@ -34,6 +38,7 @@ class FragmentTraining : BaseFragment<ViewModelTraining, FragmentTrainingBinding
         viewModel.category = category
         viewModel.trainingType = arguments?.getInt(TRAINING_TYPE) ?: TRAINING_ENG_TO_RUS
         binding.clickListenerOk = clickListenerOk
+        binding.clickListenerOneMore = clickListenerOneMore
         binding.viewModel = viewModel
         binding.editTextTrainingAnswer.setOnEditorActionListener { view, _, event ->
             if (event == null || !event.isShiftPressed) {

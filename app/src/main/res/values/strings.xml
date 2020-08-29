@@ -104,6 +104,7 @@
     <string name="notifications_not_receiving_authorize">Notifications is not receiving, please sign in</string>
     <string name="notifications_view">Notifications view</string>
     <string name="notifications">Notifications</string>
+    <string name="one_more">One more</string>
     <string name="other">Other</string>
     <string name="own_category">Own category</string>
     <string name="own_words">Own words</string>
@@ -223,10 +224,11 @@
     </string>
 
     <string name="patch_notes">
-        - Scrollbar in the dictionary screen
+        - Added One more button when words training is end
+        \n- Added  floating action button on training settings screen
+        \n- Fixed statistic of own words (do not calculate deleted words)
         \n- Take attention on \"If you do not receive notifications\" in settings tab
         \n- It might be better to add words in \"Own category\"
-        \n- Libraries update
     </string>
 
     <!-- =========================================================================================================== -->

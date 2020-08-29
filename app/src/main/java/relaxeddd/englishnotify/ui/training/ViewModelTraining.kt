@@ -33,9 +33,11 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
     val transcription = MutableLiveData("")
     val translation = MutableLiveData("")
     val textButtonOk = MutableLiveData(App.context.getString(R.string.confirm))
+    val textButtonOneMore = MutableLiveData(App.context.getString(R.string.one_more))
     val isVisibleTranscription = MutableLiveData(false)
     val isVisibleTranslation = MutableLiveData(false)
     val isVisibleButtonOk = MutableLiveData(true)
+    val isVisibleButtonOneMore = MutableLiveData(false)
     val isVisibleInputAnswer = MutableLiveData(true)
     val isVisibleAnswer = MutableLiveData(false)
     val isVisibleResultText = MutableLiveData(false)
@@ -100,6 +102,7 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
         isVisibleResultText.value = currentResult != STATE_ANSWER
 
         updateButtonOk()
+        updateButtonOneMore()
     }
 
     init {
@@ -124,6 +127,11 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
             currentIx >= (size - 1) -> navigateEvent.value = Event(NAVIGATION_ACTIVITY_BACK_TWICE)
             else -> current.value = currentIx + 1
         }
+    }
+
+    fun onClickOneMore() {
+        clearState()
+        onBind()
     }
 
     fun getCurrentWord() : Word? {
@@ -171,6 +179,14 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
         isVisibleButtonOk.value = (currentIx == size - 1) || (currentResult == STATE_ANSWER) || getResultLiveDataByIx(currentIx + 1).value == 0
     }
 
+    private fun updateButtonOneMore() {
+        val currentIx = current.value ?: 0
+        val size = trainingWords.size
+        val currentResult = getResultLiveDataByIx(currentIx).value ?: 0
+
+        isVisibleButtonOneMore.value = currentIx == (size - 1) && currentResult != STATE_ANSWER
+    }
+
     private fun getResultLiveDataByIx(ix: Int) = when(ix) {
         0 -> result1
         1 -> result2
@@ -188,5 +204,34 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
         TRAINING_RUS_TO_ENG -> state != STATE_ANSWER || word.type == EXERCISE
         TRAINING_MIXED -> state != STATE_ANSWER || word.type == EXERCISE || Random.nextInt(2) == 0
         else -> true
+    }
+
+    private fun clearState() {
+        answers.clear()
+
+        resultText.value = ""
+        answer.value = ""
+        wordText.value = ""
+        transcription.value = ""
+        translation.value = ""
+        isVisibleTranscription.value = false
+        isVisibleTranslation.value = false
+        isVisibleButtonOk.value = true
+        isVisibleButtonOneMore.value = false
+        isVisibleInputAnswer.value = true
+        isVisibleAnswer.value = false
+        isVisibleResultText.value = false
+        wordProgress.value = 0
+
+        result1.value = STATE_ANSWER
+        result2.value = STATE_ANSWER
+        result3.value = STATE_ANSWER
+        result4.value = STATE_ANSWER
+        result5.value = STATE_ANSWER
+        result6.value = STATE_ANSWER
+        result7.value = STATE_ANSWER
+        result8.value = STATE_ANSWER
+        result9.value = STATE_ANSWER
+        result10.value = STATE_ANSWER
     }
 }
