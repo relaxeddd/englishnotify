@@ -21,10 +21,7 @@ import kotlinx.android.synthetic.main.main_activity.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.MainActivityBinding
-import relaxeddd.englishnotify.dialogs.DialogNewVersion
-import relaxeddd.englishnotify.dialogs.DialogPatchNotes
-import relaxeddd.englishnotify.dialogs.DialogRateApp
-import relaxeddd.englishnotify.dialogs.DialogSendFeedback
+import relaxeddd.englishnotify.dialogs.*
 import relaxeddd.englishnotify.donate.ActivityBilling
 import relaxeddd.englishnotify.push.PushTokenHelper
 import java.util.*
@@ -61,6 +58,16 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
     private val listenerFeedbackDialog: ListenerResult<String> = object: ListenerResult<String> {
         override fun onResult(result: String) {
             viewModel.onFeedbackDialogResult(result)
+        }
+    }
+
+    private val listenerLikeApp: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
+        override fun onResult(result: Boolean) {
+            if (result) {
+                onNavigationEvent(NAVIGATION_DIALOG_RATE_APP)
+            } else {
+                onNavigationEvent(NAVIGATION_DIALOG_SEND_FEEDBACK)
+            }
         }
     }
 
@@ -250,6 +257,11 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
                         viewModel.isShowLoading.value = false
                     }
                 }
+            }
+            NAVIGATION_DIALOG_LIKE_APP -> {
+                val dialog = DialogLikeApp()
+                dialog.confirmListener = listenerLikeApp
+                dialog.show(this@MainActivity.supportFragmentManager, "Like app Dialog")
             }
             NAVIGATION_DIALOG_SEND_FEEDBACK -> {
                 val dialog = DialogSendFeedback()
