@@ -18,6 +18,7 @@ import relaxeddd.englishnotify.dialogs.DialogSortBy
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.dialogs.DialogDeleteWords
 import relaxeddd.englishnotify.ui.main.MainActivity
+import java.lang.IllegalStateException
 
 abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding, A : AdapterWords<*>> : BaseFragment<VM, B>() {
 
@@ -176,7 +177,9 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding,
             adapter.submitList(words)
             if (isScroll) {
                 handler.postDelayed({
-                    (getRecyclerViewWords().layoutManager as LinearLayoutManager?)?.scrollToPositionWithOffset(0, 0)
+                    try {
+                        (getRecyclerViewWords().layoutManager as LinearLayoutManager?)?.scrollToPositionWithOffset(0, 0)
+                    } catch (e: IllegalStateException) {}
                 }, 50)
             }
         }

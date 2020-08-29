@@ -335,7 +335,7 @@
             android:layout_marginStart="@dimen/size_32"
             android:layout_marginEnd="@dimen/size_32"
             android:onClick="@{clickListenerOneMore}"
-            android:visibility="@{safeUnbox(viewModel.isVisibleButtonOneMore) == true ? View.VISIBLE : View.INVISIBLE}"/>
+            android:visibility="@{safeUnbox(viewModel.isVisibleButtonOneMore) == true ? View.VISIBLE : View.GONE}"/>
 
         <ScrollView
             android:layout_width="match_parent"

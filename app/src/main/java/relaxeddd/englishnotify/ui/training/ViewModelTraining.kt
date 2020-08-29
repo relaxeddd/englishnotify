@@ -124,7 +124,7 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
 
         when {
             currentResult == STATE_ANSWER -> checkResult(currentIx, textAnswer)
-            currentIx >= (size - 1) -> navigateEvent.value = Event(NAVIGATION_ACTIVITY_BACK_TWICE)
+            currentIx >= (size - 1) -> navigateEvent.value = Event(NAVIGATION_ACTIVITY_BACK)
             else -> current.value = currentIx + 1
         }
     }
