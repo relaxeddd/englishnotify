@@ -1,9 +1,12 @@
 package relaxeddd.englishnotify.ui.training_setting
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import kotlinx.android.synthetic.main.fragment_dictionary_own.*
 import kotlinx.android.synthetic.main.fragment_training_setting.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
@@ -74,5 +77,10 @@ class FragmentTrainingSetting : BaseFragment<ViewModelTrainingSetting, FragmentT
             }
             else -> super.onNavigationEvent(eventId)
         }
+    }
+
+    override fun setupThemeColors() {
+        val context = context ?: return
+        binding.buttonTrainingSettingStart.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, getPrimaryColorResId()))
     }
 }
