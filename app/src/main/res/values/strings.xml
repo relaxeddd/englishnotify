@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Word Notifications</string>
+    <string name="app_name">English Word Notifications</string>
 
     <string name="about_app">About app</string>
     <string name="accept">Accept</string>
@@ -30,6 +30,7 @@
     <string name="common">Common</string>
     <string name="confirm">Confirm</string>
     <string name="confirm_and_continue">Confirm and continue</string>
+    <string name="correct">Correct!</string>
     <string name="correct_answer">Correct answer</string>
     <string name="delete">Delete</string>
     <string name="dictionary">Dictionary</string>
@@ -62,6 +63,7 @@
     <string name="error_word_voice">Error word voice: %s</string>
     <string name="exercises">Exercises</string>
     <string name="expand_to_see_buttons">Expand to see buttons</string>
+    <string name="false_answer">False</string>
     <string name="feedback_is_empty">Feedback is empty</string>
     <string name="feedback_send_error">Feedback send error</string>
     <string name="feedback_too_short">Feedback too short</string>
@@ -70,16 +72,19 @@
     <string name="i_not_know_it">I don`t know</string>
     <string name="i_know_it">I know it</string>
     <string name="if_notifications_not_receive">If you do not receive notifications</string>
+    <string name="incorrect">Incorrect</string>
     <string name="incorrect_answer">Incorrect answer</string>
     <string name="information">Information</string>
     <string name="input_your_message">Input your message</string>
     <string name="later">Later</string>
     <string name="learn_language">Learn language</string>
+    <string name="learned">Learned!</string>
     <string name="loading">Loading</string>
     <string name="logout">Logout</string>
     <string name="logout_error">Logout error</string>
     <string name="logout_success">Logout success</string>
     <string name="main">Main</string>
+    <string name="memorize">Memorize</string>
     <string name="mixed">Mixed</string>
     <string name="new_categories">New</string>
     <string name="new_version">New version</string>
@@ -108,6 +113,7 @@
     <string name="other">Other</string>
     <string name="own_category">Own category</string>
     <string name="own_words">Own words</string>
+    <string name="own_words_statistic">Own words statistic</string>
     <string name="please_authorize">Please, sign in</string>
     <string name="please_wait">Please, wait</string>
     <string name="privacy_policy">Privacy Policy</string>
@@ -122,6 +128,7 @@
     <string name="remove_from_own_category">Remove from own category</string>
     <string name="renew_subscription">Renew subscription</string>
     <string name="reset_progress">Reset progress</string>
+    <string name="right">Right!</string>
     <string name="russian_at_english">Translation-word</string>
     <string name="show_only_one_last_notification">Show only one last notification</string>
     <string name="show_own_words">Show own words</string>
@@ -151,6 +158,7 @@
     <string name="training_setting">Training setting</string>
     <string name="transcription">Transcription</string>
     <string name="translation">Translation</string>
+    <string name="true_answer">True!</string>
     <string name="undefined_error">Undefined error</string>
     <string name="unauthorized_error">Unauthorized error</string>
     <string name="update">Update</string>
@@ -167,6 +175,7 @@
     <string name="words_not_selected">Words not selected</string>
     <string name="words_removed_from_own">Words removed from own category</string>
     <string name="words_training">Words training</string>
+    <string name="wrong">Wrong</string>
     <string name="yes">Yes</string>
     <string name="you_like_app">Do you like this app?</string>
     <string name="you_sign_in_as">You signed in as: %s</string>
@@ -224,9 +233,8 @@
     </string>
 
     <string name="patch_notes">
-        - Added One more button when words training is end
-        \n- Added  floating action button on training settings screen
-        \n- Fixed statistic of own words (do not calculate deleted words)
+        - Animations on training screen
+        \n- Own words statistic in Common tab
         \n- Take attention on \"If you do not receive notifications\" in settings tab
         \n- It might be better to add words in \"Own category\"
     </string>

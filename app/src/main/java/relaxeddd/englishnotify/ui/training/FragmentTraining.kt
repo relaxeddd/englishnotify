@@ -1,11 +1,14 @@
 package relaxeddd.englishnotify.ui.training
 
 import android.view.View
+import android.view.animation.*
+import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.fragment_training.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.FragmentTrainingBinding
 import relaxeddd.englishnotify.ui.main.MainActivity
+import kotlin.random.Random
 
 class FragmentTraining : BaseFragment<ViewModelTraining, FragmentTrainingBinding>() {
 
@@ -60,7 +63,88 @@ class FragmentTraining : BaseFragment<ViewModelTraining, FragmentTrainingBinding
                     ac.playWord(viewModel.getCurrentWord())
                 }
             }
+            NAVIGATION_ANIMATE_RESULT -> {
+                animateResult(viewModel.resultAnimationType.value ?: return)
+            }
+            NAVIGATION_ANIMATE_LEARNED_COUNT -> {
+                animateLearnedCount()
+            }
             else -> super.onNavigationEvent(eventId)
         }
+    }
+
+    private fun animateLearnedCount() {
+        binding.textTrainingLearnedPlus.visibility = View.VISIBLE
+
+        val set = AnimationSet(true).apply {
+            interpolator = AccelerateInterpolator()
+            addAnimation(TranslateAnimation(0f, 0f, 0f, -180f))
+            addAnimation(AlphaAnimation(1f, 0f))
+            duration = 1200
+            setAnimationListener(object: Animation.AnimationListener {
+
+                override fun onAnimationRepeat(animation: Animation?) {}
+                override fun onAnimationStart(animation: Animation?) {}
+                override fun onAnimationEnd(animation: Animation?) {
+                    binding.textTrainingLearnedPlus.visibility = View.INVISIBLE
+                }
+            })
+        }
+
+        binding.textTrainingLearnedPlus.startAnimation(set)
+    }
+
+    private fun animateResult(type: Int) {
+        val context = context ?: return
+        val text: String
+        val color: Int
+
+        when(type) {
+            ViewModelTraining.RESULT_WRONG -> {
+                text = getString(when(Random.nextInt(3)) {
+                    0 -> R.string.incorrect
+                    1 -> R.string.wrong
+                    else -> R.string.false_answer
+                })
+                color = R.color.red_wrong
+            }
+            ViewModelTraining.RESULT_LEARNED -> {
+                text = getString(R.string.learned)
+                color = R.color.green_success
+            }
+            ViewModelTraining.RESULT_MEMORIZE -> {
+                text = getString(R.string.memorize)
+                color = R.color.red_wrong
+            }
+            else -> {
+                text = getString(when(Random.nextInt(3)) {
+                    0 -> R.string.correct
+                    1 -> R.string.right
+                    else -> R.string.true_answer
+                })
+                color = R.color.green_success
+            }
+        }
+
+        binding.textTrainingResultAnimation.setTextColor(ContextCompat.getColor(context, color))
+        binding.textTrainingResultAnimation.text = text
+        binding.textTrainingResultAnimation.visibility = View.VISIBLE
+
+        val set = AnimationSet(true).apply {
+            interpolator = AccelerateInterpolator()
+            addAnimation(TranslateAnimation(0f, 0f, 0f, -250f))
+            addAnimation(AlphaAnimation(1f, 0f))
+            duration = 1200
+            setAnimationListener(object: Animation.AnimationListener {
+
+                override fun onAnimationRepeat(animation: Animation?) {}
+                override fun onAnimationStart(animation: Animation?) {}
+                override fun onAnimationEnd(animation: Animation?) {
+                    binding.textTrainingResultAnimation.visibility = View.INVISIBLE
+                }
+            })
+        }
+
+        binding.textTrainingResultAnimation.startAnimation(set)
     }
 }

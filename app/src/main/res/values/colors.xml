@@ -23,5 +23,8 @@
 
     <color name="red_wrong">#BD0000</color>
     <color name="green_success">#00CA05</color>
+    <color name="almost_learned">#B6CA00</color>
+    <color name="start_learn">#CAA800</color>
+    <color name="need_learn">#CA4000</color>
 
 </resources>

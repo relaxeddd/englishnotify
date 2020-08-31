@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Слова через уведомления</string>
+    <string name="app_name">Английские слова через уведомления</string>
 
     <string name="about_app">О приложении</string>
     <string name="accept">Принять</string>
@@ -30,6 +30,7 @@
     <string name="common">Общее</string>
     <string name="confirm">Подтвердить</string>
     <string name="confirm_and_continue">Подтвердить и продолжить</string>
+    <string name="correct">Правильно!</string>
     <string name="correct_answer">Правильный ответ</string>
     <string name="delete">Удалить</string>
     <string name="dictionary">Словарь</string>
@@ -62,11 +63,13 @@
     <string name="error_word_voice">Ошибка инициализации озвучки слов: %s</string>
     <string name="exercises">Упражнения</string>
     <string name="expand_to_see_buttons">Разверните для показа кнопок</string>
+    <string name="false_answer">Неправильный ответ</string>
     <string name="feedback_is_empty">Отзыв пуст</string>
     <string name="feedback_send_error">Ошибка отправки отзыва</string>
     <string name="feedback_too_short">Отзыв слишком короткий</string>
     <string name="filter">Фильтр</string>
     <string name="hours_off_time">Часов (0–23)</string>
+    <string name="incorrect">Не то</string>
     <string name="i_not_know_it">Я не знаю</string>
     <string name="i_know_it">Я знаю это</string>
     <string name="if_notifications_not_receive">Если не ходят уведомления</string>
@@ -75,11 +78,13 @@
     <string name="input_your_message">Введите сообщение</string>
     <string name="later">Позднее</string>
     <string name="learn_language">Изучаемый язык</string>
+    <string name="learned">Выучено!</string>
     <string name="loading">Загрузка</string>
     <string name="logout">Выход из аккаунта</string>
     <string name="logout_error">Ошибка выхода из аккаунта</string>
     <string name="logout_success">Вы вышли из аккаунта</string>
     <string name="main">Основные</string>
+    <string name="memorize">Запоминай</string>
     <string name="mixed">Смешанная</string>
     <string name="new_categories">Новые</string>
     <string name="new_version">Новая версия</string>
@@ -108,6 +113,7 @@
     <string name="other">Остальные</string>
     <string name="own_category">Своя категория</string>
     <string name="own_words">Свои слова</string>
+    <string name="own_words_statistic">Статистика своих слов</string>
     <string name="please_authorize">Необходимо войти в систему</string>
     <string name="please_wait">Пожалуйста, подождите</string>
     <string name="privacy_policy">Политика конфиденциальности</string>
@@ -122,6 +128,7 @@
     <string name="remove_from_own_category">Убрать из своей категории</string>
     <string name="renew_subscription">Продлить подписку</string>
     <string name="reset_progress">Сбросить прогресс</string>
+    <string name="right">Верно!</string>
     <string name="russian_at_english">Перевод-слово</string>
     <string name="show_only_one_last_notification">Показывать только одно последнее уведомление</string>
     <string name="show_own_words">Показывать свои слова</string>
@@ -151,6 +158,7 @@
     <string name="training_setting">Настройка тренировки</string>
     <string name="transcription">Транскрипция</string>
     <string name="translation">Перевод</string>
+    <string name="true_answer">Правильный ответ!</string>
     <string name="undefined_error">Неизвестная ошибка</string>
     <string name="unauthorized_error">Ошибка авторизации</string>
     <string name="update">Обновление</string>
@@ -167,6 +175,7 @@
     <string name="words_not_selected">Слова не выбраны</string>
     <string name="words_removed_from_own">Слова удалены из своей категории</string>
     <string name="words_training">Тренировка слов</string>
+    <string name="wrong">Неверно</string>
     <string name="yes">Да</string>
     <string name="you_like_app">Вам нравится приложение?</string>
     <string name="you_sign_in_as">Вы вошли как: %s</string>
@@ -210,9 +219,8 @@
     <string name="text_info_statistic">k/m/n - k выучено, m получено, n всего</string>
 
     <string name="patch_notes">
-        - Добавлена кнопка Еще раз в конце тренировки слов
-        \n- Добавлена кнопка Начать тренировку на экране настройки тренировки в правом нижнем углу
-        \n- Исправлен подсчет статистики изучения своих слов (удаленные слова не учитываются)
+        - Анимации при тренировке слов
+        \n- Статистика слов своей категории в разделе Общее
         \n- Опция \"Если не ходят уведомления\" в настройках.
         \n- Вы можете заносить слова в \"Своя категория\" для последующего изучения.
     </string>

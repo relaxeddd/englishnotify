@@ -15,6 +15,11 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
         private const val STATE_ANSWER = 0
         private const val STATE_SUCCESS = 1
         private const val STATE_WRONG = 2
+
+        const val RESULT_WRONG = 0
+        const val RESULT_RIGHT = 1
+        const val RESULT_LEARNED = 2
+        const val RESULT_MEMORIZE = 3
     }
 
     var category = ALL_APP_WORDS
@@ -23,6 +28,8 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
 
     private var trainingWords = ArrayList<Word>()
     private var answers = ArrayList<String>()
+    private var learned = 0
+    private var total = 0
 
     var current = MutableLiveData(0)
     val wordsSize = MutableLiveData(0)
@@ -34,6 +41,7 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
     val translation = MutableLiveData("")
     val textButtonOk = MutableLiveData(App.context.getString(R.string.confirm))
     val textButtonOneMore = MutableLiveData(App.context.getString(R.string.one_more))
+    val textStatistic = MutableLiveData("$learned/$total")
     val isVisibleTranscription = MutableLiveData(false)
     val isVisibleTranslation = MutableLiveData(false)
     val isVisibleButtonOk = MutableLiveData(true)
@@ -42,6 +50,7 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
     val isVisibleAnswer = MutableLiveData(false)
     val isVisibleResultText = MutableLiveData(false)
     val wordProgress = MutableLiveData(0)
+    val resultAnimationType = MutableLiveData(RESULT_RIGHT)
 
     val result1 = MutableLiveData(STATE_ANSWER)
     val result2 = MutableLiveData(STATE_ANSWER)
@@ -111,10 +120,15 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
 
     //------------------------------------------------------------------------------------------------------------------
     fun onBind() {
+        val allWords = ArrayList(repositoryWord.words.value ?: ArrayList()).filter { !it.isDeleted }
+        total = allWords.size
+        learned = allWords.filter { it.learnStage == LEARN_STAGE_MAX }.size
         val words = repositoryWord.getTrainingWordsByCategory(category)
+
         trainingWords = words
         wordsSize.value = words.size
         current.value = 0
+        textStatistic.value = "$learned/$total"
     }
 
     fun onClickOk(textAnswer: String) {
@@ -153,16 +167,29 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
         answers.add(textAnswer)
         getResultLiveDataByIx(ix).value = result
         if (result == STATE_SUCCESS) {
-            repositoryWord.setWordLearnStage(word, word.learnStage + 1)
+            val resultLearnStage = word.learnStage + 1
+
+            repositoryWord.setWordLearnStage(word, resultLearnStage)
             if (currentIx >= trainingWords.size - 1) {
                 current.value = currentIx
             } else {
                 current.value = currentIx + 1
             }
+
+            resultAnimationType.value = if (resultLearnStage == LEARN_STAGE_MAX) RESULT_LEARNED else RESULT_RIGHT
+            navigateEvent.value = Event(NAVIGATION_ANIMATE_RESULT)
+            if (resultLearnStage == LEARN_STAGE_MAX) {
+                learned++
+                textStatistic.value = "$learned/$total"
+                navigateEvent.value = Event(NAVIGATION_ANIMATE_LEARNED_COUNT)
+            }
         } else {
             navigateEvent.value = Event(NAVIGATION_HIDE_KEYBOARD)
             repositoryWord.setWordLearnStage(word, 0)
             current.value = currentIx
+
+            resultAnimationType.value = if (textAnswer.isEmpty()) RESULT_MEMORIZE else RESULT_WRONG
+            navigateEvent.value = Event(NAVIGATION_ANIMATE_RESULT)
         }
     }
 
