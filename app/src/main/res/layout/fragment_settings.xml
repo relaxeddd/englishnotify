@@ -45,7 +45,7 @@
 
                 <TextView
                     android:id="@+id/text_settings_statistic"
-                    android:text="@string/statistic"
+                    android:text="@string/own_words_statistic"
                     android:layout_width="wrap_content"
                     android:layout_height="18dp"
                     android:textColor="@color/black"

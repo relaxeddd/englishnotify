@@ -1,22 +1,23 @@
 package relaxeddd.englishnotify.ui.statistic
 
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.view_item_tag_statistic.view.*
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.OWN
-import relaxeddd.englishnotify.common.TagInfo
-import relaxeddd.englishnotify.common.getAppString
-import relaxeddd.englishnotify.common.getStringByResName
+import relaxeddd.englishnotify.common.LEARN_STAGE_MAX
+import relaxeddd.englishnotify.common.Word
 
-class AdapterStatistic: ListAdapter<TagInfo, AdapterStatistic.ViewHolder>(TagInfoDiffCallback()) {
+class AdapterStatistic: ListAdapter<Word, AdapterStatistic.ViewHolder>(TagInfoDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_item_tag_statistic, parent, false))
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_item_statistic_word, parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -25,21 +26,38 @@ class AdapterStatistic: ListAdapter<TagInfo, AdapterStatistic.ViewHolder>(TagInf
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bind(tagInfo: TagInfo) {
-            val textValue = "" + tagInfo.learned + " / " + tagInfo.received + " / " + tagInfo.total
-            val textTitle = if (tagInfo.key == OWN) getAppString(R.string.own_words) else getStringByResName(tagInfo.key)
+        private val textWord = view.findViewById<TextView>(R.id.text_statistic_word)
+        private val textTranslation = view.findViewById<TextView>(R.id.text_statistic_word_translation)
+        private val progress = view.findViewById<ProgressBar>(R.id.progress_bar_statistic_word)
 
-            itemView.text_tag_statistic_title.text = textTitle
-            itemView.text_tag_statistic_value.text = textValue
-            itemView.progress_bar_tag_statistic.progress = (tagInfo.learned.toFloat() / tagInfo.total.toFloat() * 100).toInt()
-            itemView.progress_bar_tag_statistic.secondaryProgress = (tagInfo.received.toFloat() / tagInfo.total.toFloat() * 100).toInt()
+        fun bind(word: Word) {
+            textWord.text = word.eng
+            textTranslation.text = word.rus
+
+            val textColorResId = when(word.learnStage) {
+                0 -> R.color.need_learn
+                1 -> R.color.start_learn
+                2 -> R.color.almost_learned
+                else -> R.color.green_success
+            }
+
+            progress.visibility = if (word.learnStage == LEARN_STAGE_MAX) View.GONE else View.VISIBLE
+            progress.progress = (word.learnStage.toFloat() / LEARN_STAGE_MAX * 100).toInt()
+            textWord.setTextColor(ContextCompat.getColor(itemView.context, textColorResId))
+            textTranslation.setTextColor(ContextCompat.getColor(itemView.context, textColorResId))
+            if (word.learnStage == LEARN_STAGE_MAX) {
+                textWord.paintFlags = textWord.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                textTranslation.paintFlags = textTranslation.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            } else {
+                textWord.paintFlags = textWord.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+                textTranslation.paintFlags = textTranslation.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+            }
         }
     }
 
-    private class TagInfoDiffCallback : DiffUtil.ItemCallback<TagInfo>() {
+    private class TagInfoDiffCallback : DiffUtil.ItemCallback<Word>() {
 
-        override fun areItemsTheSame(oldItem: TagInfo, newItem: TagInfo) = oldItem.key == newItem.key
-        override fun areContentsTheSame(oldItem: TagInfo, newItem: TagInfo) = oldItem.total == newItem.total
-                && oldItem.learned == newItem.learned && oldItem.received == newItem.received
+        override fun areItemsTheSame(oldItem: Word, newItem: Word) = oldItem.id == newItem.id
+        override fun areContentsTheSame(oldItem: Word, newItem: Word) = oldItem == newItem
     }
 }

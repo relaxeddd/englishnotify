@@ -111,6 +111,23 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         return Collections.singletonList(tagInfoOwn)
     }
 
+    fun getOwnWordsTagInfo() : TagInfo {
+        val tagInfoOwn = TagInfo(OWN)
+        val words = words.value ?: ArrayList()
+
+        tagInfoOwn.received = 0
+        tagInfoOwn.learned = 0
+        for (word in words) {
+            if (word.isCreatedByUser && !word.isDeleted) {
+                tagInfoOwn.received++
+                tagInfoOwn.total++
+                if (word.learnStage == LEARN_STAGE_MAX) tagInfoOwn.learned++
+            }
+        }
+
+        return tagInfoOwn
+    }
+
     fun insertWord(word : Word, wordDao: WordDao = this.wordDao) {
         wordDao.insertAll(word)
     }
