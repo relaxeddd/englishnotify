@@ -56,11 +56,18 @@ class FragmentTraining : BaseFragment<ViewModelTraining, FragmentTrainingBinding
 
     override fun onNavigationEvent(eventId: Int) {
         when (eventId) {
-            NAVIGATION_HIDE_KEYBOARD -> hideKeyboard(edit_text_training_answer)
+            NAVIGATION_HIDE_KEYBOARD -> hideKeyboard(binding.editTextTrainingAnswer)
             NAVIGATION_PLAY_WORD -> {
                 val ac = activity
                 if (ac is MainActivity) {
                     ac.playWord(viewModel.getCurrentWord())
+                }
+            }
+            NAVIGATION_PLAY_WORD_DEPENDS_ON_TRANSLATION -> {
+                val ac = activity
+                if (ac is MainActivity) {
+                    val word = viewModel.getCurrentWord()
+                    ac.playText(if (viewModel.isCurrentEngTraining) word?.eng else word?.rus)
                 }
             }
             NAVIGATION_ANIMATE_RESULT -> {
@@ -68,6 +75,10 @@ class FragmentTraining : BaseFragment<ViewModelTraining, FragmentTrainingBinding
             }
             NAVIGATION_ANIMATE_LEARNED_COUNT -> {
                 animateLearnedCount()
+            }
+            NAVIGATION_ACTIVITY_BACK -> {
+                hideKeyboard(binding.editTextTrainingAnswer)
+                super.onNavigationEvent(eventId)
             }
             else -> super.onNavigationEvent(eventId)
         }

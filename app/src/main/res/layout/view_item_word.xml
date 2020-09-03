@@ -7,13 +7,13 @@
     android:id="@+id/card_view_word"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/size_12"
+    android:layout_marginBottom="@dimen/size_6"
     android:background="@color/white"
     android:foreground="?android:attr/selectableItemBackground"
     android:paddingStart="@dimen/size_12"
     android:paddingEnd="@dimen/size_12"
-    android:paddingBottom="@dimen/size_12"
-    android:paddingTop="@dimen/size_10"
+    android:paddingBottom="@dimen/size_10"
+    android:paddingTop="@dimen/size_6"
     android:elevation="@dimen/default_elevation">
 
     <ProgressBar
@@ -45,6 +45,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
+            android:gravity="center_horizontal"
+            android:layout_marginEnd="@dimen/size_4"
             android:layout_marginStart="@dimen/size_2"
             android:layout_weight="1"/>
 
@@ -110,6 +112,7 @@
             android:layout_width="@dimen/size_32"
             android:layout_height="@dimen/size_32"
             app:srcCompat="@drawable/ic_volume"
+            android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/ic_play" />
 
     </FrameLayout>

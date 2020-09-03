@@ -44,8 +44,10 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
     private var tts: TextToSpeech? = null
     private var isTtsInit = false
     private var isTtsInitFailed = false
-    private var lastVoiceWordId: String? = null
-    private var isFastSpeechSpeed = true
+    private var lastVoiceText: String? = null
+    private var isFastSpeechSpeed = false
+    private var isLastPlayedEng = true
+    private var isPlaying = false
 
     private val listenerNewVersion: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
         override fun onResult(result: Boolean) {
@@ -288,42 +290,57 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
     }
 
     fun playWord(word: Word?) {
-        if (tts == null || isTtsInitFailed) {
+        playText(word?.eng)
+    }
+
+    fun playText(text: String?) {
+        if (isPlaying) return
+
+        text ?: return
+        val textToSpeak = text.replace("_", "").replace("|", "")
+        if (textToSpeak.isEmpty()) return
+
+        val isEngPlay = text.any { (it in 'a'..'z') || (it in 'A'..'Z') }
+
+        isPlaying = true
+        if (tts == null || !isTtsInit || isTtsInitFailed || (isLastPlayedEng != isEngPlay)) {
+            isLastPlayedEng = isEngPlay
             isTtsInitFailed = false
 
             tts = TextToSpeech(this, TextToSpeech.OnInitListener {
                 if (it == TextToSpeech.SUCCESS) {
-                    tts?.language = Locale.US
+                    tts?.language = if (isLastPlayedEng) Locale.US else Locale.getDefault()
                     isTtsInit = true
-                    speak(word)
+                    speak(textToSpeak)
+                    lastVoiceText = textToSpeak
                 } else {
+                    isPlaying = false
                     isTtsInitFailed = true
                     showToast(getString(R.string.error_word_voice, it.toString()))
                 }
             })
-        } else if (isTtsInit && word != null && word.eng.isNotEmpty()) {
-            speak(word)
+        } else {
+            speak(textToSpeak)
+            lastVoiceText = textToSpeak
         }
     }
 
-    private fun speak(word: Word?) {
-        if (word == null || word.eng.isEmpty()) return
-        val textSpeech = word.eng.replace("_", "").replace("|", "")
-
-        if (word.id == lastVoiceWordId && isFastSpeechSpeed) {
+    private fun speak(textToSpeak: String) {
+        if (textToSpeak == lastVoiceText && isFastSpeechSpeed) {
             tts?.setSpeechRate(0.5f)
             isFastSpeechSpeed = false
-        } else if (!isFastSpeechSpeed) {
+        } else {
             tts?.setSpeechRate(1f)
             isFastSpeechSpeed = true
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            tts?.speak(textSpeech, TextToSpeech.QUEUE_FLUSH, null, null)
+            tts?.speak(textToSpeak, TextToSpeech.QUEUE_FLUSH, null, null)
+            isPlaying = false
         } else {
             @Suppress("DEPRECATION")
-            tts?.speak(textSpeech, TextToSpeech.QUEUE_FLUSH, null)
+            tts?.speak(textToSpeak, TextToSpeech.QUEUE_FLUSH, null)
+            isPlaying = false
         }
-        lastVoiceWordId = word.id
     }
 
     private fun initGooglePlayServices() {

@@ -375,6 +375,7 @@
             android:layout_marginTop="@dimen/size_24"
             android:layout_marginStart="@dimen/size_32"
             android:layout_marginEnd="@dimen/size_32"
+            tools:visibility="gone"
             android:onClick="@{clickListenerOneMore}"
             android:visibility="@{safeUnbox(viewModel.isVisibleButtonOneMore) == true ? View.VISIBLE : View.GONE}"/>
 
@@ -388,15 +389,16 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <ProgressBar
-                    android:id="@+id/progress_bar_training_word_stage"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="@dimen/size_120"
-                    android:layout_height="wrap_content"
-                    android:progress="@{safeUnbox(viewModel.wordProgress)}"
-                    tools:progress="33"
+                <ImageView
+                    android:id="@+id/image_training_listen"
+                    android:layout_width="@dimen/size_48"
+                    android:layout_height="@dimen/size_48"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/size_16"/>
+                    android:layout_marginTop="@dimen/size_4"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:onClick="@{viewModel.clickListenerListen}"
+                    android:visibility="@{safeUnbox(viewModel.isVisibleButtonListen) == true ? View.VISIBLE : View.GONE}"
+                    android:src="@drawable/ic_volume"/>
 
                 <TextView
                     android:id="@+id/text_training_word"
@@ -412,7 +414,18 @@
                     android:paddingEnd="@dimen/size_16"
                     android:lines="3"
                     android:textSize="@dimen/font_18"
-                    android:layout_marginTop="@dimen/size_2"/>
+                    android:visibility="@{safeUnbox(viewModel.isVisibleTextWord) == true ? View.VISIBLE : View.GONE}"
+                    android:layout_marginTop="@dimen/size_4"/>
+
+                <ProgressBar
+                    android:id="@+id/progress_bar_training_word_stage"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="@dimen/size_120"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{safeUnbox(viewModel.isVisibleWordProgress) == true ? View.VISIBLE : View.INVISIBLE}"
+                    android:progress="@{safeUnbox(viewModel.wordProgress)}"
+                    tools:progress="33"
+                    android:layout_gravity="center_horizontal"/>
 
                 <TextView
                     android:id="@+id/text_training_transcription"
@@ -423,6 +436,7 @@
                     android:layout_marginEnd="@dimen/size_16"
                     tools:text="[presaise]"
                     android:lines="2"
+                    android:background="?android:attr/selectableItemBackground"
                     app:drawableEndCompat="@drawable/ic_volume"
                     android:gravity="center"
                     android:onClick="@{viewModel.clickListenerPlayWord}"

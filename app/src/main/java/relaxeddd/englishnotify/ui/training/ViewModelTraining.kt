@@ -24,7 +24,7 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
 
     var category = ALL_APP_WORDS
     var trainingType = TRAINING_ENG_TO_RUS
-    private var isCurrentEngTraining = true
+    var isCurrentEngTraining = true
 
     private var trainingWords = ArrayList<Word>()
     private var answers = ArrayList<String>()
@@ -49,6 +49,9 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
     val isVisibleInputAnswer = MutableLiveData(true)
     val isVisibleAnswer = MutableLiveData(false)
     val isVisibleResultText = MutableLiveData(false)
+    val isVisibleWordProgress = MutableLiveData(false)
+    val isVisibleButtonListen = MutableLiveData(SharedHelper.isListeningTraining())
+    val isVisibleTextWord = MutableLiveData(!SharedHelper.isListeningTraining())
     val wordProgress = MutableLiveData(0)
     val resultAnimationType = MutableLiveData(RESULT_RIGHT)
 
@@ -76,6 +79,10 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
 
     val clickListenerPlayWord = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_PLAY_WORD)
+    }
+
+    val clickListenerListen = View.OnClickListener {
+        navigateEvent.value = Event(NAVIGATION_PLAY_WORD_DEPENDS_ON_TRANSLATION)
     }
 
     private val currentObserver = Observer<Int> { currentIx ->
@@ -109,6 +116,9 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
         isVisibleAnswer.value = currentResult != STATE_ANSWER
         isVisibleTranscription.value = (isCurrentEngTraining && word.type != EXERCISE) || currentResult != STATE_ANSWER
         isVisibleResultText.value = currentResult != STATE_ANSWER
+        isVisibleWordProgress.value = currentResult != STATE_ANSWER
+        isVisibleButtonListen.value = SharedHelper.isListeningTraining() && currentResult == STATE_ANSWER
+        isVisibleTextWord.value = !SharedHelper.isListeningTraining() || currentResult != STATE_ANSWER
 
         updateButtonOk()
         updateButtonOneMore()

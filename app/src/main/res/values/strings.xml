@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">English Word Notifications</string>
+    <string name="app_name">English Words Notifications</string>
 
     <string name="about_app">About app</string>
     <string name="accept">Accept</string>
@@ -79,6 +79,7 @@
     <string name="later">Later</string>
     <string name="learn_language">Learn language</string>
     <string name="learned">Learned!</string>
+    <string name="listening_training">Listening training</string>
     <string name="loading">Loading</string>
     <string name="logout">Logout</string>
     <string name="logout_error">Logout error</string>
@@ -233,8 +234,8 @@
     </string>
 
     <string name="patch_notes">
-        - Animations on training screen
-        \n- Own words statistic in Common tab
+        - Listening training option on the training settings screen
+        \n- Own words statistic sorting
         \n- Take attention on \"If you do not receive notifications\" in settings tab
         \n- It might be better to add words in \"Own category\"
     </string>
