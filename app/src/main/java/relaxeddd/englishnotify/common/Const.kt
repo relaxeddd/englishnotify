@@ -111,6 +111,7 @@ const val NAVIGATION_FRAGMENT_WORD = 1340
 const val NAVIGATION_WORD_EXISTS_ERROR = 1345
 const val NAVIGATION_ANIMATE_RESULT = 1346
 const val NAVIGATION_ANIMATE_LEARNED_COUNT = 1347
+const val NAVIGATION_PLAY_WORD_DEPENDS_ON_TRANSLATION = 1348
 
 const val NAVIGATION_LOADING_SHOW = 801
 const val NAVIGATION_LOADING_HIDE = 802
@@ -201,6 +202,7 @@ const val PUSH_LANGUAGE = "pushLanguage"
 const val PUSH_TOKEN = "pushToken"
 const val LAUNCH_COUNT = "launchCount"
 const val LEVEL = "level"
+const val LISTENING_TRAINING = "listeningTraining"
 const val NOTIFICATIONS_VIEW = "notificationsView"
 const val SELECTED_CATEGORY = "selectedCategory"
 const val SORT_BY_TYPE = "sortByType"

@@ -51,7 +51,8 @@ fun showToastLong(@StringRes resId: Int) {
     Toast.makeText(App.context, resId, Toast.LENGTH_LONG).show()
 }
 
-fun hideKeyboard(view: View) {
+fun hideKeyboard(view: View?) {
+    view ?: return
     val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
     imm?.hideSoftInputFromWindow(view.windowToken, 0)
 }

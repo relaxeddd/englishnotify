@@ -4,6 +4,8 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.CompoundButton
+import android.widget.RadioGroup
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_dictionary_own.*
@@ -42,6 +44,10 @@ class FragmentTrainingSetting : BaseFragment<ViewModelTrainingSetting, FragmentT
         binding.recyclerViewTrainingSettingCategories.itemAnimator = null
         binding.recyclerViewTrainingSettingCategories.adapter = adapter
         binding.buttonTrainingSettingStart.setOnClickListener { viewModel.onClickAccept() }
+        binding.switchTrainingSettingListenTraining.isChecked = SharedHelper.isListeningTraining()
+        binding.switchTrainingSettingListenTraining.setOnCheckedChangeListener { _, isChecked ->
+            SharedHelper.setListeningTraining(isChecked)
+        }
         viewModel.categories.observe(viewLifecycleOwner, Observer { items ->
             if (items != null && items.isNotEmpty()) adapter.submitList(items)
         })

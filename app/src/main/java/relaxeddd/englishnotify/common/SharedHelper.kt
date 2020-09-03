@@ -19,6 +19,16 @@ object SharedHelper {
         sPref.edit().putBoolean(PRIVACY_POLICY_CONFIRMED, isConfirmed).apply()
     }
 
+    fun isListeningTraining(context: Context = App.context) : Boolean {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getBoolean(LISTENING_TRAINING, false)
+    }
+
+    fun setListeningTraining(value : Boolean, context: Context = App.context) {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putBoolean(LISTENING_TRAINING, value).apply()
+    }
+
     fun getLearnLanguageType(context: Context = App.context) : Int {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         return sPref.getInt(PUSH_LANGUAGE, TYPE_PUSH_ENGLISH)

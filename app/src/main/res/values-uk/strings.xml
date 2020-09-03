@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Английские слова через уведомления</string>
+    <string name="app_name">Английские слова уведомления</string>
 
     <string name="about_app">О приложении</string>
     <string name="accept">Принять</string>
@@ -79,6 +79,7 @@
     <string name="later">Позднее</string>
     <string name="learn_language">Изучаемый язык</string>
     <string name="learned">Выучено!</string>
+    <string name="listening_training">Восприятие на слух</string>
     <string name="loading">Загрузка</string>
     <string name="logout">Выход из аккаунта</string>
     <string name="logout_error">Ошибка выхода из аккаунта</string>
@@ -219,8 +220,8 @@
     <string name="text_info_statistic">k/m/n - k выучено, m получено, n всего</string>
 
     <string name="patch_notes">
-        - Анимации при тренировке слов
-        \n- Статистика слов своей категории в разделе Общее
+        - Добавлена опция тренировки слов восприятием на слух
+        \n- Отсортированы слова в статистике Своих слов
         \n- Опция \"Если не ходят уведомления\" в настройках.
         \n- Вы можете заносить слова в \"Своя категория\" для последующего изучения.
     </string>
