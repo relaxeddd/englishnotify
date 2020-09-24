@@ -11,6 +11,8 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.UnderlineSpan
 import android.view.View
+import android.view.ViewTreeObserver
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.firebase.ui.auth.AuthUI
@@ -38,7 +40,6 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
     private lateinit var navController: NavController
     private val providers: List<AuthUI.IdpConfig> = listOf(AuthUI.IdpConfig.GoogleBuilder().build())
     private var dialogNewVersion: DialogNewVersion? = null
-    var isBillingInit = false
 
     private var tts: TextToSpeech? = null
     private var isTtsInit = false
@@ -47,6 +48,8 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
     private var isFastSpeechSpeed = false
     private var isLastPlayedEng = true
     private var isPlaying = false
+
+    val warningContainerSize = MutableLiveData(0)
 
     private val listenerNewVersion: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
         override fun onResult(result: Boolean) {
@@ -79,6 +82,15 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
     override fun configureBinding() {
         super.configureBinding()
         binding.viewModel = viewModel
+        viewModel.isShowGoogleAuth.observe(this, { isVisible ->
+            observeWarningContainerDrawing(binding.containerMainSignIn, isVisible)
+        })
+        viewModel.isShowWarningNotifications.observe(this, { isVisible ->
+            observeWarningContainerDrawing(binding.containerMainWarningNotifications, isVisible)
+        })
+        viewModel.isShowWarningSubscription.observe(this, { isVisible ->
+            observeWarningContainerDrawing(binding.containerMainWarningSubscription, isVisible)
+        })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -151,6 +163,7 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
             return@setOnNavigationItemSelectedListener true
         }*/
         initPrivacyPolicyText()
+        updateWarningsHeight()
 
         viewModel.onViewCreate()
     }
@@ -242,15 +255,6 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
             NAVIGATION_DIALOG_PATCH_NOTES -> {
                 val dialog = DialogPatchNotes()
                 dialog.show(this@MainActivity.supportFragmentManager, "Patch Notes Dialog")
-            }
-            NAVIGATION_INIT_BILLING -> {
-                if (isMyResumed && !isBillingInit) {
-                    initBilling(object: ListenerResult<Boolean> {
-                        override fun onResult(result: Boolean) {
-                            if (result) isBillingInit = true
-                        }
-                    })
-                }
             }
             NAVIGATION_GOOGLE_LOGOUT -> {
                 if (isMyResumed) {
@@ -388,5 +392,32 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
 
         spannableString.setSpan(clickableSpan, firstIndex, lastIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         spannableString.setSpan(UnderlineSpan(), firstIndex, lastIndex, 0)
+    }
+
+    private fun observeWarningContainerDrawing(container: View, isShouldBeVisible: Boolean) {
+        container.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                if (isShouldBeVisible && container.visibility != View.GONE
+                    || !isShouldBeVisible && container.visibility == View.GONE) {
+                    container.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    updateWarningsHeight()
+                }
+            }
+        })
+    }
+
+    private fun updateWarningsHeight() {
+        var height = 0
+
+        if (binding.containerMainWarningNotifications.visibility != View.GONE) {
+            height += binding.containerMainWarningNotifications.height
+        }
+        if (binding.containerMainWarningSubscription.visibility != View.GONE) {
+            height += binding.containerMainWarningSubscription.height
+        }
+        if (binding.containerMainSignIn.visibility != View.GONE) {
+            height += binding.containerMainSignIn.height
+        }
+        warningContainerSize.value = height
     }
 }

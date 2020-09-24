@@ -4,12 +4,15 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.FragmentTrainingSettingBinding
 import relaxeddd.englishnotify.ui.categories.AdapterCategories
+import relaxeddd.englishnotify.ui.main.MainActivity
+import kotlin.math.roundToInt
 
 class FragmentTrainingSetting : BaseFragment<ViewModelTrainingSetting, FragmentTrainingSettingBinding>() {
 
@@ -46,6 +49,11 @@ class FragmentTrainingSetting : BaseFragment<ViewModelTrainingSetting, FragmentT
         }
         viewModel.categories.observe(viewLifecycleOwner, Observer { items ->
             if (items != null && items.isNotEmpty()) adapter.submitList(items)
+        })
+        (activity as? MainActivity)?.warningContainerSize?.observe(viewLifecycleOwner, {
+            val bottomMargin = (if (it == 0) resources.getDimension(R.dimen.size_32) else resources.getDimension(R.dimen.size_8)) + it
+            (binding.buttonTrainingSettingStart.layoutParams as? ViewGroup.MarginLayoutParams)?.bottomMargin = bottomMargin.roundToInt()
+            binding.buttonTrainingSettingStart.requestLayout()
         })
     }
 

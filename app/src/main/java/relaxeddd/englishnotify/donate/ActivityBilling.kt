@@ -7,6 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
+import relaxeddd.englishnotify.dialogs.DialogSubscription
 import relaxeddd.englishnotify.model.http.ApiHelper
 import relaxeddd.englishnotify.model.repository.RepositoryCommon
 import relaxeddd.englishnotify.model.repository.RepositoryUser
@@ -26,6 +27,13 @@ abstract class ActivityBilling<VM : ViewModelBase, B : ViewDataBinding> : Activi
     private var billingClient: BillingClient? = null
     private var isBillingServiceConnected = false
     private var attemptConnect = 0
+    private var isBillingInit = false
+
+    private val listenerSubscription: ListenerResult<Int> = object: ListenerResult<Int> {
+        override fun onResult(result: Int) {
+            onChooseSub(result)
+        }
+    }
 
     //------------------------------------------------------------------------------------------------------------------
     override fun onPurchasesUpdated(billingResult: BillingResult, purchases: MutableList<Purchase>?) {
@@ -37,6 +45,46 @@ abstract class ActivityBilling<VM : ViewModelBase, B : ViewDataBinding> : Activi
             }
         } else if (billingResult.responseCode != BillingClient.BillingResponseCode.USER_CANCELED) {
             showToast(R.string.error_purchase)
+        }
+    }
+
+    override fun onNavigationEvent(eventId: Int) {
+        when (eventId) {
+            NAVIGATION_INIT_BILLING -> {
+                if (isMyResumed && !isBillingInit) {
+                    initBilling(object: ListenerResult<Boolean> {
+                        override fun onResult(result: Boolean) {
+                            if (result) isBillingInit = true
+                        }
+                    })
+                }
+            }
+            NAVIGATION_DIALOG_SUBSCRIPTION -> {
+                if (isMyResumed) {
+                    if (isBillingInit) {
+                        val dialog = DialogSubscription()
+                        dialog.listener = listenerSubscription
+                        dialog.show(this.supportFragmentManager, "Subscription Dialog")
+                    } else {
+                        initBilling(object: ListenerResult<Boolean> {
+                            override fun onResult(result: Boolean) {
+                                if (isMyResumed) {
+                                    if (result) {
+                                        isBillingInit = true
+
+                                        val dialog = DialogSubscription()
+                                        dialog.listener = listenerSubscription
+                                        dialog.show(this@ActivityBilling.supportFragmentManager, "Subscription Dialog")
+                                    } else {
+                                        showToast(R.string.error_purchase)
+                                    }
+                                }
+                            }
+                        })
+                    }
+                }
+            }
+            else -> super.onNavigationEvent(eventId)
         }
     }
 
@@ -70,7 +118,7 @@ abstract class ActivityBilling<VM : ViewModelBase, B : ViewDataBinding> : Activi
         }
     }
 
-    fun initBilling(resultListener: ListenerResult<Boolean>? = null) {
+    private fun initBilling(resultListener: ListenerResult<Boolean>? = null) {
         if (billingClient == null) {
             billingClient = BillingClient.newBuilder(this).enablePendingPurchases().setListener(this).build()
         }
@@ -105,7 +153,7 @@ abstract class ActivityBilling<VM : ViewModelBase, B : ViewDataBinding> : Activi
         })
     }
 
-    fun onChooseSub(subType: Int) {
+    private fun onChooseSub(subType: Int) {
         val productId = getProductId(subType) ?: return
         var buySkuDetails: SkuDetails? = null
 
