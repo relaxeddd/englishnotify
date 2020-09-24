@@ -60,6 +60,11 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
                     DialogSubscriptionInfo().show(this@FragmentSettings.childFragmentManager, "Sub Info Dialog")
                 }
             }
+            NAVIGATION_DIALOG_OWN_CATEGORY -> {
+                if (isResumed) {
+                    DialogOwnCategory().show(this@FragmentSettings.childFragmentManager, "Check tags Dialog")
+                }
+            }
             NAVIGATION_DIALOG_INFO_TRAINING -> {
                 if (isResumed) {
                     DialogInfoTraining().show(this@FragmentSettings.childFragmentManager, "Info Training Dialog")

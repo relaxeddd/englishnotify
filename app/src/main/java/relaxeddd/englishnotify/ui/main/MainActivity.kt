@@ -17,7 +17,6 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
-import kotlinx.android.synthetic.main.main_activity.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.MainActivityBinding
@@ -34,8 +33,8 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
         const val REQUEST_PLAY_SERVICES_RESULT = 7245
     }
 
-    private var selectedBottomMenuId: Int = R.id.fragmentDictionaryAll
-    private var selectedSecondaryBottomMenuId: Int = R.id.fragmentDictionaryAll
+    private var selectedBottomMenuId: Int = R.id.fragmentDictionaryContainer
+    //private var selectedSecondaryBottomMenuId: Int = R.id.fragmentDictionaryAll
     private lateinit var navController: NavController
     private val providers: List<AuthUI.IdpConfig> = listOf(AuthUI.IdpConfig.GoogleBuilder().build())
     private var dialogNewVersion: DialogNewVersion? = null
@@ -96,27 +95,28 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
             viewModel.isVisibleSecondaryBottomNavigationView.value = isDictionaryTab
 
             if (isDictionaryTab) {
-                if (destination.id != selectedSecondaryBottomMenuId) {
+                /*if (destination.id != selectedSecondaryBottomMenuId) {
                     selectedSecondaryBottomMenuId = destination.id
                     navigation_view_main_secondary.selectedItemId = destination.id
-                }
-                if (selectedBottomMenuId != R.id.fragmentDictionaryAll) {
-                    selectedBottomMenuId = R.id.fragmentDictionaryAll
-                    navigation_view_main.selectedItemId = R.id.fragmentDictionaryAll
+                }*/
+                if (selectedBottomMenuId != R.id.fragmentDictionaryContainer) {
+                    selectedBottomMenuId = R.id.fragmentDictionaryContainer
+                    binding.navigationViewMain.selectedItemId = R.id.fragmentDictionaryContainer
                 }
             } else if (destination.id != selectedBottomMenuId) {
                 selectedBottomMenuId = destination.id
-                navigation_view_main.selectedItemId = destination.id
+                binding.navigationViewMain.selectedItemId = destination.id
             }
         }
 
-        navigation_view_main.setOnNavigationItemSelectedListener {
+        binding.navigationViewMain.setOnNavigationItemSelectedListener {
             if (it.itemId == selectedBottomMenuId) {
                 return@setOnNavigationItemSelectedListener true
             }
 
             when (it.itemId) {
-                R.id.fragmentDictionaryAll -> {
+                R.id.fragmentDictionaryContainer -> navController.myNavigate(R.id.action_global_fragmentDictionaryContainer)
+                /*R.id.fragmentDictionaryAll -> {
                     when (selectedSecondaryBottomMenuId) {
                         R.id.fragmentDictionaryAll -> navController.myNavigate(R.id.action_global_fragmentDictionaryAll)
                         R.id.fragmentDictionaryOwn -> navController.myNavigate(R.id.action_global_fragmentDictionaryOwn)
@@ -124,7 +124,7 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
                         R.id.fragmentDictionaryKnow -> navController.myNavigate(R.id.action_global_fragmentDictionaryKnow)
                         else -> return@setOnNavigationItemSelectedListener false
                     }
-                }
+                }*/
                 R.id.fragmentTrainingSetting -> navController.myNavigate(R.id.action_global_fragmentTrainingSetting)
                 R.id.fragmentNotifications -> navController.myNavigate(R.id.action_global_fragmentNotifications)
                 R.id.fragmentSettings -> navController.myNavigate(R.id.action_global_fragmentSettings)
@@ -134,7 +134,7 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
 
             return@setOnNavigationItemSelectedListener true
         }
-        navigation_view_main_secondary.setOnNavigationItemSelectedListener {
+        /*navigation_view_main_secondary.setOnNavigationItemSelectedListener {
             if (it.itemId == selectedSecondaryBottomMenuId) {
                 return@setOnNavigationItemSelectedListener true
             }
@@ -149,7 +149,7 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
             selectedSecondaryBottomMenuId = it.itemId
 
             return@setOnNavigationItemSelectedListener true
-        }
+        }*/
         initPrivacyPolicyText()
 
         viewModel.onViewCreate()
@@ -182,7 +182,7 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
                 val response: IdpResponse? = IdpResponse.fromResultIntent(data)
 
                 if (resultCode == Activity.RESULT_OK) {
-                    text_main_privacy_policy.visibility = View.GONE
+                    binding.textMainPrivacyPolicy.visibility = View.GONE
                     viewModel.requestInit()
                 } else if (isMyResumed && response != null) {
                     AuthUI.getInstance().signOut(this).addOnCompleteListener {}
@@ -278,11 +278,11 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
 
     override fun setupThemeColors() {
         super.setupThemeColors()
-        navigation_view_main.setBackgroundColor(getPrimaryColorResId())
-        navigation_view_main.itemBackgroundResource = getPrimaryColorResId()
-        navigation_view_main_secondary.setBackgroundColor(getPrimaryColorResId())
+        binding.navigationViewMain.setBackgroundColor(getPrimaryColorResId())
+        binding.navigationViewMain.itemBackgroundResource = getPrimaryColorResId()
+        /*navigation_view_main_secondary.setBackgroundColor(getPrimaryColorResId())
         navigation_view_main_secondary.itemBackgroundResource = getPrimaryColorResId()
-        view_main_bottom_separator.setBackgroundColor(getPrimaryDarkColorResId())
+        view_main_bottom_separator.setBackgroundColor(getPrimaryDarkColorResId())*/
     }
 
     fun setLoadingVisible(isVisible: Boolean) {
@@ -364,11 +364,11 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
 
     private fun initPrivacyPolicyText() {
         if (SharedHelper.isPrivacyPolicyConfirmed(this)) {
-            text_main_privacy_policy.visibility = View.GONE
+            binding.textMainPrivacyPolicy.visibility = View.GONE
             return
         }
 
-        val privacyPolicy = text_main_privacy_policy.text.toString()
+        val privacyPolicy = binding.textMainPrivacyPolicy.text.toString()
         val spannablePrivacyPolicy = SpannableString(privacyPolicy)
         val clickablePrivacyPolicy = object : ClickableSpan() {
             override fun onClick(textView: View) {
@@ -378,8 +378,8 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
 
         setClickableSubstring(privacyPolicy, spannablePrivacyPolicy, getString(R.string.privacy_policy_in_sentence), clickablePrivacyPolicy)
 
-        text_main_privacy_policy.text = spannablePrivacyPolicy
-        text_main_privacy_policy.movementMethod = LinkMovementMethod.getInstance()
+        binding.textMainPrivacyPolicy.text = spannablePrivacyPolicy
+        binding.textMainPrivacyPolicy.movementMethod = LinkMovementMethod.getInstance()
     }
 
     private fun setClickableSubstring(string: String, spannableString: SpannableString, substring: String, clickableSpan: ClickableSpan) {

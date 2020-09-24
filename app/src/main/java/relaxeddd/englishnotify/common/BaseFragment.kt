@@ -58,7 +58,9 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val title = if (getToolbarTitleResId() != EMPTY_RES) getString(getToolbarTitleResId()) else getToolbarTitle()
-        (activity as AppCompatActivity).supportActionBar?.title = title
+        if (title.isNotEmpty()) {
+            (activity as AppCompatActivity).supportActionBar?.title = title
+        }
         setupThemeColors()
     }
 
@@ -68,11 +70,13 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        this.menu = menu
-        if (getMenuResId() != EMPTY_RES) {
-            inflater.inflate(getMenuResId(), menu)
+        if (getMenuResId() == EMPTY_RES) {
+            return
         }
+
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(getMenuResId(), menu)
+        this.menu = menu
 
         val searchItem = if (getSearchMenuItemId() != EMPTY_RES) menu.findItem(getSearchMenuItemId()) else null
 

@@ -200,6 +200,7 @@
     <string name="label_fragment_statistic" translatable="false">LabelFragmentStatistic</string>
     <string name="label_fragment_time" translatable="false">LabelFragmentTime</string>
     <string name="label_fragment_rating" translatable="false">LabelFragmentRating</string>
+    <string name="label_fragment_dictionary_container" translatable="false">LabelFragmentDictionaryContainer</string>
 
     <string name="service_notifications_count_listener" translatable="false">NotificationsListenerService</string>
 
@@ -337,6 +338,7 @@
     <string name="ic_subscription_settings" translatable="false">Subscription settings</string>
     <string name="ic_send_feedback" translatable="false">Send feedback</string>
     <string name="ic_training_words_information" translatable="false">Training words information</string>
+    <string name="ic_own_words_information" translatable="false">Own words information</string>
     <string name="ic_rate_application" translatable="false">Rate application</string>
     <string name="ic_learn_stage_settings" translatable="false">Is show learn stage option</string>
     <string name="ic_logout" translatable="false">Logout</string>

@@ -7,6 +7,7 @@ import relaxeddd.englishnotify.model.repository.RepositoryWord
 import relaxeddd.englishnotify.ui.categories.CategorySection
 import relaxeddd.englishnotify.ui.categories.section.ViewModelCategorySection
 import relaxeddd.englishnotify.ui.dictionary_all.ViewModelDictionaryAll
+import relaxeddd.englishnotify.ui.dictionary_container.ViewModelDictionaryContainer
 import relaxeddd.englishnotify.ui.dictionary_exercises.ViewModelDictionaryExercises
 import relaxeddd.englishnotify.ui.dictionary_know.ViewModelDictionaryKnow
 import relaxeddd.englishnotify.ui.dictionary_own.ViewModelDictionaryOwn
@@ -124,5 +125,13 @@ class TimeViewModelFactory(private val repositoryUser: RepositoryUser) : ViewMod
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return ViewModelTime(repositoryUser) as T
+    }
+}
+
+class DictionaryContainerViewModelFactory() : ViewModelProvider.NewInstanceFactory() {
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return ViewModelDictionaryContainer() as T
     }
 }

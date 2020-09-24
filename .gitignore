@@ -48,6 +48,8 @@ captures/
 .idea/render.experimental.xml
 .idea/misc.xml
 
+/.idea/codeStyles/Project.xml
+
 .gradle
 /local.properties
 /.idea/caches/build_file_checksums.ser
