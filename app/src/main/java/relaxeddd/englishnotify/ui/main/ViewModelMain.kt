@@ -50,7 +50,7 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
         navigateEvent.value = Event(NAVIGATION_FRAGMENT_NOTIFICATIONS)
     }
     val clickListenerWarningSubscription = View.OnClickListener {
-        navigateEvent.value = Event(NAVIGATION_FRAGMENT_SETTINGS)
+        navigateEvent.value = Event(NAVIGATION_DIALOG_SUBSCRIPTION)
     }
     val clickListenerGoogleAuth = View.OnClickListener {
         if (!isNetworkAvailable()) {

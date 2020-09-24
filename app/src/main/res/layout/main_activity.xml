@@ -35,7 +35,8 @@
             app:layout_constraintStart_toStartOf="parent"
             android:onClick="@{viewModel.clickListenerWarningNotifications}"
             android:visibility="@{safeUnbox(viewModel.isShowWarningNotifications) ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toTopOf="@+id/container_main_warning_subscription">
+            app:layout_constraintBottom_toTopOf="@+id/container_main_warning_subscription"
+            android:alpha="0.7">
 
             <TextView
                 android:text="@string/notifications_not_receiving_enable"
@@ -50,8 +51,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/size_16"
                 android:layout_marginEnd="@dimen/size_8"
-                android:layout_marginBottom="@dimen/size_16"
-                android:layout_marginTop="@dimen/size_16"/>
+                android:layout_marginVertical="@dimen/size_8"/>
 
             <ImageView
                 android:id="@+id/image_main_waring_notifications"
@@ -76,7 +76,8 @@
             app:layout_constraintStart_toStartOf="parent"
             android:onClick="@{viewModel.clickListenerWarningSubscription}"
             android:visibility="@{safeUnbox(viewModel.isShowWarningSubscription) ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toTopOf="@+id/container_main_sign_in">
+            app:layout_constraintBottom_toTopOf="@+id/container_main_sign_in"
+            android:alpha="0.7">
 
             <TextView
                 android:id="@+id/text_main_warning_subscription"

@@ -33,7 +33,8 @@
             android:clipToPadding="false"
             android:scrollbars="vertical"
             android:visibility="@{hasWords ? View.VISIBLE : View.GONE}"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:paddingBottom="@dimen/size_72"/>
 
         <TextView
             android:id="@+id/text_dictionary_no_words"
@@ -56,7 +57,8 @@
             app:borderWidth="0dp"
             android:visibility="gone"
             android:layout_marginBottom="@dimen/size_32"
-            android:layout_marginEnd="@dimen/size_24"/>
+            android:layout_marginEnd="@dimen/size_24"
+            tools:visibility="visible"/>
 
         <LinearLayout
             android:id="@+id/container_dictionary_filter"

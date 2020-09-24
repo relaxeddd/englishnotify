@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.marginBottom
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import relaxeddd.englishnotify.R
@@ -17,6 +19,7 @@ import relaxeddd.englishnotify.databinding.FragmentDictionaryBinding
 import relaxeddd.englishnotify.dialogs.DialogDeleteWords
 import relaxeddd.englishnotify.ui.main.MainActivity
 import java.lang.IllegalStateException
+import kotlin.math.roundToInt
 
 abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>> : BaseFragment<VM, FragmentDictionaryBinding>() {
 
@@ -69,6 +72,11 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
         })
         viewModel.user.observe(viewLifecycleOwner, { user ->
             adapter.languageType = user?.learnLanguageType ?: 0
+        })
+        (activity as? MainActivity)?.warningContainerSize?.observe(viewLifecycleOwner, {
+            val bottomMargin = (if (it == 0) resources.getDimension(R.dimen.size_32) else resources.getDimension(R.dimen.size_8)) + it
+            (binding.buttonDictionaryAddWord.layoutParams as? ViewGroup.MarginLayoutParams)?.bottomMargin = bottomMargin.roundToInt()
+            binding.buttonDictionaryAddWord.requestLayout()
         })
     }
 
