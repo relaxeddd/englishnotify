@@ -4,12 +4,8 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.CompoundButton
-import android.widget.RadioGroup
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import kotlinx.android.synthetic.main.fragment_dictionary_own.*
-import kotlinx.android.synthetic.main.fragment_training_setting.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.FragmentTrainingSettingBinding
@@ -57,17 +53,17 @@ class FragmentTrainingSetting : BaseFragment<ViewModelTrainingSetting, FragmentT
         super.onViewCreated(view, savedInstanceState)
 
         when (viewModel.trainingLanguage) {
-            TRAINING_RUS_TO_ENG -> radio_button_training_setting_ru_to_en.isChecked = true
-            TRAINING_MIXED -> radio_button_training_setting_mixed.isChecked = true
-            else -> radio_button_training_setting_en_to_ru.isChecked = true
+            TRAINING_RUS_TO_ENG -> binding.radioButtonTrainingSettingRuToEn.isChecked = true
+            TRAINING_MIXED -> binding.radioButtonTrainingSettingMixed.isChecked = true
+            else -> binding.radioButtonTrainingSettingEnToRu.isChecked = true
         }
-        radio_button_training_setting_ru_to_en.setOnCheckedChangeListener { _, isChecked ->
+        binding.radioButtonTrainingSettingRuToEn.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) viewModel.trainingLanguage = TRAINING_RUS_TO_ENG
         }
-        radio_button_training_setting_en_to_ru.setOnCheckedChangeListener { _, isChecked ->
+        binding.radioButtonTrainingSettingEnToRu.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) viewModel.trainingLanguage = TRAINING_ENG_TO_RUS
         }
-        radio_button_training_setting_mixed.setOnCheckedChangeListener { _, isChecked ->
+        binding.radioButtonTrainingSettingMixed.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) viewModel.trainingLanguage = TRAINING_MIXED
         }
     }

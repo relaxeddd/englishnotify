@@ -40,6 +40,9 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     val clickListenerRate = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_WEB_PLAY_MARKET)
     }
+    val clickListenerInfoOwnWords = View.OnClickListener {
+        navigateEvent.value = Event(NAVIGATION_DIALOG_OWN_CATEGORY)
+    }
     val clickListenerInfoTraining = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_INFO_TRAINING)
     }

@@ -6,21 +6,19 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.databinding.ViewDataBinding
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_dictionary.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.dialogs.DialogCheckTags
 import relaxeddd.englishnotify.dialogs.DialogSortBy
 import relaxeddd.englishnotify.common.*
+import relaxeddd.englishnotify.databinding.FragmentDictionaryBinding
 import relaxeddd.englishnotify.dialogs.DialogDeleteWords
 import relaxeddd.englishnotify.ui.main.MainActivity
 import java.lang.IllegalStateException
 
-abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding, A : AdapterWords<*>> : BaseFragment<VM, B>() {
+abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>> : BaseFragment<VM, FragmentDictionaryBinding>() {
 
     protected lateinit var adapter: A
     private var animBlock: AnimBlock = AnimBlock(false)
@@ -29,7 +27,7 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding,
     private val listenerCheckTags: ListenerResult<List<String>> = object: ListenerResult<List<String>> {
         override fun onResult(result: List<String>) {
             viewModel.setFilterTags(result)
-            animateDropdown(getCardViewFilter(), false, animBlock)
+            animateDropdown(binding.containerDictionaryFilter, false, animBlock)
         }
     }
 
@@ -38,15 +36,20 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding,
             viewModel.onDialogSortByType(result)
         }
     }
-    protected val clickListenerCloseFilter = View.OnClickListener {
-        animateDropdown(getCardViewFilter(), false, animBlock)
+    private val clickListenerCloseFilter = View.OnClickListener {
+        animateDropdown(binding.containerDictionaryFilter, false, animBlock)
     }
 
     //------------------------------------------------------------------------------------------------------------------
     abstract fun createWordsAdapter() : A
-    abstract fun getRecyclerViewWords() : RecyclerView
-    abstract fun getCardViewFilter() : ViewGroup
     override fun getLayoutResId() = R.layout.fragment_dictionary
+
+    override fun configureBinding() {
+        super.configureBinding()
+        binding.viewModel = viewModel
+        binding.clickListenerCloseFilter = clickListenerCloseFilter
+        binding.clickListenerAddWord = Navigation.createNavigateOnClickListener(R.id.action_fragmentDictionaryContainer_to_fragmentWord)
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,20 +57,25 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding,
 
         adapter = createWordsAdapter()
 
-        if (check_box_dictionary_show_own_words != null) {
-            check_box_dictionary_show_own_words.setOnCheckedChangeListener(viewModel.checkedChangeListenerShowOwnWords)
-        }
-        getRecyclerViewWords().adapter = adapter
-        getRecyclerViewWords().setOnTouchListener { _, _ ->
-            animateDropdown(getCardViewFilter(), false, animBlock)
+        binding.checkBoxDictionaryShowOwnWords.setOnCheckedChangeListener(viewModel.checkedChangeListenerShowOwnWords)
+        binding.recyclerViewDictionary.adapter = adapter
+        binding.recyclerViewDictionary.setOnTouchListener { _, _ ->
+            animateDropdown(binding.containerDictionaryFilter, false, animBlock)
             false
         }
+        viewModel.wordsFiltered.observe(viewLifecycleOwner, { words ->
+            binding.hasWords = (words != null && words.isNotEmpty())
+            updateAdapter(words)
+        })
+        viewModel.user.observe(viewLifecycleOwner, { user ->
+            adapter.languageType = user?.learnLanguageType ?: 0
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.item_menu_filter -> {
-                animateDropdown(getCardViewFilter(), getCardViewFilter().visibility == View.GONE, animBlock)
+                animateDropdown(binding.containerDictionaryFilter, binding.containerDictionaryFilter.visibility == View.GONE, animBlock)
                 return true
             }
             R.id.item_menu_check -> {
@@ -111,7 +119,7 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding,
     override fun onNavigationEvent(eventId: Int) {
         when (eventId) {
             NAVIGATION_ACTION_HIDE_FILTER -> {
-                animateDropdown(getCardViewFilter(), false, animBlock)
+                animateDropdown(binding.containerDictionaryFilter, false, animBlock)
             }
             NAVIGATION_PLAY_WORD -> {
                 val ac = activity
@@ -158,8 +166,8 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding,
 
     override fun setupThemeColors() {
         val context = context ?: return
-        button_dictionary_add_word?.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, getPrimaryColorResId()))
-        container_dictionary_filter.setBackgroundResource(getPrimaryColorResId())
+        binding.buttonDictionaryAddWord.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, getPrimaryColorResId()))
+        binding.containerDictionaryFilter.setBackgroundResource(getPrimaryColorResId())
     }
 
     open fun onFragmentSelected() {}
@@ -168,7 +176,7 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding,
         if (adapter.isSelectState) {
             adapter.isSelectState = false
         }
-        animateDropdown(getCardViewFilter(), false, animBlock)
+        animateDropdown(binding.containerDictionaryFilter, false, animBlock)
     }
 
     protected fun updateAdapter(words: List<Word>?) {
@@ -178,7 +186,7 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding,
             if (isScroll) {
                 handler.postDelayed({
                     try {
-                        (getRecyclerViewWords().layoutManager as LinearLayoutManager?)?.scrollToPositionWithOffset(0, 0)
+                        (binding.recyclerViewDictionary.layoutManager as LinearLayoutManager?)?.scrollToPositionWithOffset(0, 0)
                     } catch (e: IllegalStateException) {}
                 }, 50)
             }
@@ -189,7 +197,6 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, B : ViewDataBinding,
         menu?.findItem(R.id.item_menu_check)?.isVisible = !isCheckMode
         menu?.findItem(getSearchMenuItemId())?.isVisible = !isCheckMode
         menu?.findItem(R.id.item_menu_filter)?.isVisible = !isCheckMode
-        menu?.findItem(R.id.item_menu_dialog_own)?.isVisible = !isCheckMode
         menu?.findItem(R.id.item_menu_check_all)?.isVisible = isCheckMode
         menu?.findItem(R.id.item_menu_cancel_check)?.isVisible = isCheckMode
         menu?.findItem(R.id.item_menu_delete)?.isVisible = isCheckMode

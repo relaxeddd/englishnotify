@@ -35,7 +35,9 @@
     <dimen name="size_240">240dp</dimen>
     <dimen name="size_320">320dp</dimen>
 
+    <dimen name="font_9">9sp</dimen>
     <dimen name="font_10">10sp</dimen>
+    <dimen name="font_11">11sp</dimen>
     <dimen name="font_12">12sp</dimen>
     <dimen name="font_14">14sp</dimen>
     <dimen name="font_16">16sp</dimen>

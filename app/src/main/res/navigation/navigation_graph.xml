@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_graph"
-    app:startDestination="@id/fragmentDictionaryAll">
+    app:startDestination="@id/fragmentDictionaryContainer">
 
     <fragment
         android:id="@+id/fragmentNotifications"
@@ -58,44 +58,34 @@
     </fragment>
 
     <fragment
-        android:id="@+id/fragmentDictionaryAll"
-        android:name="relaxeddd.englishnotify.ui.dictionary_all.FragmentDictionaryAll"
-        android:label="@string/label_fragment_dictionary_all"
-        tools:layout="@layout/fragment_dictionary">
+        android:id="@+id/fragmentDictionaryContainer"
+        android:name="relaxeddd.englishnotify.ui.dictionary_container.FragmentDictionaryContainer"
+        android:label="@string/label_fragment_dictionary_container"
+        tools:layout="@layout/fragment_dictionary_container">
 
         <action
-            android:id="@+id/action_fragmentDictionaryAll_to_fragmentTrainingSetting"
-            app:destination="@id/fragmentTrainingSetting"/>
-
-        <action
-            android:id="@+id/action_fragmentDictionaryAll_to_fragmentWord"
+            android:id="@+id/action_fragmentDictionaryContainer_to_fragmentWord"
             app:destination="@id/fragmentWord"/>
 
     </fragment>
+
+    <fragment
+        android:id="@+id/fragmentDictionaryAll"
+        android:name="relaxeddd.englishnotify.ui.dictionary_all.FragmentDictionaryAll"
+        android:label="@string/label_fragment_dictionary_all"
+        tools:layout="@layout/fragment_dictionary"/>
 
     <fragment
         android:id="@+id/fragmentDictionaryOwn"
         android:name="relaxeddd.englishnotify.ui.dictionary_own.FragmentDictionaryOwn"
         android:label="@string/label_fragment_dictionary_own"
-        tools:layout="@layout/fragment_dictionary_own">
-
-        <action
-            android:id="@+id/action_fragmentDictionaryOwn_to_fragmentWord"
-            app:destination="@id/fragmentWord"/>
-
-    </fragment>
+        tools:layout="@layout/fragment_dictionary"/>
 
     <fragment
         android:id="@+id/fragmentDictionaryExercises"
         android:name="relaxeddd.englishnotify.ui.dictionary_exercises.FragmentDictionaryExercises"
         android:label="@string/label_fragment_dictionary_exercises"
-        tools:layout="@layout/fragment_dictionary">
-
-        <action
-            android:id="@+id/action_fragmentDictionaryExercises_to_fragmentTrainingSetting"
-            app:destination="@id/fragmentTrainingSetting"/>
-
-    </fragment>
+        tools:layout="@layout/fragment_dictionary"/>
 
     <fragment
         android:id="@+id/fragmentDictionaryKnow"
@@ -131,27 +121,9 @@
         app:destination="@id/fragmentWord"/>
 
     <action
-        android:id="@+id/action_global_fragmentDictionaryAll"
-        app:destination="@id/fragmentDictionaryAll"
-        app:popUpTo="@+id/fragmentDictionaryAll"
-        app:popUpToInclusive="true"/>
-
-    <action
-        android:id="@+id/action_global_fragmentDictionaryOwn"
-        app:destination="@id/fragmentDictionaryOwn"
-        app:popUpTo="@+id/fragmentDictionaryOwn"
-        app:popUpToInclusive="true"/>
-
-    <action
-        android:id="@+id/action_global_fragmentDictionaryExercises"
-        app:destination="@id/fragmentDictionaryExercises"
-        app:popUpTo="@+id/fragmentDictionaryExercises"
-        app:popUpToInclusive="true"/>
-
-    <action
-        android:id="@+id/action_global_fragmentDictionaryKnow"
-        app:destination="@id/fragmentDictionaryKnow"
-        app:popUpTo="@+id/fragmentDictionaryKnow"
+        android:id="@+id/action_global_fragmentDictionaryContainer"
+        app:destination="@id/fragmentDictionaryContainer"
+        app:popUpTo="@+id/fragmentDictionaryContainer"
         app:popUpToInclusive="true"/>
 
     <action

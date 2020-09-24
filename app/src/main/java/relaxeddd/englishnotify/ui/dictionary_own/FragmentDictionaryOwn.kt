@@ -1,76 +1,18 @@
 package relaxeddd.englishnotify.ui.dictionary_own
 
-import android.content.res.ColorStateList
-import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
-import androidx.navigation.Navigation
-import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_dictionary_own.*
-import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.InjectorUtils
-import relaxeddd.englishnotify.common.NAVIGATION_DIALOG_OWN_CATEGORY
-import relaxeddd.englishnotify.common.getPrimaryColorResId
-import relaxeddd.englishnotify.databinding.FragmentDictionaryOwnBinding
-import relaxeddd.englishnotify.dialogs.DialogOwnCategory
 import relaxeddd.englishnotify.ui.dictionary.AdapterDictionary
 import relaxeddd.englishnotify.ui.dictionary.FragmentDictionary
 
-class FragmentDictionaryOwn : FragmentDictionary<ViewModelDictionaryOwn, FragmentDictionaryOwnBinding, AdapterDictionary>() {
+class FragmentDictionaryOwn : FragmentDictionary<ViewModelDictionaryOwn, AdapterDictionary>() {
 
-    override fun getLayoutResId() = R.layout.fragment_dictionary_own
-    override fun getToolbarTitleResId() = R.string.own_category
     override fun getViewModelFactory() = InjectorUtils.provideDictionaryOwnViewModelFactory(requireContext())
     override fun getViewModelClass() = ViewModelDictionaryOwn::class.java
-    override fun getMenuResId() = R.menu.menu_fragment_dictionary_own
-    override fun getSearchMenuItemId() = R.id.item_menu_search_dictionary_own
     override fun createWordsAdapter() = AdapterDictionary(viewModel)
-    override fun getRecyclerViewWords(): RecyclerView = recycler_view_dictionary
-    override fun getCardViewFilter() : ViewGroup = card_view_dictionary_filter
 
     override fun configureBinding() {
         super.configureBinding()
-
-        binding.viewModel = viewModel
-        binding.clickListenerCloseFilter = clickListenerCloseFilter
-        binding.clickListenerAddWord = Navigation.createNavigateOnClickListener(R.id.action_fragmentDictionaryOwn_to_fragmentWord)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        viewModel.user.observe(viewLifecycleOwner, Observer { user ->
-            adapter.languageType = user?.learnLanguageType ?: 0
-        })
-        viewModel.wordsFiltered.observe(viewLifecycleOwner, Observer { words ->
-            binding.hasWords = (words != null && words.isNotEmpty())
-            updateAdapter(words)
-        })
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.item_menu_dialog_own -> {
-            onNavigationEvent(NAVIGATION_DIALOG_OWN_CATEGORY)
-            true
-        }
-        else -> super.onOptionsItemSelected(item)
-    }
-
-    override fun onNavigationEvent(eventId: Int) {
-        when (eventId) {
-            NAVIGATION_DIALOG_OWN_CATEGORY -> {
-                DialogOwnCategory().show(this@FragmentDictionaryOwn.childFragmentManager, "Check tags Dialog")
-            }
-            else -> super.onNavigationEvent(eventId)
-        }
-    }
-
-    override fun setupThemeColors() {
-        val context = context ?: return
-        button_dictionary_add_word?.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, getPrimaryColorResId()))
-        card_view_dictionary_filter.setBackgroundResource(getPrimaryColorResId())
+        binding.buttonDictionaryAddWord.visibility = View.VISIBLE
     }
 }
