@@ -68,7 +68,9 @@ class FragmentDictionaryContainer : BaseFragment<ViewModelDictionaryContainer, F
     }
 
     override fun onDestroy() {
-        binding.viewPagerDictionaryContainer.unregisterOnPageChangeCallback(onPageChangeCallback)
+        if (isBindingInitialized()) {
+            binding.viewPagerDictionaryContainer.unregisterOnPageChangeCallback(onPageChangeCallback)
+        }
         adapterFragmentsMap.clear()
         super.onDestroy()
     }

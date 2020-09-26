@@ -22,7 +22,7 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
 
     val user: LiveData<User?> = repositoryUser.liveDataUser
     val liveDataSubDays = MutableLiveData("")
-    val textTheme: String = App.context.resources.getStringArray(R.array.array_themes)[SharedHelper.getAppThemeType()]
+    var textTheme: String = App.context.resources.getStringArray(R.array.array_themes)[SharedHelper.getAppThemeType()]
     val isVisibleReceiveHelp = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
     
     val clickListenerAppInfo = View.OnClickListener {
@@ -69,6 +69,11 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
         if (isConfirmed) {
             navigateEvent.value = Event(NAVIGATION_GOOGLE_LOGOUT)
         }
+    }
+
+    fun onThemeUpdate(themeIx: Int) {
+        textTheme = App.context.resources.getStringArray(R.array.array_themes)[themeIx]
+        SharedHelper.setAppThemeType(themeIx)
     }
 
     fun onLogoutResult(isSuccess: Boolean) {

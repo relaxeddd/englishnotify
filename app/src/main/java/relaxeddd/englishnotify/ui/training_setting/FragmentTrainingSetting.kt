@@ -47,7 +47,7 @@ class FragmentTrainingSetting : BaseFragment<ViewModelTrainingSetting, FragmentT
         binding.switchTrainingSettingListenTraining.setOnCheckedChangeListener { _, isChecked ->
             SharedHelper.setListeningTraining(isChecked)
         }
-        viewModel.categories.observe(viewLifecycleOwner, Observer { items ->
+        viewModel.categories.observe(viewLifecycleOwner, { items ->
             if (items != null && items.isNotEmpty()) adapter.submitList(items)
         })
         (activity as? MainActivity)?.warningContainerSize?.observe(viewLifecycleOwner, {

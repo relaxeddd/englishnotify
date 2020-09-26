@@ -249,6 +249,7 @@
 
     <string name="human_body">Строение человека</string>
     <string name="human_body_5">Строение человека (уровень 2)</string>
+    <string name="clothes">Одежда</string>
     <string name="colors">Цвета</string>
     <string name="colors_5">Цвета (уровень 2)</string>
     <string name="time">Время</string>

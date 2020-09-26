@@ -80,6 +80,8 @@ abstract class ActivityBase<VM : ViewModelBase, B : ViewDataBinding> : AppCompat
             THEME_STANDARD -> setTheme(R.style.AppTheme)
             THEME_BLUE -> setTheme(R.style.AppTheme2)
             THEME_BLACK -> setTheme(R.style.AppTheme3)
+            THEME_BLUE_LIGHT -> setTheme(R.style.AppTheme4)
+            THEME_SALAD -> setTheme(R.style.AppTheme5)
         }
     }
 }

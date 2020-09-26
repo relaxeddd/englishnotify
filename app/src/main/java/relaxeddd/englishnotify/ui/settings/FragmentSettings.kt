@@ -24,6 +24,13 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
         }
     }
 
+    private val listenerTheme: ListenerResult<Int> = object: ListenerResult<Int> {
+        override fun onResult(themeIx: Int) {
+            viewModel.onThemeUpdate(themeIx)
+            activity?.recreate()
+        }
+    }
+
     override fun getLayoutResId() = R.layout.fragment_settings
     override fun getToolbarTitleResId() = R.string.common
     override fun getViewModelFactory() = InjectorUtils.provideSettingsViewModelFactory()
@@ -100,6 +107,7 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
             NAVIGATION_DIALOG_THEME -> {
                 if (isResumed) {
                     val dialog = DialogAppTheme()
+                    dialog.listener = listenerTheme
                     dialog.show(this@FragmentSettings.childFragmentManager, "Theme Dialog")
                 }
             }

@@ -55,8 +55,8 @@
                 android:name="com.google.firebase.messaging.default_notification_icon"
                 android:resource="@drawable/ic_stat_onesignal_default" />
         <meta-data android:name="com.google.firebase.messaging.default_notification_color"
-                   android:resource="@color/colorPrimary" />
-        <meta-data android:name="com.onesignal.NotificationAccentColor.DEFAULT" android:value="@color/colorPrimary" />
+                   android:resource="@color/notificationTextColor" />
+        <meta-data android:name="com.onesignal.NotificationAccentColor.DEFAULT" android:value="@color/notificationTextColor" />
 
         <receiver android:name=".push.PushBroadcastReceiver"
                   android:exported="false">
