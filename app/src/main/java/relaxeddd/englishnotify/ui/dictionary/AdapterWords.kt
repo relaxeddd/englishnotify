@@ -34,9 +34,11 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
 
     var isSelectState = false
         set(value) {
-            field = value
-            if (!value) checkList.clear()
-            notifyDataSetChanged()
+            if (field != value) {
+                field = value
+                if (!value) checkList.clear()
+                notifyDataSetChanged()
+            }
         }
     var checkList = HashSet<Word>()
 

@@ -8,7 +8,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.view.marginBottom
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import relaxeddd.englishnotify.R
@@ -23,7 +22,7 @@ import kotlin.math.roundToInt
 
 abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>> : BaseFragment<VM, FragmentDictionaryBinding>() {
 
-    protected lateinit var adapter: A
+    protected var adapter: A? = null
     private var animBlock: AnimBlock = AnimBlock(false)
     private val handler = Handler()
 
@@ -46,6 +45,7 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
     //------------------------------------------------------------------------------------------------------------------
     abstract fun createWordsAdapter() : A
     override fun getLayoutResId() = R.layout.fragment_dictionary
+    override fun hasToolbar() = false
 
     override fun configureBinding() {
         super.configureBinding()
@@ -66,12 +66,13 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
             animateDropdown(binding.containerDictionaryFilter, false, animBlock)
             false
         }
+        viewModel.applySearch(textSearch)
         viewModel.wordsFiltered.observe(viewLifecycleOwner, { words ->
             binding.hasWords = (words != null && words.isNotEmpty())
             updateAdapter(words)
         })
         viewModel.user.observe(viewLifecycleOwner, { user ->
-            adapter.languageType = user?.learnLanguageType ?: 0
+            adapter?.languageType = user?.learnLanguageType ?: 0
         })
         (activity as? MainActivity)?.warningContainerSize?.observe(viewLifecycleOwner, {
             val bottomMargin = (if (it == 0) resources.getDimension(R.dimen.size_32) else resources.getDimension(R.dimen.size_8)) + it
@@ -88,29 +89,29 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
             }
             R.id.item_menu_check -> {
                 setCheckMode(true)
-                adapter.isSelectState = true
+                adapter?.isSelectState = true
                 return true
             }
             R.id.item_menu_cancel_check -> {
                 setCheckMode(false)
-                adapter.isSelectState = false
+                adapter?.isSelectState = false
                 return true
             }
             R.id.item_menu_check_all -> {
-                adapter.checkAll()
+                adapter?.checkAll()
                 return true
             }
             R.id.item_menu_delete -> {
-                val selectedWords = HashSet(adapter.checkList)
+                val selectedWords = HashSet(adapter?.checkList ?: emptyList())
 
                 if (selectedWords.isNotEmpty()) {
                     val dialog = DialogDeleteWords()
                     dialog.confirmListener = object : ListenerResult<Boolean> {
                         override fun onResult(result: Boolean) {
                             if (result) {
-                                viewModel.deleteWords(HashSet(adapter.checkList))
+                                viewModel.deleteWords(HashSet(adapter?.checkList ?: emptyList()))
                                 setCheckMode(false)
-                                adapter.isSelectState = false
+                                adapter?.isSelectState = false
                             }
                         }
                     }
@@ -167,11 +168,6 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
         }
     }
 
-    override fun onSearchTextChanged(searchText: String) {
-        super.onSearchTextChanged(searchText)
-        viewModel.applySearch(searchText)
-    }
-
     override fun setupThemeColors() {
         val context = context ?: return
         binding.buttonDictionaryAddWord.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, getPrimaryColorResId()))
@@ -181,16 +177,57 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
     open fun onFragmentSelected() {}
 
     fun onFragmentDeselected() {
-        if (adapter.isSelectState) {
-            adapter.isSelectState = false
-        }
+        adapter?.isSelectState = false
+        textSearch = ""
         animateDropdown(binding.containerDictionaryFilter, false, animBlock)
     }
 
-    protected fun updateAdapter(words: List<Word>?) {
+    fun onParentSearchTextChanged(textSearch: String) {
+        this.textSearch = textSearch
+    }
+
+    override fun onSearchTextChanged(searchText: String) {
+        if (isViewModelInitialized()) {
+            viewModel.applySearch(searchText)
+        }
+    }
+
+    fun onMenuFilterClicked() {
+        animateDropdown(binding.containerDictionaryFilter, binding.containerDictionaryFilter.visibility == View.GONE, animBlock)
+    }
+
+    fun onMenuCheckAllClicked() {
+        adapter?.checkAll()
+    }
+
+    fun onMenuDeleteClicked() {
+        val selectedWords = HashSet(adapter?.checkList ?: emptyList())
+
+        if (selectedWords.isNotEmpty()) {
+            val dialog = DialogDeleteWords()
+            dialog.confirmListener = object : ListenerResult<Boolean> {
+                override fun onResult(result: Boolean) {
+                    if (result) {
+                        viewModel.deleteWords(HashSet(adapter?.checkList ?: emptyList()))
+                        setCheckMode(false)
+                        adapter?.isSelectState = false
+                    }
+                }
+            }
+            dialog.show(this@FragmentDictionary.childFragmentManager, "Confirm delete Dialog")
+        } else {
+            showToast(R.string.words_not_selected)
+        }
+    }
+
+    fun setCheckMode(isCheckMode: Boolean) {
+        adapter?.isSelectState = isCheckMode
+    }
+
+    private fun updateAdapter(words: List<Word>?) {
         if (words != null && words.isNotEmpty()) {
-            val isScroll = adapter.currentList.size != words.size
-            adapter.submitList(words)
+            val isScroll = adapter?.currentList?.size != words.size
+            adapter?.submitList(words)
             if (isScroll) {
                 handler.postDelayed({
                     try {
@@ -199,14 +236,5 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
                 }, 50)
             }
         }
-    }
-
-    private fun setCheckMode(isCheckMode: Boolean) {
-        menu?.findItem(R.id.item_menu_check)?.isVisible = !isCheckMode
-        menu?.findItem(getSearchMenuItemId())?.isVisible = !isCheckMode
-        menu?.findItem(R.id.item_menu_filter)?.isVisible = !isCheckMode
-        menu?.findItem(R.id.item_menu_check_all)?.isVisible = isCheckMode
-        menu?.findItem(R.id.item_menu_cancel_check)?.isVisible = isCheckMode
-        menu?.findItem(R.id.item_menu_delete)?.isVisible = isCheckMode
     }
 }

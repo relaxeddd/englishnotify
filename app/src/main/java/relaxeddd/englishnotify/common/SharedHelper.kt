@@ -39,6 +39,16 @@ object SharedHelper {
         sPref.edit().putInt(PUSH_LANGUAGE, type).apply()
     }
 
+    fun getDictionaryTabPosition(context: Context = App.context) : Int {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getInt(DICTIONARY_TAB_POSITION, 0)
+    }
+
+    fun setDictionaryTabPosition(type : Int, context: Context = App.context) {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putInt(DICTIONARY_TAB_POSITION, type).apply()
+    }
+
     fun getPushToken(context: Context = App.context) : String {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         return sPref.getString(PUSH_TOKEN, "") ?: ""
