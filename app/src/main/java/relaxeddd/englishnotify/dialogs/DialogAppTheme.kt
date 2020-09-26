@@ -23,8 +23,7 @@ class DialogAppTheme : DialogFragment() {
                     selectedItemIx = which
                 }.setPositiveButton(android.R.string.ok) { _, _ ->
                     if (selectedItemIx != SharedHelper.getAppThemeType(it)) {
-                        SharedHelper.setAppThemeType(selectedItemIx, it)
-                        activity?.recreate()
+                        listener?.onResult(selectedItemIx)
                         dismiss()
                     }
 

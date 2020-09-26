@@ -134,7 +134,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 notificationBuilder.setSmallIcon(R.drawable.ic_stat_onesignal_default)
-                notificationBuilder.color = ContextCompat.getColor(ctx, getPrimaryColorResId())
+                notificationBuilder.color = ContextCompat.getColor(ctx, R.color.notificationTextColor)
             } else {
                 notificationBuilder.setSmallIcon(R.drawable.ic_stat_onesignal_default)
             }
@@ -178,7 +178,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 notificationBuilder.setSmallIcon(R.drawable.ic_stat_onesignal_default)
-                notificationBuilder.color = ContextCompat.getColor(ctx, getPrimaryColorResId())
+                notificationBuilder.color = ContextCompat.getColor(ctx, R.color.notificationTextColor)
             } else {
                 notificationBuilder.setSmallIcon(R.drawable.ic_stat_onesignal_default)
             }

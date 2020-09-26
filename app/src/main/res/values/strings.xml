@@ -264,6 +264,7 @@
 
     <string name="human_body">Human body</string>
     <string name="human_body_5">Human body (level 2)</string>
+    <string name="clothes">Clothes</string>
     <string name="colors">Colors</string>
     <string name="colors_5">Colors (level 2)</string>
     <string name="time">Time</string>

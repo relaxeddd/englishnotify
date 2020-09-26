@@ -178,4 +178,5 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
     }
 
     protected fun isViewModelInitialized() = this::viewModel.isInitialized
+    protected fun isBindingInitialized() = this::binding.isInitialized
 }
