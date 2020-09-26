@@ -6,8 +6,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.BaseFragment
-import relaxeddd.englishnotify.common.InjectorUtils
+import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.FragmentDictionaryContainerBinding
 import relaxeddd.englishnotify.ui.dictionary.FragmentDictionary
 import relaxeddd.englishnotify.ui.dictionary_all.FragmentDictionaryAll
@@ -17,9 +16,27 @@ import relaxeddd.englishnotify.ui.dictionary_own.FragmentDictionaryOwn
 
 class FragmentDictionaryContainer : BaseFragment<ViewModelDictionaryContainer, FragmentDictionaryContainerBinding>() {
 
-    private var adapterFragments = HashMap<Int, FragmentDictionary<*, *>>()
-    private val currentFragment: BaseFragment<*, *>?
-        get() = adapterFragments[binding.viewPagerDictionaryContainer.currentItem]
+    private var adapterFragmentsMap = HashMap<Int, FragmentDictionary<*, *>>()
+    private var currentPosition: Int = SharedHelper.getDictionaryTabPosition()
+    private val currentFragment: FragmentDictionary<*, *>?
+        get() = adapterFragmentsMap[binding.viewPagerDictionaryContainer.currentItem]
+
+    private val onPageChangeCallback = object: ViewPager2.OnPageChangeCallback() {
+        override fun onPageSelected(position: Int) {
+            if (currentPosition != position && adapterFragmentsMap.size > currentPosition) {
+                val previousFragment = adapterFragmentsMap[currentPosition]
+                previousFragment?.onFragmentDeselected()
+
+                if (adapterFragmentsMap.size > position) {
+                    val nextFragment = adapterFragmentsMap[position]
+                    nextFragment?.onParentSearchTextChanged(textSearch)
+                }
+            }
+            updateMenuIcons(false)
+            currentPosition = position
+            SharedHelper.setDictionaryTabPosition(position)
+        }
+    }
 
     override fun getLayoutResId() = R.layout.fragment_dictionary_container
     override fun getToolbarTitleResId() = R.string.dictionary
@@ -30,7 +47,8 @@ class FragmentDictionaryContainer : BaseFragment<ViewModelDictionaryContainer, F
 
     override fun configureBinding() {
         super.configureBinding()
-        binding.viewPagerDictionaryContainer.adapter = DictionaryFragmentsAdapter(this)
+        val adapter = DictionaryFragmentsAdapter(this)
+        binding.viewPagerDictionaryContainer.adapter = adapter
         TabLayoutMediator(binding.tabLayoutDictionaryContainer, binding.viewPagerDictionaryContainer) { tab, position ->
             tab.text = getString(when(position) {
                 DictionaryTab.OWN.ordinal -> R.string.own_words
@@ -39,20 +57,84 @@ class FragmentDictionaryContainer : BaseFragment<ViewModelDictionaryContainer, F
                 else -> R.string.all_words
             })
         }.attach()
-        binding.viewPagerDictionaryContainer.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                activity?.invalidateOptionsMenu()
-            }
-        })
+        binding.viewPagerDictionaryContainer.registerOnPageChangeCallback(onPageChangeCallback)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (binding.viewPagerDictionaryContainer.currentItem != SharedHelper.getDictionaryTabPosition()) {
+            binding.viewPagerDictionaryContainer.setCurrentItem(currentPosition, false)
+        }
     }
 
     override fun onDestroy() {
-        adapterFragments.clear()
+        binding.viewPagerDictionaryContainer.unregisterOnPageChangeCallback(onPageChangeCallback)
+        adapterFragmentsMap.clear()
         super.onDestroy()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return adapterFragments[binding.viewPagerDictionaryContainer.currentItem]?.onOptionsItemSelected(item) ?: super.onOptionsItemSelected(item)
+        when (item.itemId) {
+            R.id.item_menu_filter -> {
+                currentFragment?.onMenuFilterClicked()
+                return true
+            }
+            R.id.item_menu_check -> {
+                updateMenuIcons(true)
+                return true
+            }
+            R.id.item_menu_cancel_check -> {
+                updateMenuIcons(false)
+                return true
+            }
+            R.id.item_menu_check_all -> {
+                currentFragment?.onMenuCheckAllClicked()
+                return true
+            }
+            R.id.item_menu_delete -> {
+                currentFragment?.onMenuDeleteClicked()
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onSearchTextChanged(searchText: String) {
+        currentFragment?.onParentSearchTextChanged(searchText)
+    }
+
+    override fun onSearchViewStateChanged(isCollapsed: Boolean) {
+        super.onSearchViewStateChanged(isCollapsed)
+        updateMenuIcons(false, !isCollapsed)
+    }
+
+    private fun updateMenuIcons(isCheckMode: Boolean, isSearchMode: Boolean = searchView?.isIconified == false) {
+        currentFragment?.setCheckMode(isCheckMode && !isSearchMode)
+
+        menu?.findItem(R.id.item_menu_check)?.apply {
+            val isVisibleMenuItem = !isCheckMode && !isSearchMode
+            if (isVisible != isVisibleMenuItem) isVisible = isVisibleMenuItem
+        }
+        menu?.findItem(getSearchMenuItemId())?.apply {
+            val isVisibleMenuItem = !isCheckMode && !isSearchMode
+            if (isVisible != isVisibleMenuItem) isVisible = isVisibleMenuItem
+        }
+        menu?.findItem(R.id.item_menu_filter)?.apply {
+            val isVisibleMenuItem = !isCheckMode && !isSearchMode
+            if (isVisible != isVisibleMenuItem) isVisible = isVisibleMenuItem
+        }
+        menu?.findItem(R.id.item_menu_check_all)?.apply {
+            val isVisibleMenuItem = isCheckMode && !isSearchMode
+            if (isVisible != isVisibleMenuItem) isVisible = isVisibleMenuItem
+        }
+        menu?.findItem(R.id.item_menu_cancel_check)?.apply {
+            val isVisibleMenuItem = isCheckMode && !isSearchMode
+            if (isVisible != isVisibleMenuItem) isVisible = isVisibleMenuItem
+        }
+        menu?.findItem(R.id.item_menu_delete)?.apply {
+            val isVisibleMenuItem = isCheckMode && !isSearchMode
+            if (isVisible != isVisibleMenuItem) isVisible = isVisibleMenuItem
+        }
     }
 
     inner class DictionaryFragmentsAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
@@ -66,7 +148,8 @@ class FragmentDictionaryContainer : BaseFragment<ViewModelDictionaryContainer, F
                 DictionaryTab.KNOW.ordinal -> FragmentDictionaryKnow()
                 else -> FragmentDictionaryAll()
             }
-            adapterFragments[position] = fragment
+            adapterFragmentsMap[position] = fragment
+            fragment.onParentSearchTextChanged(textSearch)
 
             return fragment
         }

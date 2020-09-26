@@ -21,12 +21,15 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
 
     protected var textSearch = ""
         set(value) {
-            field = value
-            onSearchTextChanged(value)
+            if (field != value) {
+                field = value
+                onSearchTextChanged(value)
+            }
         }
     protected lateinit var viewModel: VM
     protected lateinit var binding: B
     protected var menu: Menu? = null
+    protected var searchView: SearchView? = null
 
     @LayoutRes
     abstract fun getLayoutResId() : Int
@@ -42,6 +45,8 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
     protected open fun getSearchMenuItemId() = EMPTY_RES
     protected open fun getToolbarElevation() = 4f
     protected open fun setupThemeColors() {}
+    protected open fun onSearchViewStateChanged(isCollapsed: Boolean) {}
+    protected open fun hasToolbar() = true
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, getLayoutResId(), null, false)
@@ -81,15 +86,31 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
         val searchItem = if (getSearchMenuItemId() != EMPTY_RES) menu.findItem(getSearchMenuItemId()) else null
 
         if (searchItem != null && searchItem.actionView != null) {
-            val searchView = searchItem.actionView as SearchView
+            searchView = searchItem.actionView as SearchView
 
-            searchView.setOnCloseListener {
+            searchItem.setOnActionExpandListener( object: MenuItem.OnActionExpandListener {
+                override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
+                    onSearchViewStateChanged(false)
+                    return true
+                }
+
+                override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+                    textSearch = ""
+                    onSearchViewStateChanged(true)
+                    return true
+                }
+            })
+            searchView?.setOnCloseListener {
                 textSearch = ""
+                onSearchViewStateChanged(true)
                 true
             }
-            searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            searchView?.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    textSearch = newText?.toLowerCase() ?: ""
+                    val changedText = newText?.toLowerCase() ?: ""
+                    if (textSearch != changedText) {
+                        textSearch = changedText
+                    }
                     return true
                 }
 
@@ -149,8 +170,12 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
     }
 
     private fun configureMenu() {
-        setHasOptionsMenu(true)
-        (activity as ActivityBase<*, *>).configureMenu(isHomeMenuButtonEnabled(), getHomeMenuButtonIconResId(),
-            getHomeMenuButtonListener(), getToolbarElevation())
+        if (hasToolbar()) {
+            setHasOptionsMenu(true)
+            (activity as ActivityBase<*, *>).configureMenu(isHomeMenuButtonEnabled(), getHomeMenuButtonIconResId(),
+                getHomeMenuButtonListener(), getToolbarElevation())
+        }
     }
+
+    protected fun isViewModelInitialized() = this::viewModel.isInitialized
 }
