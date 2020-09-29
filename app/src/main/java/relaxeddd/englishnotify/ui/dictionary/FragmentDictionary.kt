@@ -1,6 +1,7 @@
 package relaxeddd.englishnotify.ui.dictionary
 
 import android.annotation.SuppressLint
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -169,7 +170,8 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
 
     override fun setupThemeColors() {
         super.setupThemeColors()
-        binding.containerDictionaryFilter.setBackgroundResource(R.color.filter_bg_color)
+        val isNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+        binding.containerDictionaryFilter.setBackgroundResource(if (isNightMode) R.color.filter_bg_color else getPrimaryColorResId())
     }
 
     open fun onFragmentSelected() {}

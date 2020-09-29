@@ -14,7 +14,6 @@ import relaxeddd.englishnotify.R
 
 abstract class ActivityBase<VM : ViewModelBase, B : ViewDataBinding> : AppCompatActivity(), LifecycleOwner {
 
-    private var listenerHomeMenuButton: () -> Unit = {}
     protected lateinit var binding: B
     protected lateinit var viewModel: VM
     var isMyResumed = false
@@ -51,14 +50,6 @@ abstract class ActivityBase<VM : ViewModelBase, B : ViewDataBinding> : AppCompat
         isMyResumed = false
     }
 
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        android.R.id.home -> {
-            listenerHomeMenuButton.invoke()
-            true
-        }
-        else -> super.onOptionsItemSelected(item)
-    }
-
     @CallSuper
     protected open fun configureBinding() {
         viewModel.navigation.observe(this, Observer {
@@ -66,13 +57,6 @@ abstract class ActivityBase<VM : ViewModelBase, B : ViewDataBinding> : AppCompat
                 onNavigationEvent(eventId)
             }
         })
-    }
-
-    fun configureMenu(isShowHomeMenuButton: Boolean = false, homeMenuButtonIconResId: Int, clickListener: () -> Unit, elevation: Float) {
-        /*supportActionBar?.setDisplayHomeAsUpEnabled(isShowHomeMenuButton)
-        supportActionBar?.setHomeAsUpIndicator(homeMenuButtonIconResId)
-        supportActionBar?.elevation = elevation*/
-        listenerHomeMenuButton = clickListener
     }
 
     private fun setupTheme() {
