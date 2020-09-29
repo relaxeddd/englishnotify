@@ -1,11 +1,12 @@
 package relaxeddd.englishnotify.ui.categories.section
 
-import android.view.MenuItem
+import android.os.Build
+import androidx.core.view.updatePaddingRelative
 import androidx.lifecycle.Observer
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.BaseFragment
 import relaxeddd.englishnotify.common.InjectorUtils
-import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK
+import relaxeddd.englishnotify.common.doOnApplyWindowInsets
 import relaxeddd.englishnotify.databinding.FragmentCategorySectionBinding
 import relaxeddd.englishnotify.ui.categories.AdapterCategories
 import relaxeddd.englishnotify.ui.categories.CategorySection
@@ -17,13 +18,6 @@ class FragmentCategorySection(val type: CategorySection) : BaseFragment<ViewMode
     override fun getLayoutResId() = R.layout.fragment_category_section
     override fun getViewModelFactory() = InjectorUtils.provideCategorySectionViewModelFactory(type)
     override fun getViewModelClass() = ViewModelCategorySection::class.java
-    override fun getMenuResId() = R.menu.menu_accept
-    override fun getToolbarElevation() = 0f
-    override fun isHomeMenuButtonEnabled() = true
-    override fun getHomeMenuButtonIconResId() = R.drawable.ic_back
-    override fun getHomeMenuButtonListener(): () -> Unit = {
-        onNavigationEvent(NAVIGATION_ACTIVITY_BACK)
-    }
 
     override fun configureBinding() {
         super.configureBinding()
@@ -38,13 +32,15 @@ class FragmentCategorySection(val type: CategorySection) : BaseFragment<ViewMode
                 adapter.submitList(items)
             }
         })
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            binding.recyclerViewCategories.doOnApplyWindowInsets { v, insets, padding ->
+                v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
+            }
+        }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.item_menu_accept -> {
-            viewModel.onClickAccept()
-            true
-        }
-        else -> super.onOptionsItemSelected(item)
+    fun onAcceptClicked() {
+        viewModel.onClickAccept()
     }
 }

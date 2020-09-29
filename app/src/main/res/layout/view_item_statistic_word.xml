@@ -7,7 +7,7 @@
     android:orientation="horizontal"
     android:gravity="center_vertical"
     android:padding="@dimen/size_8"
-    android:background="@color/white"
+    android:background="@color/card_view_color"
     android:elevation="@dimen/size_1"
     android:layout_marginTop="@dimen/size_1"
     android:layout_marginBottom="@dimen/size_1"
@@ -22,7 +22,7 @@
         android:maxLines="2"
         android:ellipsize="end"
         android:layout_marginEnd="@dimen/size_4"
-        android:textColor="@color/black"/>
+        android:textColor="@color/text_color_main"/>
 
     <ProgressBar
         android:id="@+id/progress_bar_statistic_word"
@@ -44,6 +44,6 @@
         tools:text="Translation"
         android:layout_marginStart="@dimen/size_4"
         android:layout_weight="1"
-        android:textColor="@color/black"/>
+        android:textColor="@color/text_color_main"/>
 
 </LinearLayout>

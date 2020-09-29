@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true">
+        <inset
+            android:insetLeft="@dimen/size_0"
+            android:insetRight="@dimen/size_8">
+            <shape>
+                <corners
+                    android:bottomLeftRadius="@dimen/size_0"
+                    android:bottomRightRadius="@dimen/size_100"
+                    android:topLeftRadius="@dimen/size_0"
+                    android:topRightRadius="@dimen/size_100" />
+            </shape>
+        </inset>
+    </item>
+    <item>
+        <color android:color="@color/transparent" />
+    </item>
+</selector>

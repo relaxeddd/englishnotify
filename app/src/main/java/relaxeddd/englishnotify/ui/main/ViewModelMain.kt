@@ -20,7 +20,7 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
     val isShowWarningSubscription = MutableLiveData(false)
     val isShowLoading = MutableLiveData(false)
     val isShowHorizontalProgress = MutableLiveData(false)
-    val isVisibleSecondaryBottomNavigationView = MutableLiveData(true)
+    val isOldNavigation = MutableLiveData(SharedHelper.isOldNavigationDesign())
     private var isRateDialogShown = false
 
     private val userObserver = Observer<User?> { user ->
@@ -85,12 +85,13 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
             navigateEvent.value = Event(NAVIGATION_DIALOG_PATCH_NOTES)
             SharedHelper.setPatchNotesViewed(BuildConfig.VERSION_NAME)
         }
+        isOldNavigation.value = SharedHelper.isOldNavigationDesign()
     }
 
     fun onViewResume() {}
 
     fun requestInit() {
-        if (repositoryUser.isAuthorized()) {
+        if (repositoryUser.isAuthorized() && !repositoryUser.isInit()) {
             isShowWarningNotifications.value = false
             isShowGoogleAuth.value = false
             isShowWarningSubscription.value = false

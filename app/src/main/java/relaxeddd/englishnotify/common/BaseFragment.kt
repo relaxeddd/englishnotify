@@ -1,12 +1,12 @@
 package relaxeddd.englishnotify.common
 
+import android.os.Build
 import android.os.Bundle
 import android.view.*
-import androidx.annotation.CallSuper
-import androidx.annotation.IdRes
-import androidx.annotation.LayoutRes
-import androidx.appcompat.app.AppCompatActivity
+import androidx.annotation.*
 import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.forEach
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -40,6 +40,7 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
     protected open fun isHomeMenuButtonEnabled() = false
     protected open fun getHomeMenuButtonIconResId() = R.drawable.ic_menu
     protected open fun getHomeMenuButtonListener(): () -> Unit = {}
+    @MenuRes
     protected open fun getMenuResId() = EMPTY_RES
     protected open fun onSearchTextChanged(searchText: String) {}
     protected open fun getSearchMenuItemId() = EMPTY_RES
@@ -47,12 +48,15 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
     protected open fun setupThemeColors() {}
     protected open fun onSearchViewStateChanged(isCollapsed: Boolean) {}
     protected open fun hasToolbar() = true
+    protected open fun isTopLevelFragment() = false
+    @DrawableRes
+    protected open fun getFabIconResId() = EMPTY_RES
+    protected open fun getFabListener(): View.OnClickListener? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, getLayoutResId(), null, false)
         viewModel = ViewModelProvider(this, getViewModelFactory()).get(getViewModelClass())
 
-        configureMenu()
         configureBinding()
         binding.lifecycleOwner = viewLifecycleOwner
         binding.executePendingBindings()
@@ -62,10 +66,32 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val title = if (getToolbarTitleResId() != EMPTY_RES) getString(getToolbarTitleResId()) else getToolbarTitle()
-        if (title.isNotEmpty()) {
-            (activity as AppCompatActivity).supportActionBar?.title = title
+
+        view.findViewById<Toolbar>(R.id.toolbar)?.apply {
+            val isOldNavigationDesign = SharedHelper.isOldNavigationDesign()
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                this.elevation = getToolbarElevation()
+            }
+            onCreateOptionsMenu(menu, activity?.menuInflater ?: return)
+
+            (activity as? MainActivity)?.registerToolbar(this)
+            val title = if (getToolbarTitleResId() != EMPTY_RES) getString(getToolbarTitleResId()) else getToolbarTitle()
+            setTitle(title)
+            updateToolbarTitle(title)
+
+            if (!isTopLevelFragment()) {
+                setNavigationIcon(getHomeMenuButtonIconResId())
+                setNavigationOnClickListener {
+                    getHomeMenuButtonListener().invoke()
+                }
+            } else if (!isOldNavigationDesign) {
+                setNavigationIcon(R.drawable.ic_menu)
+            } else {
+                navigationIcon = null
+            }
         }
+        (activity as? MainActivity)?.configureFab(getFabIconResId(), getFabListener())
         setupThemeColors()
     }
 
@@ -79,9 +105,12 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
             return
         }
 
-        super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(getMenuResId(), menu)
         this.menu = menu
+
+        menu.forEach { menuItem ->
+            menuItem.setOnMenuItemClickListener { onOptionsItemSelected(it) }
+        }
 
         val searchItem = if (getSearchMenuItemId() != EMPTY_RES) menu.findItem(getSearchMenuItemId()) else null
 
@@ -164,16 +193,8 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
     }
 
     protected fun updateToolbarTitle(title: String) {
-        if (activity != null) {
-            (activity as AppCompatActivity).supportActionBar?.title = title
-        }
-    }
-
-    private fun configureMenu() {
-        if (hasToolbar()) {
-            setHasOptionsMenu(true)
-            (activity as ActivityBase<*, *>).configureMenu(isHomeMenuButtonEnabled(), getHomeMenuButtonIconResId(),
-                getHomeMenuButtonListener(), getToolbarElevation())
+        activity?.findViewById<Toolbar>(R.id.toolbar)?.apply {
+            setTitle(title)
         }
     }
 

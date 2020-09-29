@@ -18,11 +18,20 @@
 
     </data>
 
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/info_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+    <include layout="@layout/view_toolbar"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:ignore="UnusedAttribute"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <HorizontalScrollView
             android:id="@+id/horizontalScrollView"
@@ -408,7 +417,7 @@
                     android:layout_marginEnd="16dp"
                     android:gravity="center_horizontal"
                     android:layout_marginStart="16dp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/text_color_main"
                     tools:text="precise"
                     android:paddingStart="@dimen/size_16"
                     android:paddingEnd="@dimen/size_16"
@@ -449,7 +458,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     tools:text="точный, четкий"
-                    android:textColor="@color/black"
+                    android:textColor="@color/text_color_main"
                     android:visibility="@{safeUnbox(viewModel.isVisibleTranslation) == true ? View.VISIBLE : View.INVISIBLE}"
                     android:textSize="@dimen/font_20"
                     android:gravity="center_horizontal"
@@ -489,5 +498,7 @@
         </ScrollView>
 
     </LinearLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

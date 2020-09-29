@@ -26,6 +26,7 @@ class RepositoryUser private constructor() {
     val liveDataIsActualVersion = MutableLiveData(true)
 
     fun isAuthorized() = FirebaseAuth.getInstance().currentUser != null
+    fun isInit() = liveDataUser.value != null
 
     //------------------------------------------------------------------------------------------------------------------
     suspend fun init(listener: ListenerResult<Boolean>? = null) {

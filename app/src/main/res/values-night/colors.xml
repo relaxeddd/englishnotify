@@ -6,4 +6,18 @@
     <color name="colorPrimaryRipple">#99ABAFAD</color>
 
     <color name="notificationTextColor">#FFFFFF</color>
+
+    <color name="system_ui_scrim_light">#2EFFFFFF</color>
+    <color name="system_ui_scrim_black">#B3000000</color>
+
+    <color name="text_color_main">@color/white</color>
+    <color name="card_view_color">#000000</color>
+    <color name="progress_bar_secondary">@color/gray</color>
+    <color name="navigation_bar_color">#5E000000</color>
+    <color name="navigation_bar_divider_color">#45777777</color>
+    <color name="bottom_navigation_color">#212121</color>
+    <color name="bottom_navigation_item_checked">@color/white</color>
+    <color name="bottom_navigation_item_unchecked">@color/gray_light</color>
+    <color name="floating_button_color">#303030</color>
+    <color name="filter_bg_color">#303030</color>
 </resources>

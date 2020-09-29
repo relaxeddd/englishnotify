@@ -7,10 +7,10 @@
     app:startDestination="@id/fragmentDictionaryContainer">
 
     <fragment
-        android:id="@+id/fragmentNotifications"
+        android:id="@id/fragmentNotifications"
         android:name="relaxeddd.englishnotify.ui.notifications.FragmentNotifications"
         tools:layout="@layout/fragment_notifications"
-        android:label="@string/label_fragment_notifications">
+        android:label="@string/notifications">
 
         <action
             android:id="@+id/action_fragmentNotifications_to_fragmentCategories"
@@ -23,9 +23,9 @@
     </fragment>
 
     <fragment
-        android:id="@+id/fragmentSettings"
+        android:id="@id/fragmentSettings"
         android:name="relaxeddd.englishnotify.ui.settings.FragmentSettings"
-        android:label="@string/label_fragment_settings"
+        android:label="@string/settings"
         tools:layout="@layout/fragment_settings">
 
         <action
@@ -37,19 +37,19 @@
     <fragment
         android:id="@+id/fragmentWord"
         android:name="relaxeddd.englishnotify.ui.word.FragmentWord"
-        android:label="@string/label_fragment_word"
+        android:label="@string/add_word"
         tools:layout="@layout/fragment_word"/>
 
     <fragment
         android:id="@+id/fragmentCategories"
         android:name="relaxeddd.englishnotify.ui.categories.FragmentCategories"
-        android:label="@string/label_fragment_categories"
+        android:label="@string/word_category_select"
         tools:layout="@layout/fragment_categories"/>
 
     <fragment
-        android:id="@+id/fragmentTrainingSetting"
+        android:id="@id/fragmentTrainingSetting"
         android:name="relaxeddd.englishnotify.ui.training_setting.FragmentTrainingSetting"
-        android:label="@string/label_fragment_training_setting"
+        android:label="@string/training_setting"
         tools:layout="@layout/fragment_training_setting">
 
         <action android:id="@+id/action_fragmentTrainingSetting_to_fragmentTraining"
@@ -58,9 +58,9 @@
     </fragment>
 
     <fragment
-        android:id="@+id/fragmentDictionaryContainer"
+        android:id="@id/fragmentDictionaryContainer"
         android:name="relaxeddd.englishnotify.ui.dictionary_container.FragmentDictionaryContainer"
-        android:label="@string/label_fragment_dictionary_container"
+        android:label="@string/dictionary"
         tools:layout="@layout/fragment_dictionary_container">
 
         <action
@@ -96,7 +96,7 @@
     <fragment
         android:id="@+id/fragmentTraining"
         android:name="relaxeddd.englishnotify.ui.training.FragmentTraining"
-        android:label="@string/label_fragment_training"
+        android:label="@string/training"
         tools:layout="@layout/fragment_training">
 
         <argument android:name="category" app:argType="string" android:defaultValue="all_app_words"/>
@@ -107,13 +107,13 @@
     <fragment
         android:id="@+id/fragmentStatistic"
         android:name="relaxeddd.englishnotify.ui.statistic.FragmentStatistic"
-        android:label="@string/label_fragment_statistic"
+        android:label="@string/own_words_statistic"
         tools:layout="@layout/fragment_statistic"/>
 
     <fragment
         android:id="@+id/fragmentTime"
         android:name="relaxeddd.englishnotify.ui.time.FragmentTime"
-        android:label="@string/label_fragment_time"
+        android:label="@string/receive_notifications_time"
         tools:layout="@layout/fragment_time"/>
 
     <action

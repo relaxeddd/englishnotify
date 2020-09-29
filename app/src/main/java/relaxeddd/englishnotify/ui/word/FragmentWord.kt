@@ -20,9 +20,7 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
     override fun getMenuResId() = R.menu.menu_accept
     override fun isHomeMenuButtonEnabled() = true
     override fun getHomeMenuButtonIconResId() = R.drawable.ic_back
-    override fun getHomeMenuButtonListener(): () -> Unit = {
-        onNavigationEvent(NAVIGATION_ACTIVITY_BACK)
-    }
+    override fun getHomeMenuButtonListener(): () -> Unit = { onNavigationEvent(NAVIGATION_ACTIVITY_BACK) }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
@@ -43,6 +41,11 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
         val rus = arguments?.getString(RUS) ?: ""
 
         viewModel.existsWordId = id
+
+        if (id.isNotEmpty()) {
+            updateToolbarTitle(getString(R.string.edit))
+        }
+
         text_input_word.setText(eng)
         text_input_transcription.setText(transcription)
         text_input_translation.setText(rus)
@@ -88,6 +91,10 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
         when (eventId) {
             NAVIGATION_WORD_EXISTS_ERROR -> {
                 text_input_word.error = getString(R.string.word_already_exists)
+            }
+            NAVIGATION_ACTIVITY_BACK -> {
+                hideKeyboard(view)
+                super.onNavigationEvent(eventId)
             }
             else -> super.onNavigationEvent(eventId)
         }

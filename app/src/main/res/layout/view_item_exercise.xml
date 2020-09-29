@@ -11,7 +11,7 @@
     android:paddingEnd="@dimen/size_12"
     android:paddingBottom="@dimen/size_12"
     android:paddingTop="@dimen/size_10"
-    android:background="@color/white"
+    android:background="@color/card_view_color"
     android:foreground="?android:attr/selectableItemBackground"
     android:layout_marginBottom="@dimen/size_6"
     android:elevation="@dimen/default_elevation">
@@ -27,7 +27,7 @@
         android:id="@+id/text_word"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
+        android:textColor="@color/text_color_main"
         android:layout_below="@+id/progress_bar_word_learn_stage"
         android:layout_toStartOf="@+id/container_word_icons"
         android:ellipsize="end"/>
@@ -76,6 +76,7 @@
             android:layout_width="@dimen/size_40"
             android:layout_height="@dimen/size_40"
             app:srcCompat="@drawable/ic_volume"
+            android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/ic_play" />
 
     </FrameLayout>

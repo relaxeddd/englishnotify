@@ -1,13 +1,12 @@
 package relaxeddd.englishnotify.ui.dictionary
 
 import android.annotation.SuppressLint
-import android.content.res.ColorStateList
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+import androidx.core.view.updatePaddingRelative
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import relaxeddd.englishnotify.R
@@ -18,7 +17,6 @@ import relaxeddd.englishnotify.databinding.FragmentDictionaryBinding
 import relaxeddd.englishnotify.dialogs.DialogDeleteWords
 import relaxeddd.englishnotify.ui.main.MainActivity
 import java.lang.IllegalStateException
-import kotlin.math.roundToInt
 
 abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>> : BaseFragment<VM, FragmentDictionaryBinding>() {
 
@@ -46,12 +44,13 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
     abstract fun createWordsAdapter() : A
     override fun getLayoutResId() = R.layout.fragment_dictionary
     override fun hasToolbar() = false
+    override fun getFabIconResId() = R.drawable.ic_plus
+    override fun getFabListener() = Navigation.createNavigateOnClickListener(R.id.action_fragmentDictionaryContainer_to_fragmentWord)
 
     override fun configureBinding() {
         super.configureBinding()
         binding.viewModel = viewModel
         binding.clickListenerCloseFilter = clickListenerCloseFilter
-        binding.clickListenerAddWord = Navigation.createNavigateOnClickListener(R.id.action_fragmentDictionaryContainer_to_fragmentWord)
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -66,6 +65,11 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
             animateDropdown(binding.containerDictionaryFilter, false, animBlock)
             false
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            binding.recyclerViewDictionary.doOnApplyWindowInsets { v, insets, padding ->
+                v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
+            }
+        }
         viewModel.applySearch(textSearch)
         viewModel.wordsFiltered.observe(viewLifecycleOwner, { words ->
             binding.hasWords = (words != null && words.isNotEmpty())
@@ -73,11 +77,6 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
         })
         viewModel.user.observe(viewLifecycleOwner, { user ->
             adapter?.languageType = user?.learnLanguageType ?: 0
-        })
-        (activity as? MainActivity)?.warningContainerSize?.observe(viewLifecycleOwner, {
-            val bottomMargin = (if (it == 0) resources.getDimension(R.dimen.size_32) else resources.getDimension(R.dimen.size_8)) + it
-            (binding.buttonDictionaryAddWord.layoutParams as? ViewGroup.MarginLayoutParams)?.bottomMargin = bottomMargin.roundToInt()
-            binding.buttonDictionaryAddWord.requestLayout()
         })
     }
 
@@ -169,9 +168,8 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
     }
 
     override fun setupThemeColors() {
-        val context = context ?: return
-        binding.buttonDictionaryAddWord.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, getPrimaryColorResId()))
-        binding.containerDictionaryFilter.setBackgroundResource(getPrimaryColorResId())
+        super.setupThemeColors()
+        binding.containerDictionaryFilter.setBackgroundResource(R.color.filter_bg_color)
     }
 
     open fun onFragmentSelected() {}

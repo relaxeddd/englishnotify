@@ -2,6 +2,7 @@ package relaxeddd.englishnotify.ui.main
 
 import android.app.Activity
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
@@ -10,11 +11,19 @@ import android.text.Spanned
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.UnderlineSpan
-import android.view.View
-import android.view.ViewTreeObserver
-import androidx.lifecycle.MutableLiveData
+import android.view.*
+import android.widget.ImageView
+import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
+import androidx.core.view.updatePadding
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI.setupWithNavController
+import androidx.navigation.ui.setupWithNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.common.ConnectionResult
@@ -22,24 +31,35 @@ import com.google.android.gms.common.GoogleApiAvailability
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.MainActivityBinding
+import relaxeddd.englishnotify.databinding.NavigationHeaderBinding
 import relaxeddd.englishnotify.dialogs.*
 import relaxeddd.englishnotify.donate.ActivityBilling
 import relaxeddd.englishnotify.push.PushTokenHelper
 import java.util.*
 import kotlin.system.exitProcess
 
-class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
+class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), NavigationHost, FloatingActionButtonHost {
 
     companion object {
         const val REQUEST_SIGN_IN = 1312
         const val REQUEST_PLAY_SERVICES_RESULT = 7245
+
+        const val EXTRA_NAVIGATION_ID = "extra.NAVIGATION_ID"
+        private const val NAV_ID_NONE = -1
+
+        private val TOP_LEVEL_DESTINATIONS = setOf(
+            R.id.fragmentDictionaryContainer,
+            R.id.fragmentTrainingSetting,
+            R.id.fragmentNotifications,
+            R.id.fragmentSettings
+        )
     }
 
-    private var selectedBottomMenuId: Int = R.id.fragmentDictionaryContainer
-    //private var selectedSecondaryBottomMenuId: Int = R.id.fragmentDictionaryAll
+    private var currentFragmentId: Int = NAV_ID_NONE
     private lateinit var navController: NavController
     private val providers: List<AuthUI.IdpConfig> = listOf(AuthUI.IdpConfig.GoogleBuilder().build())
     private var dialogNewVersion: DialogNewVersion? = null
+    private var navigationHeaderBinding: NavigationHeaderBinding? = null
 
     private var tts: TextToSpeech? = null
     private var isTtsInit = false
@@ -48,8 +68,6 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
     private var isFastSpeechSpeed = false
     private var isLastPlayedEng = true
     private var isPlaying = false
-
-    val warningContainerSize = MutableLiveData(0)
 
     private val listenerNewVersion: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
         override fun onResult(result: Boolean) {
@@ -82,15 +100,6 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
     override fun configureBinding() {
         super.configureBinding()
         binding.viewModel = viewModel
-        viewModel.isShowGoogleAuth.observe(this, { isVisible ->
-            observeWarningContainerDrawing(binding.containerMainSignIn, isVisible)
-        })
-        viewModel.isShowWarningNotifications.observe(this, { isVisible ->
-            observeWarningContainerDrawing(binding.containerMainWarningNotifications, isVisible)
-        })
-        viewModel.isShowWarningSubscription.observe(this, { isVisible ->
-            observeWarningContainerDrawing(binding.containerMainWarningSubscription, isVisible)
-        })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,71 +108,108 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
         PushTokenHelper.initChannelNotifications(this)
         initGooglePlayServices()
 
+        val isOldDesign = SharedHelper.isOldNavigationDesign()
+
+        navigationHeaderBinding = NavigationHeaderBinding.inflate(layoutInflater).apply {
+            lifecycleOwner = this@MainActivity
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH && !isOldDesign) {
+            binding.drawerContainer.setOnApplyWindowInsetsListener { v, insets ->
+                v.onApplyWindowInsets(insets)
+                v.updatePadding(
+                    left = insets.systemWindowInsetLeft,
+                    right = insets.systemWindowInsetRight
+                )
+                insets.replaceSystemWindowInsets(
+                    0, insets.systemWindowInsetTop,
+                    0, insets.systemWindowInsetBottom
+                )
+            }
+        }
+        binding.containerMainActivity.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
+            binding.containerMainActivity.setOnApplyWindowInsetsListener(NoopWindowInsetsListener)
+            binding.statusBarScrim.setOnApplyWindowInsetsListener(HeightTopWindowInsetsListener)
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && !isOldDesign) {
+            binding.containerMainWarnings.doOnApplyWindowInsets { v, insets, padding ->
+                (v.layoutParams as? ViewGroup.MarginLayoutParams)?.bottomMargin = padding.bottom + insets.systemWindowInsetBottom
+            }
+        }
+
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_navigation_host) as NavHostFragment
         navController = navHostFragment.navController
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            val isDictionaryTab = isDictionaryTab(destination.id)
-            viewModel.isVisibleSecondaryBottomNavigationView.value = isDictionaryTab
-
-            if (isDictionaryTab) {
-                /*if (destination.id != selectedSecondaryBottomMenuId) {
-                    selectedSecondaryBottomMenuId = destination.id
-                    navigation_view_main_secondary.selectedItemId = destination.id
-                }*/
-                if (selectedBottomMenuId != R.id.fragmentDictionaryContainer) {
-                    selectedBottomMenuId = R.id.fragmentDictionaryContainer
-                    binding.navigationViewMain.selectedItemId = R.id.fragmentDictionaryContainer
+            currentFragmentId = destination.id
+            if (!isOldDesign) {
+                val lockMode = if (isTopLevelTab(destination.id)) {
+                    DrawerLayout.LOCK_MODE_UNLOCKED
+                } else {
+                    DrawerLayout.LOCK_MODE_LOCKED_CLOSED
                 }
-            } else if (destination.id != selectedBottomMenuId) {
-                selectedBottomMenuId = destination.id
-                binding.navigationViewMain.selectedItemId = destination.id
+                binding.drawer.setDrawerLockMode(lockMode)
+            } else {
+                binding.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
             }
         }
 
+        Navigation.setViewNavController(binding.buttonMainFab, navController)
+
         binding.navigationViewMain.setOnNavigationItemSelectedListener {
-            if (it.itemId == selectedBottomMenuId) {
+            if (it.itemId == currentFragmentId) {
                 return@setOnNavigationItemSelectedListener true
             }
-
             when (it.itemId) {
                 R.id.fragmentDictionaryContainer -> navController.myNavigate(R.id.action_global_fragmentDictionaryContainer)
-                /*R.id.fragmentDictionaryAll -> {
-                    when (selectedSecondaryBottomMenuId) {
-                        R.id.fragmentDictionaryAll -> navController.myNavigate(R.id.action_global_fragmentDictionaryAll)
-                        R.id.fragmentDictionaryOwn -> navController.myNavigate(R.id.action_global_fragmentDictionaryOwn)
-                        R.id.fragmentDictionaryExercises -> navController.myNavigate(R.id.action_global_fragmentDictionaryExercises)
-                        R.id.fragmentDictionaryKnow -> navController.myNavigate(R.id.action_global_fragmentDictionaryKnow)
-                        else -> return@setOnNavigationItemSelectedListener false
-                    }
-                }*/
                 R.id.fragmentTrainingSetting -> navController.myNavigate(R.id.action_global_fragmentTrainingSetting)
                 R.id.fragmentNotifications -> navController.myNavigate(R.id.action_global_fragmentNotifications)
                 R.id.fragmentSettings -> navController.myNavigate(R.id.action_global_fragmentSettings)
                 else -> return@setOnNavigationItemSelectedListener false
             }
-            selectedBottomMenuId = it.itemId
+            currentFragmentId = it.itemId
 
             return@setOnNavigationItemSelectedListener true
         }
-        /*navigation_view_main_secondary.setOnNavigationItemSelectedListener {
-            if (it.itemId == selectedSecondaryBottomMenuId) {
-                return@setOnNavigationItemSelectedListener true
-            }
 
-            when (it.itemId) {
-                R.id.fragmentDictionaryAll -> navController.myNavigate(R.id.action_global_fragmentDictionaryAll)
-                R.id.fragmentDictionaryOwn -> navController.myNavigate(R.id.action_global_fragmentDictionaryOwn)
-                R.id.fragmentDictionaryExercises -> navController.myNavigate(R.id.action_global_fragmentDictionaryExercises)
-                R.id.fragmentDictionaryKnow -> navController.myNavigate(R.id.action_global_fragmentDictionaryKnow)
-                else -> return@setOnNavigationItemSelectedListener false
-            }
-            selectedSecondaryBottomMenuId = it.itemId
+        if (!isOldDesign) {
+            binding.navigation.apply {
+                val menuView = findViewById<RecyclerView>(R.id.design_navigation_view)
 
-            return@setOnNavigationItemSelectedListener true
-        }*/
+                navigationHeaderBinding?.apply {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        doOnApplyWindowInsets { v, insets, padding ->
+                            v.updatePadding(top = padding.top + insets.systemWindowInsetTop)
+                            menuView?.updatePadding(bottom = insets.systemWindowInsetBottom)
+                        }
+                    }
+                    addHeaderView(root)
+                    imageNavigationHeaderLike.setOnClickListener {
+                        openWebApplication(this@MainActivity)
+                    }
+                }
+                itemBackground = navigationItemBackground(context)
+
+                setupWithNavController(this, navController)
+            }
+        }
+
+        findViewById<ImageView>(R.id.image_header_logo)?.setOnClickListener {
+            onNavigationEvent(NAVIGATION_DIALOG_RATE_APP)
+        }
+
+        if (savedInstanceState == null) {
+            val initialNavId = intent.getIntExtra(EXTRA_NAVIGATION_ID, R.id.fragmentDictionaryContainer)
+            if (!isOldDesign) {
+                binding.navigation.setCheckedItem(initialNavId)
+            }
+            navigateTo(initialNavId)
+        }
+
         initPrivacyPolicyText()
-        updateWarningsHeight()
 
         viewModel.onViewCreate()
     }
@@ -187,6 +233,28 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
         } else {
             super.onBackPressed()
         }
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        currentFragmentId = binding.navigation.checkedItem?.itemId ?: NAV_ID_NONE
+    }
+
+    override fun registerToolbar(toolbar: Toolbar) {
+        if (!SharedHelper.isOldNavigationDesign()) {
+            val appBarConfiguration = AppBarConfiguration.Builder(TOP_LEVEL_DESTINATIONS).setOpenableLayout(binding.drawer).build()
+            toolbar.setupWithNavController(navController, appBarConfiguration)
+        }
+    }
+
+    override fun configureFab(iconResId: Int?, listener: (View.OnClickListener)?) {
+        if (iconResId != null && iconResId != EMPTY_RES) {
+            binding.buttonMainFab.visibility = View.VISIBLE
+            binding.buttonMainFab.setImageResource(iconResId)
+        } else {
+            binding.buttonMainFab.visibility = View.GONE
+        }
+        binding.buttonMainFab.setOnClickListener(listener)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -274,6 +342,12 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
                 dialog.setConfirmListener(listenerFeedbackDialog)
                 dialog.show(this.supportFragmentManager, "Send feedback Dialog")
             }
+            NAVIGATION_RECREATE_ACTIVITY -> {
+                if (isMyResumed) {
+                    finish()
+                    startActivity(Intent(this, MainActivity::class.java).apply { addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION) })
+                }
+            }
             NAVIGATION_LOADING_SHOW -> setLoadingVisible(true)
             NAVIGATION_LOADING_HIDE -> setLoadingVisible(false)
             else -> super.onNavigationEvent(eventId)
@@ -282,11 +356,9 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
 
     override fun setupThemeColors() {
         super.setupThemeColors()
-        binding.navigationViewMain.setBackgroundColor(getPrimaryColorResId())
-        binding.navigationViewMain.itemBackgroundResource = getPrimaryColorResId()
-        /*navigation_view_main_secondary.setBackgroundColor(getPrimaryColorResId())
-        navigation_view_main_secondary.itemBackgroundResource = getPrimaryColorResId()
-        view_main_bottom_separator.setBackgroundColor(getPrimaryDarkColorResId())*/
+        binding.navigationViewMain.setBackgroundColor(ContextCompat.getColor(this, R.color.bottom_navigation_color))
+        binding.navigationViewMain.itemBackgroundResource = R.color.bottom_navigation_color
+        binding.buttonMainFab.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.floating_button_color))
     }
 
     fun setLoadingVisible(isVisible: Boolean) {
@@ -362,9 +434,7 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
         }
     }
 
-    private fun isDictionaryTab(tabResId: Int) = tabResId == R.id.fragmentDictionaryAll
-            || tabResId == R.id.fragmentDictionaryOwn || tabResId == R.id.fragmentDictionaryExercises
-            || tabResId == R.id.fragmentDictionaryKnow
+    private fun isTopLevelTab(tabResId: Int) = TOP_LEVEL_DESTINATIONS.contains(tabResId)
 
     private fun initPrivacyPolicyText() {
         if (SharedHelper.isPrivacyPolicyConfirmed(this)) {
@@ -394,30 +464,9 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>() {
         spannableString.setSpan(UnderlineSpan(), firstIndex, lastIndex, 0)
     }
 
-    private fun observeWarningContainerDrawing(container: View, isShouldBeVisible: Boolean) {
-        container.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                if (isShouldBeVisible && container.visibility != View.GONE
-                    || !isShouldBeVisible && container.visibility == View.GONE) {
-                    container.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                    updateWarningsHeight()
-                }
-            }
-        })
-    }
-
-    private fun updateWarningsHeight() {
-        var height = 0
-
-        if (binding.containerMainWarningNotifications.visibility != View.GONE) {
-            height += binding.containerMainWarningNotifications.height
+    private fun navigateTo(navId: Int) {
+        if (navId != currentFragmentId) {
+            navController.navigate(navId)
         }
-        if (binding.containerMainWarningSubscription.visibility != View.GONE) {
-            height += binding.containerMainWarningSubscription.height
-        }
-        if (binding.containerMainSignIn.visibility != View.GONE) {
-            height += binding.containerMainSignIn.height
-        }
-        warningContainerSize.value = height
     }
 }

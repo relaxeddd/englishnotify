@@ -1,39 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="Base" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowLightStatusBar" tools:targetApi="m">@bool/use_light_status</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">@bool/use_light_navigation</item>
+
+        <!--<item name="android:textColorSecondary">@color/white</item>-->
+        <item name="colorControlNormal">@color/gray_light</item><!-- Search view icon color -->
+        <item name="colorControlHighlight">@color/colorPrimaryRipple</item>
+
+        <item name="searchViewStyle">@style/MySearchViewStyle</item>
+        <item name="alertDialogTheme">@style/AlertDialog.Theme</item>
+
+        <item name="navigationViewStyle">@style/NavigationViewStyle</item>
+
+        <!--<item name="toolbarStyle">@style/ToolbarStyle</item>-->
+        <!--<item name="drawerArrowStyle">@style/DrawerArrowStyle</item>-->
+    </style>
+
+    <style name="Base.AppTheme">
+    </style>
+
+    <style name="MySearchViewStyle" parent="Widget.AppCompat.Light.SearchView">
+        <item name="closeIcon">@drawable/ic_close</item>>
+    </style>
+
+    <style name="AlertDialog.Theme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="android:textColorSecondary">@color/gray</item>
+    </style>
+
+    <style name="DictionaryTabStyle" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">@dimen/font_9</item>
+    </style>
+
+    <style name="NavigationViewStyle" parent="@style/Widget.MaterialComponents.NavigationView">
+        <item name="itemBackground">@drawable/navigation_item_background</item>
+        <item name="itemHorizontalPadding">@dimen/size_24</item>
+    </style>
+
+    <!--<style name="AppBarStyle" parent="@style/Widget.Design.AppBarLayout">
+        <item name="titleTextColor">@color/white</item>
+        <item name="navigationIcon">@drawable/ic_menu</item>
+        <item name="collapseIcon">@drawable/ic_back</item>
+    </style>
+
+    <style name="DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@color/white</item>
+    </style>-->
+
+    <style name="ToolbarStyle" parent="Widget.MaterialComponents.Toolbar">
+        <item name="android:paddingEnd">8dp</item>
+        <item name="contentInsetStartWithNavigation">?sessionListKeyline</item>
+        <!--<item name="popupTheme">@style/AppTheme.PopupTheme</item>
+        <item name="titleTextAppearance">@style/TextAppearance.IOSched.ToolbarTitle</item>-->
+    </style>
+
+    <!--_____________________________________________________________________________________________________________-->
+
+    <style name="AppTheme" parent="Base.AppTheme">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorControlHighlight">@color/colorPrimaryRipple</item>
     </style>
 
-    <style name="AppTheme2" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="AppTheme2" parent="Base.AppTheme">
         <item name="colorPrimary">@color/colorPrimary2</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark2</item>
         <item name="colorAccent">@color/colorAccent2</item>
     </style>
 
-    <style name="AppTheme3" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="AppTheme3" parent="Base.AppTheme">
         <item name="colorPrimary">@color/colorPrimary3</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark3</item>
         <item name="colorAccent">@color/colorAccent3</item>
     </style>
 
-    <style name="AppTheme4" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="AppTheme4" parent="Base.AppTheme">
         <item name="colorPrimary">@color/colorPrimary4</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark4</item>
         <item name="colorAccent">@color/colorAccent4</item>
     </style>
 
-    <style name="AppTheme5" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="AppTheme5" parent="Base.AppTheme">
         <item name="colorPrimary">@color/colorPrimary5</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark5</item>
         <item name="colorAccent">@color/colorAccent5</item>
-    </style>
-
-    <style name="DictionaryTabStyle" parent="TextAppearance.Design.Tab">
-        <item name="android:textSize">@dimen/font_9</item>
     </style>
 
 </resources>
