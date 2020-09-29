@@ -9,12 +9,20 @@ import android.widget.Toast
 import relaxeddd.englishnotify.App
 import android.util.DisplayMetrics
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
 import android.net.Uri
+import android.os.Build
+import android.view.WindowInsets
 import androidx.annotation.StringRes
 import androidx.fragment.app.FragmentActivity
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.IdRes
+import androidx.annotation.RequiresApi
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.NavController
 import relaxeddd.englishnotify.R
 import java.lang.IllegalStateException
@@ -241,4 +249,75 @@ internal fun NavController.myNavigate(@IdRes resId: Int) {
     try {
         navigate(resId)
     } catch (e: IllegalStateException) {}
+}
+
+@RequiresApi(Build.VERSION_CODES.KITKAT_WATCH)
+object NoopWindowInsetsListener : View.OnApplyWindowInsetsListener {
+    override fun onApplyWindowInsets(v: View, insets: WindowInsets): WindowInsets {
+        return insets
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.KITKAT_WATCH)
+object HeightTopWindowInsetsListener : View.OnApplyWindowInsetsListener {
+    override fun onApplyWindowInsets(v: View, insets: WindowInsets): WindowInsets {
+        val topInset = insets.systemWindowInsetTop
+        if (v.layoutParams.height != topInset) {
+            v.layoutParams.height = topInset
+            v.requestLayout()
+        }
+        return insets
+    }
+}
+
+data class ViewPaddingState(
+    val left: Int,
+    val top: Int,
+    val right: Int,
+    val bottom: Int,
+    val start: Int,
+    val end: Int
+)
+
+@RequiresApi(Build.VERSION_CODES.KITKAT)
+fun View.doOnApplyWindowInsets(f: (View, WindowInsetsCompat, ViewPaddingState) -> Unit) {
+    val paddingState = createStateForView(this)
+    ViewCompat.setOnApplyWindowInsetsListener(this) { v, insets ->
+        f(v, insets, paddingState)
+        insets
+    }
+    requestApplyInsetsWhenAttached()
+}
+
+@RequiresApi(Build.VERSION_CODES.KITKAT)
+fun View.requestApplyInsetsWhenAttached() {
+    if (isAttachedToWindow) {
+        requestApplyInsets()
+    } else {
+        addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
+            override fun onViewAttachedToWindow(v: View) {
+                v.requestApplyInsets()
+            }
+
+            override fun onViewDetachedFromWindow(v: View) = Unit
+        })
+    }
+}
+
+private fun createStateForView(view: View) = ViewPaddingState(view.paddingLeft,
+    view.paddingTop, view.paddingRight, view.paddingBottom, view.paddingStart, view.paddingEnd)
+
+fun navigationItemBackground(context: Context): Drawable? {
+    var background = AppCompatResources.getDrawable(context, R.drawable.navigation_item_background)
+
+    if (background != null) {
+        val tint = AppCompatResources.getColorStateList(context, R.drawable.navigation_item_background_tint)
+
+        background = DrawableCompat.wrap(background.mutate())
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            background.setTintList(tint)
+        }
+    }
+
+    return background
 }

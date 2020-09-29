@@ -4,17 +4,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:ignore="UnusedAttribute">
 
-    <LinearLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/info_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:fitsSystemWindows="true">
+
+        <include layout="@layout/view_toolbar"/>
+
+    <LinearLayout
+        android:id="@+id/container_dictionary_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout_dictionary_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:elevation="@dimen/size_4"
-            app:tabTextAppearance="@style/DictionaryTabStyle"/>
+            app:tabTextAppearance="@style/DictionaryTabStyle"
+            app:tabMode="fixed"/>
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/view_pager_dictionary_container"
@@ -22,5 +33,7 @@
             android:layout_height="match_parent"/>
 
     </LinearLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

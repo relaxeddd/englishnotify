@@ -2,6 +2,7 @@ package relaxeddd.englishnotify.ui.settings
 
 import android.os.Build
 import android.view.View
+import android.widget.CompoundButton
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -24,6 +25,7 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     val liveDataSubDays = MutableLiveData("")
     var textTheme: String = App.context.resources.getStringArray(R.array.array_themes)[SharedHelper.getAppThemeType()]
     val isVisibleReceiveHelp = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+    val isOldNavigationDesign = MutableLiveData(SharedHelper.isOldNavigationDesign())
     
     val clickListenerAppInfo = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_APP_ABOUT)
@@ -54,6 +56,13 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     }
     val clickListenerTheme = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_THEME)
+    }
+    var checkedChangeListenerNavigationDesign = CompoundButton.OnCheckedChangeListener { _, isChecked ->
+        if (SharedHelper.isOldNavigationDesign() != isChecked && isOldNavigationDesign.value != isChecked) {
+            SharedHelper.setOldNavigationDesign(isChecked)
+            isOldNavigationDesign.value = isChecked
+            navigateEvent.value = Event(NAVIGATION_RECREATE_ACTIVITY)
+        }
     }
 
     init {

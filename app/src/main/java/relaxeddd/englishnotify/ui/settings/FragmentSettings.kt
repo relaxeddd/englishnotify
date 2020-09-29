@@ -13,6 +13,9 @@ import android.provider.Settings
 import android.os.PowerManager
 import androidx.core.content.ContextCompat.getSystemService
 import android.os.Build
+import android.os.Bundle
+import android.view.View
+import androidx.core.view.updatePaddingRelative
 import com.judemanutd.autostarter.AutoStartPermissionHelper
 import java.lang.Exception
 
@@ -35,10 +38,22 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
     override fun getToolbarTitleResId() = R.string.common
     override fun getViewModelFactory() = InjectorUtils.provideSettingsViewModelFactory()
     override fun getViewModelClass() = ViewModelSettings::class.java
+    override fun isTopLevelFragment() = true
 
     override fun configureBinding() {
         super.configureBinding()
         binding.viewModel = viewModel
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            binding.scrollViewSettings.doOnApplyWindowInsets { v, insets, padding ->
+                v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
+            }
+        }
+        binding.switchSettingsDesign.setOnCheckedChangeListener(viewModel.checkedChangeListenerNavigationDesign)
     }
 
     @SuppressLint("BatteryLife")
@@ -70,19 +85,34 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
             NAVIGATION_DIALOG_RECEIVE_HELP -> {
                 val ctx = context ?: return
 
-                if (AutoStartPermissionHelper.getInstance().isAutoStartPermissionAvailable(ctx)) {
-                    AutoStartPermissionHelper.getInstance().getAutoStartPermission(ctx)
-                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    val pkg = ctx.packageName
-                    val pm = getSystemService(ctx, PowerManager::class.java) ?: return
+                DialogNotificationsNotShow().apply {
+                    this.confirmListener = object : ListenerResult<Boolean> {
+                        override fun onResult(result: Boolean) {
+                            if (!result) {
+                                return
+                            }
 
-                    if (!pm.isIgnoringBatteryOptimizations(pkg)) {
-                        try {
-                            startActivity(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).setData(Uri.parse("package:$pkg")))
-                        } catch (e: Exception) {}
-                    } else {
-                        DialogInfoReceiveHelp().show(this@FragmentSettings.childFragmentManager, "Receive help Dialog")
+                            if (AutoStartPermissionHelper.getInstance().isAutoStartPermissionAvailable(ctx)) {
+                                val isStarted = AutoStartPermissionHelper.getInstance().getAutoStartPermission(ctx)
+
+                                if (!isStarted) {
+                                    showToast(R.string.settings_not_found)
+                                }
+                            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                val pkg = ctx.packageName
+                                val pm = getSystemService(ctx, PowerManager::class.java) ?: return
+
+                                if (!pm.isIgnoringBatteryOptimizations(pkg)) {
+                                    try {
+                                        startActivity(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).setData(Uri.parse("package:$pkg")))
+                                    } catch (e: Exception) {}
+                                } else {
+                                    DialogInfoReceiveHelp().show(this@FragmentSettings.childFragmentManager, "Receive help Dialog")
+                                }
+                            }
+                        }
                     }
+                    show(this@FragmentSettings.childFragmentManager, "Notifications not Show Dialog")
                 }
             }
             NAVIGATION_DIALOG_CONFIRM_LOGOUT -> {

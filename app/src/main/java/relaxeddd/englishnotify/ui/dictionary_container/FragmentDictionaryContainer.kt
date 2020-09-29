@@ -16,10 +16,10 @@ import relaxeddd.englishnotify.ui.dictionary_own.FragmentDictionaryOwn
 
 class FragmentDictionaryContainer : BaseFragment<ViewModelDictionaryContainer, FragmentDictionaryContainerBinding>() {
 
-    private var adapterFragmentsMap = HashMap<Int, FragmentDictionary<*, *>>()
+    private var adapterFragmentsMap = HashMap<Int, FragmentDictionary<*, *>?>()
     private var currentPosition: Int = SharedHelper.getDictionaryTabPosition()
     private val currentFragment: FragmentDictionary<*, *>?
-        get() = adapterFragmentsMap[binding.viewPagerDictionaryContainer.currentItem]
+        get() = adapterFragmentsMap[currentPosition]
 
     private val onPageChangeCallback = object: ViewPager2.OnPageChangeCallback() {
         override fun onPageSelected(position: Int) {
@@ -44,10 +44,12 @@ class FragmentDictionaryContainer : BaseFragment<ViewModelDictionaryContainer, F
     override fun getSearchMenuItemId() = R.id.item_menu_search_dictionary
     override fun getViewModelFactory() = InjectorUtils.provideDictionaryContainerViewModelFactory()
     override fun getViewModelClass() = ViewModelDictionaryContainer::class.java
+    override fun isTopLevelFragment() = true
 
     override fun configureBinding() {
         super.configureBinding()
         val adapter = DictionaryFragmentsAdapter(this)
+
         binding.viewPagerDictionaryContainer.adapter = adapter
         TabLayoutMediator(binding.tabLayoutDictionaryContainer, binding.viewPagerDictionaryContainer) { tab, position ->
             tab.text = getString(when(position) {
@@ -141,7 +143,7 @@ class FragmentDictionaryContainer : BaseFragment<ViewModelDictionaryContainer, F
 
     inner class DictionaryFragmentsAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
-        override fun getItemCount() = 4
+        override fun getItemCount() = DictionaryTab.values().size
 
         override fun createFragment(position: Int) : Fragment {
             val fragment = when (position) {

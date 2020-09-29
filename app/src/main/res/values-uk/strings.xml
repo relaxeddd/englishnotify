@@ -17,7 +17,7 @@
     <string name="answer_exercise">Ответ: %s</string>
     <string name="app_info">О приложении</string>
     <string name="app_language">Язык приложения</string>
-    <string name="app_theme">Тема приложение</string>
+    <string name="app_theme">Тема приложения</string>
     <string name="apply">Применить</string>
     <string name="answer_correct">Правильный ответ</string>
     <string name="answer_incorrect">Неправильный ответ</string>
@@ -73,6 +73,7 @@
     <string name="i_not_know_it">Я не знаю</string>
     <string name="i_know_it">Я знаю это</string>
     <string name="if_notifications_not_receive">Если не ходят уведомления</string>
+    <string name="is_old_navigation_design">Старая навигационная панель</string>
     <string name="incorrect_answer">Неправильный ответ</string>
     <string name="information">Информация</string>
     <string name="input_your_message">Введите сообщение</string>
@@ -140,6 +141,7 @@
     <string name="send_test_notification">Отправить тестовое уведомление? (Осталось: %s)</string>
     <string name="select">Выбрать</string>
     <string name="settings">Настройки</string>
+    <string name="settings_not_found">Настройки не найдены</string>
     <string name="sort_by">Сортировать по</string>
     <string name="statistic">Статистика</string>
     <string name="sub_advantages">Преимущества подписки</string>
@@ -219,11 +221,18 @@
 
     <string name="text_info_statistic">k/m/n - k выучено, m получено, n всего</string>
 
+    <string name="text_notifications_not_show">
+        К сожалению, могут быть проблемы с получением уведомление на некоторых устройствах из-за этой проблемы https://github.com/firebase/quickstart-android/issues/368, ничего не могу с этим поделать :(
+    </string>
+
     <string name="patch_notes">
-        - Добавлена опция тренировки слов восприятием на слух
-        \n- Отсортированы слова в статистике Своих слов
-        \n- Опция \"Если не ходят уведомления\" в настройках.
-        \n- Вы можете заносить слова в \"Своя категория\" для последующего изучения.
+        - Новый дизайн навигации (Можно отключить во вкладке Общее)
+        \n- Поддержка ночной темы
+        \n- Новый дизайн вкладок словаря
+        \n- Фикс поизции кнопки добавления своего слова
+        \n- Светло-синяя тема
+        \n- Пожалуйста обратите внимание на опцию \"Если не ходят уведомления\"
+        \n- Советуем заносить собственные слова в \"Своя категория\" для последующего изучения
     </string>
 
     <!-- =========================================================================================================== -->

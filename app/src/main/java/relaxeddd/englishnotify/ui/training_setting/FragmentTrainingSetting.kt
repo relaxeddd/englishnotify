@@ -1,18 +1,14 @@
 package relaxeddd.englishnotify.ui.training_setting
 
-import android.content.res.ColorStateList
+import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
+import androidx.core.view.updatePaddingRelative
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.FragmentTrainingSettingBinding
 import relaxeddd.englishnotify.ui.categories.AdapterCategories
-import relaxeddd.englishnotify.ui.main.MainActivity
-import kotlin.math.roundToInt
 
 class FragmentTrainingSetting : BaseFragment<ViewModelTrainingSetting, FragmentTrainingSettingBinding>() {
 
@@ -28,6 +24,9 @@ class FragmentTrainingSetting : BaseFragment<ViewModelTrainingSetting, FragmentT
     override fun getHomeMenuButtonListener(): () -> Unit = {
         onNavigationEvent(NAVIGATION_ACTIVITY_BACK)
     }
+    override fun isTopLevelFragment() = true
+    override fun getFabIconResId() = R.drawable.ic_accept
+    override fun getFabListener() = View.OnClickListener { viewModel.onClickAccept() }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.item_menu_accept -> {
@@ -42,18 +41,12 @@ class FragmentTrainingSetting : BaseFragment<ViewModelTrainingSetting, FragmentT
         adapter = AdapterCategories(viewModel)
         binding.recyclerViewTrainingSettingCategories.itemAnimator = null
         binding.recyclerViewTrainingSettingCategories.adapter = adapter
-        binding.buttonTrainingSettingStart.setOnClickListener { viewModel.onClickAccept() }
         binding.switchTrainingSettingListenTraining.isChecked = SharedHelper.isListeningTraining()
         binding.switchTrainingSettingListenTraining.setOnCheckedChangeListener { _, isChecked ->
             SharedHelper.setListeningTraining(isChecked)
         }
         viewModel.categories.observe(viewLifecycleOwner, { items ->
             if (items != null && items.isNotEmpty()) adapter.submitList(items)
-        })
-        (activity as? MainActivity)?.warningContainerSize?.observe(viewLifecycleOwner, {
-            val bottomMargin = (if (it == 0) resources.getDimension(R.dimen.size_32) else resources.getDimension(R.dimen.size_8)) + it
-            (binding.buttonTrainingSettingStart.layoutParams as? ViewGroup.MarginLayoutParams)?.bottomMargin = bottomMargin.roundToInt()
-            binding.buttonTrainingSettingStart.requestLayout()
         })
     }
 
@@ -74,6 +67,11 @@ class FragmentTrainingSetting : BaseFragment<ViewModelTrainingSetting, FragmentT
         binding.radioButtonTrainingSettingMixed.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) viewModel.trainingLanguage = TRAINING_MIXED
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            binding.recyclerViewTrainingSettingCategories.doOnApplyWindowInsets { v, insets, padding ->
+                v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
+            }
+        }
     }
 
     override fun onNavigationEvent(eventId: Int) {
@@ -87,10 +85,5 @@ class FragmentTrainingSetting : BaseFragment<ViewModelTrainingSetting, FragmentT
             }
             else -> super.onNavigationEvent(eventId)
         }
-    }
-
-    override fun setupThemeColors() {
-        val context = context ?: return
-        binding.buttonTrainingSettingStart.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, getPrimaryColorResId()))
     }
 }

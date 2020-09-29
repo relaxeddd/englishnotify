@@ -15,10 +15,7 @@
             type="android.view.View.OnClickListener"/>
         <variable
             name="viewModel"
-            type="relaxeddd.englishnotify.ui.dictionary.ViewModelDictionary" />
-        <variable
-            name="clickListenerAddWord"
-            type="android.view.View.OnClickListener"/>
+            type="relaxeddd.englishnotify.ui.dictionary.ViewModelDictionary"/>
 
     </data>
 
@@ -45,26 +42,11 @@
             android:textSize="@dimen/font_16"
             android:visibility="@{!hasWords ? View.VISIBLE : View.GONE}"/>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/button_dictionary_add_word"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:onClick="@{clickListenerAddWord}"
-            android:src="@drawable/ic_plus"
-            app:tint="@color/white"
-            app:borderWidth="0dp"
-            android:visibility="gone"
-            android:layout_marginBottom="@dimen/size_32"
-            android:layout_marginEnd="@dimen/size_24"
-            tools:visibility="visible"/>
-
         <LinearLayout
             android:id="@+id/container_dictionary_filter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
+            android:background="@color/filter_bg_color"
             android:elevation="@dimen/default_elevation"
             android:layout_marginTop="-4dp"
             android:visibility="gone"

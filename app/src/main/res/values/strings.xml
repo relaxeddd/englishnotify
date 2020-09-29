@@ -72,6 +72,7 @@
     <string name="i_not_know_it">I don`t know</string>
     <string name="i_know_it">I know it</string>
     <string name="if_notifications_not_receive">If you do not receive notifications</string>
+    <string name="is_old_navigation_design">Is old navigation design</string>
     <string name="incorrect">Incorrect</string>
     <string name="incorrect_answer">Incorrect answer</string>
     <string name="information">Information</string>
@@ -140,6 +141,7 @@
     <string name="send_test_notification">Send test notification? (%s notifications left)</string>
     <string name="select">Select</string>
     <string name="settings">Settings</string>
+    <string name="settings_not_found">Settings not found</string>
     <string name="sort_by">Sort by</string>
     <string name="statistic">Statistic</string>
     <string name="sub_advantages">Subscription advantages</string>
@@ -234,10 +236,17 @@
         \n\nYou can up word learn progress by words training in Dictionary section or by correct answer in notification.
     </string>
 
+    <string name="text_notifications_not_show">
+        Unfortunately, there are could be problems with receiving notifications on several devices because of this bug https://github.com/firebase/quickstart-android/issues/368. I can not do anything :(
+    </string>
+
     <string name="patch_notes">
-        - Listening training option on the training settings screen
-        \n- Own words statistic sorting
-        \n- Take attention on \"If you do not receive notifications\" in settings tab
+        - New navigation design (you can switch to old version in Common tab)
+        \n- Night theme support
+        \n- New design of dictionary tabs
+        \n- Add new word button position fix
+        \n- Light blue theme
+        \n- Please, take attention on \"If you do not receive notifications\" in settings tab
         \n- It might be better to add words in \"Own category\"
     </string>
 

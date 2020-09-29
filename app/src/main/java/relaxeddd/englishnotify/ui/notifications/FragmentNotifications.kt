@@ -1,9 +1,10 @@
 package relaxeddd.englishnotify.ui.notifications
 
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.updatePaddingRelative
 import androidx.navigation.Navigation
-import kotlinx.android.synthetic.main.fragment_notifications.*
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.databinding.FragmentNotificationsBinding
@@ -41,6 +42,7 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
     override fun getToolbarTitleResId() = R.string.notifications
     override fun getViewModelFactory() = InjectorUtils.provideNotificationsViewModelFactory()
     override fun getViewModelClass() = ViewModelNotifications::class.java
+    override fun isTopLevelFragment() = true
 
     override fun configureBinding() {
         super.configureBinding()
@@ -50,9 +52,15 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        switch_notifications_enable.setOnCheckedChangeListener(viewModel.checkedChangeListenerEnableNotifications)
-        switch_notifications_deletable.setOnCheckedChangeListener(viewModel.checkedChangeListenerDeletable)
-        switch_notifications_show_only_one.setOnCheckedChangeListener(viewModel.checkedChangeListenerShowOnlyOneNotification)
+        binding.switchNotificationsEnable.setOnCheckedChangeListener(viewModel.checkedChangeListenerEnableNotifications)
+        binding.switchNotificationsDeletable.setOnCheckedChangeListener(viewModel.checkedChangeListenerDeletable)
+        binding.switchNotificationsShowOnlyOne.setOnCheckedChangeListener(viewModel.checkedChangeListenerShowOnlyOneNotification)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            binding.scrollViewNotifications.doOnApplyWindowInsets { v, insets, padding ->
+                v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
+            }
+        }
     }
 
     override fun onNavigationEvent(eventId: Int) {

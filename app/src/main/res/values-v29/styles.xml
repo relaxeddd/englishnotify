@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Base.AppTheme">
+        <item name="android:statusBarColor">@color/black_20</item>
+        <item name="android:navigationBarColor">@color/navigation_bar_color</item>
+        <item name="android:progressBackgroundTint">@color/progress_bar_secondary</item>
+    </style>
+</resources>

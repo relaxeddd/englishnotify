@@ -8,7 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/size_6"
-    android:background="@color/white"
+    android:background="@color/card_view_color"
     android:foreground="?android:attr/selectableItemBackground"
     android:paddingStart="@dimen/size_12"
     android:paddingEnd="@dimen/size_12"
@@ -36,7 +36,7 @@
             android:id="@+id/text_word"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
+            android:textColor="@color/text_color_main"
             android:ellipsize="end"
             android:layout_weight="1"/>
 

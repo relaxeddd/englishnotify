@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group
+        android:id="@+id/group_menu_main"
+        android:checkableBehavior="single">
+
+        <item android:id="@id/fragmentDictionaryContainer"
+            android:title="@string/dictionary"
+            app:showAsAction="ifRoom"
+            android:icon="@drawable/ic_dictionary"/>
+
+        <item android:id="@id/fragmentTrainingSetting"
+            android:title="@string/training"
+            app:showAsAction="ifRoom"
+            android:icon="@drawable/ic_training"/>
+
+        <item android:id="@id/fragmentNotifications"
+            android:title="@string/notifications"
+            app:showAsAction="ifRoom"
+            android:icon="@drawable/ic_notification"/>
+
+        <item android:id="@id/fragmentSettings"
+            android:title="@string/common"
+            app:showAsAction="ifRoom"
+            android:icon="@drawable/ic_settings"/>
+
+    </group>
+
+</menu>

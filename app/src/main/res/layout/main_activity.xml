@@ -12,217 +12,228 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <relaxeddd.englishnotify.common.NavigationBarContentFrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:ignore="UnusedAttribute">
+        android:id="@+id/drawer_container">
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragment_navigation_host"
+        <androidx.drawerlayout.widget.DrawerLayout
+            android:id="@+id/drawer"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:name="androidx.navigation.fragment.NavHostFragment"
-            app:navGraph="@navigation/navigation_graph"
-            app:defaultNavHost="true"
-            app:layout_constraintBottom_toTopOf="@+id/barrier3"
-            app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            android:layout_height="match_parent"
+            tools:context=".ui.main.MainActivity"
+            tools:openDrawer="start">
 
-        <RelativeLayout
-            android:id="@+id/container_main_warning_notifications"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:onClick="@{viewModel.clickListenerWarningNotifications}"
-            android:visibility="@{safeUnbox(viewModel.isShowWarningNotifications) ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toTopOf="@+id/container_main_warning_subscription"
-            android:alpha="0.7">
+            <RelativeLayout
+                android:id="@+id/container_main_activity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:ignore="UnusedAttribute">
 
-            <TextView
-                android:text="@string/notifications_not_receiving_enable"
-                android:id="@+id/text_main_warning_notifications"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/font_14"
-                android:textColor="@color/blue"
-                android:layout_alignParentStart="true"
-                android:layout_toStartOf="@+id/image_main_waring_notifications"
-                android:gravity="center"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/size_16"
-                android:layout_marginEnd="@dimen/size_8"
-                android:layout_marginVertical="@dimen/size_8"/>
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/fragment_navigation_host"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:name="androidx.navigation.fragment.NavHostFragment"
+                    app:navGraph="@navigation/navigation_graph"
+                    app:defaultNavHost="true"/>
 
-            <ImageView
-                android:id="@+id/image_main_waring_notifications"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_error"
-                android:layout_centerVertical="true"
-                android:layout_alignParentEnd="true"
-                android:scaleType="centerInside"
-                android:contentDescription="@string/ic_main_warning_notifications"
-                app:layout_constraintStart_toEndOf="@+id/text_main_warning_notifications"
-                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
-                app:layout_constraintBottom_toBottomOf="@+id/text_main_warning_notifications"
-                app:layout_constraintTop_toTopOf="@+id/text_main_warning_notifications"/>
+                <View
+                    android:id="@+id/status_bar_scrim"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:background="@color/status_bar_scrim" />
 
-        </RelativeLayout>
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/button_main_fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_above="@+id/container_main_warnings"
+                    android:src="@drawable/ic_plus"
+                    app:tint="@color/white"
+                    app:borderWidth="0dp"
+                    android:visibility="gone"
+                    android:layout_marginBottom="@dimen/size_18"
+                    android:layout_marginEnd="@dimen/size_24"
+                    tools:visibility="visible"/>
 
-        <RelativeLayout
-            android:id="@+id/container_main_warning_subscription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:onClick="@{viewModel.clickListenerWarningSubscription}"
-            android:visibility="@{safeUnbox(viewModel.isShowWarningSubscription) ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toTopOf="@+id/container_main_sign_in"
-            android:alpha="0.7">
+                <LinearLayout
+                    android:id="@+id/container_main_warnings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_alignParentBottom="true">
 
-            <TextView
-                android:id="@+id/text_main_warning_subscription"
-                android:text="@string/subscription_time_error"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/font_14"
-                android:textColor="@color/blue"
-                android:gravity="center"
-                android:layout_centerVertical="true"
-                android:layout_alignParentStart="true"
-                android:layout_toStartOf="@+id/image_main_waring_subscription"
-                android:layout_marginStart="@dimen/size_16"
-                android:layout_marginEnd="@dimen/size_8"
-                android:layout_marginBottom="@dimen/size_16"
-                android:layout_marginTop="@dimen/size_16"/>
+                    <RelativeLayout
+                        android:id="@+id/container_main_warning_notifications"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{viewModel.clickListenerWarningNotifications}"
+                        android:visibility="@{safeUnbox(viewModel.isShowWarningNotifications) ? View.VISIBLE : View.GONE}"
+                        android:alpha="0.7">
 
-            <ImageView
-                android:id="@+id/image_main_waring_subscription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" app:srcCompat="@drawable/ic_error"
-                android:scaleType="centerInside"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:contentDescription="@string/ic_main_warning_subscription"
-                android:layout_marginEnd="16dp" />
+                        <TextView
+                            android:text="@string/notifications_not_receiving_enable"
+                            android:id="@+id/text_main_warning_notifications"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/font_14"
+                            android:textColor="@color/blue"
+                            android:layout_alignParentStart="true"
+                            android:layout_toStartOf="@+id/image_main_waring_notifications"
+                            android:gravity="center"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="@dimen/size_16"
+                            android:layout_marginEnd="@dimen/size_8"
+                            android:layout_marginVertical="@dimen/size_8"/>
 
-        </RelativeLayout>
+                        <ImageView
+                            android:id="@+id/image_main_waring_notifications"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/ic_error"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentEnd="true"
+                            android:scaleType="centerInside"
+                            android:contentDescription="@string/ic_main_warning_notifications"
+                            app:layout_constraintStart_toEndOf="@+id/text_main_warning_notifications"
+                            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/text_main_warning_notifications"
+                            app:layout_constraintTop_toTopOf="@+id/text_main_warning_notifications"/>
 
-        <LinearLayout
-            android:id="@+id/container_main_sign_in"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="@{safeUnbox(viewModel.isShowGoogleAuth) ? View.VISIBLE : View.GONE}"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/barrier3"
-            android:gravity="center_horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_margin="@dimen/size_4">
+                    </RelativeLayout>
 
-            <com.google.android.gms.common.SignInButton
-                android:id="@+id/button_sign_in_main_google"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:buttonSize="wide"
-                android:onClick="@{viewModel.clickListenerGoogleAuth}"
-                android:layout_marginStart="@dimen/size_4"
-                android:layout_marginEnd="@dimen/size_4"
-                android:layout_marginTop="@dimen/size_4"
-                android:layout_marginBottom="@dimen/size_4"/>
+                    <RelativeLayout
+                        android:id="@+id/container_main_warning_subscription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{viewModel.clickListenerWarningSubscription}"
+                        android:visibility="@{safeUnbox(viewModel.isShowWarningSubscription) ? View.VISIBLE : View.GONE}"
+                        android:alpha="0.7">
 
-            <TextView
-                android:id="@+id/text_main_privacy_policy"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:gravity="center"
-                android:background="@color/white"
-                android:text="@string/privacy_policy_text"
-                android:textSize="@dimen/font_12"/>
+                        <TextView
+                            android:id="@+id/text_main_warning_subscription"
+                            android:text="@string/subscription_time_error"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/font_14"
+                            android:textColor="@color/blue"
+                            android:gravity="center"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_toStartOf="@+id/image_main_waring_subscription"
+                            android:layout_marginStart="@dimen/size_16"
+                            android:layout_marginEnd="@dimen/size_8"
+                            android:layout_marginBottom="@dimen/size_16"
+                            android:layout_marginTop="@dimen/size_16"/>
 
-        </LinearLayout>
+                        <ImageView
+                            android:id="@+id/image_main_waring_subscription"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" app:srcCompat="@drawable/ic_error"
+                            android:scaleType="centerInside"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:contentDescription="@string/ic_main_warning_subscription"
+                            android:layout_marginEnd="16dp" />
 
-        <ProgressBar
-            android:id="@+id/progress_bar_main_linear"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/size_2"
-            android:indeterminate="true"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:visibility="@{safeUnbox(viewModel.isShowHorizontalProgress) ? View.VISIBLE : View.GONE}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/barrier3"
-            app:layout_constraintBottom_toTopOf="@+id/barrier3"/>
+                    </RelativeLayout>
 
-        <!--<com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/navigation_view_main_secondary"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/size_34"
-            app:labelVisibilityMode="unlabeled"
-            android:visibility="@{safeUnbox(viewModel.isVisibleSecondaryBottomNavigationView) ? View.VISIBLE : View.GONE}"
-            app:itemIconTint="@drawable/selector_bottom_navigation"
-            app:itemTextColor="@drawable/selector_bottom_navigation"
-            app:menu="@menu/menu_main_navigation_secondary"
-            app:layout_constraintBottom_toTopOf="@+id/navigation_view_main" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:backgroundTint="@color/colorPrimary"
-            android:backgroundTintMode="src_over"
-            android:background="@color/colorPrimary"
-            app:itemBackground="@color/colorPrimary"/>-->
+                    <LinearLayout
+                        android:id="@+id/container_main_sign_in"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="@{safeUnbox(viewModel.isShowGoogleAuth) ? View.VISIBLE : View.GONE}"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal"
+                        android:layout_margin="@dimen/size_4">
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/navigation_view_main"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:itemIconTint="@drawable/selector_bottom_navigation"
-            app:itemTextColor="@drawable/selector_bottom_navigation"
-            app:menu="@menu/menu_main_navigation"
-            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:backgroundTint="@color/colorPrimary"
-            android:backgroundTintMode="src_over"
-            android:background="@color/colorPrimary"
-            app:itemBackground="@color/colorPrimary"/>
+                        <com.google.android.gms.common.SignInButton
+                            android:id="@+id/button_sign_in_main_google"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:buttonSize="wide"
+                            android:onClick="@{viewModel.clickListenerGoogleAuth}"
+                            android:layout_marginStart="@dimen/size_4"
+                            android:layout_marginEnd="@dimen/size_4"
+                            android:layout_marginTop="@dimen/size_4"
+                            android:layout_marginBottom="@dimen/size_4"/>
 
-        <!--<View
-            android:id="@+id/view_main_bottom_separator"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/size_1"
-            android:background="@color/colorPrimaryDark"
-            android:elevation="@dimen/size_8"
-            android:visibility="@{safeUnbox(viewModel.isVisibleSecondaryBottomNavigationView) ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toBottomOf="@+id/navigation_view_main_secondary"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>-->
+                        <TextView
+                            android:id="@+id/text_main_privacy_policy"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/text_color_main"
+                            android:gravity="center"
+                            android:background="@color/white"
+                            android:text="@string/privacy_policy_text"
+                            android:textSize="@dimen/font_12"/>
 
-        <RelativeLayout
-            android:id="@+id/container_main_progress_bar"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:elevation="@dimen/size_16"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:visibility="@{safeUnbox(viewModel.isShowLoading) ? View.VISIBLE : View.GONE}"
-            android:clickable="true"
-            android:focusable="true">
+                    </LinearLayout>
 
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"/>
+                    <com.google.android.material.bottomnavigation.BottomNavigationView
+                        android:id="@+id/navigation_view_main"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:itemIconTint="@drawable/selector_bottom_navigation"
+                        app:itemTextColor="@drawable/selector_bottom_navigation"
+                        app:menu="@menu/menu_main_navigation"
+                        android:backgroundTint="@color/bottom_navigation_color"
+                        android:backgroundTintMode="src_over"
+                        android:background="@color/bottom_navigation_color"
+                        app:itemBackground="@color/bottom_navigation_color"
+                        android:visibility="@{safeUnbox(viewModel.isOldNavigation()) ? View.VISIBLE : View.GONE}"/>
 
-        </RelativeLayout>
+                </LinearLayout>
 
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/barrier3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="top"
-            app:constraint_referenced_ids="navigation_view_main"/>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_6"
+                    android:layout_marginTop="?actionBarSize"
+                    android:layout_below="@+id/status_bar_scrim"
+                    android:visibility="@{safeUnbox(viewModel.isShowHorizontalProgress) ? View.VISIBLE : View.GONE}">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <ProgressBar
+                        android:id="@+id/progress_bar_main_linear"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_6_"
+                        android:indeterminate="true"
+                        style="?android:attr/progressBarStyleHorizontal"/>
+
+                </FrameLayout>
+
+                <RelativeLayout
+                    android:id="@+id/container_main_progress_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:elevation="@dimen/size_16"
+                    android:visibility="@{safeUnbox(viewModel.isShowLoading) ? View.VISIBLE : View.GONE}"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <ProgressBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <com.google.android.material.navigation.NavigationView
+                android:id="@+id/navigation"
+                android:layout_width="@dimen/nav_drawer_width"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                app:insetForeground="@color/transparent"
+                app:menu="@menu/navigation"
+                tools:visibility="gone"
+                android:visibility="@{safeUnbox(viewModel.isOldNavigation()) ? View.GONE : View.VISIBLE}"/>
+
+        </androidx.drawerlayout.widget.DrawerLayout>
+
+    </relaxeddd.englishnotify.common.NavigationBarContentFrameLayout>
 
 </layout>

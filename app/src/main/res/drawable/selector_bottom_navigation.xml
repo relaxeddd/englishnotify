@@ -3,9 +3,9 @@
 
     <item
         android:state_checked="true"
-        android:color="@color/white" />
+        android:color="@color/bottom_navigation_item_checked" />
     <item
         android:state_checked="false"
-        android:color="@color/gray_light" />
+        android:color="@color/bottom_navigation_item_unchecked" />
 
 </selector>

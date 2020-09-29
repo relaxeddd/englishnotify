@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="Theme">
+        <attr name="ioschedNavigationBarDividerColor" format="color" />
+        <attr name="colorControlLight" format="color" />
+        <attr name="sessionListKeyline" format="dimension" />
+        <attr name="eventFilterViewStyle" format="reference" />
+        <attr name="eventCardHeaderBackground" format="reference|color" />
+    </declare-styleable>
+</resources>

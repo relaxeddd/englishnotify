@@ -14,9 +14,19 @@ object SharedHelper {
         return sPref.getBoolean(PRIVACY_POLICY_CONFIRMED, false)
     }
 
-    fun setPrivacyPolicyConfirmed(isConfirmed : Boolean, context: Context = App.context) {
+    fun setPrivacyPolicyConfirmed(isConfirmed: Boolean, context: Context = App.context) {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         sPref.edit().putBoolean(PRIVACY_POLICY_CONFIRMED, isConfirmed).apply()
+    }
+
+    fun isOldNavigationDesign(context: Context = App.context) : Boolean {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getBoolean(IS_OLD_NAVIGATION_DESIGN, false)
+    }
+
+    fun setOldNavigationDesign(value: Boolean, context: Context = App.context) {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putBoolean(IS_OLD_NAVIGATION_DESIGN, value).apply()
     }
 
     fun isListeningTraining(context: Context = App.context) : Boolean {
