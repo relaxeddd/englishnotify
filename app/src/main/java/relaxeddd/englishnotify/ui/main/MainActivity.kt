@@ -3,6 +3,7 @@ package relaxeddd.englishnotify.ui.main
 import android.app.Activity
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
@@ -356,9 +357,12 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
 
     override fun setupThemeColors() {
         super.setupThemeColors()
-        binding.navigationViewMain.setBackgroundColor(ContextCompat.getColor(this, R.color.bottom_navigation_color))
-        binding.navigationViewMain.itemBackgroundResource = R.color.bottom_navigation_color
-        binding.buttonMainFab.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.floating_button_color))
+        val isNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+        binding.navigationViewMain.setBackgroundColor(ContextCompat.getColor(this,
+            if (isNightMode) R.color.bottom_navigation_color else getPrimaryColorResId()))
+        binding.navigationViewMain.itemBackgroundResource = if (isNightMode) R.color.bottom_navigation_color else getPrimaryColorResId()
+        binding.buttonMainFab.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this,
+            if (isNightMode) R.color.floating_button_color else getPrimaryColorResId()))
     }
 
     fun setLoadingVisible(isVisible: Boolean) {
