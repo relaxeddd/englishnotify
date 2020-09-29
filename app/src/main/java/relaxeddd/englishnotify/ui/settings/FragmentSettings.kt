@@ -28,8 +28,8 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
     }
 
     private val listenerTheme: ListenerResult<Int> = object: ListenerResult<Int> {
-        override fun onResult(themeIx: Int) {
-            viewModel.onThemeUpdate(themeIx)
+        override fun onResult(result: Int) {
+            viewModel.onThemeUpdate(result)
             activity?.recreate()
         }
     }
