@@ -20,7 +20,7 @@ class DialogNotificationsNotShow : DialogFragment() {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
             val text = SpannableString(getString(R.string.text_notifications_not_show))
-            Linkify.addLinks(text, Linkify.ALL);
+            Linkify.addLinks(text, Linkify.ALL)
 
             builder.setMessage(text)
                 .setPositiveButton(R.string.settings) { _, _ -> confirmListener?.onResult(true) }

@@ -10,7 +10,6 @@ import androidx.core.view.forEach
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import relaxeddd.englishnotify.R
@@ -179,7 +178,7 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
 
     @CallSuper
     protected open fun configureBinding() {
-        viewModel.navigation.observe(viewLifecycleOwner, Observer {
+        viewModel.navigation.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let {eventId ->
                 onNavigationEvent(eventId)
             }

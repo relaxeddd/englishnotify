@@ -23,7 +23,7 @@ class AdapterCategories(val viewModel: ISelectCategory) : ListAdapter<CategoryIt
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position), viewModel.getSelectedCategory(), CompoundButton.OnCheckedChangeListener { radioButton, isChecked -> run {
+        holder.bind(getItem(position), viewModel.getSelectedCategory(), { radioButton, isChecked -> run {
             if (!isChecked) {
                 return@run
             }

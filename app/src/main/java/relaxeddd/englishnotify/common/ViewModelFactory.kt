@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModelProvider
 import relaxeddd.englishnotify.model.repository.RepositoryUser
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 import relaxeddd.englishnotify.ui.categories.CategorySection
-import relaxeddd.englishnotify.ui.categories.ViewModelCategories
 import relaxeddd.englishnotify.ui.categories.section.ViewModelCategorySection
 import relaxeddd.englishnotify.ui.dictionary_all.ViewModelDictionaryAll
 import relaxeddd.englishnotify.ui.dictionary_container.ViewModelDictionaryContainer
@@ -129,7 +128,7 @@ class TimeViewModelFactory(private val repositoryUser: RepositoryUser) : ViewMod
     }
 }
 
-class DictionaryContainerViewModelFactory() : ViewModelProvider.NewInstanceFactory() {
+class DictionaryContainerViewModelFactory : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -137,10 +136,10 @@ class DictionaryContainerViewModelFactory() : ViewModelProvider.NewInstanceFacto
     }
 }
 
-class CategoriesViewModelFactory() : ViewModelProvider.NewInstanceFactory() {
+/*class CategoriesViewModelFactory : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return ViewModelCategories() as T
     }
-}
+}*/

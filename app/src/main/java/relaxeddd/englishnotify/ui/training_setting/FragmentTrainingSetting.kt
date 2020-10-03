@@ -1,6 +1,5 @@
 package relaxeddd.englishnotify.ui.training_setting
 
-import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -67,10 +66,8 @@ class FragmentTrainingSetting : BaseFragment<ViewModelTrainingSetting, FragmentT
         binding.radioButtonTrainingSettingMixed.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) viewModel.trainingLanguage = TRAINING_MIXED
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            binding.recyclerViewTrainingSettingCategories.doOnApplyWindowInsets { v, insets, padding ->
-                v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
-            }
+        binding.recyclerViewTrainingSettingCategories.doOnApplyWindowInsets { v, insets, padding ->
+            v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
         }
     }
 

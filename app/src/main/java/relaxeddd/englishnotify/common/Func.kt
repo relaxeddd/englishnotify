@@ -2,6 +2,7 @@
 package relaxeddd.englishnotify.common
 
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
@@ -279,17 +280,18 @@ data class ViewPaddingState(
     val end: Int
 )
 
-@RequiresApi(Build.VERSION_CODES.KITKAT)
 fun View.doOnApplyWindowInsets(f: (View, WindowInsetsCompat, ViewPaddingState) -> Unit) {
-    val paddingState = createStateForView(this)
-    ViewCompat.setOnApplyWindowInsetsListener(this) { v, insets ->
-        f(v, insets, paddingState)
-        insets
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
+        val paddingState = createStateForView(this)
+        ViewCompat.setOnApplyWindowInsetsListener(this) { v, insets ->
+            f(v, insets, paddingState)
+            insets
+        }
+        requestApplyInsetsWhenAttached()
     }
-    requestApplyInsetsWhenAttached()
 }
 
-@RequiresApi(Build.VERSION_CODES.KITKAT)
+@RequiresApi(Build.VERSION_CODES.KITKAT_WATCH)
 fun View.requestApplyInsetsWhenAttached() {
     if (isAttachedToWindow) {
         requestApplyInsets()
@@ -307,16 +309,19 @@ fun View.requestApplyInsetsWhenAttached() {
 private fun createStateForView(view: View) = ViewPaddingState(view.paddingLeft,
     view.paddingTop, view.paddingRight, view.paddingBottom, view.paddingStart, view.paddingEnd)
 
+@SuppressLint("ResourceType")
 fun navigationItemBackground(context: Context): Drawable? {
     var background = AppCompatResources.getDrawable(context, R.drawable.navigation_item_background)
 
     if (background != null) {
-        val tint = AppCompatResources.getColorStateList(context, R.drawable.navigation_item_background_tint)
+        try {
+            val tint = AppCompatResources.getColorStateList(context, R.drawable.navigation_item_background_tint)
 
-        background = DrawableCompat.wrap(background.mutate())
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            background.setTintList(tint)
-        }
+            background = DrawableCompat.wrap(background.mutate())
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                background.setTintList(tint)
+            }
+        } catch (e: Exception) {}
     }
 
     return background

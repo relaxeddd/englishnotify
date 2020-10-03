@@ -85,8 +85,8 @@ data class Result(val code: Int = RESULT_UNDEFINED, val message: String = "") {
 @Keep
 data class UpdateUserResult(val result: Result?, val user: User?)
 
-@Keep
-data class CreateWordResult(val result: Result?, val word: Word? = null)
+/*@Keep
+data class CreateWordResult(val result: Result?, val word: Word? = null)*/
 
 @Keep
 data class PurchaseResult(val result: Result?, val userId: String = "", val tokenId: String = "", val itemType: String = "",

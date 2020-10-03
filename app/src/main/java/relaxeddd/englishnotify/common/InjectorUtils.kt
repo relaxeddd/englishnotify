@@ -22,7 +22,7 @@ object InjectorUtils {
     fun provideStatisticViewModelFactory(context: Context) = StatisticViewModelFactory(RepositoryFactory.getWordRepository(context))
     fun provideTimeViewModelFactory() = TimeViewModelFactory(RepositoryFactory.getUserRepository())
     fun provideDictionaryContainerViewModelFactory() = DictionaryContainerViewModelFactory()
-    fun provideCategoriesViewModelFactory() = CategoriesViewModelFactory()
+    /*fun provideCategoriesViewModelFactory() = CategoriesViewModelFactory()*/
 }
 
 object RepositoryFactory {

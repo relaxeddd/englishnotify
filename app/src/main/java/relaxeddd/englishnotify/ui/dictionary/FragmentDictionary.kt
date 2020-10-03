@@ -2,7 +2,6 @@ package relaxeddd.englishnotify.ui.dictionary
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.MenuItem
@@ -66,10 +65,8 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
             animateDropdown(binding.containerDictionaryFilter, false, animBlock)
             false
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            binding.recyclerViewDictionary.doOnApplyWindowInsets { v, insets, padding ->
-                v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
-            }
+        binding.recyclerViewDictionary.doOnApplyWindowInsets { v, insets, padding ->
+            v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
         }
         viewModel.applySearch(textSearch)
         viewModel.wordsFiltered.observe(viewLifecycleOwner, { words ->

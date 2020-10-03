@@ -1,6 +1,5 @@
 package relaxeddd.englishnotify.ui.notifications
 
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.updatePaddingRelative
@@ -56,10 +55,8 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
         binding.switchNotificationsDeletable.setOnCheckedChangeListener(viewModel.checkedChangeListenerDeletable)
         binding.switchNotificationsShowOnlyOne.setOnCheckedChangeListener(viewModel.checkedChangeListenerShowOnlyOneNotification)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            binding.scrollViewNotifications.doOnApplyWindowInsets { v, insets, padding ->
-                v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
-            }
+        binding.scrollViewNotifications.doOnApplyWindowInsets { v, insets, padding ->
+            v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
         }
     }
 
