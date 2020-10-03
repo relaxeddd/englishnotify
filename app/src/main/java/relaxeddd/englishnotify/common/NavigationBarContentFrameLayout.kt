@@ -37,8 +37,9 @@ class NavigationBarContentFrameLayout @JvmOverloads constructor(context: Context
     }
 
     init {
-        navigationBarDividerColor = ContextCompat.getColor(context, R.color.navigation_bar_divider_color)
-        navigationBarDividerSize = resources.getDimension(R.dimen.size_1).roundToInt()
+        val dividerSizeResId = if (SharedHelper.isOldNavigationDesign()) R.dimen.size_0 else R.dimen.size_1
+        navigationBarDividerColor = ContextCompat.getColor(context, R.color.transparent)
+        navigationBarDividerSize = resources.getDimension(dividerSizeResId).roundToInt()
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {

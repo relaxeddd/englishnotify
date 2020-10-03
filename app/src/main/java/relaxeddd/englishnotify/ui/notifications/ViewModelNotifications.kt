@@ -109,7 +109,7 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
         if (userValue == null) {
             showToast(R.string.please_authorize)
         } else if (!userValue.receiveNotifications) {
-            showToast(R.string.enable_notifications)
+            showToast(R.string.enable_notifications_warning)
         } else if (userValue.testCount <= 0) {
             showToast(R.string.no_test_notifications)
         } else {

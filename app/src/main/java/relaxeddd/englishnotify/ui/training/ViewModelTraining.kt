@@ -90,6 +90,7 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
             return@Observer
         }
 
+        val isListeningTraining = SharedHelper.isListeningTraining()
         val currentResult = getResultLiveDataByIx(currentIx).value ?: 0
         val word = trainingWords[currentIx]
         isCurrentEngTraining = isEngTraining(word, currentResult)
@@ -114,11 +115,15 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
         isVisibleTranslation.value = currentResult != STATE_ANSWER
         isVisibleInputAnswer.value = currentResult == STATE_ANSWER
         isVisibleAnswer.value = currentResult != STATE_ANSWER
-        isVisibleTranscription.value = (isCurrentEngTraining && word.type != EXERCISE) || currentResult != STATE_ANSWER
+        isVisibleTranscription.value = currentResult != STATE_ANSWER
         isVisibleResultText.value = currentResult != STATE_ANSWER
         isVisibleWordProgress.value = currentResult != STATE_ANSWER
-        isVisibleButtonListen.value = SharedHelper.isListeningTraining() && currentResult == STATE_ANSWER
-        isVisibleTextWord.value = !SharedHelper.isListeningTraining() || currentResult != STATE_ANSWER
+        isVisibleButtonListen.value = isListeningTraining && currentResult == STATE_ANSWER
+        isVisibleTextWord.value = !isListeningTraining || currentResult != STATE_ANSWER
+
+        if (isListeningTraining && currentResult == STATE_ANSWER) {
+            navigateEvent.value = Event(NAVIGATION_PLAY_WORD_DEPENDS_ON_TRANSLATION)
+        }
 
         updateButtonOk()
         updateButtonOneMore()

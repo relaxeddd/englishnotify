@@ -40,6 +40,7 @@
     <string name="duration_not_show">with duration</string>
     <string name="edit">Edit</string>
     <string name="enable_notifications">Enable notifications</string>
+    <string name="enable_notifications_warning">Please, enable notifications</string>
     <string name="enable_notification_translation_input">Enable notification translation input</string>
     <string name="end">End</string>
     <string name="english_at_russian">Word-translation</string>
@@ -242,9 +243,8 @@
 
     <string name="patch_notes">
         - New navigation design (you can switch to old version in Common tab)
-        \n- Night theme support
-        \n- New design of dictionary tabs
-        \n- Add new word button position fix
+        \n- Automatically play word at listening training
+        \n- Screens bottom margin fix
         \n- Light blue theme
         \n- Please, take attention on \"If you do not receive notifications\" in settings tab
         \n- It might be better to add words in \"Own category\"

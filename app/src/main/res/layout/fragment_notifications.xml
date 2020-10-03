@@ -24,7 +24,7 @@
         android:id="@+id/scroll_view_notifications"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="@dimen/size_72"
+        android:paddingBottom="@dimen/size_42"
         android:clipToPadding="false"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:focusable="true">
