@@ -11,7 +11,6 @@ import relaxeddd.englishnotify.model.db.AppDatabase
 import relaxeddd.englishnotify.model.db.WordDao
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 import kotlin.collections.HashSet
 
 class RepositoryWord private constructor(private val wordDao: WordDao) {
@@ -82,7 +81,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         this.tagsInfo = tagsInfo
     }
 
-    fun calculateTagsInfo() : List<TagInfo> {
+    /*fun calculateTagsInfo() : List<TagInfo> {
         val tagsInfo = ArrayList(this.tagsInfo)
         val tagsInfoMap: HashMap<String, TagInfo> = HashMap()
         val words = words.value ?: ArrayList()
@@ -109,7 +108,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         }
 
         return Collections.singletonList(tagInfoOwn)
-    }
+    }*/
 
     fun getOwnWordsTagInfo() : TagInfo {
         val tagInfoOwn = TagInfo(OWN)

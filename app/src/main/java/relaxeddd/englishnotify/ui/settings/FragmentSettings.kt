@@ -48,10 +48,8 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            binding.scrollViewSettings.doOnApplyWindowInsets { v, insets, padding ->
-                v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
-            }
+        binding.scrollViewSettings.doOnApplyWindowInsets { v, insets, padding ->
+            v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
         }
         binding.switchSettingsDesign.setOnCheckedChangeListener(viewModel.checkedChangeListenerNavigationDesign)
     }

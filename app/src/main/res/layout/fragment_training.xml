@@ -335,7 +335,8 @@
                 android:textColor="@color/green_success"
                 android:layout_marginEnd="@dimen/size_4"
                 android:visibility="invisible"
-                tools:visibility="visible"/>
+                tools:visibility="visible"
+                tools:ignore="HardcodedText" />
 
         </LinearLayout>
 
@@ -407,7 +408,8 @@
                     android:background="?android:attr/selectableItemBackground"
                     android:onClick="@{viewModel.clickListenerListen}"
                     android:visibility="@{safeUnbox(viewModel.isVisibleButtonListen) == true ? View.VISIBLE : View.GONE}"
-                    android:src="@drawable/ic_volume"/>
+                    android:src="@drawable/ic_volume"
+                    android:contentDescription="@string/listening_training" />
 
                 <TextView
                     android:id="@+id/text_training_word"

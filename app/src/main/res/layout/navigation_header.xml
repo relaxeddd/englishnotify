@@ -14,7 +14,8 @@
             android:layout_height="@dimen/size_44"
             android:layout_marginVertical="@dimen/size_12"
             android:layout_marginStart="@dimen/size_24"
-            app:srcCompat="@mipmap/app_icon"/>
+            app:srcCompat="@mipmap/app_icon"
+            android:contentDescription="@string/app_name"/>
 
         <ImageView
             android:id="@+id/image_navigation_header_like"
@@ -23,7 +24,8 @@
             app:srcCompat="@drawable/ic_like"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="@dimen/size_32"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/you_like_app"/>
 
         <View
             android:id="@+id/divider"

@@ -1,14 +1,12 @@
 package relaxeddd.englishnotify.common
 
 import android.os.Bundle
-import android.view.MenuItem
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import relaxeddd.englishnotify.R
 
@@ -52,7 +50,7 @@ abstract class ActivityBase<VM : ViewModelBase, B : ViewDataBinding> : AppCompat
 
     @CallSuper
     protected open fun configureBinding() {
-        viewModel.navigation.observe(this, Observer {
+        viewModel.navigation.observe(this, {
             it.getContentIfNotHandled()?.let {eventId ->
                 onNavigationEvent(eventId)
             }

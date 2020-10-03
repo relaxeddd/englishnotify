@@ -1,8 +1,6 @@
 package relaxeddd.englishnotify.ui.categories.section
 
-import android.os.Build
 import androidx.core.view.updatePaddingRelative
-import androidx.lifecycle.Observer
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.BaseFragment
 import relaxeddd.englishnotify.common.InjectorUtils
@@ -24,19 +22,17 @@ class FragmentCategorySection(val type: CategorySection) : BaseFragment<ViewMode
         adapter = AdapterCategories(viewModel)
         binding.recyclerViewCategories.adapter = adapter
         binding.recyclerViewCategories.setHasFixedSize(true)
-        viewModel.title.observe(viewLifecycleOwner, Observer {
+        viewModel.title.observe(viewLifecycleOwner, {
             updateToolbarTitle(it)
         })
-        viewModel.categories.observe(viewLifecycleOwner, Observer { items ->
+        viewModel.categories.observe(viewLifecycleOwner, { items ->
             if (items != null && items.isNotEmpty()) {
                 adapter.submitList(items)
             }
         })
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            binding.recyclerViewCategories.doOnApplyWindowInsets { v, insets, padding ->
-                v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
-            }
+        binding.recyclerViewCategories.doOnApplyWindowInsets { v, insets, padding ->
+            v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
         }
     }
 

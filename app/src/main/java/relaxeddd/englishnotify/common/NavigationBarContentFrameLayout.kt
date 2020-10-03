@@ -2,7 +2,6 @@ package relaxeddd.englishnotify.common
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
 import android.view.WindowInsets

@@ -135,10 +135,8 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
             binding.containerMainActivity.setOnApplyWindowInsetsListener(NoopWindowInsetsListener)
             binding.statusBarScrim.setOnApplyWindowInsetsListener(HeightTopWindowInsetsListener)
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && !isOldDesign) {
-            binding.containerMainWarnings.doOnApplyWindowInsets { v, insets, padding ->
-                (v.layoutParams as? ViewGroup.MarginLayoutParams)?.bottomMargin = padding.bottom + insets.systemWindowInsetBottom
-            }
+        binding.containerMainWarnings.doOnApplyWindowInsets { v, insets, padding ->
+            (v.layoutParams as? ViewGroup.MarginLayoutParams)?.bottomMargin = padding.bottom + insets.systemWindowInsetBottom
         }
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_navigation_host) as NavHostFragment
@@ -181,11 +179,9 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
                 val menuView = findViewById<RecyclerView>(R.id.design_navigation_view)
 
                 navigationHeaderBinding?.apply {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        doOnApplyWindowInsets { v, insets, padding ->
-                            v.updatePadding(top = padding.top + insets.systemWindowInsetTop)
-                            menuView?.updatePadding(bottom = insets.systemWindowInsetBottom)
-                        }
+                    doOnApplyWindowInsets { v, insets, padding ->
+                        v.updatePadding(top = padding.top + insets.systemWindowInsetTop)
+                        menuView?.updatePadding(bottom = insets.systemWindowInsetBottom)
                     }
                     addHeaderView(root)
                     imageNavigationHeaderLike.setOnClickListener {
@@ -387,7 +383,7 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
             isLastPlayedEng = isEngPlay
             isTtsInitFailed = false
 
-            tts = TextToSpeech(this, TextToSpeech.OnInitListener {
+            tts = TextToSpeech(this) {
                 if (it == TextToSpeech.SUCCESS) {
                     tts?.language = if (isLastPlayedEng) Locale.US else Locale.getDefault()
                     isTtsInit = true
@@ -398,7 +394,7 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
                     isTtsInitFailed = true
                     showToast(getString(R.string.error_word_voice, it.toString()))
                 }
-            })
+            }
         } else {
             speak(textToSpeak)
             lastVoiceText = textToSpeak
