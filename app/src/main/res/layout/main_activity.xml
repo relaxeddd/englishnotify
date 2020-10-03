@@ -24,7 +24,7 @@
             tools:context=".ui.main.MainActivity"
             tools:openDrawer="start">
 
-            <RelativeLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/container_main_activity"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -33,28 +33,31 @@
                 <androidx.fragment.app.FragmentContainerView
                     android:id="@+id/fragment_navigation_host"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="0dp"
                     android:name="androidx.navigation.fragment.NavHostFragment"
                     app:navGraph="@navigation/navigation_graph"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/navigation_view_main"
                     app:defaultNavHost="true"/>
 
                 <View
                     android:id="@+id/status_bar_scrim"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:background="@color/status_bar_scrim" />
+                    android:layout_height="-2dp"
+                    android:background="@color/status_bar_scrim"
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/button_main_fab"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_above="@+id/container_main_warnings"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/container_main_warnings"
                     android:src="@drawable/ic_plus"
                     app:tint="@color/white"
                     app:borderWidth="0dp"
                     android:visibility="gone"
-                    android:layout_marginBottom="@dimen/size_18"
+                    android:layout_marginBottom="@dimen/size_28"
                     android:layout_marginEnd="@dimen/size_24"
                     tools:visibility="visible"/>
 
@@ -63,13 +66,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_alignParentBottom="true">
+                    app:layout_constraintBottom_toTopOf="@+id/navigation_view_main"
+                    android:paddingTop="@dimen/size_16">
 
                     <RelativeLayout
                         android:id="@+id/container_main_warning_notifications"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:onClick="@{viewModel.clickListenerWarningNotifications}"
+                        android:clickable="false"
+                        android:focusable="false"
                         android:visibility="@{safeUnbox(viewModel.isShowWarningNotifications) ? View.VISIBLE : View.GONE}"
                         android:alpha="0.7">
 
@@ -86,7 +91,7 @@
                             android:layout_centerVertical="true"
                             android:layout_marginStart="@dimen/size_16"
                             android:layout_marginEnd="@dimen/size_8"
-                            android:layout_marginVertical="@dimen/size_8"/>
+                            android:layout_marginBottom="@dimen/size_8"/>
 
                         <ImageView
                             android:id="@+id/image_main_waring_notifications"
@@ -125,8 +130,7 @@
                             android:layout_toStartOf="@+id/image_main_waring_subscription"
                             android:layout_marginStart="@dimen/size_16"
                             android:layout_marginEnd="@dimen/size_8"
-                            android:layout_marginBottom="@dimen/size_16"
-                            android:layout_marginTop="@dimen/size_16"/>
+                            android:layout_marginBottom="@dimen/size_16"/>
 
                         <ImageView
                             android:id="@+id/image_main_waring_subscription"
@@ -172,26 +176,27 @@
 
                     </LinearLayout>
 
-                    <com.google.android.material.bottomnavigation.BottomNavigationView
-                        android:id="@+id/navigation_view_main"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:itemIconTint="@drawable/selector_bottom_navigation"
-                        app:itemTextColor="@drawable/selector_bottom_navigation"
-                        app:menu="@menu/menu_main_navigation"
-                        android:backgroundTint="@color/bottom_navigation_color"
-                        android:backgroundTintMode="src_over"
-                        android:background="@color/bottom_navigation_color"
-                        app:itemBackground="@color/bottom_navigation_color"
-                        android:visibility="@{safeUnbox(viewModel.isOldNavigation()) ? View.VISIBLE : View.GONE}"/>
-
                 </LinearLayout>
+
+                <com.google.android.material.bottomnavigation.BottomNavigationView
+                    android:id="@+id/navigation_view_main"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:itemIconTint="@drawable/selector_bottom_navigation"
+                    app:itemTextColor="@drawable/selector_bottom_navigation"
+                    app:menu="@menu/menu_main_navigation"
+                    android:backgroundTint="@color/bottom_navigation_color"
+                    android:backgroundTintMode="src_over"
+                    android:background="@color/bottom_navigation_color"
+                    app:itemBackground="@color/bottom_navigation_color"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:visibility="@{safeUnbox(viewModel.isOldNavigation()) ? View.VISIBLE : View.GONE}"/>
 
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/size_6"
                     android:layout_marginTop="?actionBarSize"
-                    android:layout_below="@+id/status_bar_scrim"
+                    app:layout_constraintTop_toBottomOf="@+id/status_bar_scrim"
                     android:visibility="@{safeUnbox(viewModel.isShowHorizontalProgress) ? View.VISIBLE : View.GONE}">
 
                     <ProgressBar
@@ -220,7 +225,7 @@
 
                 </RelativeLayout>
 
-            </RelativeLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.navigation.NavigationView
                 android:id="@+id/navigation"

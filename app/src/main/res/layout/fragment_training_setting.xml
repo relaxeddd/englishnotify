@@ -74,7 +74,7 @@
                 android:id="@+id/recycler_view_training_setting_categories"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingBottom="@dimen/size_72"
+                android:paddingBottom="@dimen/size_42"
                 android:clipToPadding="false"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/view_item_category"/>
