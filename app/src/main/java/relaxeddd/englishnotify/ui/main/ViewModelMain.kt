@@ -95,7 +95,7 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
             isShowWarningNotifications.value = false
             isShowGoogleAuth.value = false
             isShowWarningSubscription.value = false
-            isShowHorizontalProgress.value = true
+            //isShowHorizontalProgress.value = true
             ioScope.launch {
                 val loginEmail = FirebaseAuth.getInstance().currentUser?.email ?: ""
                 val savedEmail = SharedHelper.getUserEmail()
@@ -109,7 +109,7 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
                         if (!result) {
                             userObserver.onChanged(null)
                         }
-                        isShowHorizontalProgress.value = false
+                        //isShowHorizontalProgress.value = false
                     }
                 })
             }

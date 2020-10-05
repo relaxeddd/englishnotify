@@ -22,6 +22,7 @@
     <string name="answer_correct">Correct answer</string>
     <string name="answer_incorrect">Incorrect answer</string>
     <string name="background_start">Background starting</string>
+    <string name="cancel">Cancel</string>
     <string name="cancel_check">Cancel check</string>
     <string name="category_own_not_selected">Category not selected. Firstly, add words to "Own category"</string>
     <string name="change_account_text">You login with another account. The dictionary will be cleared.</string>
@@ -78,6 +79,7 @@
     <string name="incorrect_answer">Incorrect answer</string>
     <string name="information">Information</string>
     <string name="input_your_message">Input your message</string>
+    <string name="hear_answer">Play answer if incorrect (translation-word)</string>
     <string name="later">Later</string>
     <string name="learn_language">Learn language</string>
     <string name="learned">Learned!</string>

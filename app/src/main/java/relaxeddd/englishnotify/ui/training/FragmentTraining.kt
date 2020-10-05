@@ -1,7 +1,9 @@
 package relaxeddd.englishnotify.ui.training
 
+import android.content.Context
 import android.view.View
 import android.view.animation.*
+import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.fragment_training.*
 import relaxeddd.englishnotify.R
@@ -62,6 +64,11 @@ class FragmentTraining : BaseFragment<ViewModelTraining, FragmentTrainingBinding
                 if (ac is MainActivity) {
                     ac.playWord(viewModel.getCurrentWord())
                 }
+            }
+            NAVIGATION_SHOW_KEYBOARD -> {
+                binding.editTextTrainingAnswer.requestFocus()
+                val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                inputMethodManager?.showSoftInput(binding.editTextTrainingAnswer, InputMethodManager.SHOW_IMPLICIT)
             }
             NAVIGATION_PLAY_WORD_DEPENDS_ON_TRANSLATION -> {
                 val ac = activity

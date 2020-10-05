@@ -9,7 +9,6 @@ import relaxeddd.englishnotify.common.InjectorUtils
 import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK
 import relaxeddd.englishnotify.databinding.FragmentStatisticBinding
 
-
 class FragmentStatistic : BaseFragment<ViewModelStatistic, FragmentStatisticBinding>() {
 
     private lateinit var adapter: AdapterStatistic
@@ -29,6 +28,18 @@ class FragmentStatistic : BaseFragment<ViewModelStatistic, FragmentStatisticBind
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        adapter = AdapterStatistic()
+        binding.recyclerViewStatistic.layoutManager = LinearLayoutManager(context)
+        binding.recyclerViewStatistic.adapter = adapter
+
+        viewModel.ownWords.observe(viewLifecycleOwner, { words ->
+            updateTagsInfo()
+            adapter.submitList(words)
+        })
+    }
+
+    private fun updateTagsInfo() {
         val tagInfo = viewModel.ownTagInfo
         val textOwnWordsTag = "" + tagInfo.learned + " / " + tagInfo.total
         val textOwnWordsPercentage = "" + (if (tagInfo.total != 0) (tagInfo.learned.toFloat() / tagInfo.total.toFloat() * 100).toInt() else 0) + "%"
@@ -36,10 +47,5 @@ class FragmentStatistic : BaseFragment<ViewModelStatistic, FragmentStatisticBind
         binding.textStatisticOwnWords.text = textOwnWordsTag
         binding.textStatisticOwnWordsPercentage.text = textOwnWordsPercentage
         binding.progressBarStatisticOwnWords.progress = if (tagInfo.total != 0) (tagInfo.learned.toFloat() / tagInfo.total.toFloat() * 100).toInt() else 0
-
-        adapter = AdapterStatistic()
-        binding.recyclerViewStatistic.layoutManager = LinearLayoutManager(context)
-        binding.recyclerViewStatistic.adapter = adapter
-        adapter.submitList(viewModel.ownWords)
     }
 }
