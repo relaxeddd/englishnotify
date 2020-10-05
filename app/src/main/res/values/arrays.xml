@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string-array name="array_languages">
+        <item>EN</item>
+        <item>RU</item>
+        <item>DE</item>
+        <item>ES</item>
+        <item>FR</item>
+        <item>ZH</item>
+        <item>JA</item>
+        <item>IT</item>
+    </string-array>
+
     <string-array name="array_time_repeat">
         <item>Every 1 hour</item>
         <item>Every 2 hours</item>

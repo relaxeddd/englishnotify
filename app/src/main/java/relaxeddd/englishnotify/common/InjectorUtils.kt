@@ -17,7 +17,7 @@ object InjectorUtils {
     fun provideSettingsViewModelFactory() = SettingsViewModelFactory(RepositoryFactory.getUserRepository())
     fun provideWordViewModelFactory() = WordViewModelFactory()
     fun provideCategorySectionViewModelFactory(type: CategorySection) = CategorySectionViewModelFactory(type, RepositoryFactory.getUserRepository())
-    fun provideTrainingSettingViewModelFactory() = TrainingSettingViewModelFactory()
+    fun provideTrainingSettingViewModelFactory(context: Context) = TrainingSettingViewModelFactory(RepositoryFactory.getWordRepository(context))
     fun provideTrainingViewModelFactory(context: Context) = TrainingViewModelFactory(RepositoryFactory.getWordRepository(context))
     fun provideStatisticViewModelFactory(context: Context) = StatisticViewModelFactory(RepositoryFactory.getWordRepository(context))
     fun provideTimeViewModelFactory() = TimeViewModelFactory(RepositoryFactory.getUserRepository())

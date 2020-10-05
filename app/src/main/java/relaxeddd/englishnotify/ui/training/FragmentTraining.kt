@@ -4,6 +4,8 @@ import android.content.Context
 import android.view.View
 import android.view.animation.*
 import android.view.inputmethod.InputMethodManager
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.fragment_training.*
 import relaxeddd.englishnotify.R
@@ -53,7 +55,44 @@ class FragmentTraining : BaseFragment<ViewModelTraining, FragmentTrainingBinding
                 false
             }
         }
+
+        binding.imageTrainingMicrophone.setOnClickListener {
+            onNavigationEvent(NAVIGATION_HIDE_KEYBOARD)
+
+            val selectedLanguage = binding.spinnerTrainingLanguage.selectedItem as? String ?: ""
+            (activity as? MainActivity)?.requestRecognizeSpeech(selectedLanguage) {
+                if (it == null) {
+                    SharedHelper.setShowVoiceInput(false)
+                    binding.imageTrainingMicrophone.visibility = View.GONE
+                    binding.spinnerTrainingLanguage.visibility = View.GONE
+                } else {
+                    binding.editTextTrainingAnswer.setText(it)
+                }
+            }
+        }
+        ArrayAdapter.createFromResource(context ?: return, R.array.array_languages, android.R.layout.simple_spinner_item).also { adapter ->
+            adapter.setDropDownViewResource(R.layout.view_item_spinner)
+            binding.spinnerTrainingLanguage.adapter = adapter
+        }
+        binding.spinnerTrainingLanguage.setSelection(SharedHelper.getSelectedLocaleTraining())
+        binding.spinnerTrainingLanguage.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                SharedHelper.setSelectedLocaleTraining(position)
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
+        val isShowVoiceInput = SharedHelper.isShowVoiceInput()
+        binding.imageTrainingMicrophone.visibility = if (isShowVoiceInput) View.VISIBLE else View.GONE
+        binding.spinnerTrainingLanguage.visibility = if (isShowVoiceInput) View.VISIBLE else View.GONE
+
         viewModel.onBind()
+
+        val isListeningTraining = SharedHelper.isListeningTraining()
+
+        if (isListeningTraining) {
+            onNavigationEvent(NAVIGATION_PLAY_WORD_DEPENDS_ON_TRANSLATION)
+        }
     }
 
     override fun onNavigationEvent(eventId: Int) {

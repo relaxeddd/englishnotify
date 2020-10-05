@@ -379,6 +379,39 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/size_4"
+                android:paddingBottom="@dimen/size_4"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/size_8"
+                android:background="@color/card_view_color"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:elevation="@dimen/default_elevation">
+
+                <ImageView
+                    android:id="@+id/image_settings_voice_input"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_microphone"
+                    android:contentDescription="@string/ic_notifications_show_only_one"
+                    android:layout_marginStart="@dimen/size_16"
+                    android:layout_gravity="center_vertical"/>
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switch_settings_voice_input"
+                    android:text="@string/is_show_voice_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color_main"
+                    android:checked="@{safeUnbox(viewModel.isShowVoiceInput())}"
+                    android:textSize="@dimen/font_12"
+                    android:paddingStart="@dimen/size_16"
+                    android:paddingEnd="@dimen/size_32"/>
+
+            </LinearLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

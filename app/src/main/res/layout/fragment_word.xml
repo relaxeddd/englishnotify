@@ -29,25 +29,50 @@
                 android:layout_marginTop="@dimen/size_16"
                 android:textSize="@dimen/font_16"/>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/container_text_word_input_word"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                app:boxStrokeColor="@color/colorPrimary"
+                android:orientation="horizontal"
                 android:layout_marginStart="@dimen/size_12"
-                android:layout_marginEnd="@dimen/size_12"
                 android:layout_marginTop="@dimen/size_16">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/text_input_word"
-                    android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/container_text_word_input_word"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:maxLength="200"
-                    android:hint="@string/word"/>
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:boxStrokeColor="@color/colorPrimary"
+                    android:layout_marginEnd="@dimen/size_12"
+                    android:layout_weight="1">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/text_input_word"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:maxLength="200"
+                        android:hint="@string/word"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <ImageView
+                    android:id="@+id/image_word_microphone"
+                    android:layout_width="@dimen/size_42"
+                    android:layout_height="@dimen/size_42"
+                    android:padding="@dimen/size_8"
+                    app:srcCompat="@drawable/ic_microphone"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="@dimen/size_2"
+                    android:background="?android:attr/selectableItemBackground"/>
+
+                <Spinner
+                    android:id="@+id/spinner_word_language"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="@dimen/size_2"/>
+
+            </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/container_text_word_input_transcription"
@@ -69,26 +94,50 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/container_text_word_input_translation"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                app:boxStrokeColor="@color/colorPrimary"
+                android:orientation="horizontal"
                 android:layout_marginStart="@dimen/size_12"
-                android:layout_marginEnd="@dimen/size_12"
                 android:layout_marginTop="@dimen/size_16">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/text_input_translation"
-                    android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/container_text_word_input_translation"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:maxLength="200"
-                    android:hint="@string/translation"/>
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:boxStrokeColor="@color/colorPrimary"
+                    android:layout_marginEnd="@dimen/size_12"
+                    android:layout_weight="1">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/text_input_translation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:maxLength="200"
+                        android:hint="@string/translation"/>
 
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <ImageView
+                    android:id="@+id/image_word_microphone_translation"
+                    android:layout_width="@dimen/size_42"
+                    android:layout_height="@dimen/size_42"
+                    android:padding="@dimen/size_8"
+                    app:srcCompat="@drawable/ic_microphone"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="@dimen/size_2"
+                    android:background="?android:attr/selectableItemBackground"/>
+
+                <Spinner
+                    android:id="@+id/spinner_word_language_translation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="@dimen/size_2"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 

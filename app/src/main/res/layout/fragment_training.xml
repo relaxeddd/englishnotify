@@ -340,18 +340,45 @@
 
         </LinearLayout>
 
-        <EditText
-            android:id="@+id/edit_text_training_answer"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:enabled="@{safeUnbox(viewModel.isVisibleInputAnswer) == true}"
-            android:maxLength="100"
-            android:alpha="@{safeUnbox(viewModel.isVisibleInputAnswer) == true ? 1f : 0.5f}"
-            android:layout_marginHorizontal="@dimen/size_32"
-            android:hint="@string/enter_translation"
+            android:orientation="horizontal"
             android:layout_marginTop="@dimen/size_18"
-            android:importantForAutofill="no"/>
+            android:layout_marginHorizontal="@dimen/size_12">
+
+            <EditText
+                android:id="@+id/edit_text_training_answer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:enabled="@{safeUnbox(viewModel.isVisibleInputAnswer) == true}"
+                android:maxLength="100"
+                android:alpha="@{safeUnbox(viewModel.isVisibleInputAnswer) == true ? 1f : 0.5f}"
+                android:hint="@string/enter_translation"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:importantForAutofill="no"
+                android:layout_marginStart="@dimen/size_20"
+                android:layout_marginEnd="@dimen/size_20"/>
+
+            <ImageView
+                android:id="@+id/image_training_microphone"
+                android:layout_width="@dimen/size_42"
+                android:layout_height="@dimen/size_42"
+                android:padding="@dimen/size_8"
+                app:srcCompat="@drawable/ic_microphone"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="@dimen/size_2"
+                android:background="?android:attr/selectableItemBackground"/>
+
+            <Spinner
+                android:id="@+id/spinner_training_language"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"/>
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/text_training_result_animation"

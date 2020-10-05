@@ -23,7 +23,9 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
     }
 
     private val ioScope = CoroutineScope(Dispatchers.IO)
-    var words = wordDao.getAll()
+    var words = wordDao.getAll().also {
+        it.observeForever { print("Observing words to init") }
+    }
     private var tagsInfo: List<TagInfo> = ArrayList()
 
     fun clearDictionary() {
@@ -45,9 +47,15 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         return ownWords
     }
 
-    fun getWordCategories() : HashSet<String> {
+    fun getWordCategoriesForTraining() : HashSet<String> {
         val categories = HashSet<String>()
-        words.value?.forEach { it.tags.forEach { tag -> if (tag.isNotEmpty()) categories.add(tag) } }
+        val words = words.value ?: ArrayList()
+
+        words.forEach {
+            if (!it.isDeleted && it.learnStage != LEARN_STAGE_MAX) {
+                it.tags.forEach { tag -> if (tag.isNotEmpty()) categories.add(tag) }
+            }
+        }
         categories.add(OWN)
         categories.add(ALL_APP_WORDS)
         return categories
@@ -55,7 +63,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
 
     fun getTrainingWordsByCategory(category: String) : ArrayList<Word> {
         val trainingWords = ArrayList<Word>()
-        val words = this@RepositoryWord.words.value ?: ArrayList()
+        val words = words.value ?: ArrayList()
 
         for (word in words) {
             if ((word.tags.contains(category) || category == ALL_APP_WORDS || (category == OWN && word.isOwnCategory))

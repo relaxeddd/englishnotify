@@ -128,16 +128,15 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
         updateButtonOk()
         updateButtonOneMore()
 
-        if (currentResult == STATE_ANSWER) {
+        /*if (currentResult == STATE_ANSWER) {
             navigateEvent.value = Event(NAVIGATION_SHOW_KEYBOARD)
-        }
+        }*/
     }
 
     init {
         current.observeForever(currentObserver)
     }
 
-    //------------------------------------------------------------------------------------------------------------------
     fun onBind() {
         val allWords = ArrayList(repositoryWord.words.value ?: ArrayList()).filter { !it.isDeleted }
         total = allWords.size

@@ -5,12 +5,14 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.View
-import kotlinx.android.synthetic.main.fragment_word.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.FragmentWordBinding
 import android.view.inputmethod.EditorInfo
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import relaxeddd.englishnotify.dialogs.DialogRestoreWord
+import relaxeddd.englishnotify.ui.main.MainActivity
 
 class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
 
@@ -34,11 +36,62 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.item_menu_accept -> {
-                text_input_translation.onEditorAction(EditorInfo.IME_ACTION_DONE)
+                binding.textInputTranslation.onEditorAction(EditorInfo.IME_ACTION_DONE)
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun configureBinding() {
+        super.configureBinding()
+        binding.imageWordMicrophone.setOnClickListener {
+            val selectedLanguage = binding.spinnerWordLanguage.selectedItem as? String ?: ""
+            (activity as? MainActivity)?.requestRecognizeSpeech(selectedLanguage) {
+                if (it == null) {
+                    SharedHelper.setShowVoiceInput(false)
+                    updateVoiceInputVisibility(false)
+                } else {
+                    binding.textInputWord.setText(it)
+                }
+            }
+        }
+        ArrayAdapter.createFromResource(context ?: return, R.array.array_languages, android.R.layout.simple_spinner_item).also { adapter ->
+            adapter.setDropDownViewResource(R.layout.view_item_spinner)
+            binding.spinnerWordLanguage.adapter = adapter
+        }
+        binding.spinnerWordLanguage.setSelection(SharedHelper.getSelectedLocaleWord())
+        binding.spinnerWordLanguage.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                SharedHelper.setSelectedLocaleWord(position)
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
+        binding.imageWordMicrophoneTranslation.setOnClickListener {
+            val selectedLanguage = binding.spinnerWordLanguageTranslation.selectedItem as? String ?: ""
+            (activity as? MainActivity)?.requestRecognizeSpeech(selectedLanguage) {
+                if (it == null) {
+                    SharedHelper.setShowVoiceInput(false)
+                    updateVoiceInputVisibility(false)
+                } else {
+                    binding.textInputTranslation.setText(it)
+                }
+            }
+        }
+        ArrayAdapter.createFromResource(context ?: return, R.array.array_languages, android.R.layout.simple_spinner_item).also { adapter ->
+            adapter.setDropDownViewResource(R.layout.view_item_spinner)
+            binding.spinnerWordLanguageTranslation.adapter = adapter
+        }
+        binding.spinnerWordLanguageTranslation.setSelection(SharedHelper.getSelectedLocaleTranslation())
+        binding.spinnerWordLanguageTranslation.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                SharedHelper.setSelectedLocaleTranslation(position)
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
+        updateVoiceInputVisibility(SharedHelper.isShowVoiceInput())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -55,32 +108,32 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
             updateToolbarTitle(getString(R.string.edit))
         }
 
-        text_input_word.setText(eng)
-        text_input_transcription.setText(transcription)
-        text_input_translation.setText(rus)
+        binding.textInputWord.setText(eng)
+        binding.textInputTranscription.setText(transcription)
+        binding.textInputTranslation.setText(rus)
 
-        text_input_word.addTextChangedListener(object: TextWatcher {
+        binding.textInputWord.addTextChangedListener(object: TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(p0: Editable?) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                text_input_word.error = null
+                binding.textInputWord.error = null
             }
         })
-        text_input_translation.addTextChangedListener(object: TextWatcher {
+        binding.textInputTranslation.addTextChangedListener(object: TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(p0: Editable?) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                text_input_translation.error = null
+                binding.textInputTranslation.error = null
             }
         })
-        text_input_transcription.addTextChangedListener(object: TextWatcher {
+        binding.textInputTranscription.addTextChangedListener(object: TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(p0: Editable?) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                text_input_transcription.error = null
+                binding.textInputTranscription.error = null
             }
         })
-        text_input_translation.setOnEditorActionListener { _, _, event ->
+        binding.textInputTranslation.setOnEditorActionListener { _, _, event ->
             if (event == null || !event.isShiftPressed) {
                 handleClickedSave()
                 true
@@ -91,15 +144,15 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
     }
 
     override fun setupThemeColors() {
-        container_text_word_input_word.boxStrokeColor = getPrimaryColorResId()
-        container_text_word_input_transcription.boxStrokeColor = getPrimaryColorResId()
-        container_text_word_input_translation.boxStrokeColor = getPrimaryColorResId()
+        binding.containerTextWordInputWord.boxStrokeColor = getPrimaryColorResId()
+        binding.containerTextWordInputTranscription.boxStrokeColor = getPrimaryColorResId()
+        binding.containerTextWordInputTranslation.boxStrokeColor = getPrimaryColorResId()
     }
 
     override fun onNavigationEvent(eventId: Int) {
         when (eventId) {
             NAVIGATION_WORD_EXISTS_ERROR -> {
-                text_input_word.error = getString(R.string.word_already_exists)
+                binding.textInputWord.error = getString(R.string.word_already_exists)
             }
             NAVIGATION_WORD_EXISTS_DIALOG -> {
                 val dialog = DialogRestoreWord()
@@ -116,27 +169,34 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
 
     private fun hideKeyboard() {
        when {
-            text_input_word.hasFocus() -> hideKeyboard(text_input_word)
-            text_input_translation.hasFocus() -> hideKeyboard(text_input_translation)
-            text_input_transcription.hasFocus() -> hideKeyboard(text_input_transcription)
+           binding.textInputWord.hasFocus() -> hideKeyboard(binding.textInputWord)
+           binding.textInputTranslation.hasFocus() -> hideKeyboard(binding.textInputTranslation)
+           binding.textInputTranscription.hasFocus() -> hideKeyboard(binding.textInputTranscription)
        }
     }
 
     private fun handleClickedSave() {
-        val eng = text_input_word.text.toString()
-        val rus = text_input_translation.text.toString()
-        val transcription = text_input_transcription.text.toString()
+        val eng = binding.textInputWord.text.toString()
+        val rus = binding.textInputTranslation.text.toString()
+        val transcription = binding.textInputTranscription.text.toString()
 
         when {
-            eng.isEmpty() -> text_input_word.error = getString(R.string.word_should_not_be_empty)
-            rus.isEmpty() -> text_input_translation.error = getString(R.string.word_should_not_be_empty)
-            eng.length > 200 -> text_input_word.error = getString(R.string.word_length_limit)
-            rus.length > 200 -> text_input_translation.error = getString(R.string.word_length_limit)
-            transcription.length > 200 -> text_input_transcription.error = getString(R.string.word_length_limit)
+            eng.isEmpty() -> binding.textInputWord.error = getString(R.string.word_should_not_be_empty)
+            rus.isEmpty() -> binding.textInputTranslation.error = getString(R.string.word_should_not_be_empty)
+            eng.length > 200 -> binding.textInputWord.error = getString(R.string.word_length_limit)
+            rus.length > 200 -> binding.textInputTranslation.error = getString(R.string.word_length_limit)
+            transcription.length > 200 -> binding.textInputTranscription.error = getString(R.string.word_length_limit)
             else -> {
                 hideKeyboard()
                 viewModel.createOwnWord(eng, transcription, rus)
             }
         }
+    }
+
+    private fun updateVoiceInputVisibility(isShow: Boolean) {
+        binding.imageWordMicrophone.visibility = if (isShow) View.VISIBLE else View.GONE
+        binding.spinnerWordLanguage.visibility = if (isShow) View.VISIBLE else View.GONE
+        binding.imageWordMicrophoneTranslation.visibility = if (isShow) View.VISIBLE else View.GONE
+        binding.spinnerWordLanguageTranslation.visibility = if (isShow) View.VISIBLE else View.GONE
     }
 }

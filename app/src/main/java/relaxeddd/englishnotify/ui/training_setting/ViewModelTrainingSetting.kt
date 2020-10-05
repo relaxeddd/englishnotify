@@ -1,38 +1,31 @@
 package relaxeddd.englishnotify.ui.training_setting
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.google.android.material.radiobutton.MaterialRadioButton
+import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 
-class ViewModelTrainingSetting : ViewModelBase(), ISelectCategory {
+class ViewModelTrainingSetting(private val repositoryWord: RepositoryWord) : ViewModelBase(), ISelectCategory {
 
     val categories = MutableLiveData<List<CategoryItem>>(ArrayList())
     var checkedItem: CategoryItem? = null
     var trainingLanguage: Int = SharedHelper.getTrainingLanguage()
 
+    private val wordsObserver = Observer<List<Word>> { _ ->
+        updateCategories()
+    }
+
     init {
-        val list = ArrayList<CategoryItem>()
-        val selectedTag = SharedHelper.getTrainingCategory()
-        val allTags = RepositoryWord.getInstance().getWordCategories()
+        repositoryWord.words.observeForever(wordsObserver)
+        updateCategories()
+    }
 
-        for (tag in allTags) {
-            val categoryItem = CategoryItem(tag)
-
-            if (tag == selectedTag) {
-                checkedItem = categoryItem
-            }
-            if (tag == ALL_APP_WORDS && checkedItem == null) {
-                checkedItem = categoryItem
-            }
-            when (tag) {
-                ALL_APP_WORDS -> list.add(0, categoryItem)
-                OWN -> list.add(0, categoryItem)
-                else -> list.add(categoryItem)
-            }
-        }
-        categories.postValue(list)
+    override fun onCleared() {
+        super.onCleared()
+        repositoryWord.words.removeObserver(wordsObserver)
     }
 
     override fun getSelectedCategory() = checkedItem?.key
@@ -56,5 +49,28 @@ class ViewModelTrainingSetting : ViewModelBase(), ISelectCategory {
         SharedHelper.setTrainingCategory(category)
         SharedHelper.setTrainingLanguage(trainingLanguage)
         navigateEvent.value = Event(NAVIGATION_FRAGMENT_TRAINING)
+    }
+
+    private fun updateCategories() {
+        val list = ArrayList<CategoryItem>()
+        val selectedTag = SharedHelper.getTrainingCategory()
+        val allTags = repositoryWord.getWordCategoriesForTraining()
+
+        for (tag in allTags) {
+            val categoryItem = CategoryItem(tag)
+
+            if (tag == selectedTag) {
+                checkedItem = categoryItem
+            }
+            if (tag == ALL_APP_WORDS && checkedItem == null) {
+                checkedItem = categoryItem
+            }
+            when (tag) {
+                ALL_APP_WORDS -> list.add(0, categoryItem)
+                OWN -> list.add(0, categoryItem)
+                else -> list.add(categoryItem)
+            }
+        }
+        categories.postValue(list)
     }
 }
