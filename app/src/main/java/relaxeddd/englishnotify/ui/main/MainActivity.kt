@@ -6,6 +6,7 @@ import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import android.speech.RecognizerIntent
 import android.speech.tts.TextToSpeech
 import android.text.SpannableString
 import android.text.Spanned
@@ -36,6 +37,7 @@ import relaxeddd.englishnotify.databinding.NavigationHeaderBinding
 import relaxeddd.englishnotify.dialogs.*
 import relaxeddd.englishnotify.donate.ActivityBilling
 import relaxeddd.englishnotify.push.PushTokenHelper
+import java.lang.Exception
 import java.util.*
 import kotlin.system.exitProcess
 
@@ -44,6 +46,7 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
     companion object {
         const val REQUEST_SIGN_IN = 1312
         const val REQUEST_PLAY_SERVICES_RESULT = 7245
+        const val REQUEST_RECOGNIZE_SPEECH = 5242
 
         private const val NAV_ID_NONE = -1
 
@@ -68,6 +71,7 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
     private var isFastSpeechSpeed = false
     private var isLastPlayedEng = true
     private var isPlaying = false
+    private var recognizeSpeechCallback: ((String?) -> Unit)? = null
 
     private val listenerNewVersion: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
         override fun onResult(result: Boolean) {
@@ -277,6 +281,15 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
                     showToast(response.error.toString())
                 }
             }
+            REQUEST_RECOGNIZE_SPEECH -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    val spokenText = data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).let { results ->
+                        results?.get(0)
+                    } ?: ""
+                    recognizeSpeechCallback?.invoke(spokenText)
+                }
+                recognizeSpeechCallback = null
+            }
             REQUEST_PLAY_SERVICES_RESULT -> {
                 finish()
             }
@@ -411,6 +424,28 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
         }
     }
 
+    fun requestRecognizeSpeech(localeString: String, recognizeSpeechCallback: ((String?) -> Unit)) {
+        try {
+            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+                putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+                putExtra(RecognizerIntent.EXTRA_LANGUAGE, getLocaleStringByKey(localeString) ?: Locale.getDefault())
+            }
+            this.recognizeSpeechCallback = recognizeSpeechCallback
+            startActivityForResult(intent, REQUEST_RECOGNIZE_SPEECH)
+        } catch (e: Exception) {
+            val dialog = DialogVoiceInput()
+            dialog.confirmListener = object: ListenerResult<Boolean> {
+                override fun onResult(result: Boolean) {
+                    if (result) {
+                        recognizeSpeechCallback(null)
+                    }
+                    this@MainActivity.recognizeSpeechCallback = null
+                }
+            }
+            dialog.show(supportFragmentManager, "Restore word Dialog")
+        }
+    }
+
     private fun speak(textToSpeak: String) {
         if (textToSpeak == lastVoiceText && isFastSpeechSpeed) {
             tts?.setSpeechRate(0.5f)
@@ -478,5 +513,17 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
         if (navId != currentFragmentId) {
             navController.navigate(navId)
         }
+    }
+
+    private fun getLocaleStringByKey(key: String) = when(key) {
+        "EN" -> Locale.US.toString()
+        "RU" -> Locale("ru","RU").toString()
+        "DE" -> Locale.GERMANY.toString()
+        "ES" -> Locale("es", "ES").toString()
+        "FR" -> Locale.FRANCE.toString()
+        "ZH" -> Locale.CHINA.toString()
+        "JA" -> Locale.JAPAN.toString()
+        "IT" -> Locale.ITALY.toString()
+        else -> null
     }
 }

@@ -70,12 +70,14 @@
     <string name="feedback_send_error">Ошибка отправки отзыва</string>
     <string name="feedback_too_short">Отзыв слишком короткий</string>
     <string name="filter">Фильтр</string>
+    <string name="hide">Скрыть</string>
     <string name="hours_off_time">Часов (0–23)</string>
     <string name="incorrect">Не то</string>
     <string name="i_not_know_it">Я не знаю</string>
     <string name="i_know_it">Я знаю это</string>
     <string name="if_notifications_not_receive">Если не ходят уведомления</string>
     <string name="is_old_navigation_design">Старая навигационная панель</string>
+    <string name="is_show_voice_input">Показывать голосовой ввод</string>
     <string name="incorrect_answer">Неправильный ответ</string>
     <string name="information">Информация</string>
     <string name="input_your_message">Введите сообщение</string>
@@ -172,6 +174,7 @@
     <string name="update_text">Доступна новая версия приложения. Пожалуйста, обновите</string>
     <string name="unknown_action">Неизвестное действие</string>
     <string name="user_not_found">Пользователь не найден</string>
+    <string name="voice_input_error">Голосовой ввод не поддерживается на вашем устройстве. Скрыть иконки голосового ввода?</string>
     <string name="word">Слово</string>
     <string name="word_added">Слово добавлено</string>
     <string name="word_already_exists">Такое слово уже есть</string>
@@ -229,11 +232,9 @@
     </string>
 
     <string name="patch_notes">
-        - Новый дизайн навигации (Можно отключить во вкладке Общее)
-        \n- Автоматическое проигрывание слова при тренировке на слух
-        \n- Фикс нижних отступов у экранов
-        \n- Фикс крэша при старте в некоторых случаях
-        \n- Светло-синяя тема
+        - Голосовой ввод (можно скрыть во вкладке Общее)
+        \n- Сохранение последней открытой вкладки
+        \n- Теперь есть возможность сбросить прогресс слова при добавлении слова, которое уже есть в словаре
         \n- Пожалуйста обратите внимание на опцию \"Если не ходят уведомления\"
         \n- Советуем заносить собственные слова в \"Своя категория\" для последующего изучения
     </string>

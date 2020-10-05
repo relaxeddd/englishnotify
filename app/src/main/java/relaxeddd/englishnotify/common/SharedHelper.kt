@@ -35,7 +35,7 @@ object SharedHelper {
         return sPref.getBoolean(LISTENING_TRAINING, false)
     }
 
-    fun setListeningTraining(value : Boolean, context: Context = App.context) {
+    fun setListeningTraining(value: Boolean, context: Context = App.context) {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         sPref.edit().putBoolean(LISTENING_TRAINING, value).apply()
     }
@@ -45,9 +45,49 @@ object SharedHelper {
         return sPref.getBoolean(HEAR_ANSWER, false)
     }
 
-    fun setHearAnswer(value : Boolean, context: Context = App.context) {
+    fun setHearAnswer(value: Boolean, context: Context = App.context) {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         sPref.edit().putBoolean(HEAR_ANSWER, value).apply()
+    }
+
+    fun isShowVoiceInput(context: Context = App.context) : Boolean {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getBoolean(VOICE_INPUT, true)
+    }
+
+    fun setShowVoiceInput(value: Boolean, context: Context = App.context) {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putBoolean(VOICE_INPUT, value).apply()
+    }
+
+    fun getSelectedLocaleWord(context: Context = App.context) : Int {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getInt(SELECTED_LOCALE_WORD, 0)
+    }
+
+    fun setSelectedLocaleWord(value: Int, context: Context = App.context) {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putInt(SELECTED_LOCALE_WORD, value).apply()
+    }
+
+    fun getSelectedLocaleTranslation(context: Context = App.context) : Int {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getInt(SELECTED_LOCALE_TRANSLATION, 1)
+    }
+
+    fun setSelectedLocaleTranslation(value: Int, context: Context = App.context) {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putInt(SELECTED_LOCALE_TRANSLATION, value).apply()
+    }
+
+    fun getSelectedLocaleTraining(context: Context = App.context) : Int {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getInt(SELECTED_LOCALE_TRAINING, 0)
+    }
+
+    fun setSelectedLocaleTraining(value: Int, context: Context = App.context) {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putInt(SELECTED_LOCALE_TRAINING, value).apply()
     }
 
     fun getStartFragmentId(context: Context = App.context) : Int {

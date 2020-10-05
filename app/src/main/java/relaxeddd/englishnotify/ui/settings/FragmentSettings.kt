@@ -52,6 +52,7 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
             v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
         }
         binding.switchSettingsDesign.setOnCheckedChangeListener(viewModel.checkedChangeListenerNavigationDesign)
+        binding.switchSettingsVoiceInput.setOnCheckedChangeListener(viewModel.checkedChangeListenerVoiceInput)
     }
 
     @SuppressLint("BatteryLife")

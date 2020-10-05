@@ -70,11 +70,13 @@
     <string name="feedback_send_error">Feedback send error</string>
     <string name="feedback_too_short">Feedback too short</string>
     <string name="filter">Filter</string>
+    <string name="hide">Hide</string>
     <string name="hours_off_time">Hours (0–23)</string>
     <string name="i_not_know_it">I don`t know</string>
     <string name="i_know_it">I know it</string>
     <string name="if_notifications_not_receive">If you do not receive notifications</string>
     <string name="is_old_navigation_design">Is old navigation design</string>
+    <string name="is_show_voice_input">Is show voice input</string>
     <string name="incorrect">Incorrect</string>
     <string name="incorrect_answer">Incorrect answer</string>
     <string name="information">Information</string>
@@ -172,6 +174,7 @@
     <string name="update_text">New app version is available. Please, update</string>
     <string name="unknown_action">Unknown action</string>
     <string name="user_not_found">User not found</string>
+    <string name="voice_input_error">Voice input is not supporting on your device. Hide voice input icons?</string>
     <string name="word">Word</string>
     <string name="word_added">Word has been added</string>
     <string name="word_already_exists">Word already exists</string>
@@ -244,11 +247,9 @@
     </string>
 
     <string name="patch_notes">
-        - New navigation design (you can switch to old version in Common tab)
-        \n- Automatically play word at listening training
-        \n- Screens bottom margin fix
-        \n- Crash fix on start in some cases
-        \n- Light blue theme
+        - Voice input (you can disable in common tab)
+        \n- Saving last opened tab
+        \n- Now you can reset progress when adding the word in own category if you already have this word in dictionary
         \n- Please, take attention on \"If you do not receive notifications\" in settings tab
         \n- It might be better to add words in \"Own category\"
     </string>

@@ -96,11 +96,11 @@ class CategorySectionViewModelFactory(private val type: CategorySection, private
     }
 }
 
-class TrainingSettingViewModelFactory : ViewModelProvider.NewInstanceFactory() {
+class TrainingSettingViewModelFactory(private val repositoryWord: RepositoryWord) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return ViewModelTrainingSetting() as T
+        return ViewModelTrainingSetting(repositoryWord) as T
     }
 }
 

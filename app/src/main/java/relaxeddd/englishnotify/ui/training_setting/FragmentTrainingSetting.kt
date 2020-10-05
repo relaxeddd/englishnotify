@@ -15,7 +15,7 @@ class FragmentTrainingSetting : BaseFragment<ViewModelTrainingSetting, FragmentT
 
     override fun getLayoutResId() = R.layout.fragment_training_setting
     override fun getToolbarTitleResId() = R.string.training_setting
-    override fun getViewModelFactory() = InjectorUtils.provideTrainingSettingViewModelFactory()
+    override fun getViewModelFactory() = InjectorUtils.provideTrainingSettingViewModelFactory(requireContext())
     override fun getViewModelClass() = ViewModelTrainingSetting::class.java
     override fun getMenuResId() = R.menu.menu_accept
     override fun isHomeMenuButtonEnabled() = true
