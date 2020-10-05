@@ -3,6 +3,7 @@ package relaxeddd.englishnotify.common
 import android.content.Context
 import android.os.Build
 import relaxeddd.englishnotify.App
+import relaxeddd.englishnotify.R
 
 object SharedHelper {
 
@@ -37,6 +38,26 @@ object SharedHelper {
     fun setListeningTraining(value : Boolean, context: Context = App.context) {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         sPref.edit().putBoolean(LISTENING_TRAINING, value).apply()
+    }
+
+    fun isHearAnswer(context: Context = App.context) : Boolean {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getBoolean(HEAR_ANSWER, false)
+    }
+
+    fun setHearAnswer(value : Boolean, context: Context = App.context) {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putBoolean(HEAR_ANSWER, value).apply()
+    }
+
+    fun getStartFragmentId(context: Context = App.context) : Int {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getInt(START_FRAGMENT_ID, R.id.fragmentDictionaryContainer)
+    }
+
+    fun setStartFragmentId(value : Int, context: Context = App.context) {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putInt(START_FRAGMENT_ID, value).apply()
     }
 
     fun getLearnLanguageType(context: Context = App.context) : Int {

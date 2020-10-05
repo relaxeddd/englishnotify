@@ -127,6 +127,10 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
 
         updateButtonOk()
         updateButtonOneMore()
+
+        if (currentResult == STATE_ANSWER) {
+            navigateEvent.value = Event(NAVIGATION_SHOW_KEYBOARD)
+        }
     }
 
     init {
@@ -199,6 +203,9 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
                 navigateEvent.value = Event(NAVIGATION_ANIMATE_LEARNED_COUNT)
             }
         } else {
+            if (SharedHelper.isHearAnswer() && !isCurrentEngTraining) {
+                navigateEvent.value = Event(NAVIGATION_PLAY_WORD)
+            }
             navigateEvent.value = Event(NAVIGATION_HIDE_KEYBOARD)
             repositoryWord.setWordLearnStage(word, 0)
             current.value = currentIx

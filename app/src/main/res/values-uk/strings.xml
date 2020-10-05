@@ -22,6 +22,7 @@
     <string name="answer_correct">Правильный ответ</string>
     <string name="answer_incorrect">Неправильный ответ</string>
     <string name="background_start">Запуск в фоновом режиме</string>
+    <string name="cancel">Отмена</string>
     <string name="cancel_check">Отменить выбранное</string>
     <string name="category_own_not_selected">Категоря не выбрана. Сначала добавьте слова в "Свою категорию"</string>
     <string name="change_account_text">Вы заходите под другим аккаунтом. Словарь будет очищен.</string>
@@ -78,6 +79,7 @@
     <string name="incorrect_answer">Неправильный ответ</string>
     <string name="information">Информация</string>
     <string name="input_your_message">Введите сообщение</string>
+    <string name="hear_answer">Проигрывать ответ если неверный (перевод-слово)</string>
     <string name="later">Позднее</string>
     <string name="learn_language">Изучаемый язык</string>
     <string name="learned">Выучено!</string>

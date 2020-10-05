@@ -45,7 +45,6 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
         const val REQUEST_SIGN_IN = 1312
         const val REQUEST_PLAY_SERVICES_RESULT = 7245
 
-        const val EXTRA_NAVIGATION_ID = "extra.NAVIGATION_ID"
         private const val NAV_ID_NONE = -1
 
         private val TOP_LEVEL_DESTINATIONS = setOf(
@@ -136,16 +135,24 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
             binding.statusBarScrim.setOnApplyWindowInsetsListener(HeightTopWindowInsetsListener)
         }
         binding.containerMainWarnings.doOnApplyWindowInsets { v, insets, padding ->
-            (v.layoutParams as? ViewGroup.MarginLayoutParams)?.bottomMargin = padding.bottom + insets.systemWindowInsetBottom
+            if (!isOldDesign) {
+                (v.layoutParams as? ViewGroup.MarginLayoutParams)?.bottomMargin = padding.bottom + insets.systemWindowInsetBottom
+            }
         }
 
+        val initialNavigationId = SharedHelper.getStartFragmentId()
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_navigation_host) as NavHostFragment
         navController = navHostFragment.navController
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
+            val isTopLevelTab = isTopLevelTab(destination.id)
+
             currentFragmentId = destination.id
+            if (isTopLevelTab) {
+                SharedHelper.setStartFragmentId(destination.id)
+            }
             if (!isOldDesign) {
-                val lockMode = if (isTopLevelTab(destination.id)) {
+                val lockMode = if (isTopLevelTab) {
                     DrawerLayout.LOCK_MODE_UNLOCKED
                 } else {
                     DrawerLayout.LOCK_MODE_LOCKED_CLOSED
@@ -198,17 +205,20 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
             onNavigationEvent(NAVIGATION_DIALOG_RATE_APP)
         }
 
-        if (savedInstanceState == null) {
-            val initialNavId = intent.getIntExtra(EXTRA_NAVIGATION_ID, R.id.fragmentDictionaryContainer)
-            if (!isOldDesign) {
-                binding.navigation.setCheckedItem(initialNavId)
-            }
-            navigateTo(initialNavId)
-        }
-
         initPrivacyPolicyText()
 
         viewModel.onViewCreate()
+
+        if (!isOldDesign) {
+            binding.navigation.setCheckedItem(initialNavigationId)
+        } else {
+            binding.navigationViewMain.selectedItemId = initialNavigationId
+        }
+        when (initialNavigationId) {
+            R.id.fragmentTrainingSetting -> navController.myNavigate(R.id.action_global_fragmentTrainingSetting)
+            R.id.fragmentNotifications -> navController.myNavigate(R.id.action_global_fragmentNotifications)
+            R.id.fragmentSettings -> navController.myNavigate(R.id.action_global_fragmentSettings)
+        }
     }
 
     override fun onResume() {

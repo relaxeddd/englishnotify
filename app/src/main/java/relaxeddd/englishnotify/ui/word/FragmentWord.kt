@@ -10,8 +10,17 @@ import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.FragmentWordBinding
 import android.view.inputmethod.EditorInfo
+import relaxeddd.englishnotify.dialogs.DialogRestoreWord
 
 class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
+
+    private val listenerRestoreWord: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
+        override fun onResult(result: Boolean) {
+            if (result) {
+                viewModel.forceUpdateFindWord()
+            }
+        }
+    }
 
     override fun getLayoutResId() = R.layout.fragment_word
     override fun getToolbarTitleResId() = R.string.add_word
@@ -91,6 +100,11 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
         when (eventId) {
             NAVIGATION_WORD_EXISTS_ERROR -> {
                 text_input_word.error = getString(R.string.word_already_exists)
+            }
+            NAVIGATION_WORD_EXISTS_DIALOG -> {
+                val dialog = DialogRestoreWord()
+                dialog.confirmListener = listenerRestoreWord
+                dialog.show(childFragmentManager, "Restore word Dialog")
             }
             NAVIGATION_ACTIVITY_BACK -> {
                 hideKeyboard(view)

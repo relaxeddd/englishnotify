@@ -145,7 +145,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         }
     }
 
-    private fun updateWord(word : Word) {
+    fun updateWord(word : Word) {
         wordDao.insert(word)
     }
 

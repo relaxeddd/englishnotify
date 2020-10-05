@@ -44,6 +44,10 @@ class FragmentTrainingSetting : BaseFragment<ViewModelTrainingSetting, FragmentT
         binding.switchTrainingSettingListenTraining.setOnCheckedChangeListener { _, isChecked ->
             SharedHelper.setListeningTraining(isChecked)
         }
+        binding.switchTrainingSettingHearAnswer.isChecked = SharedHelper.isHearAnswer()
+        binding.switchTrainingSettingHearAnswer.setOnCheckedChangeListener { _, isChecked ->
+            SharedHelper.setHearAnswer(isChecked)
+        }
         viewModel.categories.observe(viewLifecycleOwner, { items ->
             if (items != null && items.isNotEmpty()) adapter.submitList(items)
         })
