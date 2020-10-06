@@ -50,6 +50,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     && viewType == SharedHelper.NOTIFICATIONS_VIEW_WITH_QUESTION && !withWrongTitle
 
             if (isSave) {
+                val repositoryWord = RepositoryWord.getInstance()
                 val wordDao = AppDatabase.getInstance(context).wordDao()
                 val existsWord = wordDao.findWordById(word.id)
 
@@ -67,11 +68,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 }
                 CoroutineScope(Dispatchers.IO).launch {
                     if (existsWord != null) {
-                        RepositoryWord.getInstance().insertWord(existsWord, wordDao)
+                        repositoryWord.insertWord(existsWord, wordDao)
                     } else {
                         word.timestamp = System.currentTimeMillis()
                         word.isCreatedByUser = false
-                        RepositoryWord.getInstance().insertWord(word, wordDao)
+                        repositoryWord.insertWord(word, wordDao)
                     }
                 }
             }
