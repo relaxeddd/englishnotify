@@ -23,8 +23,12 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
     }
 
     private val ioScope = CoroutineScope(Dispatchers.IO)
-    var words = wordDao.getAll().also {
-        it.observeForever { print("Observing words to init") }
+    private val uiScope = CoroutineScope(Dispatchers.Main)
+
+    val words = wordDao.getAll().also {
+        uiScope.launch {
+            it.observeForever { print("Observing words to init") }
+        }
     }
     private var tagsInfo: List<TagInfo> = ArrayList()
 

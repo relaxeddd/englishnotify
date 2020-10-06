@@ -76,7 +76,9 @@ class PushBroadcastReceiver : BroadcastReceiver() {
                 }
             }
             if (saveWord.learnStage != learnStage) {
-                RepositoryWord.getInstance().setWordLearnStage(saveWord, learnStage, false)
+                withContext(Dispatchers.Main) {
+                    RepositoryWord.getInstance().setWordLearnStage(saveWord, learnStage, false)
+                }
             }
             if (isRemove && notificationId != -1) {
                 withContext(Dispatchers.Main) {
