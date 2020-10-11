@@ -36,7 +36,6 @@
         <item>Темно-синяя</item>
         <item>Темная</item>
         <item>Светло-синяя</item>
-        <item>Салатовая</item>
     </string-array>
 
     <string-array name="array_notifications_view">

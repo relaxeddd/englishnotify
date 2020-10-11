@@ -47,7 +47,6 @@
         <item>Dark-blue</item>
         <item>Dark</item>
         <item>Light-blue</item>
-        <item>Salad</item>
     </string-array>
 
     <string-array name="array_notifications_view">
