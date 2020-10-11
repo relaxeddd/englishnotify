@@ -33,7 +33,7 @@
             <com.google.android.material.radiobutton.MaterialRadioButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/every_1_hour"
+                android:text="@string/every_30_min"
                 android:tag="0"
                 android:enabled="@{safeUnbox(!viewModel.isDisableSubTime)}"
                 android:textSize="@dimen/font_18"/>
@@ -41,17 +41,44 @@
             <com.google.android.material.radiobutton.MaterialRadioButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/every_2_hours"
+                android:text="@string/every_1_hour"
                 android:tag="1"
+                android:enabled="@{safeUnbox(!viewModel.isDisableSubTime)}"
+                android:textSize="@dimen/font_18"
+                android:layout_marginTop="@dimen/size_4"/>
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/every_1_5_hours"
+                android:tag="2"
+                android:enabled="@{safeUnbox(!viewModel.isDisableSubTime)}"
+                android:textSize="@dimen/font_18"
+                android:layout_marginTop="@dimen/size_4"/>
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/every_2_hours"
+                android:tag="3"
                 android:textSize="@dimen/font_18"
                 android:enabled="@{safeUnbox(!viewModel.isDisableSubTime)}"
+                android:layout_marginTop="@dimen/size_4"/>
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/every_2_5_hours"
+                android:tag="4"
+                android:enabled="@{safeUnbox(!viewModel.isDisableSubTime)}"
+                android:textSize="@dimen/font_18"
                 android:layout_marginTop="@dimen/size_4"/>
 
             <com.google.android.material.radiobutton.MaterialRadioButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/every_3_hours"
-                android:tag="2"
+                android:tag="5"
                 android:textSize="@dimen/font_18"
                 android:enabled="@{safeUnbox(!viewModel.isDisableSubTime)}"
                 android:layout_marginTop="@dimen/size_4"/>
@@ -59,8 +86,25 @@
             <com.google.android.material.radiobutton.MaterialRadioButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@string/every_3_5_hours"
+                android:tag="6"
+                android:enabled="@{safeUnbox(!viewModel.isDisableSubTime)}"
+                android:textSize="@dimen/font_18"
+                android:layout_marginTop="@dimen/size_4"/>
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="@string/every_4_hours"
-                android:tag="3"
+                android:tag="7"
+                android:textSize="@dimen/font_18"
+                android:layout_marginTop="@dimen/size_4"/>
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/every_4_5_hours"
+                android:tag="8"
                 android:textSize="@dimen/font_18"
                 android:layout_marginTop="@dimen/size_4"/>
 
@@ -68,7 +112,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/every_5_hours"
-                android:tag="4"
+                android:tag="9"
+                android:textSize="@dimen/font_18"
+                android:layout_marginTop="@dimen/size_4"/>
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/every_5_5_hours"
+                android:tag="10"
                 android:textSize="@dimen/font_18"
                 android:layout_marginTop="@dimen/size_4"/>
 
@@ -76,7 +128,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/every_6_hours"
-                android:tag="5"
+                android:tag="11"
+                android:textSize="@dimen/font_18"
+                android:layout_marginTop="@dimen/size_4"/>
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/every_6_5_hours"
+                android:tag="12"
                 android:textSize="@dimen/font_18"
                 android:layout_marginTop="@dimen/size_4"/>
 
@@ -84,7 +144,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/every_7_hours"
-                android:tag="6"
+                android:tag="13"
+                android:textSize="@dimen/font_18"
+                android:layout_marginTop="@dimen/size_4"/>
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/every_7_5_hours"
+                android:tag="14"
                 android:textSize="@dimen/font_18"
                 android:layout_marginTop="@dimen/size_4"/>
 
@@ -92,7 +160,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/every_8_hours"
-                android:tag="7"
+                android:tag="15"
                 android:textSize="@dimen/font_18"
                 android:layout_marginTop="@dimen/size_4"/>
 

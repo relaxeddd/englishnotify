@@ -232,21 +232,28 @@
     </string>
 
     <string name="patch_notes">
-        - Голосовой ввод (можно скрыть во вкладке Общее)
-        \n- Сохранение последней открытой вкладки
-        \n- Теперь есть возможность сбросить прогресс слова при добавлении слова, которое уже есть в словаре
+        - Опция получения уведомлений каждые 30 минут
+        \n- Голосовой ввод (можно скрыть во вкладке Общее)
         \n- Пожалуйста обратите внимание на опцию \"Если не ходят уведомления\"
         \n- Советуем заносить собственные слова в \"Своя категория\" для последующего изучения
     </string>
 
     <!-- =========================================================================================================== -->
+    <string name="every_30_min">Каждые 30 минут (с наличием подписки)</string>
     <string name="every_1_hour">Каждый час (с наличием подписки)</string>
+    <string name="every_1_5_hours">Каждые 1,5 часа (с наличием подписки)</string>
     <string name="every_2_hours">Каждые 2 часа (с наличием подписки)</string>
+    <string name="every_2_5_hours">Каждые 2,5 часа  (с наличием подписки)</string>
     <string name="every_3_hours">Каждые 3 часа (с наличием подписки)</string>
+    <string name="every_3_5_hours">Каждые 3,5 часа (с наличием подписки)</string>
     <string name="every_4_hours">Каждые 4 часа</string>
+    <string name="every_4_5_hours">Каждые 4,5 часа</string>
     <string name="every_5_hours">Каждые 5 часов</string>
+    <string name="every_5_5_hours">Каждые 5,5 часов</string>
     <string name="every_6_hours">Каждые 6 часов</string>
+    <string name="every_6_5_hours">Каждые 6,5 часов</string>
     <string name="every_7_hours">Каждые 7 часаов</string>
+    <string name="every_7_5_hours">Каждые 7,5 часов</string>
     <string name="every_8_hours">Каждые 8 часов</string>
 
     <string name="own">Своя категория</string>
