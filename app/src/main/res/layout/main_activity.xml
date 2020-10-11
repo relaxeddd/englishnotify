@@ -170,7 +170,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/text_color_main"
                             android:gravity="center"
-                            android:background="@color/white"
+                            android:background="@color/background_main"
                             android:text="@string/privacy_policy_text"
                             android:textSize="@dimen/font_12"/>
 

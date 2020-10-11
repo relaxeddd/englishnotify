@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#1F1A24</color>
-    <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#332940</color>
-    <color name="colorPrimaryRipple">#99ABAFAD</color>
-
     <color name="notificationTextColor">#FFFFFF</color>
 
     <color name="system_ui_scrim_light">#2EFFFFFF</color>
     <color name="system_ui_scrim_black">#B3000000</color>
 
+    <color name="background_main">#131313</color>
     <color name="text_color_main">@color/white</color>
     <color name="card_view_color">#000000</color>
     <color name="progress_bar_secondary">@color/gray</color>

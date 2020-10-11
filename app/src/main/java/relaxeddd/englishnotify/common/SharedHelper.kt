@@ -262,7 +262,8 @@ object SharedHelper {
 
     fun getAppThemeType(context: Context = App.context) : Int {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        return sPref.getInt(APP_THEME, THEME_STANDARD)
+        val themeType = sPref.getInt(APP_THEME, THEME_STANDARD)
+        return if (themeType < 0 || themeType > THEME_BLUE_LIGHT) THEME_STANDARD else themeType
     }
 
     fun setAppThemeType(value : Int, context: Context = App.context) {

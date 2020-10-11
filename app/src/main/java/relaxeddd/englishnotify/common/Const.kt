@@ -135,7 +135,6 @@ const val THEME_STANDARD = 0
 const val THEME_BLUE = 1
 const val THEME_BLACK = 2
 const val THEME_BLUE_LIGHT = 3
-const val THEME_SALAD = 4
 
 const val NOTIFICATIONS_VIEW_STANDARD = 0
 const val NOTIFICATIONS_VIEW_INPUT = 1

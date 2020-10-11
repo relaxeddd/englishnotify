@@ -17,8 +17,8 @@ android {
         applicationId 'relaxeddd.englishnotify'
         minSdkVersion 18
         targetSdkVersion 29
-        versionCode 66
-        versionName "3.4.4"
+        versionCode 67
+        versionName "3.4.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
@@ -68,7 +68,7 @@ dependencies {
     //firebase
     implementation 'com.firebaseui:firebase-ui-auth:4.3.2'
     implementation 'com.google.firebase:firebase-auth:19.4.0'
-    implementation 'com.google.firebase:firebase-firestore:21.7.0'
+    implementation 'com.google.firebase:firebase-firestore:21.7.1'
     implementation 'com.google.firebase:firebase-messaging:20.3.0'
     //Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
