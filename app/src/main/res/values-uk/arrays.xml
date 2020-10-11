@@ -2,13 +2,21 @@
 <resources>
 
     <string-array name="array_time_repeat">
+        <item>Каждыe 30 минут</item>
         <item>Каждый час</item>
+        <item>Каждые 1,5 часа</item>
         <item>Каждые 2 часа</item>
+        <item>Каждые 2,5 часа</item>
         <item>Каждые 3 часа</item>
+        <item>Каждые 3,5 часа</item>
         <item>Каждые 4 часов</item>
+        <item>Каждые 4,5 часа</item>
         <item>Каждые 5 часов</item>
+        <item>Каждые 5,5 часов</item>
         <item>Каждые 6 часов</item>
+        <item>Каждые 6,5 часов</item>
         <item>Каждые 7 часов</item>
+        <item>Каждые 7,5 часов</item>
         <item>Каждые 8 часов</item>
     </string-array>
 

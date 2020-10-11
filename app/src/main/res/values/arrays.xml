@@ -13,13 +13,21 @@
     </string-array>
 
     <string-array name="array_time_repeat">
+        <item>Every 30 minutes</item>
         <item>Every 1 hour</item>
+        <item>Every 1,5 hours</item>
         <item>Every 2 hours</item>
+        <item>Every 2,5 hours</item>
         <item>Every 3 hours</item>
+        <item>Every 3,5 hours</item>
         <item>Every 4 hours</item>
+        <item>Every 4,5 hours</item>
         <item>Every 5 hours</item>
+        <item>Every 5,5 hours</item>
         <item>Every 6 hours</item>
+        <item>Every 6,5 hours</item>
         <item>Every 7 hours</item>
+        <item>Every 7,5 hours</item>
         <item>Every 8 hours</item>
     </string-array>
 
