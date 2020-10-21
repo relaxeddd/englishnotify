@@ -122,6 +122,9 @@ class FragmentTraining : BaseFragment<ViewModelTraining, FragmentTrainingBinding
             NAVIGATION_ANIMATE_LEARNED_COUNT -> {
                 animateLearnedCount()
             }
+            NAVIGATION_ANIMATE_LEARNED_COUNT_MINUS -> {
+                animateLearnedCount(false)
+            }
             NAVIGATION_ACTIVITY_BACK -> {
                 hideKeyboard(binding.editTextTrainingAnswer)
                 super.onNavigationEvent(eventId)
@@ -130,14 +133,16 @@ class FragmentTraining : BaseFragment<ViewModelTraining, FragmentTrainingBinding
         }
     }
 
-    private fun animateLearnedCount() {
+    private fun animateLearnedCount(isPlusOne: Boolean = true) {
+        binding.textTrainingLearnedPlus.text = if (isPlusOne) "+1" else "-1"
+        binding.textTrainingLearnedPlus.setTextColor(ContextCompat.getColor(context ?: return, if (isPlusOne) R.color.green_success else R.color.red_wrong))
         binding.textTrainingLearnedPlus.visibility = View.VISIBLE
 
         val set = AnimationSet(true).apply {
             interpolator = AccelerateInterpolator()
             addAnimation(TranslateAnimation(0f, 0f, 0f, -180f))
             addAnimation(AlphaAnimation(1f, 0f))
-            duration = 1200
+            duration = 1600
             setAnimationListener(object: Animation.AnimationListener {
 
                 override fun onAnimationRepeat(animation: Animation?) {}
@@ -191,7 +196,7 @@ class FragmentTraining : BaseFragment<ViewModelTraining, FragmentTrainingBinding
             interpolator = AccelerateInterpolator()
             addAnimation(TranslateAnimation(0f, 0f, 0f, -250f))
             addAnimation(AlphaAnimation(1f, 0f))
-            duration = 1200
+            duration = 1600
             setAnimationListener(object: Animation.AnimationListener {
 
                 override fun onAnimationRepeat(animation: Animation?) {}

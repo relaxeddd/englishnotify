@@ -115,6 +115,7 @@ const val NAVIGATION_PLAY_WORD_DEPENDS_ON_TRANSLATION = 1348
 const val NAVIGATION_RECREATE_ACTIVITY = 1349
 const val NAVIGATION_SHOW_KEYBOARD = 1350
 const val NAVIGATION_WORD_EXISTS_DIALOG = 1351
+const val NAVIGATION_ANIMATE_LEARNED_COUNT_MINUS = 1352
 
 const val NAVIGATION_LOADING_SHOW = 801
 const val NAVIGATION_LOADING_HIDE = 802
@@ -185,6 +186,7 @@ const val APP = "app"
 const val APP_THEME = "appTheme"
 const val IS_KNOW = "isKnow"
 const val CATEGORY = "category"
+const val CHECK_LEARNED_WORDS = "checkLearnedWords"
 const val CONTENT = "content"
 const val DICTIONARY_TAB_POSITION = "dictionaryTabPosition"
 const val NAME = "name"

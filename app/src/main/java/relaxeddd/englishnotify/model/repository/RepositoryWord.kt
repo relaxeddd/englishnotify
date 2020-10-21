@@ -56,7 +56,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         val words = words.value ?: ArrayList()
 
         words.forEach {
-            if (!it.isDeleted && it.learnStage != LEARN_STAGE_MAX) {
+            if (!it.isDeleted) {
                 it.tags.forEach { tag -> if (tag.isNotEmpty()) categories.add(tag) }
             }
         }
@@ -65,18 +65,31 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         return categories
     }
 
-    fun getTrainingWordsByCategory(category: String) : ArrayList<Word> {
+    fun getTrainingWordsByCategory(category: String, isLearned: Boolean = false) : ArrayList<Word> {
         val trainingWords = ArrayList<Word>()
         val words = words.value ?: ArrayList()
 
         for (word in words) {
             if ((word.tags.contains(category) || category == ALL_APP_WORDS || (category == OWN && word.isOwnCategory))
-                && word.learnStage != LEARN_STAGE_MAX && !word.isDeleted) {
+                    && (word.learnStage < LEARN_STAGE_MAX && !isLearned || isLearned && word.learnStage >= LEARN_STAGE_MAX) && !word.isDeleted) {
                 trainingWords.add(word)
             }
         }
 
-        return if (trainingWords.size >= 10) ArrayList(trainingWords.shuffled().subList(0, 10)) else ArrayList(trainingWords.shuffled())
+        val selectedWords = if (isLearned) {
+            trainingWords.sortBy { it.learnStage }
+            if (trainingWords.size >= 10) {
+                ArrayList(trainingWords.take(10).shuffled())
+            } else {
+                ArrayList(trainingWords.shuffled())
+            }
+        } else if (trainingWords.size >= 10) {
+            ArrayList(trainingWords.shuffled().subList(0, 10))
+        } else {
+            ArrayList(trainingWords.shuffled())
+        }
+
+        return selectedWords
     }
 
     fun setWordLearnStage(word: Word, progress: Int, isRemoteSave: Boolean = true) {
@@ -132,7 +145,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
             if (word.isCreatedByUser && !word.isDeleted) {
                 tagInfoOwn.received++
                 tagInfoOwn.total++
-                if (word.learnStage == LEARN_STAGE_MAX) tagInfoOwn.learned++
+                if (word.learnStage >= LEARN_STAGE_MAX) tagInfoOwn.learned++
             }
         }
 
