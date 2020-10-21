@@ -42,9 +42,9 @@ class PushBroadcastReceiver : BroadcastReceiver() {
                     val title = if (languageType == TYPE_PUSH_ENGLISH) word.eng else word.rus
                     val isCorrectAnswer = isCorrectAnswer(userText, answer)
 
-                    if (isCorrectAnswer && learnStage != LEARN_STAGE_MAX) {
+                    if (isCorrectAnswer && learnStage < LEARN_STAGE_MAX) {
                         learnStage++
-                    } else if (learnStage != LEARN_STAGE_MAX) {
+                    } else {
                         learnStage = 0
                     }
 
@@ -65,9 +65,7 @@ class PushBroadcastReceiver : BroadcastReceiver() {
                     }
                 }
             } else {
-                if (learnStage != LEARN_STAGE_MAX) {
-                    learnStage = 0
-                }
+                learnStage = 0
                 isRemove = false
 
                 withContext(Dispatchers.Main) {

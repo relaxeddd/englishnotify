@@ -7,6 +7,7 @@ import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.repository.RepositoryWord
+import kotlin.math.min
 import kotlin.random.Random
 
 class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelBase() {
@@ -140,8 +141,8 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
     fun onBind() {
         val allWords = ArrayList(repositoryWord.words.value ?: ArrayList()).filter { !it.isDeleted }
         total = allWords.size
-        learned = allWords.filter { it.learnStage == LEARN_STAGE_MAX }.size
-        val words = repositoryWord.getTrainingWordsByCategory(category)
+        learned = allWords.filter { it.learnStage >= LEARN_STAGE_MAX }.size
+        val words = repositoryWord.getTrainingWordsByCategory(category, SharedHelper.isCheckLearnedWords())
 
         trainingWords = words
         wordsSize.value = words.size
@@ -194,9 +195,9 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
                 current.value = currentIx + 1
             }
 
-            resultAnimationType.value = if (resultLearnStage == LEARN_STAGE_MAX) RESULT_LEARNED else RESULT_RIGHT
+            resultAnimationType.value = if (resultLearnStage >= LEARN_STAGE_MAX) RESULT_LEARNED else RESULT_RIGHT
             navigateEvent.value = Event(NAVIGATION_ANIMATE_RESULT)
-            if (resultLearnStage == LEARN_STAGE_MAX) {
+            if (resultLearnStage >= LEARN_STAGE_MAX && !SharedHelper.isCheckLearnedWords()) {
                 learned++
                 textStatistic.value = "$learned/$total"
                 navigateEvent.value = Event(NAVIGATION_ANIMATE_LEARNED_COUNT)
@@ -205,10 +206,17 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
             if (SharedHelper.isHearAnswer() && !isCurrentEngTraining) {
                 navigateEvent.value = Event(NAVIGATION_PLAY_WORD)
             }
-            navigateEvent.value = Event(NAVIGATION_HIDE_KEYBOARD)
+
             repositoryWord.setWordLearnStage(word, 0)
+            if (SharedHelper.isCheckLearnedWords()) {
+                learned--
+                textStatistic.value = "$learned/$total"
+                navigateEvent.value = Event(NAVIGATION_ANIMATE_LEARNED_COUNT_MINUS)
+            }
+
             current.value = currentIx
 
+            navigateEvent.value = Event(NAVIGATION_HIDE_KEYBOARD)
             resultAnimationType.value = if (textAnswer.isEmpty()) RESULT_MEMORIZE else RESULT_WRONG
             navigateEvent.value = Event(NAVIGATION_ANIMATE_RESULT)
         }

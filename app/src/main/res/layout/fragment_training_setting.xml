@@ -39,6 +39,17 @@
             android:paddingStart="@dimen/size_24"
             android:paddingEnd="@dimen/size_32"/>
 
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switch_training_setting_check_learned_words"
+            android:text="@string/check_learned_words"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:layout_marginTop="@dimen/size_4"
+            android:textSize="@dimen/font_16"
+            android:paddingStart="@dimen/size_24"
+            android:paddingEnd="@dimen/size_32"/>
+
         <RadioGroup
             android:id="@+id/radio_group_training_setting_language"
             android:layout_width="match_parent"

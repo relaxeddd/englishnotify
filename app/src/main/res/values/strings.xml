@@ -27,6 +27,7 @@
     <string name="category_own_not_selected">Category not selected. Firstly, add words to "Own category"</string>
     <string name="change_account_text">You login with another account. The dictionary will be cleared.</string>
     <string name="check_all">Check all</string>
+    <string name="check_learned_words">Check learned words</string>
     <string name="close">Close</string>
     <string name="common">Common</string>
     <string name="confirm">Confirm</string>
@@ -247,7 +248,8 @@
     </string>
 
     <string name="patch_notes">
-        - Receive notifications every 30 minutes option
+        - Check learned words option in training settings
+        \n- Receive notifications every 30 minutes option
         \n- Voice input (you can disable in common tab)
         \n- Please, take attention on \"If you do not receive notifications\" in settings tab
         \n- It might be better to add words in \"Own category\"

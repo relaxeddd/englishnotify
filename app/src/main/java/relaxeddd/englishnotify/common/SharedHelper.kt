@@ -30,6 +30,16 @@ object SharedHelper {
         sPref.edit().putBoolean(IS_OLD_NAVIGATION_DESIGN, value).apply()
     }
 
+    fun isCheckLearnedWords(context: Context = App.context) : Boolean {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getBoolean(CHECK_LEARNED_WORDS, false)
+    }
+
+    fun setCheckLearnedWords(value: Boolean, context: Context = App.context) {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putBoolean(CHECK_LEARNED_WORDS, value).apply()
+    }
+
     fun isListeningTraining(context: Context = App.context) : Boolean {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         return sPref.getBoolean(LISTENING_TRAINING, false)

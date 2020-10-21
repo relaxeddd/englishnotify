@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.LEARN_STAGE_MAX
 import relaxeddd.englishnotify.common.Word
+import kotlin.math.min
 
 class AdapterStatistic: ListAdapter<Word, AdapterStatistic.ViewHolder>(TagInfoDiffCallback()) {
 
@@ -41,11 +42,11 @@ class AdapterStatistic: ListAdapter<Word, AdapterStatistic.ViewHolder>(TagInfoDi
                 else -> R.color.green_success
             }
 
-            progress.visibility = if (word.learnStage == LEARN_STAGE_MAX) View.GONE else View.VISIBLE
-            progress.progress = (word.learnStage.toFloat() / LEARN_STAGE_MAX * 100).toInt()
+            progress.visibility = if (word.learnStage >= LEARN_STAGE_MAX) View.GONE else View.VISIBLE
+            progress.progress = min((word.learnStage.toFloat() / LEARN_STAGE_MAX * 100).toInt(), 100)
             textWord.setTextColor(ContextCompat.getColor(itemView.context, textColorResId))
             textTranslation.setTextColor(ContextCompat.getColor(itemView.context, textColorResId))
-            if (word.learnStage == LEARN_STAGE_MAX) {
+            if (word.learnStage >= LEARN_STAGE_MAX) {
                 textWord.paintFlags = textWord.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                 textTranslation.paintFlags = textTranslation.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
             } else {
