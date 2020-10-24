@@ -43,11 +43,30 @@ data class Word(
     var type: String = "",
     var isCreatedByUser: Boolean = true,
     var isOwnCategory: Boolean = false,
-    var level: Int = 0
+    var level: Int = 0,
+    var learnStageSecondary: Int = 0
 ) {
     constructor(word: Word) : this(word.id,  word.eng, word.rus, word.transcription, word.tags, word.sampleEng, word.sampleRus,
         word.v2, word.v3, word.timestamp, word.isDeleted, word.learnStage, word.type, word.isCreatedByUser,
-        word.isOwnCategory, word.level)
+        word.isOwnCategory, word.level, word.learnStageSecondary)
+
+    fun isLearned(isEnabledSecondaryProgress: Boolean) : Boolean {
+        return if (isEnabledSecondaryProgress && type != EXERCISE) learnStage >= LEARN_STAGE_MAX && learnStageSecondary >= LEARN_STAGE_MAX else learnStage >= LEARN_STAGE_MAX
+    }
+
+    fun isLearnedForTraining(isEnabledSecondaryProgress: Boolean, trainingLanguage: Int) : Boolean {
+        return when (trainingLanguage) {
+            TRAINING_ENG_TO_RUS -> {
+                learnStage >= LEARN_STAGE_MAX
+            }
+            TRAINING_RUS_TO_ENG -> {
+                if (isEnabledSecondaryProgress) learnStageSecondary >= LEARN_STAGE_MAX else learnStage >= LEARN_STAGE_MAX
+            }
+            else /*MIXED*/ -> {
+                if (isEnabledSecondaryProgress) learnStage >= LEARN_STAGE_MAX && learnStageSecondary >= LEARN_STAGE_MAX else learnStage >= LEARN_STAGE_MAX
+            }
+        }
+    }
 }
 
 @Keep

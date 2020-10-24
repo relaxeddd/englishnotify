@@ -11,6 +11,7 @@ import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.model.repository.RepositoryUser
+import relaxeddd.englishnotify.model.repository.RepositoryWord
 
 class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelBase() {
 
@@ -27,6 +28,7 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     val isVisibleReceiveHelp = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
     val isOldNavigationDesign = MutableLiveData(SharedHelper.isOldNavigationDesign())
     val isShowVoiceInput = MutableLiveData(SharedHelper.isShowVoiceInput())
+    val isEnableSecondaryProgress = MutableLiveData(SharedHelper.isEnabledSecondaryProgress())
     
     val clickListenerAppInfo = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_APP_ABOUT)
@@ -36,6 +38,9 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     }
     val clickListenerSubscriptionInfo = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_SUBSCRIPTION_INFO)
+    }
+    val clickListenerSecondaryProgressInfo = View.OnClickListener {
+        navigateEvent.value = Event(NAVIGATION_DIALOG_SECONDARY_PROGRESS_INFO)
     }
     val clickListenerLogout = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_CONFIRM_LOGOUT)
@@ -48,6 +53,13 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     }
     val clickListenerInfoTraining = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_INFO_TRAINING)
+    }
+    val clickListenerSwapProgress = View.OnClickListener {
+        if (SharedHelper.isEnabledSecondaryProgress()) {
+            navigateEvent.value = Event(NAVIGATION_DIALOG_SWAP_PROGRESS)
+        } else {
+            showToast(R.string.need_enable_secondary_progress)
+        }
     }
     val clickListenerReceiveHelp = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_RECEIVE_HELP)
@@ -71,6 +83,12 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
             isShowVoiceInput.value = isChecked
         }
     }
+    var checkedChangeListenerEnabledSecondaryProgress = CompoundButton.OnCheckedChangeListener { _, isChecked ->
+        if (SharedHelper.isEnabledSecondaryProgress() != isChecked) {
+            SharedHelper.setEnabledSecondaryProgress(isChecked)
+            isEnableSecondaryProgress.value = isChecked
+        }
+    }
 
     init {
         user.observeForever(userObserver)
@@ -84,6 +102,14 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     fun onLogoutDialogResult(isConfirmed: Boolean) {
         if (isConfirmed) {
             navigateEvent.value = Event(NAVIGATION_GOOGLE_LOGOUT)
+        }
+    }
+
+    fun onSwapProgressResult(isConfirmed: Boolean) {
+        if (isConfirmed) {
+            RepositoryWord.getInstance().swapProgress {
+                showToast(R.string.progress_swapped)
+            }
         }
     }
 

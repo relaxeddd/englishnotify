@@ -29,6 +29,7 @@ class AdapterExercises(viewModel: ViewModelDictionary) : AdapterWords<AdapterExe
         override fun getCheckBoxSelect(): MaterialCheckBox = itemView.check_box_word_select
         override fun getImagePlay(): ImageView = itemView.image_word_play
         override fun getProgressLearn(): ProgressBar = itemView.progress_bar_word_learn_stage
+        override fun getProgressLearnSecondary(): ProgressBar? = null
 
         override fun bind(word: Word, isSelectState: Boolean, checkList: HashSet<Word>,
                           clickListener: View.OnClickListener, longClickListener: View.OnLongClickListener,

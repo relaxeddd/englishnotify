@@ -10,6 +10,7 @@ import android.widget.TextView
 import com.google.android.material.checkbox.MaterialCheckBox
 import kotlinx.android.synthetic.main.view_item_word.view.*
 import relaxeddd.englishnotify.R
+import relaxeddd.englishnotify.common.SharedHelper
 import relaxeddd.englishnotify.common.TYPE_PUSH_ENGLISH
 import relaxeddd.englishnotify.common.TYPE_PUSH_RUSSIAN
 import relaxeddd.englishnotify.common.Word
@@ -40,6 +41,7 @@ class AdapterDictionary(viewModel: ViewModelDictionary) : AdapterWords<AdapterDi
         override fun getCheckBoxSelect(): MaterialCheckBox = itemView.check_box_word_select
         override fun getImagePlay(): ImageView = itemView.image_word_play
         override fun getProgressLearn(): ProgressBar = itemView.progress_bar_word_learn_stage
+        override fun getProgressLearnSecondary(): ProgressBar = itemView.progress_bar_word_learn_stage_secondary
 
         fun bind(word: Word, languageType: Int, isSelectState: Boolean, checkList: HashSet<Word>,
                  clickListener: View.OnClickListener, longClickListener: View.OnLongClickListener,

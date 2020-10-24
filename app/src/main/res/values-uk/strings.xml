@@ -44,6 +44,7 @@
     <string name="enable_notifications">Включить уведомления</string>
     <string name="enable_notifications_warning">Включите уведомления</string>
     <string name="enable_notification_translation_input">Включите ввод перевода в уведомлении</string>
+    <string name="enable_secondary_progress">Включить вторичный прогресс слов</string>
     <string name="end">Закончить</string>
     <string name="english_at_russian">Слово-перевод</string>
     <string name="enter_name">Введите имя</string>
@@ -72,6 +73,7 @@
     <string name="feedback_too_short">Отзыв слишком короткий</string>
     <string name="filter">Фильтр</string>
     <string name="hide">Скрыть</string>
+    <string name="hide_off_notifications_warning">Скрыть предупреждение об отключенных уведомлениях</string>
     <string name="hours_off_time">Часов (0–23)</string>
     <string name="incorrect">Не то</string>
     <string name="i_not_know_it">Я не знаю</string>
@@ -94,6 +96,7 @@
     <string name="main">Основные</string>
     <string name="memorize">Запоминай</string>
     <string name="mixed">Смешанная</string>
+    <string name="need_enable_secondary_progress">Необходимо включить второстепенный прогресс у слов</string>
     <string name="new_categories">Новые</string>
     <string name="new_version">Новая версия</string>
     <string name="network_not_available">Ошибка интернет соединения</string>
@@ -126,6 +129,7 @@
     <string name="please_wait">Пожалуйста, подождите</string>
     <string name="privacy_policy">Политика конфиденциальности</string>
     <string name="privacy_policy_in_sentence">Политикой конфиденциальности</string>
+    <string name="progress_swapped">Прогрессы поменялись местами</string>
     <string name="purchase_consumed">Покупка совершена, спасибо!</string>
     <string name="rate">Оценить</string>
     <string name="rate_app">Оценить приложение</string>
@@ -143,6 +147,8 @@
     <string name="show_translation">Я не знаю</string>
     <string name="show_word_progress">Показывать прогресс слов</string>
     <string name="search_words">Искать слова</string>
+    <string name="secondary_word_progress">Вторичный прогресс изучения слов</string>
+    <string name="secondary_word_progress_info">Вторичный прогресс изучения слов зависит от ввода слова по его переводу (тренировка типа перевод-слово), в то время как основной прогресс изменяется во время ввода перевода слова при тренировке или в уведомлении. Также можно поменять местами прогрессы слов для необходимой настройки.</string>
     <string name="send_feedback">Отправить отзыв</string>
     <string name="send_test_notification">Отправить тестовое уведомление? (Осталось: %s)</string>
     <string name="select">Выбрать</string>
@@ -155,6 +161,8 @@
     <string name="subscription_days">Дней подписки: %s</string>
     <string name="subscription_time_error">Время подписки истекло, можно продлить для получения преимуществ</string>
     <string name="subscription_need">Необходимо продлить подписку</string>
+    <string name="swap_main_and_secondary_progress">Поменять местами значение основного и второстепенного прогрессов слова</string>
+    <string name="swap_main_and_secondary_progress_text">Основной прогресс будет равен второстепенному, а второстепенный - основному. Применяется для всех слов</string>
     <string name="swipe_delete_disable">Нельзя удалять уведомления свайпом</string>
     <string name="thank_you">Спасибо!</string>
     <string name="tags_should_not_be_empty">Вы должны выбрать как минимум 1 категорию</string>
@@ -233,7 +241,9 @@
     </string>
 
     <string name="patch_notes">
-        - Опция проверки выученных слов в настройках тренировки
+        - Второстепенный прогресс слов. Используется при тренировке типа перевод-слово. Можно включить во вкладке Общее
+        \n- Опция скрыть предупреждение об отключенных уведомлениях во вкладке Уведомления
+        \n- Опция проверки выученных слов в настройках тренировки
         \n- Опция получения уведомлений каждые 30 минут
         \n- Голосовой ввод (можно скрыть во вкладке Общее)
         \n- Пожалуйста обратите внимание на опцию \"Если не ходят уведомления\"

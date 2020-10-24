@@ -29,9 +29,10 @@ class PushBroadcastReceiver : BroadcastReceiver() {
             val wordId = intent.getStringExtra(WORD_ID) ?: ""
             val isKnow = intent.getIntExtra(IS_KNOW, NOT_KNOW)
             val word = wordDao.findWordById(wordId) ?: return@launch
+            val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress(context)
             val languageType = SharedHelper.getLearnLanguageType()
             val saveWord = Word(word)
-            var learnStage = saveWord.learnStage
+            var learnStage = if (languageType == TYPE_PUSH_RUSSIAN && isEnabledSecondaryProgress) saveWord.learnStageSecondary else saveWord.learnStage
             var isRemove = true
             val isRemovableViaDelay = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
 
@@ -42,7 +43,7 @@ class PushBroadcastReceiver : BroadcastReceiver() {
                     val title = if (languageType == TYPE_PUSH_ENGLISH) word.eng else word.rus
                     val isCorrectAnswer = isCorrectAnswer(userText, answer)
 
-                    if (isCorrectAnswer && learnStage < LEARN_STAGE_MAX) {
+                    if (isCorrectAnswer) {
                         learnStage++
                     } else {
                         learnStage = 0
@@ -73,10 +74,8 @@ class PushBroadcastReceiver : BroadcastReceiver() {
                         SharedHelper.NOTIFICATIONS_VIEW_WITH_TRANSLATE, notificationId = notificationId, isShowAnswer = true)
                 }
             }
-            if (saveWord.learnStage != learnStage) {
-                withContext(Dispatchers.Main) {
-                    RepositoryWord.getInstance().setWordLearnStage(saveWord, learnStage, false)
-                }
+            withContext(Dispatchers.Main) {
+                RepositoryWord.getInstance().setWordLearnStage(saveWord, learnStage, isEnabledSecondaryProgress && languageType == TYPE_PUSH_RUSSIAN, false)
             }
             if (isRemove && notificationId != -1) {
                 withContext(Dispatchers.Main) {

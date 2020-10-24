@@ -65,19 +65,35 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         return categories
     }
 
-    fun getTrainingWordsByCategory(category: String, isLearned: Boolean = false) : ArrayList<Word> {
+    fun getTrainingWordsByCategory(category: String, isLearned: Boolean = false, trainingLanguage: Int) : ArrayList<Word> {
+        val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
         val trainingWords = ArrayList<Word>()
         val words = words.value ?: ArrayList()
 
         for (word in words) {
+            val isWordAlreadyLearned = word.isLearnedForTraining(isEnabledSecondaryProgress, trainingLanguage)
+
             if ((word.tags.contains(category) || category == ALL_APP_WORDS || (category == OWN && word.isOwnCategory))
-                    && (word.learnStage < LEARN_STAGE_MAX && !isLearned || isLearned && word.learnStage >= LEARN_STAGE_MAX) && !word.isDeleted) {
+                    && (!isWordAlreadyLearned && !isLearned || isLearned && isWordAlreadyLearned) && !word.isDeleted) {
                 trainingWords.add(word)
             }
         }
 
         val selectedWords = if (isLearned) {
-            trainingWords.sortBy { it.learnStage }
+            trainingWords.sortBy {
+                val wordSummaryProgress = when (trainingLanguage) {
+                    TRAINING_ENG_TO_RUS -> {
+                        it.learnStage
+                    }
+                    TRAINING_RUS_TO_ENG -> {
+                        if (isEnabledSecondaryProgress) it.learnStageSecondary else it.learnStage
+                    }
+                    else /*MIXED*/ -> {
+                        if (isEnabledSecondaryProgress) it.learnStage + it.learnStageSecondary else it.learnStage
+                    }
+                }
+                wordSummaryProgress
+            }
             if (trainingWords.size >= 10) {
                 ArrayList(trainingWords.take(10).shuffled())
             } else {
@@ -92,12 +108,12 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         return selectedWords
     }
 
-    fun setWordLearnStage(word: Word, progress: Int, isRemoteSave: Boolean = true) {
-        word.learnStage = progress
+    fun setWordLearnStage(word: Word, progress: Int, isSecondary: Boolean, isRemoteSave: Boolean = true) {
+        if (isSecondary) word.learnStageSecondary = progress else word.learnStage = progress
         ioScope.launch {
             val saveWord = Word(word)
 
-            saveWord.learnStage = progress
+            if (isSecondary) saveWord.learnStageSecondary = progress else saveWord.learnStage = progress
             updateWord(saveWord)
         }
     }
@@ -136,6 +152,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
     }*/
 
     fun getOwnWordsTagInfo() : TagInfo {
+        val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
         val tagInfoOwn = TagInfo(OWN)
         val words = words.value ?: ArrayList()
 
@@ -145,7 +162,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
             if (word.isCreatedByUser && !word.isDeleted) {
                 tagInfoOwn.received++
                 tagInfoOwn.total++
-                if (word.learnStage >= LEARN_STAGE_MAX) tagInfoOwn.learned++
+                if (word.isLearned(isEnabledSecondaryProgress)) tagInfoOwn.learned++
             }
         }
 
@@ -172,6 +189,21 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
 
     fun updateWord(word : Word) {
         wordDao.insert(word)
+    }
+
+    fun swapProgress(onCompleted: () -> Unit) {
+        ioScope.launch {
+            val updateWords = words.value ?: ArrayList()
+            updateWords.forEach {
+                val secondaryProgress = it.learnStageSecondary
+                it.learnStageSecondary = it.learnStage
+                it.learnStage = secondaryProgress
+            }
+            wordDao.insertAll(*updateWords.toTypedArray())
+            uiScope.launch {
+                onCompleted()
+            }
+        }
     }
 
     //------------------------------------------------------------------------------------------------------------------

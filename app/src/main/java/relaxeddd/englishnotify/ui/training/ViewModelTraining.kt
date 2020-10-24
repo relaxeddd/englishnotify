@@ -7,7 +7,6 @@ import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.repository.RepositoryWord
-import kotlin.math.min
 import kotlin.random.Random
 
 class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelBase() {
@@ -22,6 +21,8 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
         const val RESULT_LEARNED = 2
         const val RESULT_MEMORIZE = 3
     }
+
+    private val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
 
     var category = ALL_APP_WORDS
     var trainingType = TRAINING_ENG_TO_RUS
@@ -51,9 +52,11 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
     val isVisibleAnswer = MutableLiveData(false)
     val isVisibleResultText = MutableLiveData(false)
     val isVisibleWordProgress = MutableLiveData(false)
+    val isVisibleWordProgressSecondary = MutableLiveData(false)
     val isVisibleButtonListen = MutableLiveData(SharedHelper.isListeningTraining())
     val isVisibleTextWord = MutableLiveData(!SharedHelper.isListeningTraining())
     val wordProgress = MutableLiveData(0)
+    val wordProgressSecondary = MutableLiveData(0)
     val resultAnimationType = MutableLiveData(RESULT_RIGHT)
 
     val result1 = MutableLiveData(STATE_ANSWER)
@@ -104,6 +107,7 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
         translation.value = if (isCurrentEngTraining) rus else eng
         transcription.value = transcriptionValue
         wordProgress.value = 100 / 3 * word.learnStage
+        wordProgressSecondary.value = 100 / 3 * word.learnStageSecondary
         resultText.value = if (currentResult == STATE_SUCCESS) getAppString(R.string.correct_answer) else getAppString(R.string.incorrect_answer)
         if (answers.size > currentIx) {
             var savedAnswer = answers[currentIx]
@@ -119,6 +123,7 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
         isVisibleTranscription.value = currentResult != STATE_ANSWER
         isVisibleResultText.value = currentResult != STATE_ANSWER
         isVisibleWordProgress.value = currentResult != STATE_ANSWER
+        isVisibleWordProgressSecondary.value = currentResult != STATE_ANSWER && isEnabledSecondaryProgress
         isVisibleButtonListen.value = isListeningTraining && currentResult == STATE_ANSWER
         isVisibleTextWord.value = !isListeningTraining || currentResult != STATE_ANSWER
 
@@ -139,10 +144,11 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
     }
 
     fun onBind() {
+        val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
         val allWords = ArrayList(repositoryWord.words.value ?: ArrayList()).filter { !it.isDeleted }
         total = allWords.size
-        learned = allWords.filter { it.learnStage >= LEARN_STAGE_MAX }.size
-        val words = repositoryWord.getTrainingWordsByCategory(category, SharedHelper.isCheckLearnedWords())
+        learned = allWords.filter { it.isLearned(isEnabledSecondaryProgress) }.size
+        val words = repositoryWord.getTrainingWordsByCategory(category, SharedHelper.isCheckLearnedWords(), trainingType)
 
         trainingWords = words
         wordsSize.value = words.size
@@ -182,13 +188,19 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
         val isCorrectAnswer = isCorrectAnswer(textAnswer, answer)
         val result = if (isCorrectAnswer) STATE_SUCCESS else STATE_WRONG
         val currentIx = current.value ?: 0
+        val isSecondaryProgress = isEnabledSecondaryProgress && !isCurrentEngTraining
 
         answers.add(textAnswer)
         getResultLiveDataByIx(ix).value = result
         if (result == STATE_SUCCESS) {
-            val resultLearnStage = word.learnStage + 1
+            val resultLearnStage = if (isSecondaryProgress) (word.learnStageSecondary + 1) else (word.learnStage + 1)
+            val isLearned = if (isSecondaryProgress) {
+                (word.learnStageSecondary + 1) >= LEARN_STAGE_MAX && word.learnStage >= LEARN_STAGE_MAX
+            } else {
+                (word.learnStage + 1) >= LEARN_STAGE_MAX
+            }
 
-            repositoryWord.setWordLearnStage(word, resultLearnStage)
+            repositoryWord.setWordLearnStage(word, resultLearnStage, isSecondaryProgress)
             if (currentIx >= trainingWords.size - 1) {
                 current.value = currentIx
             } else {
@@ -197,7 +209,7 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
 
             resultAnimationType.value = if (resultLearnStage >= LEARN_STAGE_MAX) RESULT_LEARNED else RESULT_RIGHT
             navigateEvent.value = Event(NAVIGATION_ANIMATE_RESULT)
-            if (resultLearnStage >= LEARN_STAGE_MAX && !SharedHelper.isCheckLearnedWords()) {
+            if (isLearned && !SharedHelper.isCheckLearnedWords()) {
                 learned++
                 textStatistic.value = "$learned/$total"
                 navigateEvent.value = Event(NAVIGATION_ANIMATE_LEARNED_COUNT)
@@ -207,7 +219,7 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
                 navigateEvent.value = Event(NAVIGATION_PLAY_WORD)
             }
 
-            repositoryWord.setWordLearnStage(word, 0)
+            repositoryWord.setWordLearnStage(word, 0, isSecondaryProgress)
             if (SharedHelper.isCheckLearnedWords()) {
                 learned--
                 textStatistic.value = "$learned/$total"
@@ -256,10 +268,23 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
         else -> result10
     }
 
-    private fun isEngTraining(word: Word, state: Int) = when (trainingType) {
-        TRAINING_RUS_TO_ENG -> state != STATE_ANSWER || word.type == EXERCISE
-        TRAINING_MIXED -> state != STATE_ANSWER || word.type == EXERCISE || Random.nextInt(2) == 0
-        else -> true
+    private fun isEngTraining(word: Word, state: Int) : Boolean {
+        val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
+        val isCheckingLearnedWords = SharedHelper.isCheckLearnedWords()
+        val random = Random.nextInt(2)
+        val isRandomEng = if (!isEnabledSecondaryProgress || isCheckingLearnedWords) {
+            random == 0
+        } else {
+            random == 0 && word.learnStage < LEARN_STAGE_MAX || word.learnStageSecondary < LEARN_STAGE_MAX
+        }
+
+        return when (trainingType) {
+            TRAINING_RUS_TO_ENG -> state != STATE_ANSWER || word.type == EXERCISE
+            TRAINING_MIXED -> {
+                state != STATE_ANSWER || word.type == EXERCISE || isRandomEng
+            }
+            else -> true
+        }
     }
 
     private fun clearState() {
@@ -278,6 +303,7 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
         isVisibleAnswer.value = false
         isVisibleResultText.value = false
         wordProgress.value = 0
+        wordProgressSecondary.value = 0
 
         result1.value = STATE_ANSWER
         result2.value = STATE_ANSWER

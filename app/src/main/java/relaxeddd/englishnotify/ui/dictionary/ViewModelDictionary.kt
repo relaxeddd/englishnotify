@@ -84,7 +84,8 @@ open class ViewModelDictionary(private val repositoryWord: RepositoryWord, prote
     }
 
     fun resetProgress(word: Word) {
-        repositoryWord.setWordLearnStage(word, 0)
+        repositoryWord.setWordLearnStage(word, 0, false)
+        repositoryWord.setWordLearnStage(word, 0, true)
     }
 
     fun edit(word: Word) {
