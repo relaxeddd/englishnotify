@@ -24,15 +24,32 @@
         android:layout_marginEnd="@dimen/size_4"
         android:textColor="@color/text_color_main"/>
 
-    <ProgressBar
-        android:id="@+id/progress_bar_statistic_word"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:progress="67"
-        android:layout_weight="1.5"
-        android:secondaryProgressTint="@color/blue"
-        android:secondaryProgressTintMode="multiply"/>
+        android:orientation="vertical">
+
+        <ProgressBar
+            android:id="@+id/progress_bar_statistic_word"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:progress="67"
+            android:layout_weight="1.5"
+            android:secondaryProgressTint="@color/blue"
+            android:secondaryProgressTintMode="multiply"/>
+
+        <ProgressBar
+            android:id="@+id/progress_bar_statistic_word_secondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:progress="67"
+            android:layout_weight="1.5"
+            android:secondaryProgressTint="@color/blue"
+            android:secondaryProgressTintMode="multiply"/>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/text_statistic_word_translation"

@@ -8,6 +8,7 @@ import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.databinding.FragmentNotificationsBinding
 import relaxeddd.englishnotify.dialogs.*
+import relaxeddd.englishnotify.ui.main.MainActivity
 
 class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotificationsBinding>() {
 
@@ -54,6 +55,11 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
         binding.switchNotificationsEnable.setOnCheckedChangeListener(viewModel.checkedChangeListenerEnableNotifications)
         binding.switchNotificationsDeletable.setOnCheckedChangeListener(viewModel.checkedChangeListenerDeletable)
         binding.switchNotificationsShowOnlyOne.setOnCheckedChangeListener(viewModel.checkedChangeListenerShowOnlyOneNotification)
+
+        binding.switchNotificationsHideOffNotificationsWarning.setOnCheckedChangeListener { _, isChecked ->
+            SharedHelper.setHideOffNotificationsWarning(isChecked)
+            (activity as? MainActivity)?.onHideOffNotificationsWarningChanged(isChecked)
+        }
 
         binding.scrollViewNotifications.doOnApplyWindowInsets { v, insets, padding ->
             v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)

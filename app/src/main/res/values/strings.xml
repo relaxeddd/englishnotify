@@ -44,6 +44,7 @@
     <string name="enable_notifications">Enable notifications</string>
     <string name="enable_notifications_warning">Please, enable notifications</string>
     <string name="enable_notification_translation_input">Enable notification translation input</string>
+    <string name="enable_secondary_progress">Enable secondary progress</string>
     <string name="end">End</string>
     <string name="english_at_russian">Word-translation</string>
     <string name="enter_name">Enter the name</string>
@@ -72,6 +73,7 @@
     <string name="feedback_too_short">Feedback too short</string>
     <string name="filter">Filter</string>
     <string name="hide">Hide</string>
+    <string name="hide_off_notifications_warning">Hide off notifications warning</string>
     <string name="hours_off_time">Hours (0–23)</string>
     <string name="i_not_know_it">I don`t know</string>
     <string name="i_know_it">I know it</string>
@@ -94,6 +96,7 @@
     <string name="main">Main</string>
     <string name="memorize">Memorize</string>
     <string name="mixed">Mixed</string>
+    <string name="need_enable_secondary_progress">Need to enable word secondary progress</string>
     <string name="new_categories">New</string>
     <string name="new_version">New version</string>
     <string name="network_not_available">Network error</string>
@@ -126,6 +129,7 @@
     <string name="please_wait">Please, wait</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="privacy_policy_in_sentence">Privacy Policy</string>
+    <string name="progress_swapped">Words progress swapped</string>
     <string name="purchase_consumed">Success purchase, thank you!</string>
     <string name="rate_app">Rate app</string>
     <string name="rate_app_pls">Rate app, please</string>
@@ -143,6 +147,8 @@
     <string name="show_translation">I don`t know</string>
     <string name="show_word_progress">Is show word progress</string>
     <string name="search_words">Search words</string>
+    <string name="secondary_word_progress">Secondary word progress</string>
+    <string name="secondary_word_progress_info">Secondary progress depends on translation to word training. To increase main progress you have to write translation in trainings or notifications. Secondary progress is increasing when you have translation and input the word of this translation. Also you can swap progress values between themselves to get needed setting.</string>
     <string name="send_feedback">Send feedback</string>
     <string name="send_test_notification">Send test notification? (%s notifications left)</string>
     <string name="select">Select</string>
@@ -155,6 +161,8 @@
     <string name="subscription_days">Subscription days: %s</string>
     <string name="subscription_time_error">Subscription time is up, you can renew it to get advantages</string>
     <string name="subscription_need">You need renew subscription</string>
+    <string name="swap_main_and_secondary_progress">Swap main and secondary word progress</string>
+    <string name="swap_main_and_secondary_progress_text">Swap main and secondary word progress. It is applying to all words</string>
     <string name="swipe_delete_disable">Notifications swipe delete disable</string>
     <string name="thank_you">Thank you!</string>
     <string name="tags_should_not_be_empty">Tags should not be empty</string>
@@ -248,7 +256,9 @@
     </string>
 
     <string name="patch_notes">
-        - Check learned words option in training settings
+        - Secondary word progress for translation-word training. You can enable it in Common tab
+        \n- Hide off notifications warning option in Notifications tab
+        \n- Check learned words option in training settings
         \n- Receive notifications every 30 minutes option
         \n- Voice input (you can disable in common tab)
         \n- Please, take attention on \"If you do not receive notifications\" in settings tab
@@ -372,5 +382,6 @@
     <string name="ic_rating" translatable="false">Users rating by learned words</string>
     <string name="ic_play" translatable="false">Play word</string>
     <string name="ic_theme" translatable="false">App theme</string>
+    <string name="ic_secondary_progress_settings" translatable="false">Secondary progress info</string>
 
 </resources>

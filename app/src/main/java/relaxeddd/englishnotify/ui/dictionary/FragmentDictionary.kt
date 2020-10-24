@@ -224,6 +224,7 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
     private fun updateAdapter(words: List<Word>?) {
         if (words != null && words.isNotEmpty()) {
             val isScroll = adapter?.currentList?.size != words.size
+            AdapterWords.isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
             adapter?.submitList(words)
             if (isScroll) {
                 handler.postDelayed({

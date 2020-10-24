@@ -82,6 +82,14 @@
         android:orientation="horizontal"
         android:layout_alignParentEnd="true">
 
+        <ProgressBar
+            android:id="@+id/progress_bar_word_learn_stage_secondary"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:progress="44"
+            android:layout_marginEnd="@dimen/size_4"/>
+
         <ImageView
             android:id="@+id/image_word_own_created"
             android:layout_width="@dimen/size_16"

@@ -384,6 +384,10 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
             if (isNightMode) R.color.floating_button_color else getPrimaryColorResId()))
     }
 
+    fun onHideOffNotificationsWarningChanged(isHide: Boolean) {
+        viewModel.onHideOffNotificationsWarningChanged(isHide)
+    }
+
     fun setLoadingVisible(isVisible: Boolean) {
         viewModel.isShowLoading.value = isVisible
     }

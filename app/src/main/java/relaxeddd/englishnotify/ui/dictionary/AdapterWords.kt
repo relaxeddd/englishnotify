@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.checkbox.MaterialCheckBox
 import relaxeddd.englishnotify.R
+import relaxeddd.englishnotify.common.SharedHelper
 import relaxeddd.englishnotify.common.Word
 import relaxeddd.englishnotify.common.animateDropdown
 import java.text.SimpleDateFormat
@@ -23,6 +24,10 @@ import java.util.*
 import kotlin.collections.HashSet
 
 abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewModelDictionary) : ListAdapter<Word, VH>(WordDiffCallback) {
+
+    companion object {
+        var isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
+    }
 
     var languageType = 0
         set(value) {
@@ -79,6 +84,7 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
 
     @SuppressLint("RestrictedApi")
     protected fun showPopupWord(view: View, word: Word) {
+        val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
         val popupMenu = PopupMenu(view.context, view)
 
         popupMenu.inflate(R.menu.menu_popup_word)
@@ -94,7 +100,7 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
         }
 
         popupMenu.menu.findItem(R.id.item_menu_edit)?.isVisible = word.isCreatedByUser
-        popupMenu.menu.findItem(R.id.item_menu_reset_progress)?.isVisible = word.learnStage > 0
+        popupMenu.menu.findItem(R.id.item_menu_reset_progress)?.isVisible = word.learnStage > 0 || (isEnabledSecondaryProgress && word.learnStageSecondary > 0)
         popupMenu.menu.findItem(R.id.item_menu_add_own)?.isVisible = !word.isOwnCategory
         popupMenu.menu.findItem(R.id.item_menu_delete_own)?.isVisible = word.isOwnCategory
         val menuHelper = MenuPopupHelper(view.context, popupMenu.menu as MenuBuilder, view)
@@ -114,6 +120,7 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
                     && newItem.tags.containsAll(oldItem.tags) && oldItem.tags.containsAll(newItem.tags)
                     && oldItem.isCreatedByUser == newItem.isCreatedByUser
                     && oldItem.isOwnCategory == newItem.isOwnCategory && oldItem.isDeleted == newItem.isDeleted
+                    && oldItem.learnStageSecondary == newItem.learnStageSecondary
         }
     }
 
@@ -129,6 +136,7 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
         abstract fun getCheckBoxSelect() : MaterialCheckBox
         abstract fun getImagePlay() : ImageView
         abstract fun getProgressLearn() : ProgressBar
+        abstract fun getProgressLearnSecondary() : ProgressBar?
 
         @CallSuper
         open fun bind(word: Word, isSelectState: Boolean, checkList: java.util.HashSet<Word>,
@@ -160,6 +168,17 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
                 1 -> 32
                 2 -> 68
                 else -> 100
+            }
+            if (isEnabledSecondaryProgress) {
+                getProgressLearnSecondary()?.visibility = View.VISIBLE
+                getProgressLearnSecondary()?.progress = when (word.learnStageSecondary) {
+                    0 -> 4
+                    1 -> 32
+                    2 -> 68
+                    else -> 100
+                }
+            } else {
+                getProgressLearnSecondary()?.visibility = View.GONE
             }
         }
     }

@@ -30,6 +30,7 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
         SharedHelper.setShowOnlyOneNotification(isChecked)
     }
     val isShowOnlyOneNotification = MutableLiveData(SharedHelper.isShowOnlyOneNotification())
+    val isHideOffNotificationsWarning = MutableLiveData(SharedHelper.isHideOffNotificationsWarning())
     val isNotDeletable = MutableLiveData(SharedHelper.isOngoing())
 
     private val userObserver = Observer<User?> { user ->

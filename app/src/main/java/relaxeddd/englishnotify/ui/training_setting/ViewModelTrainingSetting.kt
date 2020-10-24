@@ -41,7 +41,7 @@ class ViewModelTrainingSetting(private val repositoryWord: RepositoryWord) : Vie
             showToast(R.string.error_category_select)
             return
         }
-        val trainWordsCount = RepositoryWord.getInstance().getTrainingWordsByCategory(category, SharedHelper.isCheckLearnedWords())
+        val trainWordsCount = RepositoryWord.getInstance().getTrainingWordsByCategory(category, SharedHelper.isCheckLearnedWords(), trainingLanguage)
         if (trainWordsCount.size < 5) {
             showToast(R.string.no_training_category_words)
             return

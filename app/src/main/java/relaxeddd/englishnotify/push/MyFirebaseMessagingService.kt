@@ -63,7 +63,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     existsWord.timestamp = System.currentTimeMillis()
                     if (existsWord.isCreatedByUser) {
                         existsWord.isCreatedByUser = false
-                        existsWord.learnStage = 0
                     }
                 }
                 CoroutineScope(Dispatchers.IO).launch {
@@ -283,6 +282,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     return
                 }
 
+                val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress(this)
+                val languageType = SharedHelper.getLearnLanguageType(this)
+
                 val wordDao = AppDatabase.getInstance(this).wordDao()
                 var words = wordDao.getAllItems()
                 val sortByLearnStage = HashMap<Int, ArrayList<Word>>()
@@ -290,12 +292,14 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 words = words.filter { !it.isDeleted && it.isOwnCategory }
 
                 for (word in words) {
-                    if (!sortByLearnStage.containsKey(word.learnStage)) {
+                    val wordLearnStage = if (languageType == TYPE_PUSH_RUSSIAN && isEnabledSecondaryProgress) word.learnStageSecondary else word.learnStage
+
+                    if (!sortByLearnStage.containsKey(wordLearnStage)) {
                         val list = ArrayList<Word>()
                         list.add(word)
-                        sortByLearnStage[word.learnStage] = list
+                        sortByLearnStage[wordLearnStage] = list
                     } else {
-                        sortByLearnStage[word.learnStage]?.add(word)
+                        sortByLearnStage[wordLearnStage]?.add(word)
                     }
                 }
                 for (learnStage in 0..2) {

@@ -34,6 +34,12 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
         }
     }
 
+    private val listenerSwapProgress: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
+        override fun onResult(result: Boolean) {
+            viewModel.onSwapProgressResult(result)
+        }
+    }
+
     override fun getLayoutResId() = R.layout.fragment_settings
     override fun getToolbarTitleResId() = R.string.common
     override fun getViewModelFactory() = InjectorUtils.provideSettingsViewModelFactory()
@@ -53,6 +59,7 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
         }
         binding.switchSettingsDesign.setOnCheckedChangeListener(viewModel.checkedChangeListenerNavigationDesign)
         binding.switchSettingsVoiceInput.setOnCheckedChangeListener(viewModel.checkedChangeListenerVoiceInput)
+        binding.switchSettingsSecondaryProgress.setOnCheckedChangeListener(viewModel.checkedChangeListenerEnabledSecondaryProgress)
     }
 
     @SuppressLint("BatteryLife")
@@ -71,6 +78,11 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
                     DialogSubscriptionInfo().show(this@FragmentSettings.childFragmentManager, "Sub Info Dialog")
                 }
             }
+            NAVIGATION_DIALOG_SECONDARY_PROGRESS_INFO -> {
+                if (isResumed) {
+                    DialogSecondaryProgressInfo().show(this@FragmentSettings.childFragmentManager, "Secondary Progress Info Dialog")
+                }
+            }
             NAVIGATION_DIALOG_OWN_CATEGORY -> {
                 if (isResumed) {
                     DialogOwnCategory().show(this@FragmentSettings.childFragmentManager, "Check tags Dialog")
@@ -79,6 +91,13 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
             NAVIGATION_DIALOG_INFO_TRAINING -> {
                 if (isResumed) {
                     DialogInfoTraining().show(this@FragmentSettings.childFragmentManager, "Info Training Dialog")
+                }
+            }
+            NAVIGATION_DIALOG_SWAP_PROGRESS -> {
+                if (isResumed) {
+                    val dialog = DialogSwapProgress()
+                    dialog.confirmListener = listenerSwapProgress
+                    dialog.show(this@FragmentSettings.childFragmentManager, "Swap Progress Dialog")
                 }
             }
             NAVIGATION_DIALOG_RECEIVE_HELP -> {

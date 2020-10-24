@@ -465,6 +465,16 @@
                     tools:progress="33"
                     android:layout_gravity="center_horizontal"/>
 
+                <ProgressBar
+                    android:id="@+id/progress_bar_training_word_stage_secondary"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="@dimen/size_120"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{safeUnbox(viewModel.isVisibleWordProgressSecondary) == true ? View.VISIBLE : View.GONE}"
+                    android:progress="@{safeUnbox(viewModel.wordProgressSecondary)}"
+                    tools:progress="33"
+                    android:layout_gravity="center_horizontal"/>
+
                 <TextView
                     android:id="@+id/text_training_transcription"
                     android:text="@{viewModel.transcription}"

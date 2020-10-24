@@ -25,7 +25,7 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
 
     private val userObserver = Observer<User?> { user ->
         isShowGoogleAuth.value = user == null || RepositoryCommon.getInstance().firebaseUser == null
-        isShowWarningNotifications.value = isShowGoogleAuth.value == false && (user == null || !user.receiveNotifications)
+        isShowWarningNotifications.value = isShowGoogleAuth.value == false && (user == null || !user.receiveNotifications) && !SharedHelper.isHideOffNotificationsWarning()
         isShowWarningSubscription.value = user != null && user.subscriptionTime <= System.currentTimeMillis()
 
         val launchCount = SharedHelper.getLaunchCount()
@@ -114,5 +114,10 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
                 })
             }
         }
+    }
+
+    fun onHideOffNotificationsWarningChanged(isHide: Boolean = SharedHelper.isHideOffNotificationsWarning()) {
+        val userData = user.value
+        isShowWarningNotifications.value = isShowGoogleAuth.value == false && (userData == null || !userData.receiveNotifications) && !SharedHelper.isHideOffNotificationsWarning()
     }
 }

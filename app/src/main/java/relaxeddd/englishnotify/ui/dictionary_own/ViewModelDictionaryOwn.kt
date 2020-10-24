@@ -1,6 +1,6 @@
 package relaxeddd.englishnotify.ui.dictionary_own
 
-import relaxeddd.englishnotify.common.LEARN_STAGE_MAX
+import relaxeddd.englishnotify.common.SharedHelper
 import relaxeddd.englishnotify.common.Word
 import relaxeddd.englishnotify.model.repository.RepositoryUser
 import relaxeddd.englishnotify.model.repository.RepositoryWord
@@ -11,6 +11,7 @@ class ViewModelDictionaryOwn(repositoryWord: RepositoryWord, repositoryUser: Rep
     override val isShowOwnWordsContainer = false
 
     override fun filterWords(items: HashSet<Word>) : HashSet<Word> {
-        return super.filterWords(items).filter { it.isOwnCategory && it.learnStage < LEARN_STAGE_MAX }.toHashSet()
+        val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
+        return super.filterWords(items).filter { it.isOwnCategory && !it.isLearned(isEnabledSecondaryProgress) }.toHashSet()
     }
 }
