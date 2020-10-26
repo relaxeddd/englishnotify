@@ -10,6 +10,7 @@ import kotlinx.coroutines.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.db.AppDatabase
+import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 
 class PushBroadcastReceiver : BroadcastReceiver() {

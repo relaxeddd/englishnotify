@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import androidx.multidex.MultiDexApplication
 import com.google.firebase.FirebaseApp
-import relaxeddd.englishnotify.common.SharedHelper
+import relaxeddd.englishnotify.model.preferences.SharedHelper
 
 class App : MultiDexApplication() {
 

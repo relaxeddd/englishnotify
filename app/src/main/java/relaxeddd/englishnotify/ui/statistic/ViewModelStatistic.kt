@@ -3,6 +3,7 @@ package relaxeddd.englishnotify.ui.statistic
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import relaxeddd.englishnotify.common.*
+import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 import java.util.Comparator
 

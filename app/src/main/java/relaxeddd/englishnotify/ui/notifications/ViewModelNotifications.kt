@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
+import relaxeddd.englishnotify.model.preferences.SharedHelper
 
 class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewModelBase() {
 

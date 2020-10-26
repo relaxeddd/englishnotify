@@ -10,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import relaxeddd.englishnotify.common.*
+import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.model.repository.RepositoryUser
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 

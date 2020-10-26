@@ -12,6 +12,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import relaxeddd.englishnotify.dialogs.DialogRestoreWord
+import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.ui.main.MainActivity
 
 class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {

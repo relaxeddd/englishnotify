@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
+import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.push.MyFirebaseMessagingService
 
 class RepositoryUser private constructor() {

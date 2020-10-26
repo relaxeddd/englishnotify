@@ -1,8 +1,11 @@
 package relaxeddd.englishnotify.common
 
 import androidx.annotation.Keep
+import androidx.annotation.StringRes
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import relaxeddd.englishnotify.App
+import relaxeddd.englishnotify.R
 
 @Keep
 data class User(
@@ -126,3 +129,22 @@ data class TagInfo(val key: String, var total: Int = 0, var learned: Int = 0, va
 
 @Keep
 data class RatingItem(val name: String, var value: Int = 0)
+
+enum class SortByType(@StringRes val nameResId: Int) {
+
+    ALPHABETICAL_NAME(R.string.alphabetical_name), ALPHABETICAL_TRANSLATE(R.string.alphabetical_translate),
+    TIME_NEW(R.string.time_new), TIME_OLD(R.string.time_old);
+
+    fun getTitle() : String = App.context.getString(nameResId)
+
+    companion object {
+        fun getNamesArray() = Array(values().size) { App.context.getString(values()[it].nameResId) }
+
+        fun getByName(name: String) = when(name) {
+            ALPHABETICAL_NAME.name -> ALPHABETICAL_NAME
+            ALPHABETICAL_TRANSLATE.name -> ALPHABETICAL_TRANSLATE
+            TIME_OLD.name -> TIME_OLD
+            else -> TIME_NEW
+        }
+    }
+}

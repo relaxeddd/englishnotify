@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import relaxeddd.englishnotify.R
+import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.ui.main.MainActivity
 import java.lang.IllegalStateException
 
