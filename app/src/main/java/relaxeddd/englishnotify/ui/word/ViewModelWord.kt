@@ -11,10 +11,10 @@ class ViewModelWord : ViewModelBase() {
 
     var existsWordId = ""
 
-    var findWord: Word? = null
-    var updateEng: String = ""
-    var updateTranscription: String = ""
-    var updateRus: String = ""
+    private var findWord: Word? = null
+    private var updateEng: String = ""
+    private var updateTranscription: String = ""
+    private var updateRus: String = ""
 
     fun createOwnWord(eng: String, transcription: String, rus: String) {
         ioScope.launch {

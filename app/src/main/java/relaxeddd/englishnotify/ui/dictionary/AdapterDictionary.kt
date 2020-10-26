@@ -10,7 +10,6 @@ import android.widget.TextView
 import com.google.android.material.checkbox.MaterialCheckBox
 import kotlinx.android.synthetic.main.view_item_word.view.*
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.SharedHelper
 import relaxeddd.englishnotify.common.TYPE_PUSH_ENGLISH
 import relaxeddd.englishnotify.common.TYPE_PUSH_RUSSIAN
 import relaxeddd.englishnotify.common.Word

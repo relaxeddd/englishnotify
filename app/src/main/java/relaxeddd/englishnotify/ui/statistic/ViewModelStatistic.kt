@@ -8,7 +8,7 @@ import java.util.Comparator
 
 class ViewModelStatistic(private val repositoryWord: RepositoryWord) : ViewModelBase() {
 
-    private val wordsObserver = Observer<List<Word>> { _ ->
+    private val wordsObserver = Observer<List<Word>> {
         updateFilteredOwnWords()
     }
 

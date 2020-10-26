@@ -29,8 +29,10 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
 
     private val listenerTheme: ListenerResult<Int> = object: ListenerResult<Int> {
         override fun onResult(result: Int) {
-            viewModel.onThemeUpdate(result)
-            activity?.recreate()
+            if (result != SharedHelper.getAppThemeType()) {
+                viewModel.onThemeUpdate(result)
+                activity?.recreate()
+            }
         }
     }
 
@@ -155,6 +157,9 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
             NAVIGATION_DIALOG_THEME -> {
                 if (isResumed) {
                     val dialog = DialogAppTheme()
+                    val args = Bundle()
+                    args.putInt(SELECTED_ITEM, SharedHelper.getAppThemeType())
+                    dialog.arguments = args
                     dialog.listener = listenerTheme
                     dialog.show(this@FragmentSettings.childFragmentManager, "Theme Dialog")
                 }
