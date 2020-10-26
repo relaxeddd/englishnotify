@@ -61,7 +61,6 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
     private var currentFragmentId: Int = NAV_ID_NONE
     private lateinit var navController: NavController
     private val providers: List<AuthUI.IdpConfig> = listOf(AuthUI.IdpConfig.GoogleBuilder().build())
-    private var dialogNewVersion: DialogNewVersion? = null
     private var navigationHeaderBinding: NavigationHeaderBinding? = null
 
     private var tts: TextToSpeech? = null
@@ -89,6 +88,7 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
 
     private val listenerLikeApp: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
         override fun onResult(result: Boolean) {
+            SharedHelper.setCancelledRateDialog(true)
             if (result) {
                 onNavigationEvent(NAVIGATION_DIALOG_RATE_APP)
             } else {
@@ -317,6 +317,11 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
             NAVIGATION_DIALOG_RATE_APP -> {
                 if (isMyResumed) {
                     val dialog = DialogRateApp()
+                    dialog.confirmListener = object : ListenerResult<Boolean> {
+                        override fun onResult(result: Boolean) {
+                            openWebApplication(this@MainActivity)
+                        }
+                    }
                     dialog.show(this@MainActivity.supportFragmentManager, "Rate app Dialog")
                 }
             }
@@ -334,11 +339,9 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
                 )
             }
             NAVIGATION_DIALOG_NEW_VERSION -> {
-                if (dialogNewVersion == null) {
-                    dialogNewVersion = DialogNewVersion()
-                    dialogNewVersion?.confirmListener = listenerNewVersion
-                    dialogNewVersion?.show(this@MainActivity.supportFragmentManager, "New version Dialog")
-                }
+                val dialogNewVersion = DialogNewVersion()
+                dialogNewVersion.confirmListener = listenerNewVersion
+                dialogNewVersion.show(this@MainActivity.supportFragmentManager, "New version Dialog")
             }
             NAVIGATION_DIALOG_PATCH_NOTES -> {
                 val dialog = DialogPatchNotes()
@@ -511,12 +514,6 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
 
         spannableString.setSpan(clickableSpan, firstIndex, lastIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         spannableString.setSpan(UnderlineSpan(), firstIndex, lastIndex, 0)
-    }
-
-    private fun navigateTo(navId: Int) {
-        if (navId != currentFragmentId) {
-            navController.navigate(navId)
-        }
     }
 
     private fun getLocaleStringByKey(key: String) = when(key) {

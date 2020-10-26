@@ -3,7 +3,6 @@ package relaxeddd.englishnotify.ui.training_setting
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.google.android.material.radiobutton.MaterialRadioButton
-import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.repository.RepositoryWord
@@ -14,7 +13,7 @@ class ViewModelTrainingSetting(private val repositoryWord: RepositoryWord) : Vie
     var checkedItem: CategoryItem? = null
     var trainingLanguage: Int = SharedHelper.getTrainingLanguage()
 
-    private val wordsObserver = Observer<List<Word>> { _ ->
+    private val wordsObserver = Observer<List<Word>> {
         updateCategories()
     }
 

@@ -11,7 +11,6 @@ import androidx.fragment.app.DialogFragment
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.ListenerResult
 
-
 class DialogNotificationsNotShow : DialogFragment() {
 
     var confirmListener: ListenerResult<Boolean>? = null

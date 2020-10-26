@@ -79,7 +79,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
             }
         }
 
-        val selectedWords = if (isLearned) {
+        return if (isLearned) {
             trainingWords.sortBy {
                 val wordSummaryProgress = when (trainingLanguage) {
                     TRAINING_ENG_TO_RUS -> {
@@ -104,8 +104,6 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         } else {
             ArrayList(trainingWords.shuffled())
         }
-
-        return selectedWords
     }
 
     fun setWordLearnStage(word: Word, progress: Int, isSecondary: Boolean, isRemoteSave: Boolean = true) {
