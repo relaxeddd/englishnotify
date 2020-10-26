@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer
 import com.google.android.material.radiobutton.MaterialRadioButton
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
+import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 
 class ViewModelTrainingSetting(private val repositoryWord: RepositoryWord) : ViewModelBase(), ISelectCategory {

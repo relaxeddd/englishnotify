@@ -36,6 +36,7 @@ import relaxeddd.englishnotify.databinding.MainActivityBinding
 import relaxeddd.englishnotify.databinding.NavigationHeaderBinding
 import relaxeddd.englishnotify.dialogs.*
 import relaxeddd.englishnotify.donate.ActivityBilling
+import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.push.PushTokenHelper
 import java.lang.Exception
 import java.util.*

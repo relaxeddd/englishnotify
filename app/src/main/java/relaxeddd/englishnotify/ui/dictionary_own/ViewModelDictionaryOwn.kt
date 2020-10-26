@@ -1,6 +1,6 @@
 package relaxeddd.englishnotify.ui.dictionary_own
 
-import relaxeddd.englishnotify.common.SharedHelper
+import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.common.Word
 import relaxeddd.englishnotify.model.repository.RepositoryUser
 import relaxeddd.englishnotify.model.repository.RepositoryWord

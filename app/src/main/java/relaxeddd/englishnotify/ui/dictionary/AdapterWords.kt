@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.checkbox.MaterialCheckBox
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.SharedHelper
+import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.common.Word
 import relaxeddd.englishnotify.common.animateDropdown
 import java.text.SimpleDateFormat

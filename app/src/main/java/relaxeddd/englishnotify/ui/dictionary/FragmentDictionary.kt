@@ -15,6 +15,7 @@ import relaxeddd.englishnotify.dialogs.DialogSortBy
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.FragmentDictionaryBinding
 import relaxeddd.englishnotify.dialogs.DialogDeleteWords
+import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.ui.main.MainActivity
 import java.lang.IllegalStateException
 

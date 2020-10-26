@@ -26,6 +26,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.NavController
 import relaxeddd.englishnotify.R
+import relaxeddd.englishnotify.model.preferences.SharedHelper
 import java.lang.IllegalStateException
 import java.util.*
 import java.util.regex.Pattern

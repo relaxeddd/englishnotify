@@ -8,6 +8,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.FragmentDictionaryContainerBinding
+import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.ui.dictionary.FragmentDictionary
 import relaxeddd.englishnotify.ui.dictionary_all.FragmentDictionaryAll
 import relaxeddd.englishnotify.ui.dictionary_exercises.FragmentDictionaryExercises

@@ -9,6 +9,7 @@ import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.db.AppDatabase
 import relaxeddd.englishnotify.model.db.WordDao
+import relaxeddd.englishnotify.model.preferences.SharedHelper
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashSet

@@ -8,6 +8,7 @@ import android.view.WindowInsets
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import relaxeddd.englishnotify.R
+import relaxeddd.englishnotify.model.preferences.SharedHelper
 import kotlin.math.roundToInt
 
 class NavigationBarContentFrameLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null,

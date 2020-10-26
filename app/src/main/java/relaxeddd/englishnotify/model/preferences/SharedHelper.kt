@@ -1,9 +1,10 @@
-package relaxeddd.englishnotify.common
+package relaxeddd.englishnotify.model.preferences
 
 import android.content.Context
 import android.os.Build
 import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.R
+import relaxeddd.englishnotify.common.*
 
 object SharedHelper {
 

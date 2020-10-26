@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.LEARN_STAGE_MAX
-import relaxeddd.englishnotify.common.SharedHelper
+import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.common.Word
 import kotlin.math.min
 

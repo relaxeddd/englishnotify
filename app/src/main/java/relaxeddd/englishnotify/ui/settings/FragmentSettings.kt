@@ -17,6 +17,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.updatePaddingRelative
 import com.judemanutd.autostarter.AutoStartPermissionHelper
+import relaxeddd.englishnotify.model.preferences.SharedHelper
 import java.lang.Exception
 
 class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding>() {
