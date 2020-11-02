@@ -73,6 +73,9 @@ class RepositoryCommon private constructor() {
             showToast(getErrorString(RESULT_ERROR_TRANSLATION))
             return ""
         }
+        if (translateFromLanguage == translateToLanguage) {
+            return translationText
+        }
 
         val answer = ApiHelper.requestTranslation(firebaseUser, tokenId, translationText, translateFromLanguage, translateToLanguage)
 
