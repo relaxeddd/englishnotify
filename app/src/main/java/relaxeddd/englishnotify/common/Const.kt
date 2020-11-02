@@ -23,6 +23,7 @@ const val FUNC_REQUEST_UPDATE_USER = "requestUpdateUser/"
 const val FUNC_REQUEST_SEND_TEST_NOTIFICATION = "requestTestNotification/"
 const val FUNC_REQUEST_SET_NICKNAME = "requestSetNickname/"
 const val FUNC_REQUEST_VOTE = "requestSendTestNotification/"
+const val FUNC_REQUEST_TRANSLATION = "requestTranslation/"
 
 const val EMPTY_RES = -1
 
@@ -51,6 +52,8 @@ const val RESULT_ERROR_ADD_PUSH_TOKEN = 1501
 
 const val RESULT_ERROR_SEND_FEEDBACK = 1601
 const val RESULT_ERROR_FEEDBACK_TOO_SHORT = 1602
+const val RESULT_ERROR_TRANSLATION = 1887;
+const val RESULT_ERROR_UNSUBSCRIBED = 1888;
 const val RESULT_LOCAL_ERROR = 5101
 const val RESULT_ERROR_NETWORK = 5102
 

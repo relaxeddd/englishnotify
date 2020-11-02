@@ -94,6 +94,20 @@ object ApiHelper {
         }, PurchaseResult(Result(RESULT_ERROR_INTERNET)))
     }
 
+    suspend fun requestTranslation(firebaseUser: FirebaseUser?, tokenId: String?, translationText: String,
+                                   translateFromLanguage: String, translateToLanguage: String) : TranslationResult? {
+        val userId = firebaseUser?.uid ?: ""
+
+        if (!isNetworkAvailable() || tokenId?.isNotEmpty() != true || userId.isEmpty()) {
+            return TranslationResult(Result(RESULT_ERROR_INTERNET), translationText, translateFromLanguage, translateToLanguage)
+        }
+
+        return executeRequest( suspend {
+            apiHelper.requestTranslation(TOKEN_PREFIX + tokenId, userId, translationText,
+                translateFromLanguage, translateToLanguage)
+        }, TranslationResult(Result(RESULT_ERROR_INTERNET), translationText, translateFromLanguage, translateToLanguage))
+    }
+
     //------------------------------------------------------------------------------------------------------------------
     fun initUserTokenId(firebaseUser: FirebaseUser?, resultListener: (tokenId: Resource<String>) -> Unit) {
         firebaseUser?.getIdToken(false)?.addOnCompleteListener {

@@ -11,7 +11,9 @@ import relaxeddd.englishnotify.databinding.FragmentWordBinding
 import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.appcompat.widget.PopupMenu
 import relaxeddd.englishnotify.dialogs.DialogRestoreWord
+import relaxeddd.englishnotify.dialogs.DialogSubscriptionInfo
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.ui.main.MainActivity
 
@@ -91,6 +93,69 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
+        binding.imageWordTranslate.setOnClickListener {
+            val text = binding.textInputWord.text.toString()
+            val fromLanguage = binding.spinnerWordLanguage.selectedItem as? String ?: ""
+            val toLanguage = binding.spinnerWordLanguageTranslation.selectedItem as? String ?: ""
+
+            if (text.isNotEmpty()) {
+                binding.imageWordTranslate.visibility = View.INVISIBLE
+                binding.progressBarWordTranslate.visibility = View.VISIBLE
+                viewModel.onClickTranslate(text, fromLanguage, toLanguage) { translated ->
+                    binding.imageWordTranslate.visibility = View.VISIBLE
+                    binding.progressBarWordTranslate.visibility = View.INVISIBLE
+
+                    if (translated != null) {
+                        if (translated.isEmpty()) {
+                            showToast(R.string.no_translation)
+                        } else {
+                            showPopupTranslation(binding.imageWordTranslate, translated) {
+                                val existsTranslation = binding.textInputTranslation.text.toString()
+
+                                if (existsTranslation.isEmpty()) {
+                                    binding.textInputTranslation.setText(translated)
+                                } else {
+                                    val result = "$existsTranslation, $translated"
+                                    binding.textInputTranslation.setText(result)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        //TODO refactor
+        binding.imageWordTranslateTranslation.setOnClickListener {
+            val text = binding.textInputTranslation.text.toString()
+            val fromLanguage = binding.spinnerWordLanguageTranslation.selectedItem as? String ?: ""
+            val toLanguage = binding.spinnerWordLanguage.selectedItem as? String ?: ""
+
+            if (text.isNotEmpty()) {
+                binding.imageWordTranslateTranslation.visibility = View.INVISIBLE
+                binding.progressBarWordTranslateTranslation.visibility = View.VISIBLE
+                viewModel.onClickTranslate(text, fromLanguage, toLanguage) { translated ->
+                    binding.imageWordTranslateTranslation.visibility = View.VISIBLE
+                    binding.progressBarWordTranslateTranslation.visibility = View.INVISIBLE
+
+                    if (translated != null) {
+                        if (translated.isEmpty()) {
+                            showToast(R.string.no_translation)
+                        } else {
+                            showPopupTranslation(binding.imageWordTranslateTranslation, translated) {
+                                val existsTranslation = binding.textInputWord.text.toString()
+
+                                if (existsTranslation.isEmpty()) {
+                                    binding.textInputWord.setText(translated)
+                                } else {
+                                    val result = "$existsTranslation, $translated"
+                                    binding.textInputWord.setText(result)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         updateVoiceInputVisibility(SharedHelper.isShowVoiceInput())
     }
@@ -164,6 +229,17 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
                 hideKeyboard(view)
                 super.onNavigationEvent(eventId)
             }
+            NAVIGATION_DIALOG_SUBSCRIPTION_INFO -> {
+                if (isResumed) {
+                    val dialog = DialogSubscriptionInfo()
+                    dialog.confirmListener = object: ListenerResult<Boolean> {
+                        override fun onResult(result: Boolean) {
+                            onNavigationEvent(NAVIGATION_DIALOG_SUBSCRIPTION)
+                        }
+                    }
+                    dialog.show(this@FragmentWord.childFragmentManager, "Sub Info Dialog")
+                }
+            }
             else -> super.onNavigationEvent(eventId)
         }
     }
@@ -199,5 +275,22 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
         binding.spinnerWordLanguage.visibility = if (isShow) View.VISIBLE else View.GONE
         binding.imageWordMicrophoneTranslation.visibility = if (isShow) View.VISIBLE else View.GONE
         binding.spinnerWordLanguageTranslation.visibility = if (isShow) View.VISIBLE else View.GONE
+    }
+
+    private fun showPopupTranslation(view: View, translationText: String, callback: () -> Unit) {
+        val popupMenu = PopupMenu(view.context, view)
+
+        popupMenu.inflate(R.menu.menu_popup_translation)
+        popupMenu.menu.findItem(R.id.item_menu_translation)?.title = translationText
+        popupMenu.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.item_menu_translation -> {
+                    callback()
+                }
+            }
+            true
+        }
+
+        popupMenu.show()
     }
 }
