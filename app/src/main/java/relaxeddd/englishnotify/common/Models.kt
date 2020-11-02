@@ -107,6 +107,10 @@ data class Result(val code: Int = RESULT_UNDEFINED, val message: String = "") {
 @Keep
 data class UpdateUserResult(val result: Result?, val user: User?)
 
+@Keep
+data class TranslationResult(val result: Result?, val translationText: String = "", val translateFromLanguage: String = "",
+                             val translateToLanguage: String = "", val translations: Any? = null)
+
 /*@Keep
 data class CreateWordResult(val result: Result?, val word: Word? = null)*/
 

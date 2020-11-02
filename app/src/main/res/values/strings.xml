@@ -88,6 +88,7 @@
     <string name="later">Later</string>
     <string name="learn_language">Learn language</string>
     <string name="learned">Learned!</string>
+    <string name="list">List</string>
     <string name="listening_training">Listening training</string>
     <string name="loading">Loading</string>
     <string name="logout">Logout</string>
@@ -113,6 +114,7 @@
     <string name="no_words_know">You have not learned words in dictionary</string>
     <string name="no_words_own">You have not added words to your category yet</string>
     <string name="no_test_notifications">There are no test notifications</string>
+    <string name="no_translation">Translation not found</string>
     <string name="not_show_notifications">Don`t show notifications beginning with (24-hour clock, the number from 0 to 23)</string>
     <string name="notification_categories">Notification categories</string>
     <string name="notifications_language">Notifications language</string>
@@ -157,7 +159,7 @@
     <string name="sort_by">Sort by</string>
     <string name="statistic">Statistic</string>
     <string name="sub_advantages">Subscription advantages</string>
-    <string name="sub_advantages_info">- Receive notifications more than once per 4 hours</string>
+    <string name="sub_advantages_info">- Receive notifications more than once per 4 hours\n\n- Translate words in application</string>
     <string name="subscription_days">Subscription days: %s</string>
     <string name="subscription_time_error">Subscription time is up, you can renew it to get advantages</string>
     <string name="subscription_need">You need renew subscription</string>
@@ -256,7 +258,8 @@
     </string>
 
     <string name="patch_notes">
-        - Secondary word progress for translation-word training. You can enable it in Common tab
+        - Translation feature on the Add word screen
+        \n- Secondary word progress for translation-word training. You can enable it in Common tab
         \n- Hide off notifications warning option in Notifications tab
         \n- Check learned words option in training settings
         \n- Receive notifications every 30 minutes option

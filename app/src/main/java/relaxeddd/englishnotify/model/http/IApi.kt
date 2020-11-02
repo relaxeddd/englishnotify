@@ -40,4 +40,11 @@ interface IApi {
                                   @Query("notificationsTimeType") notificationsTimeType: Int,
                                   @Query("learnLanguageType") learnLanguageType: Int,
                                   @Query("selectedTag") selectedTag: String) : UpdateUserResult?
+
+    @GET(FUNC_REQUEST_TRANSLATION)
+    suspend fun requestTranslation(@Header("Authorization") idToken: String,
+                                  @Query("userId") userId: String,
+                                  @Query("translationText") translationText: String,
+                                  @Query("translateFromLanguage") translateFromLanguage: String,
+                                  @Query("translateToLanguage") translateToLanguage: String) : TranslationResult?
 }

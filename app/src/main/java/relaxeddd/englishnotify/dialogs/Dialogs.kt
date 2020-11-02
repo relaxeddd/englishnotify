@@ -45,12 +45,6 @@ class DialogPatchNotes : DialogSimpleInfo() {
     override val textResId: Int = R.string.patch_notes
 }
 
-class DialogSubscriptionInfo : DialogSimpleInfo() {
-
-    override val titleResId: Int = R.string.sub_advantages
-    override val textResId: Int = R.string.sub_advantages_info
-}
-
 abstract class DialogSimpleInfo : DialogFragment() {
 
     abstract val titleResId: Int
@@ -76,6 +70,14 @@ abstract class DialogSimpleInfo : DialogFragment() {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
+class DialogSubscriptionInfo : DialogSimpleChoice() {
+
+    override val titleResId: Int = R.string.sub_advantages
+    override val textResId: Int = R.string.sub_advantages_info
+    override val positiveButtonTextResId: Int = R.string.list
+    override val negativeButtonTextResId: Int = EMPTY_RES
+}
+
 class DialogVoiceInput : DialogSimpleChoice() {
 
     override val textResId: Int = R.string.voice_input_error
@@ -155,9 +157,11 @@ abstract class DialogSimpleChoice : DialogFragment() {
         builder.setPositiveButton(positiveButtonTextResId) { _, _ ->
                 confirmListener?.onResult(true)
             }
-            .setNegativeButton(negativeButtonTextResId) { _, _ ->
+        if (negativeButtonTextResId != EMPTY_RES) {
+            builder.setNegativeButton(negativeButtonTextResId) { _, _ ->
                 confirmListener?.onResult(false)
             }
+        }
         if (titleResId != EMPTY_RES) {
             builder.setTitle(titleResId)
         }

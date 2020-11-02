@@ -5,6 +5,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
+import relaxeddd.englishnotify.model.preferences.SharedHelper
+import relaxeddd.englishnotify.model.repository.RepositoryCommon
+import relaxeddd.englishnotify.model.repository.RepositoryUser
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 
 class ViewModelWord : ViewModelBase() {
@@ -15,6 +18,11 @@ class ViewModelWord : ViewModelBase() {
     private var updateEng: String = ""
     private var updateTranscription: String = ""
     private var updateRus: String = ""
+
+    private var isTranslating = false
+    private var lastTranslationText = ""
+    private var lastTranslationResult = ""
+    private var lastTranslationLanguage = ""
 
     fun createOwnWord(eng: String, transcription: String, rus: String) {
         ioScope.launch {
@@ -83,6 +91,44 @@ class ViewModelWord : ViewModelBase() {
 
             withContext(Dispatchers.Main) {
                 navigateEvent.value = Event(NAVIGATION_ACTIVITY_BACK)
+            }
+        }
+    }
+
+    fun onClickTranslate(text: String, fromLanguage: String, toLanguage: String, callback: (String?) -> Unit) {
+        val user = RepositoryUser.getInstance().liveDataUser.value
+
+        if (user == null) {
+            showToast(R.string.please_authorize)
+            callback(null)
+            return
+        }
+        if (user.subscriptionTime <= System.currentTimeMillis()) {
+            showToast(R.string.subscription_need)
+            navigateEvent.value = Event(NAVIGATION_DIALOG_SUBSCRIPTION_INFO)
+            callback(null)
+            return
+        }
+        if (text.trim().isEmpty() || isTranslating) {
+            callback(null)
+            return
+        }
+        if (text == lastTranslationText && toLanguage == lastTranslationLanguage) {
+            callback(lastTranslationResult)
+            return
+        }
+
+        isTranslating = true
+        ioScope.launch {
+            isTranslating = false
+
+            val translation = RepositoryCommon.getInstance().requestTranslation(text, fromLanguage, toLanguage)
+
+            lastTranslationText = text
+            lastTranslationResult = translation
+            lastTranslationLanguage = toLanguage
+            uiScope.launch {
+                callback(translation)
             }
         }
     }

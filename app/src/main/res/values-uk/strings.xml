@@ -88,6 +88,7 @@
     <string name="later">Позднее</string>
     <string name="learn_language">Изучаемый язык</string>
     <string name="learned">Выучено!</string>
+    <string name="list">Список</string>
     <string name="listening_training">Восприятие на слух</string>
     <string name="loading">Загрузка</string>
     <string name="logout">Выход из аккаунта</string>
@@ -113,6 +114,7 @@
     <string name="no_test_notifications">У вас не осталось тестовых уведомлений</string>
     <string name="no_training_category_words">В этой категории недостаточно слов для тренировки, необходимо минимум 5 невыученных слов</string>
     <string name="no_training_words">У вас нет слов для тренировки, либо они выучены или являются предложениями</string>
+    <string name="no_translation">Перевод не найден</string>
     <string name="not_show_notifications">Не показывать уведомления начиная с (24-часовой формат, число от 0 до 23)</string>
     <string name="notification_categories">Выбор категорий слов</string>
     <string name="notifications_language">Язык уведомлений</string>
@@ -157,7 +159,7 @@
     <string name="sort_by">Сортировать по</string>
     <string name="statistic">Статистика</string>
     <string name="sub_advantages">Преимущества подписки</string>
-    <string name="sub_advantages_info">- Получение уведомлений чаще чем раз в 4 часа</string>
+    <string name="sub_advantages_info">- Получение уведомлений чаще чем раз в 4 часа\n\n- Перевод слов внутри приложения</string>
     <string name="subscription_days">Дней подписки: %s</string>
     <string name="subscription_time_error">Время подписки истекло, можно продлить для получения преимуществ</string>
     <string name="subscription_need">Необходимо продлить подписку</string>
@@ -241,7 +243,8 @@
     </string>
 
     <string name="patch_notes">
-        - Второстепенный прогресс слов. Используется при тренировке типа перевод-слово. Можно включить во вкладке Общее
+        - Функция перевод на экране добавления слов
+        \n- Второстепенный прогресс слов. Используется при тренировке типа перевод-слово. Можно включить во вкладке Общее
         \n- Опция скрыть предупреждение об отключенных уведомлениях во вкладке Уведомления
         \n- Опция проверки выученных слов в настройках тренировки
         \n- Опция получения уведомлений каждые 30 минут
