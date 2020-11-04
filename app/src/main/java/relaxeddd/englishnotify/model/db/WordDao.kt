@@ -1,3 +1,4 @@
+@file:Suppress("unused")
 package relaxeddd.englishnotify.model.db
 
 import androidx.lifecycle.LiveData
