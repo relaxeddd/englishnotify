@@ -57,6 +57,7 @@
                     app:tint="@color/white"
                     app:borderWidth="0dp"
                     android:visibility="gone"
+                    android:contentDescription="@string/main"
                     android:layout_marginBottom="@dimen/size_28"
                     android:layout_marginEnd="@dimen/size_24"
                     tools:visibility="visible"/>
