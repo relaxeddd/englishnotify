@@ -3,6 +3,7 @@ package relaxeddd.englishnotify.common
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.util.AttributeSet
 import android.view.WindowInsets
 import android.widget.FrameLayout
@@ -63,16 +64,31 @@ class NavigationBarContentFrameLayout @JvmOverloads constructor(context: Context
     }
 
     private fun updateDividerBounds() {
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.KITKAT_WATCH) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH) {
             return
         }
 
         val d = dividerDrawable
         val insets = lastInsets
 
-        val bottomInset = insets?.systemWindowInsetBottom ?: 0
-        val leftInset = insets?.systemWindowInsetLeft ?: 0
-        val rightInset = insets?.systemWindowInsetRight ?: 0
+        val bottomInset = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            insets?.getInsets(WindowInsets.Type.systemBars())?.bottom ?: 0
+        } else {
+            @Suppress("DEPRECATION")
+            insets?.systemWindowInsetBottom ?: 0
+        }
+        val leftInset = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            insets?.getInsets(WindowInsets.Type.systemBars())?.left ?: 0
+        } else {
+            @Suppress("DEPRECATION")
+            insets?.systemWindowInsetLeft ?: 0
+        }
+        val rightInset = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            insets?.getInsets(WindowInsets.Type.systemBars())?.right ?: 0
+        } else {
+            @Suppress("DEPRECATION")
+            insets?.systemWindowInsetRight ?: 0
+        }
 
         when {
             bottomInset > 0 -> {

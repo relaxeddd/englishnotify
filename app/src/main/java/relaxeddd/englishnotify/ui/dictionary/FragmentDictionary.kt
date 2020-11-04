@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.MenuItem
 import android.view.View
 import androidx.core.view.updatePaddingRelative
@@ -23,7 +24,7 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
 
     protected var adapter: A? = null
     private var animBlock: AnimBlock = AnimBlock(false)
-    private val handler = Handler()
+    private val handler = Handler(Looper.getMainLooper())
 
     private val listenerCheckTags: ListenerResult<List<String>> = object: ListenerResult<List<String>> {
         override fun onResult(result: List<String>) {

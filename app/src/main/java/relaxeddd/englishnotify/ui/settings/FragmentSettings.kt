@@ -76,17 +76,6 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
                     DialogAppAbout().show(this@FragmentSettings.childFragmentManager, "App Info Dialog")
                 }
             }
-            NAVIGATION_DIALOG_SUBSCRIPTION_INFO -> {
-                if (isResumed) {
-                    val dialog = DialogSubscriptionInfo()
-                    dialog.confirmListener = object: ListenerResult<Boolean> {
-                        override fun onResult(result: Boolean) {
-                            onNavigationEvent(NAVIGATION_DIALOG_SUBSCRIPTION)
-                        }
-                    }
-                    dialog.show(this@FragmentSettings.childFragmentManager, "Sub Info Dialog")
-                }
-            }
             NAVIGATION_DIALOG_SECONDARY_PROGRESS_INFO -> {
                 if (isResumed) {
                     DialogSecondaryProgressInfo().show(this@FragmentSettings.childFragmentManager, "Secondary Progress Info Dialog")

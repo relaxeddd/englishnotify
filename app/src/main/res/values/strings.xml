@@ -90,6 +90,7 @@
     <string name="learned">Learned!</string>
     <string name="list">List</string>
     <string name="listening_training">Listening training</string>
+    <string name="load_your_dictionary">Load your dictionary</string>
     <string name="loading">Loading</string>
     <string name="logout">Logout</string>
     <string name="logout_error">Logout error</string>
@@ -98,6 +99,7 @@
     <string name="memorize">Memorize</string>
     <string name="mixed">Mixed</string>
     <string name="need_enable_secondary_progress">Need to enable word secondary progress</string>
+    <string name="need_subscription_desc">Sorry, you need to be subscribed</string>
     <string name="new_categories">New</string>
     <string name="new_version">New version</string>
     <string name="network_not_available">Network error</string>
@@ -111,6 +113,7 @@
     <string name="no_training_words">There are no words for training or it already learned or it is all the sentences</string>
     <string name="no_words">Notifications with new words have not received yet. Please, authorize and wait… (With default settings wait 1 hour)</string>
     <string name="no_words_default">Notifications with new words have not received yet. Please wait or try to use test notifications in Notifications section</string>
+    <string name="no_words_for_load">No words for load</string>
     <string name="no_words_know">You have not learned words in dictionary</string>
     <string name="no_words_own">You have not added words to your category yet</string>
     <string name="no_test_notifications">There are no test notifications</string>
@@ -123,6 +126,7 @@
     <string name="notifications_view">Notifications view</string>
     <string name="notifications">Notifications</string>
     <string name="one_more">One more</string>
+    <string name="ok">OK</string>
     <string name="other">Other</string>
     <string name="own_category">Own category</string>
     <string name="own_words">Own words</string>
@@ -144,6 +148,7 @@
     <string name="reset_progress">Reset progress</string>
     <string name="right">Right!</string>
     <string name="russian_at_english">Translation-word</string>
+    <string name="save_your_dictionary">Save your dictionary</string>
     <string name="show_only_one_last_notification">Show only one last notification</string>
     <string name="show_own_words">Show own words</string>
     <string name="show_translation">I don`t know</string>
@@ -194,6 +199,7 @@
     <string name="word_should_not_be_empty">Word should not be empty</string>
     <string name="words_not_selected">Words not selected</string>
     <string name="words_removed_from_own">Words removed from own category</string>
+    <string name="words_saved">Words saved: %s</string>
     <string name="words_training">Words training</string>
     <string name="wrong">Wrong</string>
     <string name="yes">Yes</string>
@@ -258,7 +264,8 @@
     </string>
 
     <string name="patch_notes">
-        - Translation feature on the Add word screen
+        - Save and load your dictionary options in Common tab
+        \n\n- Translation feature on the Add word screen
         \n- Secondary word progress for translation-word training. You can enable it in Common tab
         \n- Hide off notifications warning option in Notifications tab
         \n- Check learned words option in training settings

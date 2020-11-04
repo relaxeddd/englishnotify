@@ -8,6 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import com.google.firebase.iid.FirebaseInstanceId
+import relaxeddd.englishnotify.model.preferences.SharedHelper
 import java.lang.Exception
 
 object ApiHelper {
@@ -122,9 +123,13 @@ object ApiHelper {
 
     fun initPushTokenId(resultListener: (tokenId: Resource<String>) -> Unit) {
         FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener {
+            val existsToken = SharedHelper.getPushToken()
+
             if (it.isSuccessful) {
                 val receivedTokenId = it.result?.token ?: ""
                 resultListener(Resource(status = RESULT_OK, value = receivedTokenId))
+            } else if (existsToken.isNotBlank()) {
+                resultListener(Resource(status = RESULT_OK, value = existsToken))
             } else {
                 resultListener(Resource(errorStr = ERROR_NOT_AUTHORIZED))
             }
