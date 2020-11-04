@@ -90,6 +90,7 @@
     <string name="learned">Выучено!</string>
     <string name="list">Список</string>
     <string name="listening_training">Восприятие на слух</string>
+    <string name="load_your_dictionary">Загрузить свой словарь</string>
     <string name="loading">Загрузка</string>
     <string name="logout">Выход из аккаунта</string>
     <string name="logout_error">Ошибка выхода из аккаунта</string>
@@ -98,6 +99,7 @@
     <string name="memorize">Запоминай</string>
     <string name="mixed">Смешанная</string>
     <string name="need_enable_secondary_progress">Необходимо включить второстепенный прогресс у слов</string>
+    <string name="need_subscription_desc">Извините, необходимо наличие подписки</string>
     <string name="new_categories">Новые</string>
     <string name="new_version">Новая версия</string>
     <string name="network_not_available">Ошибка интернет соединения</string>
@@ -109,6 +111,7 @@
     <string name="no_thanks">Нет, спасибо / уже</string>
     <string name="no_words">Уведомления с новыми словами пока еще не пришли. Необходимо авторизоваться и подождать… (Со стандартными настройками один час)</string>
     <string name="no_words_default">Уведомления с новыми словами пока еще не пришли. Пожалуйста подождите или попробуйте тестовые уведомления в разделе Уведомления</string>
+    <string name="no_words_for_load">Нету лов для загрузки</string>
     <string name="no_words_know">У вас нет выученных слов в словаре</string>
     <string name="no_words_own">Вы пока еще не добавили слова в свою категорию</string>
     <string name="no_test_notifications">У вас не осталось тестовых уведомлений</string>
@@ -122,6 +125,7 @@
     <string name="notifications_not_receiving_authorize">Уведомления не приходят, авторизируйтесь</string>
     <string name="notifications_view">Показ уведомлений</string>
     <string name="notifications">Уведомления</string>
+    <string name="ok">ОК</string>
     <string name="one_more">Еще раз</string>
     <string name="other">Остальные</string>
     <string name="own_category">Своя категория</string>
@@ -144,6 +148,7 @@
     <string name="reset_progress">Сбросить прогресс</string>
     <string name="right">Верно!</string>
     <string name="russian_at_english">Перевод-слово</string>
+    <string name="save_your_dictionary">Сохранить свой словарь</string>
     <string name="show_only_one_last_notification">Показывать только одно последнее уведомление</string>
     <string name="show_own_words">Показывать свои слова</string>
     <string name="show_translation">Я не знаю</string>
@@ -194,6 +199,7 @@
     <string name="word_should_not_be_empty">Слово не должно быть пустым</string>
     <string name="words_not_selected">Слова не выбраны</string>
     <string name="words_removed_from_own">Слова удалены из своей категории</string>
+    <string name="words_saved">Слов сохранено: %s</string>
     <string name="words_training">Тренировка слов</string>
     <string name="wrong">Неверно</string>
     <string name="yes">Да</string>
@@ -243,7 +249,8 @@
     </string>
 
     <string name="patch_notes">
-        - Функция перевод на экране добавления слов
+        - Функция сохранения и загрузки словаря
+        \n\n- Функция перевод на экране добавления слов
         \n- Второстепенный прогресс слов. Используется при тренировке типа перевод-слово. Можно включить во вкладке Общее
         \n- Опция скрыть предупреждение об отключенных уведомлениях во вкладке Уведомления
         \n- Опция проверки выученных слов в настройках тренировки

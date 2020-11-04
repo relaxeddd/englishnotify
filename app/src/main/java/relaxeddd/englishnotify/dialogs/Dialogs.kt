@@ -94,22 +94,22 @@ class DialogSwapProgress : DialogSimpleChoice() {
 class DialogConfirmDisableNotifications : DialogSimpleChoice() {
 
     override val textResId: Int = R.string.do_you_really_want_to_off_notifications
-    override val positiveButtonTextResId: Int = android.R.string.yes
-    override val negativeButtonTextResId: Int = android.R.string.no
+    override val positiveButtonTextResId: Int = R.string.yes
+    override val negativeButtonTextResId: Int = R.string.no
 }
 
 class DialogConfirmLogout : DialogSimpleChoice() {
 
     override val textResId: Int = R.string.do_you_really_want_to_logout
-    override val positiveButtonTextResId: Int = android.R.string.yes
-    override val negativeButtonTextResId: Int = android.R.string.no
+    override val positiveButtonTextResId: Int = R.string.yes
+    override val negativeButtonTextResId: Int = R.string.no
 }
 
 class DialogDeleteWords : DialogSimpleChoice() {
 
     override val textResId: Int = R.string.do_you_really_want_to_delete_words
-    override val positiveButtonTextResId: Int = android.R.string.yes
-    override val negativeButtonTextResId: Int = android.R.string.no
+    override val positiveButtonTextResId: Int = R.string.yes
+    override val negativeButtonTextResId: Int = R.string.no
 }
 
 class DialogLikeApp : DialogSimpleChoice() {
@@ -137,6 +137,13 @@ class DialogRestoreWord : DialogSimpleChoice() {
 
     override val titleResId: Int = R.string.word_already_exists
     override val positiveButtonTextResId: Int = R.string.reset_progress
+}
+
+class DialogNeedSubscription : DialogSimpleChoice() {
+
+    override val textResId: Int = R.string.need_subscription_desc
+    override val positiveButtonTextResId: Int = R.string.sub_advantages
+    override val negativeButtonTextResId: Int = android.R.string.ok
 }
 
 abstract class DialogSimpleChoice : DialogFragment() {

@@ -13,7 +13,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.widget.PopupMenu
 import relaxeddd.englishnotify.dialogs.DialogRestoreWord
-import relaxeddd.englishnotify.dialogs.DialogSubscriptionInfo
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.ui.main.MainActivity
 
@@ -228,17 +227,6 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
             NAVIGATION_ACTIVITY_BACK -> {
                 hideKeyboard(view)
                 super.onNavigationEvent(eventId)
-            }
-            NAVIGATION_DIALOG_SUBSCRIPTION_INFO -> {
-                if (isResumed) {
-                    val dialog = DialogSubscriptionInfo()
-                    dialog.confirmListener = object: ListenerResult<Boolean> {
-                        override fun onResult(result: Boolean) {
-                            onNavigationEvent(NAVIGATION_DIALOG_SUBSCRIPTION)
-                        }
-                    }
-                    dialog.show(this@FragmentWord.childFragmentManager, "Sub Info Dialog")
-                }
             }
             else -> super.onNavigationEvent(eventId)
         }

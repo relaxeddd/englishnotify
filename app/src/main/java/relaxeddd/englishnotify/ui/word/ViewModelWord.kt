@@ -103,8 +103,7 @@ class ViewModelWord : ViewModelBase() {
             return
         }
         if (user.subscriptionTime <= System.currentTimeMillis()) {
-            showToast(R.string.subscription_need)
-            navigateEvent.value = Event(NAVIGATION_DIALOG_SUBSCRIPTION_INFO)
+            navigateEvent.value = Event(NAVIGATION_DIALOG_SUBSCRIPTION_REQUIRED)
             callback(null)
             return
         }

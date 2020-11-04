@@ -48,7 +48,7 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
     }
 
     val clickListenerWarningSubscription = View.OnClickListener {
-        navigateEvent.value = Event(NAVIGATION_DIALOG_SUBSCRIPTION)
+        navigateEvent.value = Event(NAVIGATION_DIALOG_SUBSCRIPTION_INFO)
     }
     val clickListenerGoogleAuth = View.OnClickListener {
         if (!isNetworkAvailable()) {
@@ -116,6 +116,6 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
 
     fun onHideOffNotificationsWarningChanged(isHide: Boolean = SharedHelper.isHideOffNotificationsWarning()) {
         val userData = user.value
-        isShowWarningNotifications.value = isShowGoogleAuth.value == false && (userData == null || !userData.receiveNotifications) && !SharedHelper.isHideOffNotificationsWarning()
+        isShowWarningNotifications.value = isShowGoogleAuth.value == false && (userData == null || !userData.receiveNotifications) && !isHide
     }
 }

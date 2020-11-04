@@ -260,7 +260,13 @@ object NoopWindowInsetsListener : View.OnApplyWindowInsetsListener {
 @RequiresApi(Build.VERSION_CODES.KITKAT_WATCH)
 object HeightTopWindowInsetsListener : View.OnApplyWindowInsetsListener {
     override fun onApplyWindowInsets(v: View, insets: WindowInsets): WindowInsets {
-        val topInset = insets.systemWindowInsetTop
+        val topInset = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            insets.getInsets(WindowInsets.Type.statusBars()).top
+        } else {
+            @Suppress("DEPRECATION")
+            insets.systemWindowInsetTop
+        }
+
         if (v.layoutParams.height != topInset) {
             v.layoutParams.height = topInset
             v.requestLayout()

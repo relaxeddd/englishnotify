@@ -18,8 +18,8 @@ class DialogTestNotifications : DialogFragment() {
             val leftCount = arguments?.getInt(COUNT) ?: 0
 
             builder.setMessage(getString(R.string.send_test_notification, leftCount.toString()))
-                .setPositiveButton(android.R.string.yes) { _, _ -> confirmListener?.onResult(true) }
-                .setNegativeButton(android.R.string.no) { _, _ -> confirmListener?.onResult(false) }
+                .setPositiveButton(R.string.yes) { _, _ -> confirmListener?.onResult(true) }
+                .setNegativeButton(R.string.no) { _, _ -> confirmListener?.onResult(false) }
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
     }

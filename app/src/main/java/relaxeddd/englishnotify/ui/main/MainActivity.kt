@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.content.res.Configuration
+import android.graphics.Insets
 import android.os.Build
 import android.os.Bundle
 import android.speech.RecognizerIntent
@@ -13,7 +14,9 @@ import android.text.Spanned
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.UnderlineSpan
-import android.view.*
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowInsets
 import android.widget.ImageView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
@@ -38,7 +41,6 @@ import relaxeddd.englishnotify.dialogs.*
 import relaxeddd.englishnotify.donate.ActivityBilling
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.push.PushTokenHelper
-import java.lang.Exception
 import java.util.*
 import kotlin.system.exitProcess
 
@@ -123,13 +125,39 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
             binding.drawerContainer.setOnApplyWindowInsetsListener { v, insets ->
                 v.onApplyWindowInsets(insets)
                 v.updatePadding(
-                    left = insets.systemWindowInsetLeft,
-                    right = insets.systemWindowInsetRight
+                    left = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        insets.getInsets(WindowInsets.Type.systemBars()).left
+                    } else {
+                        @Suppress("DEPRECATION")
+                        insets.systemWindowInsetLeft
+                    },
+                    right = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        insets.getInsets(WindowInsets.Type.systemBars()).right
+                    } else {
+                        @Suppress("DEPRECATION")
+                        insets.systemWindowInsetRight
+                    }
                 )
-                insets.replaceSystemWindowInsets(
-                    0, insets.systemWindowInsetTop,
-                    0, insets.systemWindowInsetBottom
-                )
+
+                val topInset = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    insets.getInsets(WindowInsets.Type.systemBars()).top
+                } else {
+                    @Suppress("DEPRECATION")
+                    insets.systemWindowInsetTop
+                }
+                val bottomInset = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    insets.getInsets(WindowInsets.Type.systemBars()).bottom
+                } else {
+                    @Suppress("DEPRECATION")
+                    insets.systemWindowInsetBottom
+                }
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    WindowInsets.Builder(insets).setInsets(WindowInsets.Type.systemBars(), Insets.of(0, topInset, 0, bottomInset)).build()
+                } else {
+                    @Suppress("DEPRECATION")
+                    insets.replaceSystemWindowInsets(0, topInset, 0, bottomInset)
+                }
             }
         }
         binding.containerMainActivity.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
@@ -323,7 +351,7 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
                             openWebApplication(this@MainActivity)
                         }
                     }
-                    dialog.show(this@MainActivity.supportFragmentManager, "Rate app Dialog")
+                    dialog.show(supportFragmentManager, "Rate app Dialog")
                 }
             }
             NAVIGATION_EXIT -> {
@@ -342,11 +370,11 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
             NAVIGATION_DIALOG_NEW_VERSION -> {
                 val dialogNewVersion = DialogNewVersion()
                 dialogNewVersion.confirmListener = listenerNewVersion
-                dialogNewVersion.show(this@MainActivity.supportFragmentManager, "New version Dialog")
+                dialogNewVersion.show(supportFragmentManager, "New version Dialog")
             }
             NAVIGATION_DIALOG_PATCH_NOTES -> {
                 val dialog = DialogPatchNotes()
-                dialog.show(this@MainActivity.supportFragmentManager, "Patch Notes Dialog")
+                dialog.show(supportFragmentManager, "Patch Notes Dialog")
             }
             NAVIGATION_GOOGLE_LOGOUT -> {
                 if (isMyResumed) {
@@ -359,17 +387,43 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
             NAVIGATION_DIALOG_LIKE_APP -> {
                 val dialog = DialogLikeApp()
                 dialog.confirmListener = listenerLikeApp
-                dialog.show(this@MainActivity.supportFragmentManager, "Like app Dialog")
+                dialog.show(supportFragmentManager, "Like app Dialog")
             }
             NAVIGATION_DIALOG_SEND_FEEDBACK -> {
                 val dialog = DialogSendFeedback()
                 dialog.setConfirmListener(listenerFeedbackDialog)
-                dialog.show(this.supportFragmentManager, "Send feedback Dialog")
+                dialog.show(supportFragmentManager, "Send feedback Dialog")
             }
             NAVIGATION_RECREATE_ACTIVITY -> {
                 if (isMyResumed) {
                     finish()
                     startActivity(Intent(this, MainActivity::class.java).apply { addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION) })
+                }
+            }
+            NAVIGATION_DIALOG_SUBSCRIPTION_INFO -> {
+                if (isMyResumed) {
+                    val dialog = DialogSubscriptionInfo()
+                    dialog.confirmListener = object : ListenerResult<Boolean> {
+                        override fun onResult(result: Boolean) {
+                            if (result) {
+                                onNavigationEvent(NAVIGATION_DIALOG_SUBSCRIPTION)
+                            }
+                        }
+                    }
+                    dialog.show(supportFragmentManager, "Sub Info Dialog")
+                }
+            }
+            NAVIGATION_DIALOG_SUBSCRIPTION_REQUIRED -> {
+                if (isMyResumed) {
+                    val dialog = DialogNeedSubscription()
+                    dialog.confirmListener = object : ListenerResult<Boolean> {
+                        override fun onResult(result: Boolean) {
+                            if (result) {
+                                onNavigationEvent(NAVIGATION_DIALOG_SUBSCRIPTION_INFO)
+                            }
+                        }
+                    }
+                    dialog.show(supportFragmentManager, "Sub Info Dialog")
                 }
             }
             NAVIGATION_LOADING_SHOW -> setLoadingVisible(true)
@@ -381,11 +435,9 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
     override fun setupThemeColors() {
         super.setupThemeColors()
         val isNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
-        binding.navigationViewMain.setBackgroundColor(ContextCompat.getColor(this,
-            if (isNightMode) R.color.bottom_navigation_color else getPrimaryColorResId()))
+        binding.navigationViewMain.setBackgroundColor(ContextCompat.getColor(this, if (isNightMode) R.color.bottom_navigation_color else getPrimaryColorResId()))
         binding.navigationViewMain.itemBackgroundResource = if (isNightMode) R.color.bottom_navigation_color else getPrimaryColorResId()
-        binding.buttonMainFab.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this,
-            if (isNightMode) R.color.floating_button_color else getPrimaryColorResId()))
+        binding.buttonMainFab.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, if (isNightMode) R.color.floating_button_color else getPrimaryColorResId()))
     }
 
     fun onHideOffNotificationsWarningChanged(isHide: Boolean) {
@@ -519,7 +571,7 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
 
     private fun getLocaleStringByKey(key: String) = when(key) {
         "EN" -> Locale.US.toString()
-        "RU" -> Locale("ru","RU").toString()
+        "RU" -> Locale("ru", "RU").toString()
         "DE" -> Locale.GERMANY.toString()
         "ES" -> Locale("es", "ES").toString()
         "FR" -> Locale.FRANCE.toString()
