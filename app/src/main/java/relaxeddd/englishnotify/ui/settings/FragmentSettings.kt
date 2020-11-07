@@ -98,6 +98,32 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
                     dialog.show(this@FragmentSettings.childFragmentManager, "Swap Progress Dialog")
                 }
             }
+            NAVIGATION_DIALOG_CHECK_SAVE_WORDS -> {
+                if (isResumed) {
+                    val dialog = DialogCheckSaveWords()
+                    dialog.confirmListener = object : ListenerResult<Boolean> {
+                        override fun onResult(result: Boolean) {
+                            if (result) {
+                                viewModel.saveDictionary()
+                            }
+                        }
+                    }
+                    dialog.show(this@FragmentSettings.childFragmentManager, "Check save words Dialog")
+                }
+            }
+            NAVIGATION_DIALOG_CHECK_LOAD_WORDS -> {
+                if (isResumed) {
+                    val dialog = DialogCheckLoadWords()
+                    dialog.confirmListener = object : ListenerResult<Boolean> {
+                        override fun onResult(result: Boolean) {
+                            if (result) {
+                                viewModel.loadDictionary()
+                            }
+                        }
+                    }
+                    dialog.show(this@FragmentSettings.childFragmentManager, "Check load words Dialog")
+                }
+            }
             NAVIGATION_DIALOG_RECEIVE_HELP -> {
                 val ctx = context ?: return
 

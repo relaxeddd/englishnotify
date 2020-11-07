@@ -2,8 +2,10 @@ package relaxeddd.englishnotify.model.http
 
 import androidx.annotation.Keep
 import relaxeddd.englishnotify.common.*
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 @Keep
@@ -47,4 +49,13 @@ interface IApi {
                                   @Query("translationText") translationText: String,
                                   @Query("translateFromLanguage") translateFromLanguage: String,
                                   @Query("translateToLanguage") translateToLanguage: String) : TranslationResult?
+
+    @POST(FUNC_REQUEST_SAVE_WORDS)
+    suspend fun requestSaveWords(@Header("Authorization") idToken: String,
+                                 @Query("userId") userId: String,
+                                 @Body words: List<Word>) : Result?
+
+    @GET(FUNC_REQUEST_LOAD_WORDS)
+    suspend fun requestLoadWords(@Header("Authorization") idToken: String,
+                                 @Query("userId") userId: String) : WordsResult?
 }

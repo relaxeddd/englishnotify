@@ -97,6 +97,12 @@ class RepositoryUser private constructor() {
     }
 
     //------------------------------------------------------------------------------------------------------------------
+    fun setSavedWordsCount(count: Int) {
+        val user = User(liveDataUser.value ?: return)
+        user.savedWordsCount = count
+        liveDataUser.postValue(user)
+    }
+
     suspend fun setReceiveNotifications(isReceive: Boolean) {
         val user = User(liveDataUser.value ?: return)
         user.receiveNotifications = isReceive
@@ -159,14 +165,14 @@ class RepositoryUser private constructor() {
             user.receiveNotifications, user.learnLanguageType, user.selectedTag)
 
         return if (updateResult != null && updateResult.result !== null && !updateResult.result.isSuccess()) {
-            showToast(getErrorString(updateResult.result))
+            withContext(Dispatchers.Main) { showToast(getErrorString(updateResult.result)) }
             liveDataUser.postValue(oldUser)
             false
         } else if (updateResult != null && updateResult.result !== null) {
             SharedHelper.setLearnLanguageType(user.learnLanguageType)
             true
         } else {
-            showToast(R.string.error_update)
+            withContext(Dispatchers.Main) { showToast(R.string.error_update) }
             false
         }
     }

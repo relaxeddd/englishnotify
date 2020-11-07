@@ -6,6 +6,7 @@ import android.widget.CompoundButton
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.common.*
@@ -21,6 +22,9 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
         subTime -= System.currentTimeMillis()
         if (subTime < 0) subTime = 0
         liveDataSubDays.value = (subTime / 1000 / 60 / 60 / 24).toString()
+
+        val savedWordsString = getAppString(R.string.words_saved, user?.savedWordsCount?.toString() ?: "0")
+        textWordsSaved.value = savedWordsString
     }
 
     val user: LiveData<User?> = repositoryUser.liveDataUser
@@ -30,6 +34,7 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     val isOldNavigationDesign = MutableLiveData(SharedHelper.isOldNavigationDesign())
     val isShowVoiceInput = MutableLiveData(SharedHelper.isShowVoiceInput())
     val isEnableSecondaryProgress = MutableLiveData(SharedHelper.isEnabledSecondaryProgress())
+    val textWordsSaved = MutableLiveData("")
     
     val clickListenerAppInfo = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_APP_ABOUT)
@@ -70,6 +75,42 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     }
     val clickListenerTheme = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_THEME)
+    }
+    val clickListenerSaveDictionary = View.OnClickListener {
+        val user = repositoryUser.liveDataUser.value
+
+        if (user == null) {
+            showToast(R.string.please_authorize)
+            return@OnClickListener
+        }
+        if (!user.isSubscribed()) {
+            navigateEvent.value = Event(NAVIGATION_DIALOG_SUBSCRIPTION_REQUIRED)
+            return@OnClickListener
+        }
+        if (RepositoryWord.getInstance().words.value?.isEmpty() == true) {
+            showToast(getErrorString(RESULT_ERROR_SAVE_WORDS_EMPTY))
+            return@OnClickListener
+        }
+
+        navigateEvent.value = Event(NAVIGATION_DIALOG_CHECK_SAVE_WORDS)
+    }
+    val clickListenerLoadDictionary = View.OnClickListener {
+        val user = repositoryUser.liveDataUser.value
+
+        if (user == null) {
+            showToast(R.string.please_authorize)
+            return@OnClickListener
+        }
+        if (!user.isSubscribed()) {
+            navigateEvent.value = Event(NAVIGATION_DIALOG_SUBSCRIPTION_REQUIRED)
+            return@OnClickListener
+        }
+        /*if (user.savedWordsCount == 0) {
+            showToast(getErrorString(RESULT_ERROR_LOAD_WORDS_EMPTY))
+            return@OnClickListener
+        }*/
+
+        navigateEvent.value = Event(NAVIGATION_DIALOG_CHECK_LOAD_WORDS)
     }
     var checkedChangeListenerNavigationDesign = CompoundButton.OnCheckedChangeListener { _, isChecked ->
         if (SharedHelper.isOldNavigationDesign() != isChecked && isOldNavigationDesign.value != isChecked) {
@@ -126,6 +167,30 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
             }
         } else {
             showToast(R.string.logout_error)
+        }
+    }
+
+    fun saveDictionary() {
+        navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
+        ioScope.launch {
+            delay(1000)
+            val isSuccess = RepositoryWord.getInstance().requestSaveAllWords()
+            uiScope.launch { navigateEvent.value = Event(NAVIGATION_LOADING_HIDE) }
+            if (isSuccess) {
+                showToast(R.string.words_saved_success)
+            }
+        }
+    }
+
+    fun loadDictionary() {
+        navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
+        ioScope.launch {
+            delay(1000)
+            val isSuccess = RepositoryWord.getInstance().requestLoadAllWords()
+            uiScope.launch { navigateEvent.value = Event(NAVIGATION_LOADING_HIDE) }
+            if (isSuccess) {
+                showToast(R.string.words_loaded)
+            }
         }
     }
 }

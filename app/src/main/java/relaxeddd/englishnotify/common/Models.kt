@@ -19,11 +19,16 @@ data class User(
     var learnLanguageType: Int = 0,
     var subscriptionTime: Long = 0,
     var selectedTag: String = IRREGULAR,
-    var testCount: Int = 0
+    var testCount: Int = 0,
+    var savedWordsCount: Int = 0
 ) {
     constructor(user: User) : this(user.userId, user.email, user.receiveNotifications, user.notificationsTimeType,
         user.tagsAvailable, user.tagsSelected, user.learnLanguageType, user.subscriptionTime, user.selectedTag,
-        user.testCount)
+        user.testCount, user.savedWordsCount)
+
+    fun isSubscribed() : Boolean {
+        return subscriptionTime > System.currentTimeMillis()
+    }
 }
 
 @Entity(tableName = WORDS)
@@ -110,6 +115,9 @@ data class UpdateUserResult(val result: Result?, val user: User?)
 @Keep
 data class TranslationResult(val result: Result?, val translationText: String = "", val translateFromLanguage: String = "",
                              val translateToLanguage: String = "", val translations: Any? = null)
+
+@Keep
+data class WordsResult(val result: Result?, val words: List<Word> = ArrayList())
 
 /*@Keep
 data class CreateWordResult(val result: Result?, val word: Word? = null)*/

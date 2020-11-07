@@ -109,6 +109,30 @@ object ApiHelper {
         }, TranslationResult(Result(RESULT_ERROR_INTERNET), translationText, translateFromLanguage, translateToLanguage))
     }
 
+    suspend fun requestSaveWords(firebaseUser: FirebaseUser?, tokenId: String?, words: List<Word>) : Result? {
+        val userId = firebaseUser?.uid ?: ""
+
+        if (!isNetworkAvailable() || tokenId?.isNotEmpty() != true || userId.isEmpty()) {
+            return Result(RESULT_ERROR_INTERNET)
+        }
+
+        return executeRequest( suspend {
+            apiHelper.requestSaveWords(TOKEN_PREFIX + tokenId, userId, words)
+        }, Result(RESULT_ERROR_INTERNET))
+    }
+
+    suspend fun requestLoadWords(firebaseUser: FirebaseUser?, tokenId: String?) : WordsResult? {
+        val userId = firebaseUser?.uid ?: ""
+
+        if (!isNetworkAvailable() || tokenId?.isNotEmpty() != true || userId.isEmpty()) {
+            return WordsResult(Result(RESULT_ERROR_INTERNET), ArrayList())
+        }
+
+        return executeRequest( suspend {
+            apiHelper.requestLoadWords(TOKEN_PREFIX + tokenId, userId)
+        }, WordsResult(Result(RESULT_ERROR_INTERNET), ArrayList()))
+    }
+
     //------------------------------------------------------------------------------------------------------------------
     fun initUserTokenId(firebaseUser: FirebaseUser?, resultListener: (tokenId: Resource<String>) -> Unit) {
         firebaseUser?.getIdToken(false)?.addOnCompleteListener {

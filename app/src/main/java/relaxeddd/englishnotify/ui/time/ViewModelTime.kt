@@ -20,7 +20,7 @@ class ViewModelTime(private val repositoryUser: RepositoryUser) : ViewModelBase(
     fun onClickAccept() {
         val user = repositoryUser.liveDataUser.value ?: return
 
-        if (receiveNotificationsTime < 7 && (user.subscriptionTime) < System.currentTimeMillis()) {
+        if (receiveNotificationsTime < 7 && !user.isSubscribed()) {
             showToast(R.string.subscription_need)
         } else {
             uiScope.launch {
