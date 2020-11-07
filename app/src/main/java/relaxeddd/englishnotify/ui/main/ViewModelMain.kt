@@ -27,7 +27,7 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
     private val userObserver = Observer<User?> { user ->
         isShowGoogleAuth.value = user == null || RepositoryCommon.getInstance().firebaseUser == null
         isShowWarningNotifications.value = isShowGoogleAuth.value == false && (user == null || !user.receiveNotifications) && !SharedHelper.isHideOffNotificationsWarning()
-        isShowWarningSubscription.value = user != null && user.subscriptionTime <= System.currentTimeMillis()
+        isShowWarningSubscription.value = user != null && !user.isSubscribed()
 
         val launchCount = SharedHelper.getLaunchCount()
         if (user != null && !isRateDialogShown && !SharedHelper.isCancelledRateDialog() && launchCount % 4 == 0) {
@@ -40,6 +40,9 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
             }
             navigateEvent.value = Event(NAVIGATION_INIT_BILLING)
         }
+    }
+    private val wordsObserver = Observer<List<Word>> {
+        print("Words loaded")
     }
     private val actualVersionObserver = Observer<Boolean> { isActualVersion ->
         if (!isActualVersion) {
@@ -66,6 +69,7 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
     override fun onCleared() {
         super.onCleared()
         repositoryUser.liveDataUser.removeObserver(userObserver)
+        RepositoryWord.getInstance().words.removeObserver(wordsObserver)
     }
 
     fun onFeedbackDialogResult(feedback: String) {
@@ -89,11 +93,14 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
     fun onViewResume() {}
 
     fun requestInit() {
+        RepositoryWord.getInstance().words.observeForever(wordsObserver)
+
         if (repositoryUser.isAuthorized() && !repositoryUser.isInit()) {
             isShowWarningNotifications.value = false
             isShowGoogleAuth.value = false
             isShowWarningSubscription.value = false
             //isShowHorizontalProgress.value = true
+
             ioScope.launch {
                 val loginEmail = FirebaseAuth.getInstance().currentUser?.email ?: ""
                 val savedEmail = SharedHelper.getUserEmail()

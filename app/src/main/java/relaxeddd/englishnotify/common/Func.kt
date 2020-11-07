@@ -25,6 +25,9 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.NavController
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 import java.lang.IllegalStateException
@@ -53,15 +56,15 @@ fun getAccentColorResId() = when (SharedHelper.getAppThemeType()) {
 }
 
 fun showToast(string: String) {
-    Toast.makeText(App.context, string, Toast.LENGTH_SHORT).show()
+    CoroutineScope(Dispatchers.Main).launch { Toast.makeText(App.context, string, Toast.LENGTH_SHORT).show() }
 }
 
 fun showToast(@StringRes resId: Int) {
-    Toast.makeText(App.context, resId, Toast.LENGTH_SHORT).show()
+    CoroutineScope(Dispatchers.Main).launch { Toast.makeText(App.context, resId, Toast.LENGTH_SHORT).show() }
 }
 
 fun showToastLong(@StringRes resId: Int) {
-    Toast.makeText(App.context, resId, Toast.LENGTH_LONG).show()
+    CoroutineScope(Dispatchers.Main).launch { Toast.makeText(App.context, resId, Toast.LENGTH_LONG).show() }
 }
 
 fun hideKeyboard(view: View?) {
@@ -186,6 +189,9 @@ fun getErrorString(result: Result?) : String {
         RESULT_ERROR_SET_NICKNAME_EXISTS -> "Error set name: " + result.message
         RESULT_ERROR_SET_NICKNAME_INVALID -> "Error set name: " + result.message
         RESULT_ERROR_SET_NICKNAME_NOT_AVAILABLE -> "Error set name: " + result.message
+        RESULT_ERROR_SAVE_WORDS_EMPTY -> getAppString(R.string.no_words_for_save)
+        RESULT_ERROR_LOAD_WORDS_EMPTY -> getAppString(R.string.no_words_for_load)
+        RESULT_ERROR_SAVE_WORDS_TOO_MANY -> getAppString(R.string.too_many_words_to_save)
         else -> result.message
     }
 }

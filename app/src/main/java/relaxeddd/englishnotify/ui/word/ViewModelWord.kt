@@ -102,7 +102,7 @@ class ViewModelWord : ViewModelBase() {
             callback(null)
             return
         }
-        if (user.subscriptionTime <= System.currentTimeMillis()) {
+        if (!user.isSubscribed()) {
             navigateEvent.value = Event(NAVIGATION_DIALOG_SUBSCRIPTION_REQUIRED)
             callback(null)
             return
