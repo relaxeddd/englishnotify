@@ -127,7 +127,7 @@ data class PurchaseResult(val result: Result?, val userId: String = "", val toke
                           val refillInfo: RefillInfo = RefillInfo(), val isObtained: Boolean = false, val text: String = "")
 
 @Keep
-data class RefillInfo(val subscriptionTime: Long = 0)
+data class RefillInfo(val subscriptionTime: Long = 0, val testCount: Int = 0)
 
 @Keep
 data class InitData(val result: Result?, val user: User?, val words: List<Word>? = null,

@@ -165,7 +165,11 @@
     <string name="sort_by">Sort by</string>
     <string name="statistic">Statistic</string>
     <string name="sub_advantages">Premium account advantages</string>
-    <string name="sub_advantages_info">Renewing premium account is one-time purchase. No automatic renewing after getting premium account.\n\n- Receive notifications more than once per 4 hours\n\n- Saving and loading saved dictionary option\n\n- Words translation on adding words screen</string>
+    <string name="sub_advantages_info">Renewing premium account is one-time purchase. No automatic renewing after getting premium account.
+        \n\n- Receive notifications more than once per 4 hours
+        \n\n- Saving and loading saved dictionary option
+        \n\n- Words translation on adding words screen
+        \n\n- Extra test notifications</string>
     <string name="subscription_days">Premium account days: %s</string>
     <string name="subscription_time_error">Expired premium account, you can renew it to get advantages</string>
     <string name="subscription_need">Premium account required</string>
@@ -272,8 +276,9 @@
     </string>
 
     <string name="patch_notes">
-        - Save and load saved dictionary options in Common tab
-        \n\n- Translation feature on the Add word screen
+        - Extra test notifications for buying premium account. Test notifications already added for existing premium accounts.
+        \n\n- Save and load saved dictionary options in Common tab
+        \n- Translation feature on the Add word screen
         \n- Secondary word progress for translation-word training. You can enable it in Common tab
         \n- Hide off notifications warning option in Notifications tab
         \n- Check learned words option in training settings

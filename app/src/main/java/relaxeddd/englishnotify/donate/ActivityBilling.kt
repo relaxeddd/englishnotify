@@ -214,9 +214,13 @@ abstract class ActivityBilling<VM : ViewModelBase, B : ViewDataBinding> : Activi
 
         val user: User? = RepositoryUser.getInstance().liveDataUser.value
         val newSubTime = purchaseResult.refillInfo.subscriptionTime
+        val newTestCount = purchaseResult.refillInfo.testCount
 
         if (newSubTime != 0L && user != null) {
             user.subscriptionTime = newSubTime
+            if (newTestCount != 0) {
+                user.testCount = purchaseResult.refillInfo.testCount
+            }
             RepositoryUser.getInstance().liveDataUser.postValue(user)
         }
     }

@@ -134,7 +134,7 @@ class DialogNewVersion : DialogSimpleChoice() {
 
 class DialogRateApp : DialogSimpleChoice() {
 
-    override val titleResId: Int = R.string.rate_app_question
+    override val textResId: Int = R.string.rate_app_question
     override val positiveButtonTextResId: Int = R.string.rate
     override val negativeButtonTextResId: Int = R.string.no
 }
