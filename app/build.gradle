@@ -17,8 +17,8 @@ android {
         applicationId 'relaxeddd.englishnotify'
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 71
-        versionName "3.5.0"
+        versionCode 72
+        versionName "3.5.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
