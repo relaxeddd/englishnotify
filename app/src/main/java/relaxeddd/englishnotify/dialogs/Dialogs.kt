@@ -126,14 +126,6 @@ class DialogDeleteWords : DialogSimpleChoice() {
     override val negativeButtonTextResId: Int = R.string.no
 }
 
-class DialogLikeApp : DialogSimpleChoice() {
-
-    override val textResId: Int = R.string.you_like_app
-    override val positiveButtonTextResId: Int = R.string.yes
-    override val negativeButtonTextResId: Int = R.string.no
-    override val isCanBeCancelled: Boolean = false
-}
-
 class DialogNewVersion : DialogSimpleChoice() {
 
     override val titleResId: Int = R.string.update

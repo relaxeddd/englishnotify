@@ -43,18 +43,6 @@ object ApiHelper {
         }, InitData(Result(RESULT_ERROR_INTERNET), User()))
     }
 
-    suspend fun requestSendFeedback(firebaseUser: FirebaseUser?, tokenId: String?, feedback: String) : Result? {
-        val userId = firebaseUser?.uid ?: ""
-
-        if (!isNetworkAvailable() || tokenId?.isNotEmpty() != true || userId.isEmpty()) {
-            return Result(RESULT_ERROR_INTERNET)
-        }
-
-        return executeRequest( suspend {
-            apiHelper.requestSendFeedback(TOKEN_PREFIX + tokenId, userId, feedback)
-        }, Result(RESULT_ERROR_INTERNET))
-    }
-
     suspend fun requestSendTestNotification(firebaseUser: FirebaseUser?, tokenId: String?) : Result? {
         val userId = firebaseUser?.uid ?: ""
 

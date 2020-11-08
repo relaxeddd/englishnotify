@@ -19,6 +19,9 @@
     </style>
 
     <style name="Base.AppTheme">
+        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="android:navigationBarColor">@color/nav_bar_scrim</item>
+        <item name="android:progressBackgroundTint">@color/progress_bar_secondary</item>
     </style>
 
     <style name="MySearchViewStyle" parent="Widget.AppCompat.Light.SearchView">
@@ -51,8 +54,6 @@
     <style name="ToolbarStyle" parent="Widget.MaterialComponents.Toolbar">
         <item name="android:paddingEnd">8dp</item>
         <item name="contentInsetStartWithNavigation">?sessionListKeyline</item>
-        <!--<item name="popupTheme">@style/AppTheme.PopupTheme</item>
-        <item name="titleTextAppearance">@style/TextAppearance.IOSched.ToolbarTitle</item>-->
     </style>
 
     <!--_____________________________________________________________________________________________________________-->

@@ -83,23 +83,6 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
         }
     }
 
-    private val listenerFeedbackDialog: ListenerResult<String> = object: ListenerResult<String> {
-        override fun onResult(result: String) {
-            viewModel.onFeedbackDialogResult(result)
-        }
-    }
-
-    private val listenerLikeApp: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
-        override fun onResult(result: Boolean) {
-            SharedHelper.setCancelledRateDialog(true)
-            if (result) {
-                onNavigationEvent(NAVIGATION_DIALOG_RATE_APP)
-            } else {
-                onNavigationEvent(NAVIGATION_DIALOG_SEND_FEEDBACK)
-            }
-        }
-    }
-
     override fun getLayoutResId() = R.layout.main_activity
     override fun getViewModelFactory() = InjectorUtils.provideMainViewModelFactory()
     override fun getViewModelClass(): Class<ViewModelMain> = ViewModelMain::class.java
@@ -121,7 +104,7 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
             lifecycleOwner = this@MainActivity
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH && !isOldDesign) {
+        if (!isOldDesign) {
             binding.drawerContainer.setOnApplyWindowInsetsListener { v, insets ->
                 v.onApplyWindowInsets(insets)
                 v.updatePadding(
@@ -163,10 +146,8 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
         binding.containerMainActivity.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
                 View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
                 View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
-            binding.containerMainActivity.setOnApplyWindowInsetsListener(NoopWindowInsetsListener)
-            binding.statusBarScrim.setOnApplyWindowInsetsListener(HeightTopWindowInsetsListener)
-        }
+        binding.containerMainActivity.setOnApplyWindowInsetsListener(NoopWindowInsetsListener)
+        binding.statusBarScrim.setOnApplyWindowInsetsListener(HeightTopWindowInsetsListener)
         binding.containerMainWarnings.doOnApplyWindowInsets { v, insets, padding ->
             if (!isOldDesign) {
                 (v.layoutParams as? ViewGroup.MarginLayoutParams)?.bottomMargin = padding.bottom + insets.systemWindowInsetBottom
@@ -348,7 +329,9 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
                     val dialog = DialogRateApp()
                     dialog.confirmListener = object : ListenerResult<Boolean> {
                         override fun onResult(result: Boolean) {
-                            openWebApplication(this@MainActivity)
+                            if (result) {
+                                openWebApplication(this@MainActivity)
+                            }
                         }
                     }
                     dialog.show(supportFragmentManager, "Rate app Dialog")
@@ -383,16 +366,6 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
                         viewModel.isShowLoading.value = false
                     }
                 }
-            }
-            NAVIGATION_DIALOG_LIKE_APP -> {
-                val dialog = DialogLikeApp()
-                dialog.confirmListener = listenerLikeApp
-                dialog.show(supportFragmentManager, "Like app Dialog")
-            }
-            NAVIGATION_DIALOG_SEND_FEEDBACK -> {
-                val dialog = DialogSendFeedback()
-                dialog.setConfirmListener(listenerFeedbackDialog)
-                dialog.show(supportFragmentManager, "Send feedback Dialog")
             }
             NAVIGATION_RECREATE_ACTIVITY -> {
                 if (isMyResumed) {

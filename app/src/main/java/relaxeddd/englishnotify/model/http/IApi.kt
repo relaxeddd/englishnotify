@@ -26,11 +26,6 @@ interface IApi {
                                       @Query("originalJson") originalJson: String,
                                       @Query("itemType") itemType: String) : PurchaseResult?
 
-    @GET(FUNC_REQUEST_SEND_FEEDBACK)
-    suspend fun requestSendFeedback(@Header("Authorization") idToken: String,
-                                    @Query("userId") userId: String,
-                                    @Query("message") message: String) : Result?
-
     @GET(FUNC_REQUEST_SEND_TEST_NOTIFICATION)
     suspend fun requestSendTestNotification(@Header("Authorization") idToken: String,
                                             @Query("userId") userId: String) : Result?
