@@ -483,7 +483,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/size_40"
                     android:layout_marginEnd="@dimen/size_16"
-                    tools:text="[presaise]"
+                    tools:text="[precise]"
                     android:lines="2"
                     android:background="?android:attr/selectableItemBackground"
                     app:drawableEndCompat="@drawable/ic_volume"

@@ -32,7 +32,8 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
         val launchCount = SharedHelper.getLaunchCount()
         if (user != null && !isRateDialogShown && !SharedHelper.isCancelledRateDialog() && launchCount % 4 == 0) {
             isRateDialogShown = true
-            navigateEvent.value = Event(NAVIGATION_DIALOG_LIKE_APP)
+            navigateEvent.value = Event(NAVIGATION_DIALOG_RATE_APP)
+            SharedHelper.setCancelledRateDialog(true)
         }
         if (user != null) {
             if (user.email.isNotEmpty()) {
@@ -70,14 +71,6 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
         super.onCleared()
         repositoryUser.liveDataUser.removeObserver(userObserver)
         RepositoryWord.getInstance().words.removeObserver(wordsObserver)
-    }
-
-    fun onFeedbackDialogResult(feedback: String) {
-        uiScope.launch {
-            navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
-            RepositoryCommon.getInstance().sendFeedback(feedback)
-            navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
-        }
     }
 
     fun onViewCreate() {

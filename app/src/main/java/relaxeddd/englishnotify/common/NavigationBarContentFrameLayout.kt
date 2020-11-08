@@ -64,10 +64,6 @@ class NavigationBarContentFrameLayout @JvmOverloads constructor(context: Context
     }
 
     private fun updateDividerBounds() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH) {
-            return
-        }
-
         val d = dividerDrawable
         val insets = lastInsets
 

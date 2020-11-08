@@ -291,14 +291,12 @@ data class ViewPaddingState(
 )
 
 fun View.doOnApplyWindowInsets(f: (View, WindowInsetsCompat, ViewPaddingState) -> Unit) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
-        val paddingState = createStateForView(this)
-        ViewCompat.setOnApplyWindowInsetsListener(this) { v, insets ->
-            f(v, insets, paddingState)
-            insets
-        }
-        requestApplyInsetsWhenAttached()
+    val paddingState = createStateForView(this)
+    ViewCompat.setOnApplyWindowInsetsListener(this) { v, insets ->
+        f(v, insets, paddingState)
+        insets
     }
+    requestApplyInsetsWhenAttached()
 }
 
 @RequiresApi(Build.VERSION_CODES.KITKAT_WATCH)

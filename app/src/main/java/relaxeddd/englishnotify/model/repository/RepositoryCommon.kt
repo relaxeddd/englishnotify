@@ -2,9 +2,7 @@ package relaxeddd.englishnotify.model.repository
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
-import relaxeddd.englishnotify.common.RESULT_ERROR_FEEDBACK_TOO_SHORT
 import relaxeddd.englishnotify.model.http.ApiHelper
 import relaxeddd.englishnotify.push.MyFirebaseMessagingService
 
@@ -42,25 +40,6 @@ class RepositoryCommon private constructor() {
                 showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
                 initCallback(false)
             }
-        }
-    }
-
-    suspend fun sendFeedback(feedback: String) {
-        if (FirebaseAuth.getInstance().currentUser == null) {
-            showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
-            return
-        }
-        if (feedback.isEmpty() || feedback.length < 6) {
-            showToast(getErrorString(RESULT_ERROR_FEEDBACK_TOO_SHORT))
-            return
-        }
-
-        val answer = ApiHelper.requestSendFeedback(firebaseUser, tokenId, feedback)
-
-        if (answer?.isSuccess() == true) {
-            showToast(R.string.thank_you)
-        } else {
-            showToast(getErrorString(answer))
         }
     }
 
