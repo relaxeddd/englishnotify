@@ -68,12 +68,13 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
     }
 
     fun getTrainingWordsByCategory(category: String, isLearned: Boolean = false, trainingLanguage: Int) : ArrayList<Word> {
+        val learnStageMax = SharedHelper.getTrueAnswersToLearn()
         val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
         val trainingWords = ArrayList<Word>()
         val words = words.value ?: ArrayList()
 
         for (word in words) {
-            val isWordAlreadyLearned = word.isLearnedForTraining(isEnabledSecondaryProgress, trainingLanguage)
+            val isWordAlreadyLearned = word.isLearnedForTraining(isEnabledSecondaryProgress, trainingLanguage, learnStageMax)
 
             if ((word.tags.contains(category) || category == ALL_APP_WORDS || (category == OWN && word.isOwnCategory))
                     && (!isWordAlreadyLearned && !isLearned || isLearned && isWordAlreadyLearned) && !word.isDeleted) {
@@ -152,6 +153,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
     }*/
 
     fun getOwnWordsTagInfo() : TagInfo {
+        val learnStageMax = SharedHelper.getTrueAnswersToLearn()
         val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
         val tagInfoOwn = TagInfo(OWN)
         val words = words.value ?: ArrayList()
@@ -162,7 +164,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
             if (word.isCreatedByUser && !word.isDeleted) {
                 tagInfoOwn.received++
                 tagInfoOwn.total++
-                if (word.isLearned(isEnabledSecondaryProgress)) tagInfoOwn.learned++
+                if (word.isLearned(isEnabledSecondaryProgress, learnStageMax)) tagInfoOwn.learned++
             }
         }
 

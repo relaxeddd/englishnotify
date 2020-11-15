@@ -26,6 +26,7 @@ import kotlin.collections.HashSet
 abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewModelDictionary) : ListAdapter<Word, VH>(WordDiffCallback) {
 
     companion object {
+        var learnStageMax = SharedHelper.getTrueAnswersToLearn()
         var isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
     }
 
@@ -163,20 +164,10 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
                 getCheckBoxSelect().isChecked = false
             }
 
-            getProgressLearn().progress = when (word.learnStage) {
-                0 -> 4
-                1 -> 32
-                2 -> 68
-                else -> 100
-            }
+            getProgressLearn().progress = word.getLearnProgress(learnStageMax)
             if (isEnabledSecondaryProgress) {
                 getProgressLearnSecondary()?.visibility = View.VISIBLE
-                getProgressLearnSecondary()?.progress = when (word.learnStageSecondary) {
-                    0 -> 4
-                    1 -> 32
-                    2 -> 68
-                    else -> 100
-                }
+                getProgressLearnSecondary()?.progress = word.getLearnProgressSecondary(learnStageMax)
             } else {
                 getProgressLearnSecondary()?.visibility = View.GONE
             }

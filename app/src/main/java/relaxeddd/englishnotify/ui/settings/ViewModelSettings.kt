@@ -35,6 +35,8 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     val isShowVoiceInput = MutableLiveData(SharedHelper.isShowVoiceInput())
     val isEnableSecondaryProgress = MutableLiveData(SharedHelper.isEnabledSecondaryProgress())
     val textWordsSaved = MutableLiveData("")
+    val textTrueAnswersToLearn = MutableLiveData(SharedHelper.getTrueAnswersToLearn().toString())
+    val textNotificationsLearnPoints = MutableLiveData(SharedHelper.getNotificationLearnPoints().toString())
     
     val clickListenerAppInfo = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_APP_ABOUT)
@@ -111,6 +113,12 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
         }*/
 
         navigateEvent.value = Event(NAVIGATION_DIALOG_CHECK_LOAD_WORDS)
+    }
+    val clickListenerTrueAnswersToLearn = View.OnClickListener {
+        navigateEvent.value = Event(NAVIGATION_DIALOG_TRUE_ANSWERS_TO_LEARN)
+    }
+    val clickListenerNotificationLearnPoints = View.OnClickListener {
+        navigateEvent.value = Event(NAVIGATION_DIALOG_NOTIFICATION_LEARN_POINTS)
     }
     var checkedChangeListenerNavigationDesign = CompoundButton.OnCheckedChangeListener { _, isChecked ->
         if (SharedHelper.isOldNavigationDesign() != isChecked && isOldNavigationDesign.value != isChecked) {
@@ -192,5 +200,17 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
                 showToast(R.string.words_loaded)
             }
         }
+    }
+
+    fun onDialogTrueAnswersToLearnResult(result: Int) {
+        val value = App.context.resources.getStringArray(R.array.array_true_answers_number_to_learn)[result]
+        textTrueAnswersToLearn.value = value
+        SharedHelper.setTrueAnswersToLearn(value.toInt())
+    }
+
+    fun onDialogNotificationLearnPointsResult(result: Int) {
+        val value = App.context.resources.getStringArray(R.array.array_notifications_learn_points)[result]
+        textNotificationsLearnPoints.value = value
+        SharedHelper.setNotificationLearnPoints(value.toInt())
     }
 }

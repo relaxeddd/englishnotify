@@ -17,8 +17,8 @@ android {
         applicationId 'relaxeddd.englishnotify'
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 72
-        versionName "3.5.1"
+        versionCode 73
+        versionName "3.5.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
@@ -63,11 +63,11 @@ dependencies {
     implementation "androidx.room:room-coroutines:2.1.0-alpha04"
     kapt 'androidx.room:room-compiler:2.2.5'
     //googleAuth
-    implementation 'com.google.android.gms:play-services-auth:18.1.0'
+    implementation 'com.google.android.gms:play-services-auth:19.0.0'
     implementation 'com.google.gms:google-services:4.3.4'
     //firebase
     implementation 'com.firebaseui:firebase-ui-auth:4.3.2'
-    implementation 'com.google.firebase:firebase-auth:20.0.0'
+    implementation 'com.google.firebase:firebase-auth:20.0.1'
     implementation 'com.google.firebase:firebase-firestore:22.0.0'
     implementation 'com.google.firebase:firebase-messaging:21.0.0'
     //Retrofit

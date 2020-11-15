@@ -19,6 +19,8 @@ import androidx.core.view.updatePaddingRelative
 import com.judemanutd.autostarter.AutoStartPermissionHelper
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 import java.lang.Exception
+import kotlin.math.max
+import kotlin.math.min
 
 class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding>() {
 
@@ -123,6 +125,34 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
                     }
                     dialog.show(this@FragmentSettings.childFragmentManager, "Check load words Dialog")
                 }
+            }
+            NAVIGATION_DIALOG_TRUE_ANSWERS_TO_LEARN -> {
+                val dialog = DialogTrueAnswersToLearn()
+                val args = Bundle()
+                val array = resources.getStringArray(R.array.array_true_answers_number_to_learn)
+                val arrayIndex = min(max(SharedHelper.getTrueAnswersToLearn() - 2, 0), array.size)
+                args.putInt(SELECTED_ITEM, arrayIndex)
+                dialog.arguments = args
+                dialog.listener = object : ListenerResult<Int> {
+                    override fun onResult(result: Int) {
+                        viewModel.onDialogTrueAnswersToLearnResult(result)
+                    }
+                }
+                dialog.show(this@FragmentSettings.childFragmentManager, "True answers to learn Dialog")
+            }
+            NAVIGATION_DIALOG_NOTIFICATION_LEARN_POINTS -> {
+                val dialog = DialogNotificationLearnPoints()
+                val args = Bundle()
+                val array = resources.getStringArray(R.array.array_notifications_learn_points)
+                val arrayIndex = min(max(SharedHelper.getNotificationLearnPoints() - 1, 0), array.size)
+                args.putInt(SELECTED_ITEM, arrayIndex)
+                dialog.arguments = args
+                dialog.listener = object : ListenerResult<Int> {
+                    override fun onResult(result: Int) {
+                        viewModel.onDialogNotificationLearnPointsResult(result)
+                    }
+                }
+                dialog.show(this@FragmentSettings.childFragmentManager, "Notification learn points Dialog")
             }
             NAVIGATION_DIALOG_RECEIVE_HELP -> {
                 val ctx = context ?: return

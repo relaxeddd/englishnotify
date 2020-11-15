@@ -11,14 +11,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.LEARN_STAGE_MAX
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.common.Word
 import kotlin.math.min
 
 class AdapterStatistic: ListAdapter<Word, AdapterStatistic.ViewHolder>(TagInfoDiffCallback()) {
 
-    val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
+    private val learnStageMax = SharedHelper.getTrueAnswersToLearn()
+    private val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_item_statistic_word, parent, false))
@@ -39,36 +39,29 @@ class AdapterStatistic: ListAdapter<Word, AdapterStatistic.ViewHolder>(TagInfoDi
             textWord.text = word.eng
             textTranslation.text = word.rus
 
-            val textColorResId = if (isEnabledSecondaryProgress) {
-                when(min(word.learnStage, 3) + min(word.learnStageSecondary, 3)) {
-                    0, 1, 2 -> R.color.need_learn
-                    3 -> R.color.start_learn
-                    4, 5 -> R.color.almost_learned
-                    else -> R.color.green_success
-                }
-            } else {
-                when(word.learnStage) {
-                    0 -> R.color.need_learn
-                    1 -> R.color.start_learn
-                    2 -> R.color.almost_learned
-                    else -> R.color.green_success
-                }
+            val totalProgress = if (isEnabledSecondaryProgress) min(word.learnStage, learnStageMax) + min(word.learnStageSecondary, learnStageMax) else word.learnStage
+            val totalMaxProgress = if (isEnabledSecondaryProgress) learnStageMax * 2 else learnStageMax
+            val textColorResId = when {
+                totalProgress < (totalMaxProgress*0.3).toInt() -> R.color.need_learn
+                totalProgress < (totalMaxProgress*0.55).toInt() -> R.color.start_learn
+                totalProgress < (totalMaxProgress*0.99).toInt() -> R.color.almost_learned
+                else -> R.color.green_success
             }
 
             if (isEnabledSecondaryProgress) {
-                progress.visibility = if (word.learnStage >= LEARN_STAGE_MAX && word.learnStageSecondary >= LEARN_STAGE_MAX) View.GONE else View.VISIBLE
-                progress.progress = min((word.learnStage.toFloat() / LEARN_STAGE_MAX * 100).toInt(), 100)
-                progressSecondary.visibility = if (word.learnStageSecondary >= LEARN_STAGE_MAX && word.learnStage >= LEARN_STAGE_MAX) View.GONE else View.VISIBLE
-                progressSecondary.progress = min((word.learnStageSecondary.toFloat() / LEARN_STAGE_MAX * 100).toInt(), 100)
+                progress.visibility = if (word.isLearned(true, learnStageMax)) View.GONE else View.VISIBLE
+                progress.progress = word.getLearnProgress(learnStageMax)
+                progressSecondary.visibility = if (word.isLearned(true, learnStageMax)) View.GONE else View.VISIBLE
+                progressSecondary.progress = word.getLearnProgressSecondary(learnStageMax)
             } else {
-                progress.visibility = if (word.learnStage >= LEARN_STAGE_MAX) View.GONE else View.VISIBLE
-                progress.progress = min((word.learnStage.toFloat() / LEARN_STAGE_MAX * 100).toInt(), 100)
+                progress.visibility = if (word.isLearned(false, learnStageMax)) View.GONE else View.VISIBLE
+                progress.progress = word.getLearnProgress(learnStageMax)
                 progressSecondary.visibility = View.GONE
             }
 
             textWord.setTextColor(ContextCompat.getColor(itemView.context, textColorResId))
             textTranslation.setTextColor(ContextCompat.getColor(itemView.context, textColorResId))
-            if (word.isLearned(isEnabledSecondaryProgress)) {
+            if (word.isLearned(isEnabledSecondaryProgress, learnStageMax)) {
                 textWord.paintFlags = textWord.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                 textTranslation.paintFlags = textTranslation.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
             } else {

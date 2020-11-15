@@ -10,8 +10,9 @@ import relaxeddd.englishnotify.ui.dictionary.ViewModelDictionary
 class ViewModelDictionaryAll(repositoryWord: RepositoryWord, repositoryUser: RepositoryUser) : ViewModelDictionary(repositoryWord, repositoryUser) {
 
     override fun filterWords(items: HashSet<Word>) : HashSet<Word> {
+        val learnStageMax = SharedHelper.getTrueAnswersToLearn()
         val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
-        return super.filterWords(items).filter { it.type != EXERCISE && !it.isLearned(isEnabledSecondaryProgress)
+        return super.filterWords(items).filter { it.type != EXERCISE && !it.isLearned(isEnabledSecondaryProgress, learnStageMax)
                 && (!it.isCreatedByUser || isShowOwnWords.value == true) }.toHashSet()
     }
 }

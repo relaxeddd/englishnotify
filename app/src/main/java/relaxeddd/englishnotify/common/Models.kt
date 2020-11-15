@@ -6,6 +6,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.R
+import relaxeddd.englishnotify.model.preferences.SharedHelper
+import kotlin.math.min
 
 @Keep
 data class User(
@@ -58,20 +60,30 @@ data class Word(
         word.v2, word.v3, word.timestamp, word.isDeleted, word.learnStage, word.type, word.isCreatedByUser,
         word.isOwnCategory, word.level, word.learnStageSecondary)
 
-    fun isLearned(isEnabledSecondaryProgress: Boolean) : Boolean {
-        return if (isEnabledSecondaryProgress && type != EXERCISE) learnStage >= LEARN_STAGE_MAX && learnStageSecondary >= LEARN_STAGE_MAX else learnStage >= LEARN_STAGE_MAX
+    fun isLearned(isEnabledSecondaryProgress: Boolean, learnStageMax: Int = SharedHelper.getTrueAnswersToLearn()) : Boolean {
+        return if (isEnabledSecondaryProgress && type != EXERCISE) learnStage >= learnStageMax && learnStageSecondary >= learnStageMax else learnStage >= learnStageMax
     }
 
-    fun isLearnedForTraining(isEnabledSecondaryProgress: Boolean, trainingLanguage: Int) : Boolean {
+    fun getLearnProgress(learnStageMax: Int = SharedHelper.getTrueAnswersToLearn()) : Int {
+        val progress = min((learnStage.toFloat() / learnStageMax * 100).toInt(), 100)
+        return if (progress == 0) 2 else progress
+    }
+
+    fun getLearnProgressSecondary(learnStageMax: Int = SharedHelper.getTrueAnswersToLearn()) : Int {
+        val progress = min((learnStageSecondary.toFloat() / learnStageMax * 100).toInt(), 100)
+        return if (progress == 0) 2 else progress
+    }
+
+    fun isLearnedForTraining(isEnabledSecondaryProgress: Boolean, trainingLanguage: Int, learnStageMax: Int = SharedHelper.getTrueAnswersToLearn()) : Boolean {
         return when (trainingLanguage) {
             TRAINING_ENG_TO_RUS -> {
-                learnStage >= LEARN_STAGE_MAX
+                learnStage >= learnStageMax
             }
             TRAINING_RUS_TO_ENG -> {
-                if (isEnabledSecondaryProgress) learnStageSecondary >= LEARN_STAGE_MAX else learnStage >= LEARN_STAGE_MAX
+                if (isEnabledSecondaryProgress) learnStageSecondary >= learnStageMax else learnStage >= learnStageMax
             }
             else /*MIXED*/ -> {
-                if (isEnabledSecondaryProgress) learnStage >= LEARN_STAGE_MAX && learnStageSecondary >= LEARN_STAGE_MAX else learnStage >= LEARN_STAGE_MAX
+                if (isEnabledSecondaryProgress) learnStage >= learnStageMax && learnStageSecondary >= learnStageMax else learnStage >= learnStageMax
             }
         }
     }
