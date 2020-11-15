@@ -121,6 +121,8 @@
     <string name="no_translation">Translation not found</string>
     <string name="not_show_notifications">Don`t show notifications beginning with (24-hour clock, the number from 0 to 23)</string>
     <string name="notification_categories">Notification categories</string>
+    <string name="notification_learn_points">Notification learn points</string>
+    <string name="notification_learn_points_desc">Increasing progress by:</string>
     <string name="notifications_language">Notifications language</string>
     <string name="notifications_not_receiving_enable">Notifications is not receiving, please enable it</string>
     <string name="notifications_not_receiving_authorize">Notifications is not receiving, please sign in</string>
@@ -189,6 +191,8 @@
     <string name="transcription">Transcription</string>
     <string name="translation">Translation</string>
     <string name="true_answer">True!</string>
+    <string name="true_answers_number_to_learn">True answers number to learn</string>
+    <string name="true_answers_number_to_learn_desc">True answers to learn:</string>
     <string name="undefined_error">Undefined error</string>
     <string name="unauthorized_error">Unauthorized error</string>
     <string name="update">Update</string>
@@ -276,8 +280,11 @@
     </string>
 
     <string name="patch_notes">
-        - Extra test notifications for buying premium account. Test notifications already added for existing premium accounts.
-        \n\n- Save and load saved dictionary options in Common tab
+        - True answers to learn and Notification learn points options in Common tab
+        \n- Fixed bug with incorrect mark as learned on the word training screen
+        \n- Fixed bug with changing volume of ringtone but not sounds
+        \n\n- Extra test notifications for buying premium account. Test notifications already added for existing premium accounts.
+        \n- Save and load saved dictionary options in Common tab
         \n- Translation feature on the Add word screen
         \n- Secondary word progress for translation-word training. You can enable it in Common tab
         \n- Hide off notifications warning option in Notifications tab

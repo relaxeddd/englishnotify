@@ -190,6 +190,18 @@ abstract class DialogSimpleChoice : DialogFragment() {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
+class DialogNotificationLearnPoints : DialogSingleChoice() {
+
+    override val arrayResId: Int = R.array.array_notifications_learn_points
+    override val titleResId: Int = R.string.notification_learn_points_desc
+}
+
+class DialogTrueAnswersToLearn : DialogSingleChoice() {
+
+    override val arrayResId: Int = R.array.array_true_answers_number_to_learn
+    override val titleResId: Int = R.string.true_answers_number_to_learn_desc
+}
+
 class DialogAppTheme : DialogSingleChoice() {
 
     override val arrayResId: Int = R.array.array_themes

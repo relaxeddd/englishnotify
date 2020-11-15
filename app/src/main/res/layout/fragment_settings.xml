@@ -165,6 +165,96 @@
 
             </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_8"
+                android:paddingTop="@dimen/size_16"
+                android:paddingBottom="@dimen/size_16"
+                android:background="@color/card_view_color"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:onClick="@{viewModel.clickListenerTrueAnswersToLearn}"
+                android:elevation="@dimen/default_elevation">
+
+                <TextView
+                    android:id="@+id/text_settings_true_answers_to_learn"
+                    android:text="@string/true_answers_number_to_learn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color_main"
+                    android:textSize="@dimen/font_11"
+                    android:layout_marginStart="@dimen/size_16"
+                    android:layout_toEndOf="@+id/image_settings_true_answers_to_learn"/>
+
+                <TextView
+                    android:id="@+id/text_settings_true_answers_to_learn_value"
+                    android:text="@{viewModel.textTrueAnswersToLearn}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/font_12"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:layout_toEndOf="@+id/image_settings_true_answers_to_learn"
+                    android:layout_below="@+id/text_settings_true_answers_to_learn"
+                    android:layout_marginStart="@dimen/size_16"
+                    tools:text="3"/>
+
+                <ImageView
+                    android:id="@+id/image_settings_true_answers_to_learn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_learn"
+                    android:contentDescription="@string/ic_categories"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/size_16"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_8"
+                android:paddingTop="@dimen/size_16"
+                android:paddingBottom="@dimen/size_16"
+                android:background="@color/card_view_color"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:onClick="@{viewModel.clickListenerNotificationLearnPoints}"
+                android:elevation="@dimen/default_elevation">
+
+                <TextView
+                    android:id="@+id/text_settings_notification_learn_points"
+                    android:text="@string/notification_learn_points"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color_main"
+                    android:textSize="@dimen/font_11"
+                    android:layout_marginStart="@dimen/size_16"
+                    android:layout_toEndOf="@+id/image_settings_notification_learn_points"/>
+
+                <TextView
+                    android:id="@+id/text_settings_notification_learn_points_value"
+                    android:text="@{viewModel.textNotificationsLearnPoints}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/font_12"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:layout_toEndOf="@+id/image_settings_notification_learn_points"
+                    android:layout_below="@+id/text_settings_notification_learn_points"
+                    android:layout_marginStart="@dimen/size_16"
+                    tools:text="1"/>
+
+                <ImageView
+                    android:id="@+id/image_settings_notification_learn_points"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_progress_2"
+                    android:contentDescription="@string/ic_categories"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/size_16"/>
+
+            </RelativeLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

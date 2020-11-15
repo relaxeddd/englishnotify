@@ -11,7 +11,8 @@ class ViewModelDictionaryOwn(repositoryWord: RepositoryWord, repositoryUser: Rep
     override val isShowOwnWordsContainer = false
 
     override fun filterWords(items: HashSet<Word>) : HashSet<Word> {
+        val learnStageMax = SharedHelper.getTrueAnswersToLearn()
         val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
-        return super.filterWords(items).filter { it.isOwnCategory && !it.isLearned(isEnabledSecondaryProgress) }.toHashSet()
+        return super.filterWords(items).filter { it.isOwnCategory && !it.isLearned(isEnabledSecondaryProgress, learnStageMax) }.toHashSet()
     }
 }

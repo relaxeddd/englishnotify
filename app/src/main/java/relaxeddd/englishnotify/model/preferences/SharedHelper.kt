@@ -101,6 +101,26 @@ object SharedHelper {
         sPref.edit().putInt(SELECTED_LOCALE_WORD, value).apply()
     }
 
+    fun getTrueAnswersToLearn(context: Context = App.context) : Int {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getInt(TRUE_ANSWERS_TO_LEARN, 3)
+    }
+
+    fun setTrueAnswersToLearn(value: Int, context: Context = App.context) {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putInt(TRUE_ANSWERS_TO_LEARN, value).apply()
+    }
+
+    fun getNotificationLearnPoints(context: Context = App.context) : Int {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getInt(LEARN_POINTS_NOTIFICATION, 1)
+    }
+
+    fun setNotificationLearnPoints(value: Int, context: Context = App.context) {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putInt(LEARN_POINTS_NOTIFICATION, value).apply()
+    }
+
     fun getSelectedLocaleTranslation(context: Context = App.context) : Int {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         return sPref.getInt(SELECTED_LOCALE_TRANSLATION, 1)

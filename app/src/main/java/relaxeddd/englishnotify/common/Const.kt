@@ -126,6 +126,8 @@ const val NAVIGATION_DIALOG_SWAP_PROGRESS = 1354
 const val NAVIGATION_DIALOG_SUBSCRIPTION_REQUIRED = 1355
 const val NAVIGATION_DIALOG_CHECK_SAVE_WORDS = 1356
 const val NAVIGATION_DIALOG_CHECK_LOAD_WORDS = 1357
+const val NAVIGATION_DIALOG_TRUE_ANSWERS_TO_LEARN = 1358
+const val NAVIGATION_DIALOG_NOTIFICATION_LEARN_POINTS = 1359
 
 const val RESULT_ERROR_SAVE_WORDS = 2011
 const val RESULT_ERROR_SAVE_WORDS_EMPTY = 2012
@@ -145,8 +147,6 @@ const val TYPE_PUSH_RUSSIAN = 1
 const val TRAINING_ENG_TO_RUS = 0
 const val TRAINING_RUS_TO_ENG = 1
 const val TRAINING_MIXED = 2
-
-const val LEARN_STAGE_MAX = 3
 
 const val THEME_STANDARD = 0
 const val THEME_BLUE = 1
@@ -231,6 +231,8 @@ const val PUSH_TOKEN = "pushToken"
 const val LAUNCH_COUNT = "launchCount1"
 const val LEVEL = "level"
 const val LISTENING_TRAINING = "listeningTraining"
+const val TRUE_ANSWERS_TO_LEARN = "trueAnswersToLearn"
+const val LEARN_POINTS_NOTIFICATION = "learnPointsNotifications"
 const val NOTIFICATIONS_VIEW = "notificationsView"
 const val SECONDARY_PROGRESS_ENABLED = "secondaryProgressEnabled"
 const val SELECTED_CATEGORY = "selectedCategory"

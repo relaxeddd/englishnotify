@@ -39,13 +39,14 @@ class PushBroadcastReceiver : BroadcastReceiver() {
 
             if (isKnow == KNOW) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    val notificationLearnPoints = SharedHelper.getNotificationLearnPoints(context)
                     val userText = (RemoteInput.getResultsFromIntent(intent)?.getCharSequence(KEY_TEXT_REPLY) ?: "").toString().toLowerCase()
                     val answer = if (languageType == TYPE_PUSH_ENGLISH) word.rus else word.eng
                     val title = if (languageType == TYPE_PUSH_ENGLISH) word.eng else word.rus
                     val isCorrectAnswer = isCorrectAnswer(userText, answer)
 
                     if (isCorrectAnswer) {
-                        learnStage++
+                        learnStage += notificationLearnPoints
                     } else {
                         learnStage = 0
                     }

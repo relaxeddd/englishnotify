@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.graphics.Insets
+import android.media.AudioManager
 import android.os.Build
 import android.os.Bundle
 import android.speech.RecognizerIntent
@@ -95,6 +96,7 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        volumeControlStream = AudioManager.STREAM_MUSIC
         PushTokenHelper.initChannelNotifications(this)
         initGooglePlayServices()
 
