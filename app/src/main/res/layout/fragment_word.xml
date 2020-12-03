@@ -3,6 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <import type="android.view.View"/>
+        <variable
+            name="viewModel"
+            type="relaxeddd.englishnotify.ui.word.ViewModelWord" />
+    </data>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/info_container"
         android:layout_width="match_parent"
@@ -12,6 +20,7 @@
     <include layout="@layout/view_toolbar"/>
 
     <ScrollView
+        android:id="@+id/scroll_view_word"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -186,6 +195,49 @@
                     android:layout_marginEnd="@dimen/size_2"/>
 
             </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/container_text_word_own_tag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxStrokeColor="@color/colorPrimary"
+                android:alpha="@{viewModel.isEnabledOwnCategories ? 1f : 0.5f}"
+                android:layout_marginHorizontal="@dimen/size_12"
+                android:layout_marginTop="@dimen/size_16">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_input_own_tag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:maxLength="200"
+                    android:focusable="@{viewModel.isEnabledOwnCategories}"
+                    android:hint="@string/own_category"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/text_word_own_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/or_select_from_exists"
+                android:layout_marginStart="@dimen/size_12"
+                android:layout_marginEnd="@dimen/size_12"
+                android:layout_marginTop="@dimen/size_16"
+                android:textSize="@dimen/font_16"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_word_own_categories"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="@dimen/size_42"
+                android:layout_marginTop="@dimen/size_12"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:alpha="@{viewModel.isEnabledOwnCategories ? 1f : 0.5f}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/view_item_category"/>
 
         </LinearLayout>
 

@@ -334,3 +334,5 @@ fun navigationItemBackground(context: Context): Drawable? {
 
     return background
 }
+
+fun isOwnCategory(category: String) = category == OWN || category.contains(OWN_KEY_SYMBOL)

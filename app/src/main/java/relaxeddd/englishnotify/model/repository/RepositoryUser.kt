@@ -69,6 +69,7 @@ class RepositoryUser private constructor() {
                         && answerInitData.user?.userId?.isNotEmpty() == true) {
                     liveDataUser.value = answerInitData.user
                     SharedHelper.setLearnLanguageType(answerInitData.user.learnLanguageType)
+                    SharedHelper.setSelectedCategory(answerInitData.user.selectedTag)
                     if (!answerInitData.isActualVersion) {
                         liveDataIsActualVersion.value = answerInitData.isActualVersion
                     }
@@ -125,6 +126,7 @@ class RepositoryUser private constructor() {
         if (selectedTag.isNotEmpty()) {
             val user = User(liveDataUser.value ?: return false)
             user.selectedTag = selectedTag
+            SharedHelper.setSelectedCategory(selectedTag)
             return updateUser(user, liveDataUser.value)
         } else {
             showToast(R.string.tags_should_not_be_empty)

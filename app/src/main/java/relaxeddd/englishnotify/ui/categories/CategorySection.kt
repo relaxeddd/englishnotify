@@ -5,5 +5,5 @@ import relaxeddd.englishnotify.R
 
 enum class CategorySection(@StringRes val titleResId: Int) {
 
-    MAIN(R.string.main), NEW(R.string.new_categories), EXERCISES(R.string.exercises), OTHER(R.string.other)
+    MAIN(R.string.main), OWN_CATEGORIES(R.string.own_categories), EXERCISES(R.string.exercises), OTHER(R.string.other)
 }

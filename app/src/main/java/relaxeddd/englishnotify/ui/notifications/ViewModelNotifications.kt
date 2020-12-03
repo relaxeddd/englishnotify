@@ -36,7 +36,7 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
 
     private val userObserver = Observer<User?> { user ->
         isEnableNotificationsClickable.value = user != null
-        selectedTagLiveData.value = if (user != null) getStringByResName(user.selectedTag) else ""
+        selectedTagLiveData.value = if (user != null) getStringByResName(user.selectedTag).replaceFirst(OWN_KEY_SYMBOL, "") else ""
         textLearnLanguage.value = App.context.resources.getStringArray(R.array.array_learn_language)[user?.learnLanguageType ?: 0]
         textRepeatTime.value = App.context.resources.getStringArray(R.array.array_time_repeat)[user?.notificationsTimeType ?: 0]
     }

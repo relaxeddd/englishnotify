@@ -261,6 +261,16 @@ object SharedHelper {
         sPref.edit().putString(USER_EMAIL, string).apply()
     }
 
+    fun getSelectedCategory(context: Context = App.context) : String {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getString(SELECTED_CATEGORY, ALL_APP_WORDS) ?: ""
+    }
+
+    fun setSelectedCategory(string : String, context: Context = App.context) {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putString(SELECTED_CATEGORY, string).apply()
+    }
+
     fun getTrainingCategory(context: Context = App.context) : String {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         return sPref.getString(TRAINING_CATEGORY, ALL_APP_WORDS) ?: ""
