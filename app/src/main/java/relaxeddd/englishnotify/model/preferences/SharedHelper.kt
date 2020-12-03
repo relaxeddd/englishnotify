@@ -21,6 +21,16 @@ object SharedHelper {
         sPref.edit().putBoolean(PRIVACY_POLICY_CONFIRMED, isConfirmed).apply()
     }
 
+    fun isDefaultWordsLoaded(context: Context = App.context) : Boolean {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getBoolean(IS_DEFAULT_WORDS_LOADED, false)
+    }
+
+    fun setDefaultWordsLoaded(value: Boolean, context: Context = App.context) {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putBoolean(IS_DEFAULT_WORDS_LOADED, value).apply()
+    }
+
     fun isOldNavigationDesign(context: Context = App.context) : Boolean {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         return sPref.getBoolean(IS_OLD_NAVIGATION_DESIGN, false)

@@ -42,8 +42,7 @@
                 android:orientation="horizontal"
                 android:background="@color/card_view_color"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:onClick="@{viewModel.user != null ? viewModel.clickListenerStatistic : null}"
-                android:alpha="@{viewModel.user != null ? 1f : 0.5f}"
+                android:onClick="@{viewModel.clickListenerStatistic}"
                 android:elevation="@dimen/default_elevation">
 
                 <ImageView

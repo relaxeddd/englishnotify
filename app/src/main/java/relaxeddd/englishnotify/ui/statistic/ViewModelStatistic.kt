@@ -13,15 +13,15 @@ class ViewModelStatistic(private val repositoryWord: RepositoryWord) : ViewModel
     private val learnStageMax = SharedHelper.getTrueAnswersToLearn()
 
     private val wordsObserver = Observer<List<Word>> {
-        updateFilteredOwnWords()
+        updateOwnWords()
     }
 
-    val ownTagInfo = repositoryWord.getOwnWordsTagInfo()
+    var ownTagInfo = TagInfo(OWN)
     val ownWords = MutableLiveData<List<Word>>(ArrayList())
 
     init {
         repositoryWord.words.observeForever(wordsObserver)
-        updateFilteredOwnWords()
+        updateOwnWords()
     }
 
     override fun onCleared() {
@@ -29,9 +29,27 @@ class ViewModelStatistic(private val repositoryWord: RepositoryWord) : ViewModel
         repositoryWord.words.removeObserver(wordsObserver)
     }
 
-    private fun updateFilteredOwnWords() {
+    private fun updateWordsTagInfo(words: List<Word>) {
+        val learnStageMax = SharedHelper.getTrueAnswersToLearn()
         val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
-        ownWords.value = repositoryWord.getOwnWords().filter { !it.isDeleted }.sortedWith(object: Comparator<Word> {
+        val tagInfoOwn = TagInfo(OWN)
+
+        tagInfoOwn.received = 0
+        tagInfoOwn.learned = 0
+        for (word in words) {
+            if (!word.isDeleted) {
+                tagInfoOwn.received++
+                tagInfoOwn.total++
+                if (word.isLearned(isEnabledSecondaryProgress, learnStageMax)) tagInfoOwn.learned++
+            }
+        }
+
+        ownTagInfo = tagInfoOwn
+    }
+
+    private fun updateOwnWords() {
+        val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
+        val words = ArrayList(repositoryWord.words.value ?: emptyList()).filter { !it.isDeleted }.sortedWith(object: Comparator<Word> {
             override fun compare(o1: Word?, o2: Word?): Int {
                 if (o1 == null) return 1
                 if (o2 == null) return -1
@@ -45,5 +63,8 @@ class ViewModelStatistic(private val repositoryWord: RepositoryWord) : ViewModel
                 return if (learnStageCompare != 0) learnStageCompare else alphabetCompare
             }
         })
+
+        updateWordsTagInfo(words)
+        ownWords.value = words
     }
 }
