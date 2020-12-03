@@ -29,7 +29,46 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
 
     val words = wordDao.getAll().also {
         uiScope.launch {
-            it.observeForever { print("Observing words to init") }
+            it.observeForever {
+                if (it.isEmpty() && !SharedHelper.isDefaultWordsLoaded()) {
+                    ioScope.launch {
+                        val defaultWords = listOf(
+                            Word("cause", "cause", "причина, дело, повод, вызывать", "kɔːz", listOf("frequent_verbs"),
+                                timestamp = System.currentTimeMillis(), isCreatedByUser = false),
+                            Word("catch", "catch", "ловить, поймать, улов, выгода, добыча, захват", "kæʧ",
+                                listOf("irregular", "movement", "frequent_verbs"), v2 = "caught", v3 = "caught", timestamp = System.currentTimeMillis(), isCreatedByUser = false),
+                            Word("dream", "dream", "мечтать, сниться, мечта, сон, фантазировать", "driːm",
+                                listOf("irregular"), v2 = "dreamt", v3 = "dreamt", timestamp = System.currentTimeMillis(), isCreatedByUser = false),
+                            Word("throw", "throw", "бросать, бросок, кидать, метать, метание", "θroʊ",
+                                listOf("irregular", "movement", "frequent_verbs", "sport"), v2 = "threw", v3 = "thrown",
+                                timestamp = System.currentTimeMillis(), isCreatedByUser = false),
+                            Word("forget", "forget", "забывать, не помнить, забыть", "fəˈɡet",
+                                listOf("irregular", "frequent_verbs"), v2 = "forgot", v3 = "forgotten",
+                                timestamp = System.currentTimeMillis(), isCreatedByUser = false),
+                            Word("bite", "bite", "кусать, укусить, укус, кусок, кусаться", "baɪt",
+                                listOf("irregular", "frequent_verbs"), v2 = "bit", v3 = "bitten",
+                                timestamp = System.currentTimeMillis(), isCreatedByUser = false),
+                            Word("hide", "hide", "скрывать, прятать, прятаться", "haɪd",
+                                listOf("irregular", "frequent_verbs"), v2 = "hid", v3 = "hidden",
+                                timestamp = System.currentTimeMillis(), isCreatedByUser = false),
+                            Word("absent", "absent", "отсутствовать, отсутствующий, отсутствует, в отсутствие", "ˈæbsənt",
+                                listOf("frequent_verbs"), timestamp = System.currentTimeMillis(), isCreatedByUser = false),
+                            Word("beard", "beard", "борода", "bɪrd",
+                                listOf("human_body"), timestamp = System.currentTimeMillis(), isCreatedByUser = false),
+                            Word("claim", "claim", "запрос, требование, требовать, иск, заявка, претензия", "kleɪm",
+                                listOf("tourists"), timestamp = System.currentTimeMillis(), isCreatedByUser = false),
+                            Word("desire", "desire", "желание, желать, страсть", "dɪˈzaɪər",
+                                listOf(), timestamp = System.currentTimeMillis(), isCreatedByUser = false),
+                            Word("elk", "elk", "лось, сохатый", "elk",
+                                listOf("animals"), timestamp = System.currentTimeMillis(), isCreatedByUser = false)
+                        )
+                        updateWords(defaultWords)
+                        SharedHelper.setDefaultWordsLoaded(true)
+                    }
+                } else {
+                    SharedHelper.setDefaultWordsLoaded(true)
+                }
+            }
         }
     }
     private var tagsInfo: List<TagInfo> = ArrayList()
@@ -133,54 +172,6 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
 
     fun updateTagsInfo(tagsInfo: List<TagInfo>) {
         this.tagsInfo = tagsInfo
-    }
-
-    /*fun calculateTagsInfo() : List<TagInfo> {
-        val tagsInfo = ArrayList(this.tagsInfo)
-        val tagsInfoMap: HashMap<String, TagInfo> = HashMap()
-        val words = words.value ?: ArrayList()
-
-        for (tagInfo in tagsInfo) {
-            tagInfo.learned = 0
-            tagInfo.received = 0
-            tagsInfoMap[tagInfo.key] = tagInfo
-        }
-
-        val tagInfoOwn = tagsInfoMap[OWN] ?: TagInfo(OWN)
-
-        tagInfoOwn.received = 0
-        tagInfoOwn.learned = 0
-
-        if (!tagsInfo.contains(tagInfoOwn)) tagsInfo.add(tagInfoOwn)
-
-        for (word in words) {
-            if (word.isCreatedByUser && !word.isDeleted) {
-                tagInfoOwn.received++
-                tagInfoOwn.total++
-                if (word.learnStage == LEARN_STAGE_MAX) tagInfoOwn.learned++
-            }
-        }
-
-        return Collections.singletonList(tagInfoOwn)
-    }*/
-
-    fun getOwnWordsTagInfo() : TagInfo {
-        val learnStageMax = SharedHelper.getTrueAnswersToLearn()
-        val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
-        val tagInfoOwn = TagInfo(OWN)
-        val words = words.value ?: ArrayList()
-
-        tagInfoOwn.received = 0
-        tagInfoOwn.learned = 0
-        for (word in words) {
-            if (word.isCreatedByUser && !word.isDeleted) {
-                tagInfoOwn.received++
-                tagInfoOwn.total++
-                if (word.isLearned(isEnabledSecondaryProgress, learnStageMax)) tagInfoOwn.learned++
-            }
-        }
-
-        return tagInfoOwn
     }
 
     fun insertWord(word : Word, wordDao: WordDao = this.wordDao) {
