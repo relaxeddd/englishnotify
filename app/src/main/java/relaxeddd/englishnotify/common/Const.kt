@@ -163,6 +163,7 @@ const val RUS = "rus"
 const val V2 = "v2"
 const val V3 = "v3"
 const val TRANSCRIPTION = "transcription"
+const val TAG = "tag"
 const val TAGS = "tags"
 const val SAMPLES = "samples"
 const val SAMPLE_RUS = "sampleRus"
@@ -252,6 +253,8 @@ const val IS_ONGOING = "isOngoing"
 
 const val ENGLISH_WORDS_NOTIFICATIONS_CHANNEL = "EnglishWordsNotificationsChannel"
 
+const val OWN_KEY_SYMBOL = "!"
+
 const val OWN = "own"
 const val IRREGULAR = "irregular"
 const val HARD = "hard"
@@ -306,7 +309,7 @@ const val SPORT_5 = "sport_5"
 const val AUTO = "auto"
 const val AUTO_5 = "auto_5"
 const val FREQUENT_VERBS = "frequent_verbs"
-const val FREQUENT_VERBS_5 = "frequent_verbs_5"
+const val FREQUENT_VERBS_5 = "frequent_verbs_5" //54
 const val EXERCISES_VERBS_FIRST = "exercises_verbs_first"
 
 const val EXERCISES_CONDITIONAL_SENTENCES_1 = "exercises_conditional_sentences_1"

@@ -283,6 +283,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     return
                 }
 
+                val tag = SharedHelper.getSelectedCategory(this)
                 val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress(this)
                 val languageType = SharedHelper.getLearnLanguageType(this)
 
@@ -290,7 +291,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 var words = wordDao.getAllItems()
                 val sortByLearnStage = HashMap<Int, ArrayList<Word>>()
 
-                words = words.filter { !it.isDeleted && it.isOwnCategory }
+                words = words.filter { !it.isDeleted && it.isOwnCategory && (tag.isEmpty() || it.tags.contains(tag)) }
 
                 for (word in words) {
                     val wordLearnStage = if (languageType == TYPE_PUSH_RUSSIAN && isEnabledSecondaryProgress) word.learnStageSecondary else word.learnStage

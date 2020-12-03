@@ -42,7 +42,7 @@ class FragmentTraining : BaseFragment<ViewModelTraining, FragmentTrainingBinding
     override fun configureBinding() {
         super.configureBinding()
         val category = arguments?.getString(CATEGORY) ?: ALL_APP_WORDS
-        toolbarTitleTraining = getStringByResName(category)
+        toolbarTitleTraining = getStringByResName(category).replaceFirst(OWN_KEY_SYMBOL, "")
         viewModel.category = category
         viewModel.trainingType = arguments?.getInt(TRAINING_TYPE) ?: TRAINING_ENG_TO_RUS
         binding.clickListenerOk = clickListenerOk

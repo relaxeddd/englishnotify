@@ -67,6 +67,18 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         return categories
     }
 
+    fun getOwnWordCategories() : HashSet<String> {
+        val categories = HashSet<String>()
+        val words = words.value ?: ArrayList()
+
+        words.forEach {
+            if (!it.isDeleted) {
+                it.tags.forEach { tag -> if (tag != OWN && isOwnCategory(tag)) categories.add(tag) }
+            }
+        }
+        return categories
+    }
+
     fun getTrainingWordsByCategory(category: String, isLearned: Boolean = false, trainingLanguage: Int) : ArrayList<Word> {
         val learnStageMax = SharedHelper.getTrueAnswersToLearn()
         val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
@@ -209,8 +221,9 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
     }
 
     //------------------------------------------------------------------------------------------------------------------
-    fun insertOwnCategoryWord(wordId: String, eng: String, rus: String, transcription: String) {
-        val word = Word(wordId, eng, rus, transcription, timestamp = System.currentTimeMillis(), isCreatedByUser = true, isOwnCategory = true)
+    fun insertOwnCategoryWord(wordId: String, eng: String, rus: String, transcription: String, ownTag: String) {
+        val word = Word(wordId, eng, rus, transcription, if (ownTag.isNotBlank()) listOf(ownTag) else emptyList(),
+            timestamp = System.currentTimeMillis(), isCreatedByUser = true, isOwnCategory = true)
         updateWord(word)
     }
 

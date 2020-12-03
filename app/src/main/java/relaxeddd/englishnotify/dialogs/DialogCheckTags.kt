@@ -5,10 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.CHECKED_ITEMS
-import relaxeddd.englishnotify.common.ITEMS
-import relaxeddd.englishnotify.common.ListenerResult
-import relaxeddd.englishnotify.common.getStringByResName
+import relaxeddd.englishnotify.common.*
 
 class DialogCheckTags : DialogFragment() {
 
@@ -31,7 +28,7 @@ class DialogCheckTags : DialogFragment() {
                 }
             }
             for ((ix, item) in items.withIndex()) {
-                itemsTitles[ix] = getStringByResName(item)
+                itemsTitles[ix] = getStringByResName(item).replaceFirst(OWN_KEY_SYMBOL, "")
             }
 
             builder.setTitle(R.string.notification_categories)

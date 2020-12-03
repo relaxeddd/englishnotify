@@ -16,11 +16,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.checkbox.MaterialCheckBox
 import relaxeddd.englishnotify.R
+import relaxeddd.englishnotify.common.OWN_KEY_SYMBOL
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.common.Word
 import relaxeddd.englishnotify.common.animateDropdown
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.HashSet
 
 abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewModelDictionary) : ListAdapter<Word, VH>(WordDiffCallback) {
@@ -148,8 +150,12 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
             getWordMainContainer().setOnLongClickListener(longClickListener)
             getImagePlay().setOnClickListener(clickListenerPlay)
 
+            val tagsString = if (word.tags.isNotEmpty()) ArrayList<String>().apply {
+                word.tags.forEach { add(it.replaceFirst(OWN_KEY_SYMBOL, "")) }
+            }.toString() else ""
+
             getTextTimestamp().text = SimpleDateFormat("hh:mm dd.MM", Locale.getDefault()).format(word.timestamp) ?: ""
-            getTextTags().text = if (word.tags.isNotEmpty()) word.tags.toString() else ""
+            getTextTags().text = tagsString
             getTextTags().visibility = if (word.tags.isNotEmpty()) View.VISIBLE else View.GONE
             getImageOwnWord().visibility = if (word.isOwnCategory) View.VISIBLE else View.GONE
             getImageOwnCreatedWord().visibility = if (word.isCreatedByUser) View.VISIBLE else View.GONE

@@ -130,7 +130,9 @@
     <string name="notifications">Notifications</string>
     <string name="one_more">One more</string>
     <string name="ok">OK</string>
+    <string name="or_select_from_exists">Or select own category from exists</string>
     <string name="other">Other</string>
+    <string name="own_categories">Own categories</string>
     <string name="own_category">Own category</string>
     <string name="own_words">Own words</string>
     <string name="own_words_statistic">Own words statistic</string>
@@ -280,10 +282,11 @@
     </string>
 
     <string name="patch_notes">
-        - True answers to learn and Notification learn points options in Common tab
+        - Creating own categories opportunity
+        \n\n- True answers to learn and Notification learn points options in Common tab
         \n- Fixed bug with incorrect mark as learned on the word training screen
         \n- Fixed bug with changing volume of ringtone but not sounds
-        \n\n- Extra test notifications for buying premium account. Test notifications already added for existing premium accounts.
+        \n- Extra test notifications for buying premium account. Test notifications already added for existing premium accounts.
         \n- Save and load saved dictionary options in Common tab
         \n- Translation feature on the Add word screen
         \n- Secondary word progress for translation-word training. You can enable it in Common tab
@@ -313,7 +316,7 @@
     <string name="every_7_5_hours">Every 7,5 hours</string>
     <string name="every_8_hours">Every 8 hours</string>
 
-    <string name="own">Own category</string>
+    <string name="own">All own words</string>
     <string name="irregular">Irregular verbs</string>
     <string name="hard">Hard</string>
     <string name="all_app_words">All app words</string>

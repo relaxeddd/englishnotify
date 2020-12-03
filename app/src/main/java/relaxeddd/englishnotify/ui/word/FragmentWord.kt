@@ -14,9 +14,12 @@ import android.widget.ArrayAdapter
 import androidx.appcompat.widget.PopupMenu
 import relaxeddd.englishnotify.dialogs.DialogRestoreWord
 import relaxeddd.englishnotify.model.preferences.SharedHelper
+import relaxeddd.englishnotify.ui.categories.AdapterCategories
 import relaxeddd.englishnotify.ui.main.MainActivity
 
 class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
+
+    private var adapter: AdapterCategories? = null
 
     private val listenerRestoreWord: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
         override fun onResult(result: Boolean) {
@@ -47,6 +50,8 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
 
     override fun configureBinding() {
         super.configureBinding()
+
+        binding.viewModel = viewModel
         binding.imageWordMicrophone.setOnClickListener {
             val selectedLanguage = binding.spinnerWordLanguage.selectedItem as? String ?: ""
             (activity as? MainActivity)?.requestRecognizeSpeech(selectedLanguage) {
@@ -156,6 +161,26 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
             }
         }
 
+        adapter = AdapterCategories(viewModel)
+        binding.recyclerViewWordOwnCategories.itemAnimator = null
+        binding.recyclerViewWordOwnCategories.adapter = adapter
+        viewModel.categories.observe(viewLifecycleOwner, { items ->
+            if (items != null && items.isNotEmpty()) adapter?.submitList(items)
+        })
+
+        viewModel.isEnabledOwnCategories.observe(viewLifecycleOwner, { isEnabled ->
+            binding.containerTextWordOwnTag.setOnClickListener {
+                viewModel.onClickOwnCategoryContent()
+            }
+            binding.textInputOwnTag.setOnClickListener {
+                viewModel.onClickOwnCategoryContent()
+            }
+            adapter?.isClickableItems = isEnabled
+            adapter?.additionalItemClickListener = {
+                viewModel.onClickOwnCategoryContent()
+            }
+        })
+
         updateVoiceInputVisibility(SharedHelper.isShowVoiceInput())
     }
 
@@ -237,6 +262,7 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
            binding.textInputWord.hasFocus() -> hideKeyboard(binding.textInputWord)
            binding.textInputTranslation.hasFocus() -> hideKeyboard(binding.textInputTranslation)
            binding.textInputTranscription.hasFocus() -> hideKeyboard(binding.textInputTranscription)
+           binding.textInputOwnTag.hasFocus() -> hideKeyboard(binding.textInputOwnTag)
        }
     }
 
@@ -244,6 +270,7 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
         val eng = binding.textInputWord.text.toString()
         val rus = binding.textInputTranslation.text.toString()
         val transcription = binding.textInputTranscription.text.toString()
+        val ownCategory = binding.textInputOwnTag.text.toString()
 
         when {
             eng.isEmpty() -> binding.textInputWord.error = getString(R.string.word_should_not_be_empty)
@@ -253,7 +280,7 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
             transcription.length > 200 -> binding.textInputTranscription.error = getString(R.string.word_length_limit)
             else -> {
                 hideKeyboard()
-                viewModel.createOwnWord(eng, transcription, rus)
+                viewModel.createOwnWord(eng, transcription, rus, ownCategory)
             }
         }
     }
