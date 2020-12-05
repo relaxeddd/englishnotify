@@ -284,10 +284,12 @@
     </string>
 
     <string name="patch_notes">
-        - Creating own categories opportunity
+        - Show progress in training option
+        \n- Fixed bug with receiving notifications from own category
+        \n\n- Creating own categories opportunity
         \n- Display statistic for all words in your dictionary
         \n- Added default words when app installed
-        \n\n- True answers to learn and Notification learn points options in Common tab
+        \n- True answers to learn and Notification learn points options in Common tab
         \n- Fixed bug with incorrect mark as learned on the word training screen
         \n- Fixed bug with changing volume of ringtone but not sounds
         \n- Extra test notifications for buying premium account. Test notifications already added for existing premium accounts.
