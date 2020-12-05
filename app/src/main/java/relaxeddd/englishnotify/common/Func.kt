@@ -14,10 +14,16 @@ import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Build
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.text.style.UnderlineSpan
 import android.view.WindowInsets
 import androidx.annotation.StringRes
 import androidx.fragment.app.FragmentActivity
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import androidx.annotation.IdRes
 import androidx.annotation.RequiresApi
 import androidx.appcompat.content.res.AppCompatResources
@@ -336,3 +342,30 @@ fun navigationItemBackground(context: Context): Drawable? {
 }
 
 fun isOwnCategory(category: String) = category == OWN || category.contains(OWN_KEY_SYMBOL)
+
+fun initPrivacyPolicyText(textView: TextView, activity: FragmentActivity?) {
+    if (SharedHelper.isPrivacyPolicyConfirmed()) {
+        return
+    }
+
+    val privacyPolicy = textView.text.toString()
+    val spannablePrivacyPolicy = SpannableString(privacyPolicy)
+    val clickablePrivacyPolicy = object : ClickableSpan() {
+        override fun onClick(textView: View) {
+            openWebPrivacyPolicy(activity)
+        }
+    }
+
+    setClickableSubstring(privacyPolicy, spannablePrivacyPolicy, textView.context.getString(R.string.privacy_policy_in_sentence), clickablePrivacyPolicy)
+
+    textView.text = spannablePrivacyPolicy
+    textView.movementMethod = LinkMovementMethod.getInstance()
+}
+
+fun setClickableSubstring(string: String, spannableString: SpannableString, substring: String, clickableSpan: ClickableSpan) {
+    val firstIndex = string.indexOf(substring)
+    val lastIndex = firstIndex + substring.length
+
+    spannableString.setSpan(clickableSpan, firstIndex, lastIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+    spannableString.setSpan(UnderlineSpan(), firstIndex, lastIndex, 0)
+}

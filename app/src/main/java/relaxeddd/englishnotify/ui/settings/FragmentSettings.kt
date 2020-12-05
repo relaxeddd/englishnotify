@@ -66,6 +66,8 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
         binding.switchSettingsProgressInTraining.setOnCheckedChangeListener(viewModel.checkedChangeListenerProgressInTraining)
         binding.switchSettingsVoiceInput.setOnCheckedChangeListener(viewModel.checkedChangeListenerVoiceInput)
         binding.switchSettingsSecondaryProgress.setOnCheckedChangeListener(viewModel.checkedChangeListenerEnabledSecondaryProgress)
+
+        initPrivacyPolicyText(binding.textSettingsPrivacyPolicy, activity)
     }
 
     @SuppressLint("BatteryLife")

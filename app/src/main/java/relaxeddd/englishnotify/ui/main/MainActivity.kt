@@ -10,11 +10,6 @@ import android.os.Build
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.speech.tts.TextToSpeech
-import android.text.SpannableString
-import android.text.Spanned
-import android.text.method.LinkMovementMethod
-import android.text.style.ClickableSpan
-import android.text.style.UnderlineSpan
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowInsets
@@ -221,7 +216,7 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
             onNavigationEvent(NAVIGATION_DIALOG_RATE_APP)
         }
 
-        initPrivacyPolicyText()
+        initPrivacyPolicyText(binding.textMainPrivacyPolicy, this)
 
         viewModel.onViewCreate()
 
@@ -515,34 +510,6 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
     }
 
     private fun isTopLevelTab(tabResId: Int) = TOP_LEVEL_DESTINATIONS.contains(tabResId)
-
-    private fun initPrivacyPolicyText() {
-        if (SharedHelper.isPrivacyPolicyConfirmed(this)) {
-            binding.textMainPrivacyPolicy.visibility = View.GONE
-            return
-        }
-
-        val privacyPolicy = binding.textMainPrivacyPolicy.text.toString()
-        val spannablePrivacyPolicy = SpannableString(privacyPolicy)
-        val clickablePrivacyPolicy = object : ClickableSpan() {
-            override fun onClick(textView: View) {
-                openWebPrivacyPolicy(this@MainActivity)
-            }
-        }
-
-        setClickableSubstring(privacyPolicy, spannablePrivacyPolicy, getString(R.string.privacy_policy_in_sentence), clickablePrivacyPolicy)
-
-        binding.textMainPrivacyPolicy.text = spannablePrivacyPolicy
-        binding.textMainPrivacyPolicy.movementMethod = LinkMovementMethod.getInstance()
-    }
-
-    private fun setClickableSubstring(string: String, spannableString: SpannableString, substring: String, clickableSpan: ClickableSpan) {
-        val firstIndex = string.indexOf(substring)
-        val lastIndex = firstIndex + substring.length
-
-        spannableString.setSpan(clickableSpan, firstIndex, lastIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        spannableString.setSpan(UnderlineSpan(), firstIndex, lastIndex, 0)
-    }
 
     private fun getLocaleStringByKey(key: String) = when(key) {
         "EN" -> Locale.US.toString()

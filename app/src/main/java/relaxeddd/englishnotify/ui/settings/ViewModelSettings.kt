@@ -12,6 +12,7 @@ import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.model.preferences.SharedHelper
+import relaxeddd.englishnotify.model.repository.RepositoryCommon
 import relaxeddd.englishnotify.model.repository.RepositoryUser
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 
@@ -25,9 +26,22 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
 
         val savedWordsString = getAppString(R.string.words_saved, user?.savedWordsCount?.toString() ?: "0")
         textWordsSaved.value = savedWordsString
+
+        updateSignInVisibility()
+        if (user != null && user.email.isNotEmpty()) {
+            isShowPrivacyPolicy.value = false
+        }
+    }
+    private val isHideSignInObserver = Observer<Boolean> {
+        updateSignInVisibility()
+    }
+    private val isInitInProgressObserver = Observer<Boolean> {
+        updateSignInVisibility()
     }
 
     val user: LiveData<User?> = repositoryUser.liveDataUser
+    val isHideSignIn = repositoryUser.liveDataHideSignIn
+    val isInitInProgress = repositoryUser.liveDataIsInitInProgress
     val liveDataSubDays = MutableLiveData("")
     var textTheme: String = App.context.resources.getStringArray(R.array.array_themes)[SharedHelper.getAppThemeType()]
     val isVisibleReceiveHelp = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
@@ -35,6 +49,8 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     val isShowProgressInTraining = MutableLiveData(SharedHelper.isShowProgressInTraining())
     val isShowVoiceInput = MutableLiveData(SharedHelper.isShowVoiceInput())
     val isEnableSecondaryProgress = MutableLiveData(SharedHelper.isEnabledSecondaryProgress())
+    val isShowGoogleAuth = MutableLiveData(false)
+    val isShowPrivacyPolicy = MutableLiveData(!SharedHelper.isPrivacyPolicyConfirmed())
     val textWordsSaved = MutableLiveData("")
     val textTrueAnswersToLearn = MutableLiveData(SharedHelper.getTrueAnswersToLearn().toString())
     val textNotificationsLearnPoints = MutableLiveData(SharedHelper.getNotificationLearnPoints().toString())
@@ -121,6 +137,13 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     val clickListenerNotificationLearnPoints = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_NOTIFICATION_LEARN_POINTS)
     }
+    val clickListenerGoogleAuth = View.OnClickListener {
+        if (!isNetworkAvailable()) {
+            showToast(getAppString(R.string.network_not_available))
+            return@OnClickListener
+        }
+        navigateEvent.value = Event(NAVIGATION_GOOGLE_AUTH)
+    }
     var checkedChangeListenerNavigationDesign = CompoundButton.OnCheckedChangeListener { _, isChecked ->
         if (SharedHelper.isOldNavigationDesign() != isChecked && isOldNavigationDesign.value != isChecked) {
             SharedHelper.setOldNavigationDesign(isChecked)
@@ -149,11 +172,15 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
 
     init {
         user.observeForever(userObserver)
+        repositoryUser.liveDataHideSignIn.observeForever(isHideSignInObserver)
+        isInitInProgress.observeForever(isInitInProgressObserver)
     }
 
     override fun onCleared() {
         super.onCleared()
         user.removeObserver(userObserver)
+        repositoryUser.liveDataHideSignIn.removeObserver(isHideSignInObserver)
+        isInitInProgress.removeObserver(isInitInProgressObserver)
     }
 
     fun onLogoutDialogResult(isConfirmed: Boolean) {
@@ -219,5 +246,10 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
         val value = App.context.resources.getStringArray(R.array.array_notifications_learn_points)[result]
         textNotificationsLearnPoints.value = value
         SharedHelper.setNotificationLearnPoints(value.toInt())
+    }
+
+    private fun updateSignInVisibility() {
+        isShowGoogleAuth.value = (user.value == null || RepositoryCommon.getInstance().firebaseUser == null) && isHideSignIn.value == true
+                && isInitInProgress.value == false
     }
 }
