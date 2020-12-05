@@ -78,8 +78,8 @@
     <string name="i_not_know_it">I don`t know</string>
     <string name="i_know_it">I know it</string>
     <string name="if_notifications_not_receive">If you do not receive notifications</string>
-    <string name="is_old_navigation_design">Is old navigation design</string>
-    <string name="is_show_voice_input">Is show voice input</string>
+    <string name="is_old_navigation_design">Old navigation design</string>
+    <string name="is_show_voice_input">Show voice input</string>
     <string name="incorrect">Incorrect</string>
     <string name="incorrect_answer">Incorrect answer</string>
     <string name="information">Information</string>
@@ -156,6 +156,7 @@
     <string name="save_your_dictionary">Save your dictionary</string>
     <string name="show_only_one_last_notification">Show only one last notification</string>
     <string name="show_own_words">Show own words</string>
+    <string name="show_progress_in_training">Show progress in training</string>
     <string name="show_translation">I don`t know</string>
     <string name="show_word_progress">Is show word progress</string>
     <string name="search_words">Search words</string>
@@ -172,6 +173,7 @@
     <string name="sub_advantages_info">Renewing premium account is one-time purchase. No automatic renewing after getting premium account.
         \n\n- Receive notifications more than once per 4 hours
         \n\n- Saving and loading saved dictionary option
+        \n\n- Creating your own categories
         \n\n- Words translation on adding words screen
         \n\n- Extra test notifications</string>
     <string name="subscription_days">Premium account days: %s</string>

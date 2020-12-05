@@ -63,6 +63,7 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
             v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
         }
         binding.switchSettingsDesign.setOnCheckedChangeListener(viewModel.checkedChangeListenerNavigationDesign)
+        binding.switchSettingsProgressInTraining.setOnCheckedChangeListener(viewModel.checkedChangeListenerProgressInTraining)
         binding.switchSettingsVoiceInput.setOnCheckedChangeListener(viewModel.checkedChangeListenerVoiceInput)
         binding.switchSettingsSecondaryProgress.setOnCheckedChangeListener(viewModel.checkedChangeListenerEnabledSecondaryProgress)
     }

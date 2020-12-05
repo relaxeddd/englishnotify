@@ -99,11 +99,7 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
         }
     }
     val clickListenerNightTime = View.OnClickListener {
-        if (user.value != null) {
-            navigateEvent.value = Event(NAVIGATION_DIALOG_NIGHT_TIME)
-        } else {
-            showToast(R.string.please_authorize)
-        }
+        navigateEvent.value = Event(NAVIGATION_DIALOG_NIGHT_TIME)
     }
     val clickListenerTestNotifications = View.OnClickListener {
         val userValue = user.value

@@ -8,7 +8,7 @@ android {
         config {
             keyAlias 'english'
             keyPassword 'd9M8aek'
-            storeFile file('E:/Android/keystore.jks')
+            storeFile file('/Users/vchechin/Projects/keystore.jks')
             storePassword 'm3nkb9'
         }
     }

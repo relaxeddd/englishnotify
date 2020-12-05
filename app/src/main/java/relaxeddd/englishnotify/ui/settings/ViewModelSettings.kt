@@ -32,6 +32,7 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     var textTheme: String = App.context.resources.getStringArray(R.array.array_themes)[SharedHelper.getAppThemeType()]
     val isVisibleReceiveHelp = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
     val isOldNavigationDesign = MutableLiveData(SharedHelper.isOldNavigationDesign())
+    val isShowProgressInTraining = MutableLiveData(SharedHelper.isShowProgressInTraining())
     val isShowVoiceInput = MutableLiveData(SharedHelper.isShowVoiceInput())
     val isEnableSecondaryProgress = MutableLiveData(SharedHelper.isEnabledSecondaryProgress())
     val textWordsSaved = MutableLiveData("")
@@ -125,6 +126,12 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
             SharedHelper.setOldNavigationDesign(isChecked)
             isOldNavigationDesign.value = isChecked
             navigateEvent.value = Event(NAVIGATION_RECREATE_ACTIVITY)
+        }
+    }
+    var checkedChangeListenerProgressInTraining = CompoundButton.OnCheckedChangeListener { _, isChecked ->
+        if (SharedHelper.isShowProgressInTraining() != isChecked && isShowProgressInTraining.value != isChecked) {
+            SharedHelper.setShowProgressInTraining(isChecked)
+            isShowProgressInTraining.value = isChecked
         }
     }
     var checkedChangeListenerVoiceInput = CompoundButton.OnCheckedChangeListener { _, isChecked ->

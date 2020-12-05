@@ -331,8 +331,7 @@
                 android:paddingTop="@dimen/size_16"
                 android:paddingBottom="@dimen/size_16"
                 android:elevation="@dimen/default_elevation"
-                android:onClick="@{viewModel.clickListenerNightTime}"
-                android:alpha="@{viewModel.user != null ? 1f : 0.5f}">
+                android:onClick="@{viewModel.clickListenerNightTime}">
 
                 <TextView
                     android:id="@+id/text_notifications_night_time"

@@ -4,7 +4,6 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.db.AppDatabase
@@ -236,11 +235,6 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
     }
 
     private suspend fun setIsOwnCategory(wordIds: List<String>, isOwnCategory: Boolean) : Boolean {
-        if (FirebaseAuth.getInstance().currentUser == null) {
-            withContext(Dispatchers.Main) { showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED)) }
-            return false
-        }
-
         for (wordId in wordIds) {
             val word = wordDao.findWordById(wordId)
 
@@ -266,11 +260,6 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
     }
 
     suspend fun deleteWords(wordIds: List<String>) : Boolean {
-        if (FirebaseAuth.getInstance().currentUser == null) {
-            withContext(Dispatchers.Main) { showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED)) }
-            return false
-        }
-
         for (wordId in wordIds) {
             val word = wordDao.findWordById(wordId)
 
