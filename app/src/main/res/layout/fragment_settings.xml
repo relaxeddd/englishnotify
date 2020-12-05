@@ -727,6 +727,36 @@
 
             </RelativeLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="@{safeUnbox(viewModel.isShowGoogleAuth) ? View.VISIBLE : View.GONE}"
+                android:background="@color/background_main"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="@dimen/size_16">
+
+                <com.google.android.gms.common.SignInButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:buttonSize="wide"
+                    android:onClick="@{viewModel.clickListenerGoogleAuth}"
+                    android:layout_marginTop="@dimen/size_4"
+                    android:layout_marginBottom="@dimen/size_4"/>
+
+                <TextView
+                    android:id="@+id/text_settings_privacy_policy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color_main"
+                    android:gravity="center"
+                    android:visibility="@{safeUnbox(viewModel.isShowPrivacyPolicy) ? View.VISIBLE : View.GONE}"
+                    android:background="@color/background_main"
+                    android:text="@string/privacy_policy_text"
+                    android:textSize="@dimen/font_12"/>
+
+            </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/size_46"

@@ -25,8 +25,8 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
     private var isRateDialogShown = false
 
     private val userObserver = Observer<User?> { user ->
-        isShowGoogleAuth.value = user == null || RepositoryCommon.getInstance().firebaseUser == null
-        isShowWarningNotifications.value = isShowGoogleAuth.value == false && (user == null || !user.receiveNotifications) && !SharedHelper.isHideOffNotificationsWarning()
+        isShowGoogleAuth.value = (user == null || RepositoryCommon.getInstance().firebaseUser == null) && !SharedHelper.isHideSignIn()
+        isShowWarningNotifications.value = user != null && !user.receiveNotifications && !SharedHelper.isHideOffNotificationsWarning()
         isShowWarningSubscription.value = user != null && !user.isSubscribed()
 
         val launchCount = SharedHelper.getLaunchCount()
@@ -60,6 +60,11 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
             return@OnClickListener
         }
         navigateEvent.value = Event(NAVIGATION_GOOGLE_AUTH)
+    }
+    val clickListenerHideSignIn = View.OnClickListener {
+        val isHide = !SharedHelper.isHideSignIn()
+        repositoryUser.hideSignIn()
+        isShowGoogleAuth.value = (user.value == null || RepositoryCommon.getInstance().firebaseUser == null) && !isHide
     }
 
     init {
@@ -116,6 +121,6 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
 
     fun onHideOffNotificationsWarningChanged(isHide: Boolean = SharedHelper.isHideOffNotificationsWarning()) {
         val userData = user.value
-        isShowWarningNotifications.value = isShowGoogleAuth.value == false && (userData == null || !userData.receiveNotifications) && !isHide
+        isShowWarningNotifications.value = userData != null && !userData.receiveNotifications && !isHide
     }
 }

@@ -24,6 +24,8 @@ class RepositoryUser private constructor() {
     }
 
     var liveDataUser = MutableLiveData<User>(null)
+    var liveDataHideSignIn = MutableLiveData(SharedHelper.isHideSignIn())
+    var liveDataIsInitInProgress = MutableLiveData(false)
     val liveDataIsActualVersion = MutableLiveData(true)
 
     fun isAuthorized() = FirebaseAuth.getInstance().currentUser != null
@@ -31,7 +33,9 @@ class RepositoryUser private constructor() {
 
     //------------------------------------------------------------------------------------------------------------------
     suspend fun init(listener: ListenerResult<Boolean>? = null) {
+        liveDataIsInitInProgress.postValue(true)
         if (liveDataUser.value != null) {
+            liveDataIsInitInProgress.postValue(false)
             withContext(Dispatchers.Main) { listener?.onResult(true) }
             return
         }
@@ -39,6 +43,7 @@ class RepositoryUser private constructor() {
         RepositoryCommon.getInstance().initFirebase { isSuccess ->
             CoroutineScope(Dispatchers.Main).launch {
                 if (!isSuccess) {
+                    liveDataIsInitInProgress.postValue(false)
                     listener?.onResult(false)
                     return@launch
                 }
@@ -59,6 +64,7 @@ class RepositoryUser private constructor() {
                 }
                 if (firebaseUser == null) {
                     showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
+                    liveDataIsInitInProgress.postValue(false)
                     listener?.onResult(false)
                     return@launch
                 }
@@ -79,12 +85,15 @@ class RepositoryUser private constructor() {
                         RepositoryWord.getInstance().updateTagsInfo(answerInitData.tagsInfo ?: ArrayList())
                     }
 
+                    liveDataIsInitInProgress.postValue(false)
                     listener?.onResult(true)
                 } else if (answerInitData?.result != null) {
                     showToast(getErrorString(answerInitData.result))
+                    liveDataIsInitInProgress.postValue(false)
                     listener?.onResult(false)
                 } else {
                     showToast(R.string.error_initialization)
+                    liveDataIsInitInProgress.postValue(false)
                     listener?.onResult(false)
                 }
             }
@@ -95,6 +104,11 @@ class RepositoryUser private constructor() {
         withContext(Dispatchers.Main) {
             liveDataUser.value = null
         }
+    }
+
+    fun hideSignIn() {
+        SharedHelper.setHideSignIn(true)
+        liveDataHideSignIn.value = true
     }
 
     //------------------------------------------------------------------------------------------------------------------

@@ -96,6 +96,16 @@ object SharedHelper {
         return sPref.getBoolean(PROGRESS_IN_TRAINING, false)
     }
 
+    fun setHideSignIn(value: Boolean, context: Context = App.context) {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putBoolean(HIDE_SIGN_IN, value).apply()
+    }
+
+    fun isHideSignIn(context: Context = App.context) : Boolean {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getBoolean(HIDE_SIGN_IN, false)
+    }
+
     fun setShowProgressInTraining(value: Boolean, context: Context = App.context) {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         sPref.edit().putBoolean(PROGRESS_IN_TRAINING, value).apply()
