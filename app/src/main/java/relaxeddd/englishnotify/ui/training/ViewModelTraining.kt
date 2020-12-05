@@ -27,6 +27,7 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
     private val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
     private val isCheckLearnedWords = SharedHelper.isCheckLearnedWords()
     private val isListeningTraining = SharedHelper.isListeningTraining()
+    private val isShowProgressInTraining = SharedHelper.isShowProgressInTraining()
     private val isHearAnswer = SharedHelper.isHearAnswer()
 
     var category = ALL_APP_WORDS
@@ -126,8 +127,8 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
         isVisibleAnswer.value = currentResult != STATE_ANSWER
         isVisibleTranscription.value = currentResult != STATE_ANSWER
         isVisibleResultText.value = currentResult != STATE_ANSWER
-        isVisibleWordProgress.value = currentResult != STATE_ANSWER
-        isVisibleWordProgressSecondary.value = currentResult != STATE_ANSWER && isEnabledSecondaryProgress
+        isVisibleWordProgress.value = currentResult != STATE_ANSWER || isShowProgressInTraining
+        isVisibleWordProgressSecondary.value = (currentResult != STATE_ANSWER || isShowProgressInTraining) && isEnabledSecondaryProgress
         isVisibleButtonListen.value = isListeningTraining && currentResult == STATE_ANSWER
         isVisibleTextWord.value = !isListeningTraining || currentResult != STATE_ANSWER
 

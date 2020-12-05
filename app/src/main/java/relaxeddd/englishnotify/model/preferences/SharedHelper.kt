@@ -91,6 +91,16 @@ object SharedHelper {
         sPref.edit().putBoolean(HEAR_ANSWER, value).apply()
     }
 
+    fun isShowProgressInTraining(context: Context = App.context) : Boolean {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getBoolean(PROGRESS_IN_TRAINING, false)
+    }
+
+    fun setShowProgressInTraining(value: Boolean, context: Context = App.context) {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putBoolean(PROGRESS_IN_TRAINING, value).apply()
+    }
+
     fun isShowVoiceInput(context: Context = App.context) : Boolean {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         return sPref.getBoolean(VOICE_INPUT, true)

@@ -156,6 +156,7 @@
     <string name="save_your_dictionary">Сохранить свой словарь</string>
     <string name="show_only_one_last_notification">Показывать только одно последнее уведомление</string>
     <string name="show_own_words">Показывать свои слова</string>
+    <string name="show_progress_in_training">Показывать прогресс при тренировке</string>
     <string name="show_translation">Я не знаю</string>
     <string name="show_word_progress">Показывать прогресс слов</string>
     <string name="search_words">Искать слова</string>
@@ -172,6 +173,7 @@
     <string name="sub_advantages_info">Продление премиум аккаунта - это единоразовая покупка. Никакого автоматического списания после покупки или окончания действия премиум аккаунта нету.
         \n\n- Получение уведомлений чаще чем раз в 4 часа
         \n\n- Функция сохранения и загрузки сохраненного словаря
+        \n\n- Создание собственных категорий слов
         \n\n- Функция перевода слов при их добавлении в словарь
         \n\n- Дополнительные тестовые уведомления</string>
     <string name="subscription_days">Дней премиум аккаунта: %s</string>

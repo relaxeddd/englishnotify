@@ -129,7 +129,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 notificationBuilder.setOngoing(SharedHelper.isOngoing())
 
                 val notKnowPendingIntent: PendingIntent =
-                    PendingIntent.getBroadcast(ctx, Random.nextInt(1000), notKnowIntent, 0)
+                    PendingIntent.getBroadcast(ctx, Random.nextInt(1000), notKnowIntent, PendingIntent.FLAG_UPDATE_CURRENT)
                 notificationBuilder.addAction(R.drawable.ic_close, getAppString(R.string.show_translation), notKnowPendingIntent)
             }
 
@@ -291,7 +291,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 var words = wordDao.getAllItems()
                 val sortByLearnStage = HashMap<Int, ArrayList<Word>>()
 
-                words = words.filter { !it.isDeleted && it.isOwnCategory && (tag.isEmpty() || it.tags.contains(tag)) }
+                words = words.filter { !it.isDeleted && it.isOwnCategory && (tag.isEmpty() || tag == OWN || it.tags.contains(tag)) }
 
                 for (word in words) {
                     val wordLearnStage = if (languageType == TYPE_PUSH_RUSSIAN && isEnabledSecondaryProgress) word.learnStageSecondary else word.learnStage
