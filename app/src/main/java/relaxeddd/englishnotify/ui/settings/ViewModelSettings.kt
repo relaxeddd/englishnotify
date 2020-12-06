@@ -92,6 +92,9 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     val clickListenerStatistic = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_FRAGMENT_STATISTIC)
     }
+    val clickListenerAddMultipleWords = View.OnClickListener {
+        navigateEvent.value = Event(NAVIGATION_FRAGMENT_PARSE)
+    }
     val clickListenerTheme = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_THEME)
     }
