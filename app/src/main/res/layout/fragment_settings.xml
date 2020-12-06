@@ -58,7 +58,38 @@
                     android:id="@+id/text_settings_statistic"
                     android:text="@string/own_words_statistic"
                     android:layout_width="wrap_content"
-                    android:layout_height="18dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color_main"
+                    android:textSize="@dimen/font_14"
+                    android:layout_marginStart="@dimen/size_16"
+                    android:layout_gravity="center_vertical"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/size_16"
+                android:paddingBottom="@dimen/size_16"
+                android:layout_marginTop="@dimen/size_8"
+                android:orientation="horizontal"
+                android:background="@color/card_view_color"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:onClick="@{viewModel.clickListenerAddMultipleWords}"
+                android:elevation="@dimen/default_elevation">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_plus_multiple"
+                    android:contentDescription="@string/ic_learn_stage_settings"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/size_16"/>
+
+                <TextView
+                    android:text="@string/add_multiple_words"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:textColor="@color/text_color_main"
                     android:textSize="@dimen/font_14"
                     android:layout_marginStart="@dimen/size_16"

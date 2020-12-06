@@ -80,10 +80,10 @@ class RepositoryUser private constructor() {
                         liveDataIsActualVersion.value = answerInitData.isActualVersion
                     }
 
-                    if (answerInitData.words != null) {
+                    /*if (answerInitData.words != null) {
                         withContext(Dispatchers.IO) { RepositoryWord.getInstance().updateWords(answerInitData.words) }
                         RepositoryWord.getInstance().updateTagsInfo(answerInitData.tagsInfo ?: ArrayList())
-                    }
+                    }*/
 
                     liveDataIsInitInProgress.postValue(false)
                     listener?.onResult(true)

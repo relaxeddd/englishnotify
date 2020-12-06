@@ -73,6 +73,9 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
     @SuppressLint("BatteryLife")
     override fun onNavigationEvent(eventId: Int) {
         when (eventId) {
+            NAVIGATION_FRAGMENT_PARSE -> {
+                Navigation.findNavController(view ?: return).myNavigate(R.id.action_fragmentSettings_to_fragmentParse)
+            }
             NAVIGATION_FRAGMENT_STATISTIC -> {
                 Navigation.findNavController(view ?: return).myNavigate(R.id.action_fragmentSettings_to_fragmentStatistic)
             }

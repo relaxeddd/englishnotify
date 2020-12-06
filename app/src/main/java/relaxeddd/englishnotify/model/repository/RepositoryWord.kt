@@ -61,7 +61,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
                             Word("elk", "elk", "лось, сохатый", "elk",
                                 listOf("animals"), timestamp = System.currentTimeMillis(), isCreatedByUser = false)
                         )
-                        updateWords(defaultWords)
+                        insertWords(defaultWords)
                         SharedHelper.setDefaultWordsLoaded(true)
                     }
                 } else {
@@ -71,6 +71,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         }
     }
     private var tagsInfo: List<TagInfo> = ArrayList()
+    val tempParsedWords = ArrayList<Word>()
 
     fun clearDictionary() {
         wordDao.deleteAll()
@@ -186,6 +187,12 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         words.forEach { if (!idsSet.contains(it.id)) isAllExists = false; }
 
         if (existWords == null || !isAllExists || existWords.size != words.size) wordDao.deleteAll()
+        words.forEach {
+            wordDao.insertAll(it)
+        }
+    }
+
+    fun insertWords(words: List<Word>) {
         words.forEach {
             wordDao.insertAll(it)
         }

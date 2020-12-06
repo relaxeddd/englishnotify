@@ -29,7 +29,7 @@ class FragmentStatistic : BaseFragment<ViewModelStatistic, FragmentStatisticBind
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = AdapterStatistic()
+        adapter = AdapterStatistic(viewModel)
         binding.recyclerViewStatistic.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewStatistic.adapter = adapter
 

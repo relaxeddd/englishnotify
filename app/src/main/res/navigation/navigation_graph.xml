@@ -32,6 +32,10 @@
             android:id="@+id/action_fragmentSettings_to_fragmentStatistic"
             app:destination="@id/fragmentStatistic"/>
 
+        <action
+            android:id="@+id/action_fragmentSettings_to_fragmentParse"
+            app:destination="@id/fragmentParse"/>
+
     </fragment>
 
     <fragment
@@ -115,6 +119,24 @@
         android:name="relaxeddd.englishnotify.ui.time.FragmentTime"
         android:label="@string/receive_notifications_time"
         tools:layout="@layout/fragment_time"/>
+
+    <fragment
+        android:id="@+id/fragmentParse"
+        android:name="relaxeddd.englishnotify.ui.parse.FragmentParse"
+        android:label="@string/add_multiple_words"
+        tools:layout="@layout/fragment_parse">
+
+        <action
+            android:id="@+id/action_fragmentParse_to_fragmentParsedWords"
+            app:destination="@id/fragmentParsedWords"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentParsedWords"
+        android:name="relaxeddd.englishnotify.ui.parsed_words.FragmentParsedWords"
+        android:label="@string/parsed_words"
+        tools:layout="@layout/fragment_parsed_words"/>
 
     <action
         android:id="@+id/action_global_fragmentEditWord"

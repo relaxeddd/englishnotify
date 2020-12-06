@@ -13,6 +13,8 @@ import relaxeddd.englishnotify.ui.dictionary_know.ViewModelDictionaryKnow
 import relaxeddd.englishnotify.ui.dictionary_own.ViewModelDictionaryOwn
 import relaxeddd.englishnotify.ui.main.ViewModelMain
 import relaxeddd.englishnotify.ui.notifications.ViewModelNotifications
+import relaxeddd.englishnotify.ui.parse.ViewModelParse
+import relaxeddd.englishnotify.ui.parsed_words.ViewModelParsedWords
 import relaxeddd.englishnotify.ui.settings.ViewModelSettings
 import relaxeddd.englishnotify.ui.statistic.ViewModelStatistic
 import relaxeddd.englishnotify.ui.time.ViewModelTime
@@ -85,6 +87,22 @@ class WordViewModelFactory : ViewModelProvider.NewInstanceFactory() {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return ViewModelWord() as T
+    }
+}
+
+class ParseViewModelFactory : ViewModelProvider.NewInstanceFactory() {
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return ViewModelParse() as T
+    }
+}
+
+class ParsedWordsViewModelFactory : ViewModelProvider.NewInstanceFactory() {
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return ViewModelParsedWords() as T
     }
 }
 
