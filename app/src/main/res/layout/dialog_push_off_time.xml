@@ -16,6 +16,7 @@
         android:id="@+id/edit_text_push_off_time_start_hour"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/text_color_main"
         android:digits="0123456789"
         android:inputType="number"
         android:hint="@string/hours_off_time"/>
@@ -32,6 +33,7 @@
         android:id="@+id/edit_text_push_off_time_duration"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/text_color_main"
         android:digits="0123456789"
         android:inputType="number"
         android:hint="@string/hours_off_time"/>

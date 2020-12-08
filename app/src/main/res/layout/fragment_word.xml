@@ -83,6 +83,7 @@
                         android:id="@+id/text_input_word"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/text_color_main"
                         android:singleLine="true"
                         android:maxLength="200"
                         android:hint="@string/word"/>
@@ -122,6 +123,7 @@
                     android:id="@+id/text_input_transcription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/text_color_main"
                     android:singleLine="true"
                     android:maxLength="200"
                     android:hint="@string/transcription"/>
@@ -171,6 +173,7 @@
                         android:id="@+id/text_input_translation"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/text_color_main"
                         android:singleLine="true"
                         android:maxLength="200"
                         android:hint="@string/translation"/>
@@ -210,6 +213,7 @@
                     android:id="@+id/text_input_own_tag"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/text_color_main"
                     android:singleLine="true"
                     android:maxLength="200"
                     android:focusable="@{viewModel.isEnabledOwnCategories}"

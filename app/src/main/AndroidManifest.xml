@@ -28,7 +28,7 @@
             tools:ignore="GoogleAppIndexingWarning">
 
         <activity android:name="relaxeddd.englishnotify.ui.main.MainActivity"
-                  android:windowSoftInputMode="adjustResize"
+                  android:windowSoftInputMode="adjustPan"
                   android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

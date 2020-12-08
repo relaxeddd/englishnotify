@@ -118,7 +118,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         return categories
     }
 
-    fun getTrainingWordsByCategory(category: String, isLearned: Boolean = false, trainingLanguage: Int) : ArrayList<Word> {
+    fun getTrainingWordsByCategory(category: String, isTrainLearned: Boolean = false, trainingLanguage: Int) : ArrayList<Word> {
         val learnStageMax = SharedHelper.getTrueAnswersToLearn()
         val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
         val trainingWords = ArrayList<Word>()
@@ -128,12 +128,12 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
             val isWordAlreadyLearned = word.isLearnedForTraining(isEnabledSecondaryProgress, trainingLanguage, learnStageMax)
 
             if ((word.tags.contains(category) || category == ALL_APP_WORDS || (category == OWN && word.isOwnCategory))
-                    && (!isWordAlreadyLearned && !isLearned || isLearned && isWordAlreadyLearned) && !word.isDeleted) {
+                    && (!isWordAlreadyLearned && !isTrainLearned || isTrainLearned && isWordAlreadyLearned) && !word.isDeleted) {
                 trainingWords.add(word)
             }
         }
 
-        return if (isLearned) {
+        return if (isTrainLearned) {
             trainingWords.sortBy {
                 val wordSummaryProgress = when (trainingLanguage) {
                     TRAINING_ENG_TO_RUS -> {
@@ -218,8 +218,8 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
     }
 
     //------------------------------------------------------------------------------------------------------------------
-    fun insertOwnCategoryWord(wordId: String, eng: String, rus: String, transcription: String, ownTag: String) {
-        val word = Word(wordId, eng, rus, transcription, if (ownTag.isNotBlank()) listOf(ownTag) else emptyList(),
+    fun insertOwnCategoryWord(wordId: String, eng: String, rus: String, transcription: String, tags: List<String>) {
+        val word = Word(wordId, eng, rus, transcription, tags,
             timestamp = System.currentTimeMillis(), isCreatedByUser = true, isOwnCategory = true)
         updateWord(word)
     }

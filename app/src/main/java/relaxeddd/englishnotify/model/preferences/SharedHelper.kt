@@ -201,6 +201,16 @@ object SharedHelper {
         sPref.edit().putInt(DICTIONARY_TAB_POSITION, type).apply()
     }
 
+    fun getLastOwnCategory(context: Context = App.context) : String {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getString(LAST_OWN_CATEGORY, "") ?: ""
+    }
+
+    fun setLastOwnCategory(pushToken : String, context: Context = App.context) {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putString(LAST_OWN_CATEGORY, pushToken).apply()
+    }
+
     fun getPushToken(context: Context = App.context) : String {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         return sPref.getString(PUSH_TOKEN, "") ?: ""

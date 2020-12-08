@@ -295,9 +295,13 @@
     </string>
 
     <string name="patch_notes">
-        - Multiple adding words into the dictionary option
+        - Saving last own category when adding new words
+        \n- Fixed bug with mixed training
+        \n- Fixed bug with resetting progress after editing word
+        \n- Fixed bug with search view text color
+        \n\n- Multiple adding words into the dictionary option
         \n- Editing words on the statistic screen
-        \n\n- Show progress in training option
+        \n- Show progress in training option
         \n- Fixed bug with receiving notifications from own category
         \n- Creating own categories opportunity
         \n- Display statistic for all words in your dictionary

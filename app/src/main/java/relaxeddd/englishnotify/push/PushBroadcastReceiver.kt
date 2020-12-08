@@ -32,6 +32,7 @@ class PushBroadcastReceiver : BroadcastReceiver() {
             val word = wordDao.findWordById(wordId) ?: return@launch
             val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress(context)
             val languageType = SharedHelper.getLearnLanguageType()
+            val learnStageMax = SharedHelper.getTrueAnswersToLearn()
             val saveWord = Word(word)
             var learnStage = if (languageType == TYPE_PUSH_RUSSIAN && isEnabledSecondaryProgress) saveWord.learnStageSecondary else saveWord.learnStage
             var isRemove = true
@@ -54,7 +55,7 @@ class PushBroadcastReceiver : BroadcastReceiver() {
                     if (!isCorrectAnswer) isRemove = false
                     withContext(Dispatchers.Main) {
                         if (isCorrectAnswer) {
-                            showToast(R.string.answer_correct)
+                            showToast(if (learnStage < learnStageMax) R.string.answer_correct else R.string.learned)
                             if (isRemovableViaDelay) {
                                 //Update notification to cancel it it after that
                                 MyFirebaseMessagingService.showNotificationWord(context, wordId, "", title, false, notificationId)

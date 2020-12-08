@@ -74,8 +74,8 @@ data class Word(
         return if (progress == 0) 2 else progress
     }
 
-    fun isLearnedForTraining(isEnabledSecondaryProgress: Boolean, trainingLanguage: Int, learnStageMax: Int = SharedHelper.getTrueAnswersToLearn()) : Boolean {
-        return when (trainingLanguage) {
+    fun isLearnedForTraining(isEnabledSecondaryProgress: Boolean, trainingType: Int, learnStageMax: Int = SharedHelper.getTrueAnswersToLearn()) : Boolean {
+        return when (trainingType) {
             TRAINING_ENG_TO_RUS -> {
                 learnStage >= learnStageMax
             }
