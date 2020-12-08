@@ -38,6 +38,7 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
     private var answers = ArrayList<String>()
     private var learned = 0
     private var total = 0
+    private val savedMixedTrainingTypes = HashMap<Int, Int>()
 
     var current = MutableLiveData(0)
     val wordsSize = MutableLiveData(0)
@@ -102,11 +103,16 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
 
         val currentResult = getResultLiveDataByIx(currentIx).value ?: 0
         val word = trainingWords[currentIx]
-        isCurrentEngTraining = isEngTraining(word, currentResult)
         val eng = word.eng
         val rus = word.rus
         val transcriptionStr = if (word.transcription.isEmpty()) "-" else word.transcription
         val transcriptionValue = if (word.type != EXERCISE) "[$transcriptionStr]" else transcriptionStr
+
+        if (trainingType == TRAINING_MIXED && savedMixedTrainingTypes.containsKey(currentIx)) {
+            isCurrentEngTraining = savedMixedTrainingTypes[currentIx] == TRAINING_ENG_TO_RUS
+        } else {
+            isCurrentEngTraining = isEngTraining(word, currentResult, currentIx)
+        }
 
         wordText.value = if (isCurrentEngTraining) eng else rus
         translation.value = if (isCurrentEngTraining) rus else eng
@@ -272,25 +278,31 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
         else -> result10
     }
 
-    private fun isEngTraining(word: Word, state: Int) : Boolean {
-        val random = Random.nextInt(2)
-        val isRandomEng = if (!isEnabledSecondaryProgress || isCheckLearnedWords) {
-            random == 0
-        } else {
-            random == 0 && word.learnStage < learnStageMax || word.learnStageSecondary < learnStageMax
+    private fun isEngTraining(word: Word, state: Int, currentIx: Int) : Boolean {
+        var trainingType = this.trainingType
+        var randomTrainingType = Random.nextInt(2)
+
+        if (isEnabledSecondaryProgress) {
+            if (randomTrainingType == TRAINING_RUS_TO_ENG && word.learnStageSecondary >= learnStageMax) {
+                randomTrainingType = TRAINING_ENG_TO_RUS
+            } else if (randomTrainingType == TRAINING_ENG_TO_RUS && word.learnStage >= learnStageMax) {
+                randomTrainingType = TRAINING_RUS_TO_ENG
+            }
+        }
+        if (trainingType == TRAINING_MIXED) {
+            trainingType = randomTrainingType
+            savedMixedTrainingTypes[currentIx] = trainingType
         }
 
         return when (trainingType) {
             TRAINING_RUS_TO_ENG -> state != STATE_ANSWER || word.type == EXERCISE
-            TRAINING_MIXED -> {
-                state != STATE_ANSWER || word.type == EXERCISE || isRandomEng
-            }
-            else -> true
+            else -> true // ENG_TO_RUS
         }
     }
 
     private fun clearState() {
         answers.clear()
+        savedMixedTrainingTypes.clear()
 
         resultText.value = ""
         answer.value = ""

@@ -80,6 +80,8 @@ class FragmentParse : BaseFragment<ViewModelParse, FragmentParseBinding>() {
         val ownCategory = binding.textInputOwnTag.text.toString()
         var isValid = true
 
+        hideKeyboard()
+
         if (delimiterInner.isEmpty()) {
             binding.textParseDelimiterInner.error = getString(R.string.delimiter_should_not_be_empty)
             isValid = false
@@ -98,7 +100,6 @@ class FragmentParse : BaseFragment<ViewModelParse, FragmentParseBinding>() {
         }
 
         if (isValid) {
-            hideKeyboard()
             viewModel.onClickedParseWords(textWords, delimiterInner, delimiterWords, ownCategory)
         }
     }

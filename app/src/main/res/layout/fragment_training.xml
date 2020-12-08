@@ -352,6 +352,7 @@
                 android:id="@+id/edit_text_training_answer"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:textColor="@color/text_color_main"
                 android:inputType="textPersonName"
                 android:enabled="@{safeUnbox(viewModel.isVisibleInputAnswer) == true}"
                 android:maxLength="100"

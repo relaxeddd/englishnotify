@@ -59,6 +59,7 @@
                     android:id="@+id/text_parse_delimiter_inner"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:textColor="@color/text_color_main"
                     android:textSize="@dimen/font_11"
                     android:hint="@string/translation_transcription_delimiter"/>
 
@@ -78,6 +79,7 @@
                     android:id="@+id/text_parse_delimiter_words"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:textColor="@color/text_color_main"
                     android:textSize="@dimen/font_11"
                     android:hint="@string/words_delimiter"/>
 
@@ -98,6 +100,7 @@
                 android:id="@+id/text_parse_words"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:textColor="@color/text_color_main"
                 android:gravity="top"
                 android:hint="@string/paste_multiple_words"/>
 
@@ -117,6 +120,7 @@
                 android:id="@+id/text_input_own_tag"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/text_color_main"
                 android:singleLine="true"
                 android:maxLength="200"
                 android:focusable="@{viewModel.isEnabledOwnCategories}"

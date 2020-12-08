@@ -223,6 +223,13 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
                 binding.textInputTranscription.error = null
             }
         })
+        binding.textInputOwnTag.addTextChangedListener(object: TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun afterTextChanged(p0: Editable?) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                adapter?.clearSelection()
+            }
+        })
         binding.textInputTranslation.setOnEditorActionListener { _, _, event ->
             if (event == null || !event.isShiftPressed) {
                 handleClickedSave()
@@ -237,6 +244,7 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
         binding.containerTextWordInputWord.boxStrokeColor = getPrimaryColorResId()
         binding.containerTextWordInputTranscription.boxStrokeColor = getPrimaryColorResId()
         binding.containerTextWordInputTranslation.boxStrokeColor = getPrimaryColorResId()
+        binding.containerTextWordOwnTag.boxStrokeColor = getPrimaryColorResId()
     }
 
     override fun onNavigationEvent(eventId: Int) {
