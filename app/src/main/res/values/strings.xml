@@ -295,11 +295,14 @@
     </string>
 
     <string name="patch_notes">
-        - Saving last own category when adding new words
+        - Removed warning with no premium account text at the bottom
+        \n- Fixed bug with selecting own categories at the adding multiple words screen
+        \n- Optimized dictionary words view
+        \n\n- Saving last own category when adding new words
         \n- Fixed bug with mixed training
         \n- Fixed bug with resetting progress after editing word
         \n- Fixed bug with search view text color
-        \n\n- Multiple adding words into the dictionary option
+        \n- Multiple adding words into the dictionary option
         \n- Editing words on the statistic screen
         \n- Show progress in training option
         \n- Fixed bug with receiving notifications from own category
