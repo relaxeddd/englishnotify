@@ -54,7 +54,8 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
     override fun onBindViewHolder(holder: VH, position: Int) {
         val word = getItem(position)
         val clickListener = View.OnClickListener {
-            animateDropdown(it.findViewById(R.id.constraint_word_drop_dawn), !holder.isOpen, paddingDp = 16f)
+            val padding = it.resources.getDimension(R.dimen.size_2)
+            animateDropdown(it.findViewById(R.id.constraint_word_drop_dawn), !holder.isOpen, paddingDp = padding)
             holder.isOpen = !holder.isOpen
         }
         val longListener = View.OnLongClickListener {
@@ -132,6 +133,7 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
         var isOpen = false
 
         abstract fun getWordMainContainer() : ViewGroup
+        abstract fun getWordContainerDropDawn() : ViewGroup?
         abstract fun getTextTimestamp() : TextView
         abstract fun getTextTags() : TextView
         abstract fun getImageOwnWord() : ImageView
@@ -145,6 +147,9 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
         open fun bind(word: Word, isSelectState: Boolean, checkList: java.util.HashSet<Word>,
                       clickListener: View.OnClickListener, longClickListener: View.OnLongClickListener,
                       clickListenerPlay: View.OnClickListener, checkedChangeListener: CompoundButton.OnCheckedChangeListener) {
+            hideDropDawnContainer()
+            isOpen = false
+
             itemView.tag = word.id
             getWordMainContainer().setOnClickListener(clickListener)
             getWordMainContainer().setOnLongClickListener(longClickListener)
@@ -177,6 +182,13 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
             } else {
                 getProgressLearnSecondary()?.visibility = View.GONE
             }
+        }
+
+        private fun hideDropDawnContainer() {
+            getWordContainerDropDawn()?.visibility = View.GONE
+            val params = getWordContainerDropDawn()?.layoutParams
+            params?.height = 0
+            getWordContainerDropDawn()?.layoutParams = params
         }
     }
 }
