@@ -25,12 +25,6 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
     private val userObserver = Observer<User?> { user ->
         isShowGoogleAuth.value = (user == null || RepositoryCommon.getInstance().firebaseUser == null) && !SharedHelper.isHideSignIn()
 
-        val launchCount = SharedHelper.getLaunchCount()
-        if (user != null && !isRateDialogShown && !SharedHelper.isCancelledRateDialog() && launchCount % 4 == 0) {
-            isRateDialogShown = true
-            navigateEvent.value = Event(NAVIGATION_DIALOG_RATE_APP)
-            SharedHelper.setCancelledRateDialog(true)
-        }
         if (user != null) {
             if (user.email.isNotEmpty()) {
                 SharedHelper.setPrivacyPolicyConfirmed(true)

@@ -12,6 +12,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.widget.PopupMenu
+import com.google.android.play.core.review.ReviewManagerFactory
 import relaxeddd.englishnotify.dialogs.DialogRestoreWord
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.ui.categories.AdapterCategories
@@ -288,7 +289,26 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
             transcription.length > 200 -> binding.textInputTranscription.error = getString(R.string.word_length_limit)
             else -> {
                 hideKeyboard()
-                viewModel.createOwnWord(eng, transcription, rus, ownCategory)
+
+                if (viewModel.isReadyToRateApp) {
+                    val manager = ReviewManagerFactory.create(requireContext())
+                    val request = manager.requestReviewFlow()
+
+                    request.addOnCompleteListener { ableToRateAnswer ->
+                        if (ableToRateAnswer.isSuccessful) {
+                            val reviewInfo = ableToRateAnswer.result
+                            val flow = manager.launchReviewFlow(requireActivity(), reviewInfo)
+                            flow.addOnCompleteListener {
+                                SharedHelper.setCancelledRateDialog(true)
+                                viewModel.createOwnWord(eng, transcription, rus, ownCategory)
+                            }
+                        } else {
+                            viewModel.createOwnWord(eng, transcription, rus, ownCategory)
+                        }
+                    }
+                } else {
+                    viewModel.createOwnWord(eng, transcription, rus, ownCategory)
+                }
             }
         }
     }
