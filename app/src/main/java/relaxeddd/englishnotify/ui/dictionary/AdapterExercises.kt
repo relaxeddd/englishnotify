@@ -22,6 +22,7 @@ class AdapterExercises(viewModel: ViewModelDictionary) : AdapterWords<AdapterExe
     class ViewHolder(view: View) : AdapterWords.ViewHolder(view) {
 
         override fun getWordMainContainer(): ViewGroup = itemView.card_view_word
+        override fun getWordContainerDropDawn(): ViewGroup? = itemView.constraint_word_drop_dawn
         override fun getTextTimestamp(): TextView = itemView.text_word_timestamp
         override fun getTextTags(): TextView = itemView.text_word_tags
         override fun getImageOwnWord(): ImageView = itemView.image_word_own

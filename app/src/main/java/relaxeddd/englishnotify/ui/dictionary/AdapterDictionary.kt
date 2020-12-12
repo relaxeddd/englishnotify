@@ -33,6 +33,7 @@ class AdapterDictionary(viewModel: ViewModelDictionary) : AdapterWords<AdapterDi
     class ViewHolder(view: View) : AdapterWords.ViewHolder(view) {
 
         override fun getWordMainContainer(): ViewGroup = itemView.card_view_word
+        override fun getWordContainerDropDawn(): ViewGroup? = itemView.constraint_word_drop_dawn
         override fun getTextTimestamp(): TextView = itemView.text_word_timestamp
         override fun getTextTags(): TextView = itemView.text_word_tags
         override fun getImageOwnWord(): ImageView = itemView.image_word_own
@@ -64,15 +65,17 @@ class AdapterDictionary(viewModel: ViewModelDictionary) : AdapterWords<AdapterDi
                             textTranslation2 += "$translation, "
                         }
                     }
-                    textTranslation1 = textTranslation1.substring(0, textTranslation1.length - 2) + "..."
-                    textTranslation2 = textTranslation2.substring(0, textTranslation2.length - 2)
+                    textTranslation1 = textTranslation1.substring(0, textTranslation1.length - 2) + " ..."
+                    textTranslation2 = textTranslation2.substring(0, textTranslation2.length - 2).trim()
                 }
 
+                text_word_translation_2.visibility = View.GONE
+                text_word_translation_2.text = ""
                 when (languageType) {
                     TYPE_PUSH_ENGLISH -> {
                         text_word.text = word.eng
                         text_word_transcription.text = transcription
-                        text_word_transcription.visibility = View.VISIBLE
+                        text_word_transcription.visibility = if (transcription.isNotEmpty()) View.VISIBLE else View.GONE
                         text_word_transcription_translation.visibility = View.GONE
 
                         if (translations.size <= MAX_TRANSLATIONS_COUNT) {
@@ -80,19 +83,21 @@ class AdapterDictionary(viewModel: ViewModelDictionary) : AdapterWords<AdapterDi
                         } else {
                             text_word_translation.text = textTranslation1
                             text_word_translation_2.text = textTranslation2
+                            text_word_translation_2.visibility = View.VISIBLE
                         }
                     }
                     TYPE_PUSH_RUSSIAN -> {
                         text_word_transcription_translation.text = transcription
                         text_word_translation.text = word.eng
                         text_word_transcription.visibility = View.GONE
-                        text_word_transcription_translation.visibility = View.VISIBLE
+                        text_word_transcription_translation.visibility = if (transcription.isNotEmpty()) View.VISIBLE else View.GONE
 
                         if (translations.size <= MAX_TRANSLATIONS_COUNT) {
                             text_word.text = word.rus
                         } else {
                             text_word.text = textTranslation1
                             text_word_translation_2.text = textTranslation2
+                            text_word_translation_2.visibility = View.VISIBLE
                         }
                     }
                 }
