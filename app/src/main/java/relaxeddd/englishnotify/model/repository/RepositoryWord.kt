@@ -78,14 +78,12 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
     }
 
     fun getOwnWords() : List<Word> {
-        val allWords = words.value
+        val allWords = ArrayList(words.value ?: ArrayList())
         val ownWords = ArrayList<Word>()
 
-        if (allWords != null) {
-            for (word in allWords) {
-                if (word.isOwnCategory) {
-                    ownWords.add(word)
-                }
+        for (word in allWords) {
+            if (word.isOwnCategory) {
+                ownWords.add(word)
             }
         }
 
@@ -94,7 +92,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
 
     fun getWordCategoriesForTraining() : HashSet<String> {
         val categories = HashSet<String>()
-        val words = words.value ?: ArrayList()
+        val words = ArrayList(words.value ?: ArrayList())
 
         words.forEach {
             if (!it.isDeleted) {
@@ -106,9 +104,15 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         return categories
     }
 
+    fun isEnoughLearnedWordsToRate() : Boolean {
+        val learnStageMax = SharedHelper.getTrueAnswersToLearn()
+        val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
+        return ArrayList(words.value?: ArrayList()).filter { it.isLearned(isEnabledSecondaryProgress, learnStageMax) }.size >= 5
+    }
+
     fun getOwnWordCategories() : HashSet<String> {
         val categories = HashSet<String>()
-        val words = words.value ?: ArrayList()
+        val words = ArrayList(words.value ?: ArrayList())
 
         words.forEach {
             if (!it.isDeleted) {
@@ -122,7 +126,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         val learnStageMax = SharedHelper.getTrueAnswersToLearn()
         val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
         val trainingWords = ArrayList<Word>()
-        val words = words.value ?: ArrayList()
+        val words = ArrayList(words.value ?: ArrayList())
 
         for (word in words) {
             val isWordAlreadyLearned = word.isLearnedForTraining(isEnabledSecondaryProgress, trainingLanguage, learnStageMax)
@@ -179,14 +183,14 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
     }
 
     fun updateWords(words: List<Word>) {
-        val existWords = this.words.value
+        val existWords = ArrayList(this.words.value ?: ArrayList())
         val idsSet = HashSet<String>()
         var isAllExists = true
 
-        existWords?.forEach { idsSet.add(it.id) }
+        existWords.forEach { idsSet.add(it.id) }
         words.forEach { if (!idsSet.contains(it.id)) isAllExists = false; }
 
-        if (existWords == null || !isAllExists || existWords.size != words.size) wordDao.deleteAll()
+        if (!isAllExists || existWords.size != words.size) wordDao.deleteAll()
         words.forEach {
             wordDao.insertAll(it)
         }
@@ -204,7 +208,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
 
     fun swapProgress(onCompleted: () -> Unit) {
         ioScope.launch {
-            val updateWords = words.value ?: ArrayList()
+            val updateWords = ArrayList(words.value ?: ArrayList())
             updateWords.forEach {
                 val secondaryProgress = it.learnStageSecondary
                 it.learnStageSecondary = it.learnStage

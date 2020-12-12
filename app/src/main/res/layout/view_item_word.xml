@@ -213,7 +213,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="end"
-            android:layout_marginTop="@dimen/size_2"
+            android:layout_marginTop="@dimen/size_4"
             android:textSize="@dimen/font_10"
             android:layout_weight="1"
             tools:text="15:31 11.12.20"/>

@@ -2,6 +2,7 @@ package relaxeddd.englishnotify.ui.word
 
 import androidx.lifecycle.MutableLiveData
 import com.google.android.material.radiobutton.MaterialRadioButton
+import com.google.android.play.core.review.ReviewManagerFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -14,6 +15,7 @@ import relaxeddd.englishnotify.model.repository.RepositoryWord
 
 class ViewModelWord : ViewModelBase(), ISelectCategory {
 
+    val isReadyToRateApp: Boolean
     val isEnabledOwnCategories = MutableLiveData(true)
     val categories = MutableLiveData<List<CategoryItem>>(ArrayList())
     var checkedItem: CategoryItem? = null
@@ -38,6 +40,9 @@ class ViewModelWord : ViewModelBase(), ISelectCategory {
         val user = RepositoryUser.getInstance().liveDataUser.value
         val isEnabledOwnCategoriesValue = user != null && user.isSubscribed()
         isEnabledOwnCategories.value = isEnabledOwnCategoriesValue
+
+        val isRated = SharedHelper.isCancelledRateDialog()
+        isReadyToRateApp = !isRated && RepositoryWord.getInstance().isEnoughLearnedWordsToRate()
     }
 
     override fun getSelectedCategory() = checkedItem?.key
