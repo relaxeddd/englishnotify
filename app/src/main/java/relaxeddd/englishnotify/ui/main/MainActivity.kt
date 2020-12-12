@@ -145,7 +145,7 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
                 View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
         binding.containerMainActivity.setOnApplyWindowInsetsListener(NoopWindowInsetsListener)
         binding.statusBarScrim.setOnApplyWindowInsetsListener(HeightTopWindowInsetsListener)
-        binding.containerMainWarnings.doOnApplyWindowInsets { v, insets, padding ->
+        binding.containerMainSignIn.doOnApplyWindowInsets { v, insets, padding ->
             if (!isOldDesign) {
                 (v.layoutParams as? ViewGroup.MarginLayoutParams)?.bottomMargin = padding.bottom + insets.systemWindowInsetBottom
             }
@@ -408,10 +408,6 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
         binding.navigationViewMain.setBackgroundColor(ContextCompat.getColor(this, if (isNightMode) R.color.bottom_navigation_color else getPrimaryColorResId()))
         binding.navigationViewMain.itemBackgroundResource = if (isNightMode) R.color.bottom_navigation_color else getPrimaryColorResId()
         binding.buttonMainFab.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, if (isNightMode) R.color.floating_button_color else getPrimaryColorResId()))
-    }
-
-    fun onHideOffNotificationsWarningChanged(isHide: Boolean) {
-        viewModel.onHideOffNotificationsWarningChanged(isHide)
     }
 
     fun setLoadingVisible(isVisible: Boolean) {

@@ -549,8 +549,7 @@
                 android:layout_marginTop="@dimen/size_8"
                 android:background="@color/card_view_color"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:onClick="@{viewModel.user != null ? viewModel.clickListenerRate : null}"
-                android:alpha="@{viewModel.user != null ? 1f : 0.5f}"
+                android:onClick="@{viewModel.clickListenerRate}"
                 android:elevation="@dimen/default_elevation">
 
                 <ImageView
@@ -722,6 +721,7 @@
                 android:foreground="?android:attr/selectableItemBackground"
                 android:onClick="@{viewModel.user != null ? viewModel.clickListenerLogout : null}"
                 android:alpha="@{viewModel.user != null ? 1f : 0.5f}"
+                android:visibility="@{safeUnbox(viewModel.isShowGoogleAuth) ? View.GONE : View.VISIBLE}"
                 android:elevation="@dimen/default_elevation">
 
                 <TextView

@@ -16,9 +16,7 @@ import relaxeddd.englishnotify.model.repository.RepositoryWord
 class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase() {
 
     val user = repositoryUser.liveDataUser
-    val isShowWarningNotifications = MutableLiveData(false)
     val isShowGoogleAuth = MutableLiveData(false)
-    val isShowWarningSubscription = MutableLiveData(false)
     val isShowLoading = MutableLiveData(false)
     val isShowHorizontalProgress = MutableLiveData(false)
     val isOldNavigation = MutableLiveData(SharedHelper.isOldNavigationDesign())
@@ -26,8 +24,6 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
 
     private val userObserver = Observer<User?> { user ->
         isShowGoogleAuth.value = (user == null || RepositoryCommon.getInstance().firebaseUser == null) && !SharedHelper.isHideSignIn()
-        isShowWarningNotifications.value = user != null && !user.receiveNotifications && !SharedHelper.isHideOffNotificationsWarning()
-        isShowWarningSubscription.value = user != null && !user.isSubscribed()
 
         val launchCount = SharedHelper.getLaunchCount()
         if (user != null && !isRateDialogShown && !SharedHelper.isCancelledRateDialog() && launchCount % 4 == 0) {
@@ -51,9 +47,6 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
         }
     }
 
-    val clickListenerWarningSubscription = View.OnClickListener {
-        navigateEvent.value = Event(NAVIGATION_DIALOG_SUBSCRIPTION_INFO)
-    }
     val clickListenerGoogleAuth = View.OnClickListener {
         if (!isNetworkAvailable()) {
             showToast(getAppString(R.string.network_not_available))
@@ -94,9 +87,7 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
         RepositoryWord.getInstance().words.observeForever(wordsObserver)
 
         if (repositoryUser.isAuthorized() && !repositoryUser.isInit()) {
-            isShowWarningNotifications.value = false
             isShowGoogleAuth.value = false
-            isShowWarningSubscription.value = false
             //isShowHorizontalProgress.value = true
 
             ioScope.launch {
@@ -117,10 +108,5 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
                 })
             }
         }
-    }
-
-    fun onHideOffNotificationsWarningChanged(isHide: Boolean = SharedHelper.isHideOffNotificationsWarning()) {
-        val userData = user.value
-        isShowWarningNotifications.value = userData != null && !userData.receiveNotifications && !isHide
     }
 }
