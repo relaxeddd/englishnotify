@@ -108,7 +108,7 @@
     <string name="network_not_available">Network error</string>
     <string name="next">Next</string>
     <string name="night_time">Night time (without notifications)</string>
-    <string name="night_time_value">From %s to %s</string>
+    <string name="night_time_value">From %1$s to %2$s</string>
     <string name="no">No</string>
     <string name="no_exercises">Notifications with exercises have not received yet. Please select exercise category and wait</string>
     <string name="no_thanks">No, thanks / already</string>
