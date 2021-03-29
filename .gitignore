@@ -47,6 +47,7 @@ captures/
 .idea/encodings.xml
 .idea/render.experimental.xml
 .idea/misc.xml
+.idea/
 
 /.idea/codeStyles/Project.xml
 
@@ -79,3 +80,6 @@ fastlane/Preview.html
 fastlane/screenshots
 fastlane/test_output
 fastlane/readme.md
+
+keystore.properties
+Keystore.jks
