@@ -108,7 +108,7 @@
     <string name="network_not_available">Ошибка интернет соединения</string>
     <string name="next">Далее</string>
     <string name="night_time">Ночное время (без уведомлений)</string>
-    <string name="night_time_value">С %s до %s</string>
+    <string name="night_time_value">С %1$s до %2$s</string>
     <string name="no">Нет</string>
     <string name="no_exercises">Уведомления с упражнениями пока еще не пришли. Необходимо авторизоваться, выбрать категорию с упражнениями и подождать прихода уведомлений</string>
     <string name="no_thanks">Нет, спасибо / уже</string>
