@@ -23,7 +23,7 @@ class RepositoryUser private constructor() {
         }
     }
 
-    var liveDataUser = MutableLiveData<User>(null)
+    var liveDataUser = MutableLiveData<User?>(null)
     var liveDataHideSignIn = MutableLiveData(SharedHelper.isHideSignIn())
     var liveDataIsInitInProgress = MutableLiveData(false)
     val liveDataIsActualVersion = MutableLiveData(true)
