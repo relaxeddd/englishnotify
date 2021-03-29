@@ -3,6 +3,7 @@ package relaxeddd.englishnotify.ui.main
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import relaxeddd.englishnotify.model.repository.RepositoryUser
 import kotlinx.coroutines.launch
@@ -80,27 +81,27 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
     fun requestInit() {
         RepositoryWord.getInstance().words.observeForever(wordsObserver)
 
-        if (repositoryUser.isAuthorized() && !repositoryUser.isInit()) {
-            isShowGoogleAuth.value = false
-            //isShowHorizontalProgress.value = true
+        if (!repositoryUser.isAuthorized() || repositoryUser.isInit()) {
+            return
+        }
 
-            ioScope.launch {
-                val loginEmail = FirebaseAuth.getInstance().currentUser?.email ?: ""
-                val savedEmail = SharedHelper.getUserEmail()
+        isShowGoogleAuth.value = false
+        //isShowHorizontalProgress.value = true
 
-                if (savedEmail.isNotEmpty() && savedEmail != loginEmail) {
-                    RepositoryWord.getInstance().clearDictionary()
-                    SharedHelper.setUserEmail(loginEmail)
-                }
-                repositoryUser.init(object: ListenerResult<Boolean> {
-                    override fun onResult(result: Boolean) {
-                        if (!result) {
-                            userObserver.onChanged(null)
-                        }
-                        //isShowHorizontalProgress.value = false
-                    }
-                })
+        viewModelScope.launch {
+            val loginEmail = FirebaseAuth.getInstance().currentUser?.email ?: ""
+            val savedEmail = SharedHelper.getUserEmail()
+
+            if (savedEmail.isNotEmpty() && savedEmail != loginEmail) {
+                RepositoryWord.getInstance().clearDictionary()
+                SharedHelper.setUserEmail(loginEmail)
             }
+            val isInitialized = repositoryUser.init()
+
+            if (!isInitialized) {
+                userObserver.onChanged(null)
+            }
+            //isShowHorizontalProgress.value = false
         }
     }
 }

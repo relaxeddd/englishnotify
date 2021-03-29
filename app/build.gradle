@@ -76,6 +76,7 @@ dependencies {
     //firebase
     implementation 'com.firebaseui:firebase-ui-auth:6.4.0'
     implementation 'com.google.firebase:firebase-messaging:21.0.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.4.1'
 
     //Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
