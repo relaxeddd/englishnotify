@@ -1,12 +1,12 @@
 package relaxeddd.englishnotify
 
 import android.annotation.SuppressLint
+import android.app.Application
 import android.content.Context
-import androidx.multidex.MultiDexApplication
 import com.google.firebase.FirebaseApp
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 
-class App : MultiDexApplication() {
+class App : Application() {
 
     companion object {
         @SuppressLint("StaticFieldLeak")
