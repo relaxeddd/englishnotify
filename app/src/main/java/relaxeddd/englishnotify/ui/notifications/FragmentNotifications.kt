@@ -46,12 +46,13 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
 
     override fun configureBinding() {
         super.configureBinding()
-        binding.viewModel = viewModel
+        binding?.viewModel = viewModel
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val binding = binding ?: return
         binding.switchNotificationsEnable.setOnCheckedChangeListener(viewModel.checkedChangeListenerEnableNotifications)
         binding.switchNotificationsDeletable.setOnCheckedChangeListener(viewModel.checkedChangeListenerDeletable)
         binding.switchNotificationsShowOnlyOne.setOnCheckedChangeListener(viewModel.checkedChangeListenerShowOnlyOneNotification)

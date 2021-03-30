@@ -25,6 +25,7 @@ class FragmentParsedWords : BaseFragment<ViewModelParsedWords, FragmentParsedWor
         super.onViewCreated(view, savedInstanceState)
 
         val adapter = AdapterParsedWords(viewModel)
+        val binding = binding ?: return
         binding.recyclerViewParsedWords.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewParsedWords.adapter = adapter
 

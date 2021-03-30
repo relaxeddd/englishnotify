@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.radiobutton.MaterialRadioButton
-import kotlinx.android.synthetic.main.view_item_category.view.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.CategoryItem
 import relaxeddd.englishnotify.common.ISelectCategory
@@ -56,16 +55,18 @@ class AdapterCategories(val viewModel: ISelectCategory) : ListAdapter<CategoryIt
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+        private val radioButtonCategory: MaterialRadioButton? = itemView.findViewById(R.id.radio_button_category)
+
         fun bind(item: CategoryItem, selectedCategory: String?, listener: View.OnClickListener, iSelectCategory: ISelectCategory) {
-            with(itemView) {
+            radioButtonCategory?.let { radioButtonCategory ->
                 val isChecked = item.key == selectedCategory
-                radio_button_category.tag = item
-                radio_button_category.text = getStringByResName(item.key).replaceFirst(OWN_KEY_SYMBOL, "")
-                radio_button_category.setOnClickListener(listener)
-                radio_button_category.isChecked = isChecked
-                iSelectCategory.onRadioButtonInit(item.key, radio_button_category)
+                radioButtonCategory.tag = item
+                radioButtonCategory.text = getStringByResName(item.key).replaceFirst(OWN_KEY_SYMBOL, "")
+                radioButtonCategory.setOnClickListener(listener)
+                radioButtonCategory.isChecked = isChecked
+                iSelectCategory.onRadioButtonInit(item.key, radioButtonCategory)
                 if (isChecked) {
-                    checkedRadioButton = radio_button_category
+                    checkedRadioButton = radioButtonCategory
                 }
             }
         }

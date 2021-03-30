@@ -42,7 +42,7 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.item_menu_accept -> {
-                binding.textInputTranslation.onEditorAction(EditorInfo.IME_ACTION_DONE)
+                binding?.textInputTranslation?.onEditorAction(EditorInfo.IME_ACTION_DONE)
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -52,6 +52,7 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
     override fun configureBinding() {
         super.configureBinding()
 
+        val binding = binding ?: return
         binding.viewModel = viewModel
         binding.imageWordMicrophone.setOnClickListener {
             val selectedLanguage = binding.spinnerWordLanguage.selectedItem as? String ?: ""
@@ -199,6 +200,7 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
             updateToolbarTitle(getString(R.string.edit))
         }
 
+        val binding = binding ?: return
         binding.textInputWord.setText(eng)
         binding.textInputTranscription.setText(transcription)
         binding.textInputTranslation.setText(rus)
@@ -242,6 +244,7 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
     }
 
     override fun setupThemeColors() {
+        val binding = binding ?: return
         binding.containerTextWordInputWord.boxStrokeColor = getPrimaryColorResId()
         binding.containerTextWordInputTranscription.boxStrokeColor = getPrimaryColorResId()
         binding.containerTextWordInputTranslation.boxStrokeColor = getPrimaryColorResId()
@@ -251,7 +254,7 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
     override fun onNavigationEvent(eventId: Int) {
         when (eventId) {
             NAVIGATION_WORD_EXISTS_ERROR -> {
-                binding.textInputWord.error = getString(R.string.word_already_exists)
+                binding?.textInputWord?.error = getString(R.string.word_already_exists)
             }
             NAVIGATION_WORD_EXISTS_DIALOG -> {
                 val dialog = DialogRestoreWord()
@@ -267,6 +270,7 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
     }
 
     private fun hideKeyboard() {
+        val binding = binding ?: return
        when {
            binding.textInputWord.hasFocus() -> hideKeyboard(binding.textInputWord)
            binding.textInputTranslation.hasFocus() -> hideKeyboard(binding.textInputTranslation)
@@ -276,6 +280,7 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
     }
 
     private fun handleClickedSave() {
+        val binding = binding ?: return
         val eng = binding.textInputWord.text.toString()
         val rus = binding.textInputTranslation.text.toString()
         val transcription = binding.textInputTranscription.text.toString()
@@ -314,6 +319,7 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
     }
 
     private fun updateVoiceInputVisibility(isShow: Boolean) {
+        val binding = binding ?: return
         binding.imageWordMicrophone.visibility = if (isShow) View.VISIBLE else View.GONE
         binding.spinnerWordLanguage.visibility = if (isShow) View.VISIBLE else View.GONE
         binding.imageWordMicrophoneTranslation.visibility = if (isShow) View.VISIBLE else View.GONE

@@ -29,7 +29,7 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
     private val listenerCheckTags: ListenerResult<List<String>> = object: ListenerResult<List<String>> {
         override fun onResult(result: List<String>) {
             viewModel.setFilterTags(result)
-            animateDropdown(binding.containerDictionaryFilter, false, animBlock)
+            binding?.containerDictionaryFilter?.let { animateDropdown(it, false, animBlock) }
         }
     }
 
@@ -39,7 +39,7 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
         }
     }
     private val clickListenerCloseFilter = View.OnClickListener {
-        animateDropdown(binding.containerDictionaryFilter, false, animBlock)
+        binding?.containerDictionaryFilter?.let { animateDropdown(it, false, animBlock) }
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -51,8 +51,8 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
 
     override fun configureBinding() {
         super.configureBinding()
-        binding.viewModel = viewModel
-        binding.clickListenerCloseFilter = clickListenerCloseFilter
+        binding?.viewModel = viewModel
+        binding?.clickListenerCloseFilter = clickListenerCloseFilter
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -60,6 +60,7 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
         super.onViewCreated(view, savedInstanceState)
 
         adapter = createWordsAdapter()
+        val binding = binding ?: return
 
         binding.checkBoxDictionaryShowOwnWords.setOnCheckedChangeListener(viewModel.checkedChangeListenerShowOwnWords)
         binding.recyclerViewDictionary.adapter = adapter
@@ -83,7 +84,7 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.item_menu_filter -> {
-                animateDropdown(binding.containerDictionaryFilter, binding.containerDictionaryFilter.visibility == View.GONE, animBlock)
+                binding?.containerDictionaryFilter?.let { animateDropdown(it, it.visibility == View.GONE, animBlock) }
                 return true
             }
             R.id.item_menu_check -> {
@@ -127,7 +128,7 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
     override fun onNavigationEvent(eventId: Int) {
         when (eventId) {
             NAVIGATION_ACTION_HIDE_FILTER -> {
-                animateDropdown(binding.containerDictionaryFilter, false, animBlock)
+                binding?.containerDictionaryFilter?.let { animateDropdown(it, false, animBlock) }
             }
             NAVIGATION_PLAY_WORD -> {
                 val ac = activity
@@ -170,7 +171,7 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
     override fun setupThemeColors() {
         super.setupThemeColors()
         val isNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
-        binding.containerDictionaryFilter.setBackgroundResource(if (isNightMode) R.color.filter_bg_color else getPrimaryColorResId())
+        binding?.containerDictionaryFilter?.setBackgroundResource(if (isNightMode) R.color.filter_bg_color else getPrimaryColorResId())
     }
 
     open fun onFragmentSelected() {}
@@ -178,7 +179,7 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
     fun onFragmentDeselected() {
         adapter?.isSelectState = false
         textSearch = ""
-        animateDropdown(binding.containerDictionaryFilter, false, animBlock)
+        binding?.containerDictionaryFilter?.let { animateDropdown(it, false, animBlock) }
     }
 
     fun onParentSearchTextChanged(textSearch: String) {
@@ -192,7 +193,7 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
     }
 
     fun onMenuFilterClicked() {
-        animateDropdown(binding.containerDictionaryFilter, binding.containerDictionaryFilter.visibility == View.GONE, animBlock)
+        binding?.containerDictionaryFilter?.let { animateDropdown(it, it.visibility == View.GONE, animBlock) }
     }
 
     fun onMenuCheckAllClicked() {
@@ -231,7 +232,7 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
             if (isScroll) {
                 handler.postDelayed({
                     try {
-                        (binding.recyclerViewDictionary.layoutManager as LinearLayoutManager?)?.scrollToPositionWithOffset(0, 0)
+                        (binding?.recyclerViewDictionary?.layoutManager as? LinearLayoutManager)?.scrollToPositionWithOffset(0, 0)
                     } catch (e: IllegalStateException) {}
                 }, 50)
             }
