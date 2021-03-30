@@ -13,6 +13,7 @@ import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.model.preferences.SharedHelper
+import relaxeddd.englishnotify.model.repository.RepositoryWord
 
 class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewModelBase() {
 
@@ -161,6 +162,10 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
 
     fun onDialogTestNotificationsResult(result: Boolean) {
         if (result) {
+            if (user.value?.selectedTag == OWN && RepositoryWord.getInstance().getOwnWords().isEmpty()) {
+                showToast(R.string.category_own_not_selected)
+                return
+            }
             viewModelScope.launch {
                 repositoryUser.sendTestNotification()
             }
