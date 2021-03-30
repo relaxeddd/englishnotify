@@ -6,6 +6,7 @@ import android.widget.CompoundButton
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.App
@@ -194,7 +195,8 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
 
     fun onSwapProgressResult(isConfirmed: Boolean) {
         if (isConfirmed) {
-            RepositoryWord.getInstance().swapProgress {
+            viewModelScope.launch {
+                RepositoryWord.getInstance().swapProgress()
                 showToast(R.string.progress_swapped)
             }
         }
@@ -207,7 +209,7 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
 
     fun onLogoutResult(isSuccess: Boolean) {
         if (isSuccess) {
-            ioScope.launch {
+            viewModelScope.launch {
                 repositoryUser.deleteUserInfo()
             }
         } else {
@@ -217,10 +219,9 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
 
     fun saveDictionary() {
         navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
-        ioScope.launch {
-            delay(1000)
+        viewModelScope.launch {
             val isSuccess = RepositoryWord.getInstance().requestSaveAllWords()
-            uiScope.launch { navigateEvent.value = Event(NAVIGATION_LOADING_HIDE) }
+            navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
             if (isSuccess) {
                 showToast(R.string.words_saved_success)
             }
@@ -229,10 +230,9 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
 
     fun loadDictionary() {
         navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
-        ioScope.launch {
-            delay(1000)
+        viewModelScope.launch {
             val isSuccess = RepositoryWord.getInstance().requestLoadAllWords()
-            uiScope.launch { navigateEvent.value = Event(NAVIGATION_LOADING_HIDE) }
+            navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
             if (isSuccess) {
                 showToast(R.string.words_loaded)
             }

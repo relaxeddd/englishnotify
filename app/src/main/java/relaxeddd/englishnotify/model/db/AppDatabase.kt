@@ -26,7 +26,7 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
-        private fun buildDatabase(context: Context): AppDatabase {
+        fun buildDatabase(context: Context): AppDatabase {
             return Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_TEST_APP)
                 .addMigrations(MIGRATION_14_15)
                 .build()
