@@ -51,31 +51,31 @@ class FragmentDictionaryContainer : BaseFragment<ViewModelDictionaryContainer, F
         super.configureBinding()
         val adapter = DictionaryFragmentsAdapter(this)
 
-        binding.viewPagerDictionaryContainer.adapter = adapter
-        TabLayoutMediator(binding.tabLayoutDictionaryContainer, binding.viewPagerDictionaryContainer) { tab, position ->
-            tab.text = getString(when(position) {
-                DictionaryTab.OWN.ordinal -> R.string.own_words
-                DictionaryTab.EXERCISES.ordinal -> R.string.exercises
-                DictionaryTab.KNOW.ordinal -> R.string.already_know
-                else -> R.string.all_words
-            })
-        }.attach()
-        binding.viewPagerDictionaryContainer.registerOnPageChangeCallback(onPageChangeCallback)
+        binding?.apply {
+            viewPagerDictionaryContainer.adapter = adapter
+            TabLayoutMediator(tabLayoutDictionaryContainer, viewPagerDictionaryContainer) { tab, position ->
+                tab.text = getString(when(position) {
+                    DictionaryTab.OWN.ordinal -> R.string.own_words
+                    DictionaryTab.EXERCISES.ordinal -> R.string.exercises
+                    DictionaryTab.KNOW.ordinal -> R.string.already_know
+                    else -> R.string.all_words
+                })
+            }.attach()
+            viewPagerDictionaryContainer.registerOnPageChangeCallback(onPageChangeCallback)
+        }
     }
 
     override fun onStart() {
         super.onStart()
-        if (binding.viewPagerDictionaryContainer.currentItem != SharedHelper.getDictionaryTabPosition()) {
-            binding.viewPagerDictionaryContainer.setCurrentItem(currentPosition, false)
+        if (binding?.viewPagerDictionaryContainer?.currentItem != SharedHelper.getDictionaryTabPosition()) {
+            binding?.viewPagerDictionaryContainer?.setCurrentItem(currentPosition, false)
         }
     }
 
-    override fun onDestroy() {
-        if (isBindingInitialized()) {
-            binding.viewPagerDictionaryContainer.unregisterOnPageChangeCallback(onPageChangeCallback)
-        }
+    override fun onDestroyView() {
+        binding?.viewPagerDictionaryContainer?.unregisterOnPageChangeCallback(onPageChangeCallback)
         adapterFragmentsMap.clear()
-        super.onDestroy()
+        super.onDestroyView()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

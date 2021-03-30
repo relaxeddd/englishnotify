@@ -8,7 +8,6 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.google.android.material.checkbox.MaterialCheckBox
-import kotlinx.android.synthetic.main.view_item_exercise.view.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.Word
 import java.util.HashSet
@@ -21,16 +20,20 @@ class AdapterExercises(viewModel: ViewModelDictionary) : AdapterWords<AdapterExe
 
     class ViewHolder(view: View) : AdapterWords.ViewHolder(view) {
 
-        override fun getWordMainContainer(): ViewGroup = itemView.card_view_word
-        override fun getWordContainerDropDawn(): ViewGroup? = itemView.constraint_word_drop_dawn
-        override fun getTextTimestamp(): TextView = itemView.text_word_timestamp
-        override fun getTextTags(): TextView = itemView.text_word_tags
-        override fun getImageOwnWord(): ImageView = itemView.image_word_own
-        override fun getImageOwnCreatedWord(): ImageView = itemView.image_word_own_created
-        override fun getCheckBoxSelect(): MaterialCheckBox = itemView.check_box_word_select
-        override fun getImagePlay(): ImageView = itemView.image_word_play
-        override fun getProgressLearn(): ProgressBar = itemView.progress_bar_word_learn_stage
+        override fun getWordMainContainer(): ViewGroup = itemView.findViewById(R.id.card_view_word)
+        override fun getWordContainerDropDawn(): ViewGroup? = itemView.findViewById(R.id.constraint_word_drop_dawn)
+        override fun getTextTimestamp(): TextView = itemView.findViewById(R.id.text_word_timestamp)
+        override fun getTextTags(): TextView = itemView.findViewById(R.id.text_word_tags)
+        override fun getImageOwnWord(): ImageView = itemView.findViewById(R.id.image_word_own)
+        override fun getImageOwnCreatedWord(): ImageView = itemView.findViewById(R.id.image_word_own_created)
+        override fun getCheckBoxSelect(): MaterialCheckBox = itemView.findViewById(R.id.check_box_word_select)
+        override fun getImagePlay(): ImageView = itemView.findViewById(R.id.image_word_play)
+        override fun getProgressLearn(): ProgressBar = itemView.findViewById(R.id.progress_bar_word_learn_stage)
         override fun getProgressLearnSecondary(): ProgressBar? = null
+
+        private val textWord: TextView? = itemView.findViewById(R.id.text_word)
+        private val textWordTranslation: TextView? = itemView.findViewById(R.id.text_word_translation)
+        private val textWordTranscription: TextView? = itemView.findViewById(R.id.text_word_transcription)
 
         override fun bind(word: Word, isSelectState: Boolean, checkList: HashSet<Word>,
                           clickListener: View.OnClickListener, longClickListener: View.OnLongClickListener,
@@ -40,9 +43,9 @@ class AdapterExercises(viewModel: ViewModelDictionary) : AdapterWords<AdapterExe
             with(itemView) {
                 val transcription = if (word.transcription.isNotEmpty()) word.transcription else ""
 
-                text_word.text = word.eng
-                text_word_transcription.text = transcription
-                text_word_translation.text = word.rus
+                textWord?.text = word.eng
+                textWordTranscription?.text = transcription
+                textWordTranslation?.text = word.rus
             }
         }
     }

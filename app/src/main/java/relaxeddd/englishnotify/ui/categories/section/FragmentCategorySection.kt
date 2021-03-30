@@ -20,6 +20,7 @@ class FragmentCategorySection(val type: CategorySection) : BaseFragment<ViewMode
     override fun configureBinding() {
         super.configureBinding()
         adapter = AdapterCategories(viewModel)
+        val binding = binding ?: return
         binding.recyclerViewCategories.adapter = adapter
         binding.recyclerViewCategories.setHasFixedSize(true)
         viewModel.title.observe(viewLifecycleOwner, {

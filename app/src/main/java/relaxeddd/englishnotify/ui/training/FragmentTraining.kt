@@ -7,7 +7,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
-import kotlinx.android.synthetic.main.fragment_training.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.FragmentTrainingBinding
@@ -20,8 +19,8 @@ class FragmentTraining : BaseFragment<ViewModelTraining, FragmentTrainingBinding
     private var toolbarTitleTraining: String = "Training"
 
     private val clickListenerOk = View.OnClickListener {
-        val answer = edit_text_training_answer.text.toString()
-        edit_text_training_answer.setText("")
+        val answer = binding?.editTextTrainingAnswer?.text?.toString() ?: ""
+        binding?.editTextTrainingAnswer?.setText("")
         viewModel.onClickOk(answer)
     }
 
@@ -45,6 +44,8 @@ class FragmentTraining : BaseFragment<ViewModelTraining, FragmentTrainingBinding
         toolbarTitleTraining = getStringByResName(category).replaceFirst(OWN_KEY_SYMBOL, "")
         viewModel.category = category
         viewModel.trainingType = arguments?.getInt(TRAINING_TYPE) ?: TRAINING_ENG_TO_RUS
+
+        val binding = binding ?: return
         binding.clickListenerOk = clickListenerOk
         binding.clickListenerOneMore = clickListenerOneMore
         binding.viewModel = viewModel
@@ -98,7 +99,7 @@ class FragmentTraining : BaseFragment<ViewModelTraining, FragmentTrainingBinding
 
     override fun onNavigationEvent(eventId: Int) {
         when (eventId) {
-            NAVIGATION_HIDE_KEYBOARD -> hideKeyboard(binding.editTextTrainingAnswer)
+            NAVIGATION_HIDE_KEYBOARD -> hideKeyboard(binding?.editTextTrainingAnswer)
             NAVIGATION_PLAY_WORD -> {
                 val ac = activity
                 if (ac is MainActivity) {
@@ -106,6 +107,7 @@ class FragmentTraining : BaseFragment<ViewModelTraining, FragmentTrainingBinding
                 }
             }
             NAVIGATION_SHOW_KEYBOARD -> {
+                val binding = binding ?: return
                 binding.editTextTrainingAnswer.requestFocus()
                 val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
                 inputMethodManager?.showSoftInput(binding.editTextTrainingAnswer, InputMethodManager.SHOW_IMPLICIT)
@@ -127,7 +129,7 @@ class FragmentTraining : BaseFragment<ViewModelTraining, FragmentTrainingBinding
                 animateLearnedCount(false)
             }
             NAVIGATION_ACTIVITY_BACK -> {
-                hideKeyboard(binding.editTextTrainingAnswer)
+                hideKeyboard(binding?.editTextTrainingAnswer)
                 super.onNavigationEvent(eventId)
             }
             else -> super.onNavigationEvent(eventId)
@@ -135,6 +137,7 @@ class FragmentTraining : BaseFragment<ViewModelTraining, FragmentTrainingBinding
     }
 
     private fun animateLearnedCount(isPlusOne: Boolean = true) {
+        val binding = binding ?: return
         binding.textTrainingLearnedPlus.text = if (isPlusOne) "+1" else "-1"
         binding.textTrainingLearnedPlus.setTextColor(ContextCompat.getColor(context ?: return, if (isPlusOne) R.color.green_success else R.color.red_wrong))
         binding.textTrainingLearnedPlus.visibility = View.VISIBLE
@@ -189,6 +192,7 @@ class FragmentTraining : BaseFragment<ViewModelTraining, FragmentTrainingBinding
             }
         }
 
+        val binding = binding ?: return
         binding.textTrainingResultAnimation.setTextColor(ContextCompat.getColor(context, color))
         binding.textTrainingResultAnimation.text = text
         binding.textTrainingResultAnimation.visibility = View.VISIBLE

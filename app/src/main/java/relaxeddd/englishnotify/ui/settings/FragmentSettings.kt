@@ -53,12 +53,13 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
 
     override fun configureBinding() {
         super.configureBinding()
-        binding.viewModel = viewModel
+        binding?.viewModel = viewModel
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val binding = binding ?: return
         binding.scrollViewSettings.doOnApplyWindowInsets { v, insets, padding ->
             v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
         }

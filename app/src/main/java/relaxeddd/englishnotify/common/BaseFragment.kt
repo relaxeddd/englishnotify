@@ -27,7 +27,7 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
             }
         }
     protected lateinit var viewModel: VM
-    protected lateinit var binding: B
+    protected var binding: B? = null
     protected var menu: Menu? = null
     protected var searchView: SearchView? = null
 
@@ -58,10 +58,10 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
         viewModel = ViewModelProvider(this, getViewModelFactory()).get(getViewModelClass())
 
         configureBinding()
-        binding.lifecycleOwner = viewLifecycleOwner
-        binding.executePendingBindings()
+        binding?.lifecycleOwner = viewLifecycleOwner
+        binding?.executePendingBindings()
 
-        return binding.root
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -98,6 +98,11 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
     override fun onResume() {
         super.onResume()
         viewModel.onFragmentResume()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -199,5 +204,4 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
     }
 
     protected fun isViewModelInitialized() = this::viewModel.isInitialized
-    protected fun isBindingInitialized() = this::binding.isInitialized
 }

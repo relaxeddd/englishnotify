@@ -16,7 +16,7 @@ class FragmentCategories : BaseFragment<ViewModelCategories, FragmentCategoriesB
 
     private var fragmentsMap = HashMap<Int, FragmentCategorySection?>()
     private val currentFragment: FragmentCategorySection?
-        get() = fragmentsMap[binding.viewPagerCategories.currentItem]
+        get() = fragmentsMap[binding?.viewPagerCategories?.currentItem ?: 0]
 
     override fun getLayoutResId() = R.layout.fragment_categories
     override fun getToolbarTitleResId() = R.string.dictionary
@@ -31,6 +31,7 @@ class FragmentCategories : BaseFragment<ViewModelCategories, FragmentCategoriesB
     override fun configureBinding() {
         super.configureBinding()
         val adapter = CategoryFragmentsAdapter(this)
+        val binding = binding ?: return
 
         binding.viewPagerCategories.adapter = adapter
         TabLayoutMediator(binding.tabLayoutCategories, binding.viewPagerCategories) { tab, position ->
