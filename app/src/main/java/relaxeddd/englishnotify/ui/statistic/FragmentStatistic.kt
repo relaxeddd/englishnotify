@@ -23,13 +23,14 @@ class FragmentStatistic : BaseFragment<ViewModelStatistic, FragmentStatisticBind
 
     override fun configureBinding() {
         super.configureBinding()
-        binding.viewModel = viewModel
+        binding?.viewModel = viewModel
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         adapter = AdapterStatistic(viewModel)
+        val binding = binding ?: return
         binding.recyclerViewStatistic.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewStatistic.adapter = adapter
 
@@ -43,6 +44,7 @@ class FragmentStatistic : BaseFragment<ViewModelStatistic, FragmentStatisticBind
         val tagInfo = viewModel.ownTagInfo
         val textOwnWordsTag = "" + tagInfo.learned + " / " + tagInfo.total
         val textOwnWordsPercentage = "" + (if (tagInfo.total != 0) (tagInfo.learned.toFloat() / tagInfo.total.toFloat() * 100).toInt() else 0) + "%"
+        val binding = binding ?: return
 
         binding.textStatisticOwnWords.text = textOwnWordsTag
         binding.textStatisticOwnWordsPercentage.text = textOwnWordsPercentage

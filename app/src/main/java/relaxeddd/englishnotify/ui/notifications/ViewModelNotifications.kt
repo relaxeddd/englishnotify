@@ -6,12 +6,14 @@ import android.widget.CompoundButton
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.viewModelScope
 import relaxeddd.englishnotify.model.repository.RepositoryUser
 import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.model.preferences.SharedHelper
+import relaxeddd.englishnotify.model.repository.RepositoryWord
 
 class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewModelBase() {
 
@@ -135,7 +137,7 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
 
     fun onDialogLearnLanguageResult(learnEnglishType: Int) {
         if (learnEnglishType != repositoryUser.liveDataUser.value?.learnLanguageType) {
-            uiScope.launch {
+            viewModelScope.launch {
                 repositoryUser.setLearnLanguageType(learnEnglishType)
             }
         }
@@ -160,7 +162,11 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
 
     fun onDialogTestNotificationsResult(result: Boolean) {
         if (result) {
-            uiScope.launch {
+            if (user.value?.selectedTag == OWN && RepositoryWord.getInstance().getOwnWords().isEmpty()) {
+                showToast(R.string.category_own_not_selected)
+                return
+            }
+            viewModelScope.launch {
                 repositoryUser.sendTestNotification()
             }
         }
@@ -173,7 +179,7 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
     }
 
     private fun setNotificationsEnable(isEnabled: Boolean) {
-        uiScope.launch {
+        viewModelScope.launch {
             repositoryUser.setReceiveNotifications(isEnabled)
         }
     }

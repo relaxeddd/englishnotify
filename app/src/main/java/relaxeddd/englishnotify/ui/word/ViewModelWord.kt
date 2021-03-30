@@ -1,11 +1,9 @@
 package relaxeddd.englishnotify.ui.word
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.google.android.material.radiobutton.MaterialRadioButton
-import com.google.android.play.core.review.ReviewManagerFactory
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.preferences.SharedHelper
@@ -61,7 +59,7 @@ class ViewModelWord : ViewModelBase(), ISelectCategory {
             SharedHelper.setLastOwnCategory(finalOwnTag)
         }
 
-        ioScope.launch {
+        viewModelScope.launch {
             var existsWord = RepositoryWord.getInstance().getWord(eng)
 
             if (existsWordId.isNotEmpty()) {
@@ -82,9 +80,7 @@ class ViewModelWord : ViewModelBase(), ISelectCategory {
             } else {
                 if (existsWord != null) {
                     if (!existsWord.isCreatedByUser) {
-                        withContext(Dispatchers.Main) {
-                            navigateEvent.value = Event(NAVIGATION_WORD_EXISTS_ERROR)
-                        }
+                        navigateEvent.value = Event(NAVIGATION_WORD_EXISTS_ERROR)
                     } else {
                         findWord = existsWord
                         updateEng = eng
@@ -92,9 +88,7 @@ class ViewModelWord : ViewModelBase(), ISelectCategory {
                         updateRus = rus
                         updateOwnTag = finalOwnTag
 
-                        withContext(Dispatchers.Main) {
-                            navigateEvent.value = Event(NAVIGATION_WORD_EXISTS_DIALOG)
-                        }
+                        navigateEvent.value = Event(NAVIGATION_WORD_EXISTS_DIALOG)
                     }
                     return@launch
                 } else {
@@ -103,14 +97,12 @@ class ViewModelWord : ViewModelBase(), ISelectCategory {
                 }
             }
 
-            withContext(Dispatchers.Main) {
-                navigateEvent.value = Event(NAVIGATION_ACTIVITY_BACK)
-            }
+            navigateEvent.value = Event(NAVIGATION_ACTIVITY_BACK)
         }
     }
 
     fun forceUpdateFindWord() {
-        ioScope.launch {
+        viewModelScope.launch {
             val findWord = this@ViewModelWord.findWord
             val oldWordId = if (findWord != null) findWord.id else {
                 showToast(R.string.error_update)
@@ -137,9 +129,7 @@ class ViewModelWord : ViewModelBase(), ISelectCategory {
                 RepositoryWord.getInstance().removeWordFromDb(oldWordId)
             }
 
-            withContext(Dispatchers.Main) {
-                navigateEvent.value = Event(NAVIGATION_ACTIVITY_BACK)
-            }
+            navigateEvent.value = Event(NAVIGATION_ACTIVITY_BACK)
         }
     }
 
@@ -166,7 +156,7 @@ class ViewModelWord : ViewModelBase(), ISelectCategory {
         }
 
         isTranslating = true
-        ioScope.launch {
+        viewModelScope.launch {
             isTranslating = false
 
             val translation = RepositoryCommon.getInstance().requestTranslation(text, fromLanguage, toLanguage)
@@ -174,9 +164,8 @@ class ViewModelWord : ViewModelBase(), ISelectCategory {
             lastTranslationText = text
             lastTranslationResult = translation
             lastTranslationLanguage = toLanguage
-            uiScope.launch {
-                callback(translation)
-            }
+
+            callback(translation)
         }
     }
 
@@ -191,7 +180,7 @@ class ViewModelWord : ViewModelBase(), ISelectCategory {
     }
 
     private fun updateCategories() {
-        ioScope.launch {
+        viewModelScope.launch {
             val list = ArrayList<CategoryItem>()
             val allTags = RepositoryWord.getInstance().getOwnWordCategories()
 

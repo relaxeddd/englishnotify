@@ -39,6 +39,8 @@ class FragmentTrainingSetting : BaseFragment<ViewModelTrainingSetting, FragmentT
     override fun configureBinding() {
         super.configureBinding()
         adapter = AdapterCategories(viewModel)
+        val binding = binding ?: return
+
         binding.recyclerViewTrainingSettingCategories.itemAnimator = null
         binding.recyclerViewTrainingSettingCategories.adapter = adapter
         binding.switchTrainingSettingListenTraining.isChecked = SharedHelper.isListeningTraining()
@@ -60,6 +62,8 @@ class FragmentTrainingSetting : BaseFragment<ViewModelTrainingSetting, FragmentT
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val binding = binding ?: return
 
         when (viewModel.trainingLanguage) {
             TRAINING_RUS_TO_ENG -> binding.radioButtonTrainingSettingRuToEn.isChecked = true

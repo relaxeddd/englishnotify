@@ -18,29 +18,31 @@ class RepositoryCommon private constructor() {
     var firebaseUser: FirebaseUser? = null
     var tokenId: String? = null
 
-    fun initFirebase(initCallback: (isSuccess: Boolean) -> Unit) {
+    suspend fun initFirebase() : Boolean {
         if (FirebaseAuth.getInstance().currentUser == null) {
             showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
-            initCallback(false)
-            return
+            return false
         }
 
         firebaseUser = FirebaseAuth.getInstance().currentUser
 
-        ApiHelper.initUserTokenId(firebaseUser) {
-            if (it.isSuccess() && it.value != null) {
-                ApiHelper.initPushTokenId { pushTokenAnswer ->
-                    if (pushTokenAnswer.isSuccess() && pushTokenAnswer.value != null) {
-                        MyFirebaseMessagingService.pushToken = pushTokenAnswer.value
-                    }
-                    tokenId = it.value
-                    initCallback(true)
-                }
-            } else {
-                showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
-                initCallback(false)
+        val tokenResult = ApiHelper.initUserTokenId(firebaseUser)
+        val isTokenInitialized = tokenResult.isSuccess() && tokenResult.value != null
+
+        if (isTokenInitialized) {
+            val pushTokenResult = ApiHelper.initPushTokenId()
+
+            if (pushTokenResult.isSuccess() && pushTokenResult.value != null) {
+                MyFirebaseMessagingService.pushToken = pushTokenResult.value
             }
+            tokenId = tokenResult.value
         }
+
+        if (!isTokenInitialized) {
+            showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
+        }
+
+        return isTokenInitialized
     }
 
     suspend fun requestTranslation(translationText: String, translateFromLanguage: String, translateToLanguage: String) : String {

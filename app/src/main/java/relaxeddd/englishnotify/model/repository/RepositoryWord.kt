@@ -23,44 +23,18 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         }
     }
 
-    private val ioScope = CoroutineScope(Dispatchers.IO)
-    private val uiScope = CoroutineScope(Dispatchers.Main)
+    val words = wordDao.getAll()
+    private var tagsInfo: List<TagInfo> = ArrayList()
+    val tempParsedWords = ArrayList<Word>()
 
-    val words = wordDao.getAll().also {
-        uiScope.launch {
-            it.observeForever {
+    init {
+        val mainScope = CoroutineScope(Dispatchers.Main)
+
+        mainScope.launch {
+            words.observeForever {
                 if (it.isEmpty() && !SharedHelper.isDefaultWordsLoaded()) {
-                    ioScope.launch {
-                        val defaultWords = listOf(
-                            Word("cause", "cause", "причина, дело, повод, вызывать", "kɔːz", listOf("frequent_verbs"),
-                                timestamp = System.currentTimeMillis(), isCreatedByUser = false),
-                            Word("catch", "catch", "ловить, поймать, улов, выгода, добыча, захват", "kæʧ",
-                                listOf("irregular", "movement", "frequent_verbs"), v2 = "caught", v3 = "caught", timestamp = System.currentTimeMillis(), isCreatedByUser = false),
-                            Word("dream", "dream", "мечтать, сниться, мечта, сон, фантазировать", "driːm",
-                                listOf("irregular"), v2 = "dreamt", v3 = "dreamt", timestamp = System.currentTimeMillis(), isCreatedByUser = false),
-                            Word("throw", "throw", "бросать, бросок, кидать, метать, метание", "θroʊ",
-                                listOf("irregular", "movement", "frequent_verbs", "sport"), v2 = "threw", v3 = "thrown",
-                                timestamp = System.currentTimeMillis(), isCreatedByUser = false),
-                            Word("forget", "forget", "забывать, не помнить, забыть", "fəˈɡet",
-                                listOf("irregular", "frequent_verbs"), v2 = "forgot", v3 = "forgotten",
-                                timestamp = System.currentTimeMillis(), isCreatedByUser = false),
-                            Word("bite", "bite", "кусать, укусить, укус, кусок, кусаться", "baɪt",
-                                listOf("irregular", "frequent_verbs"), v2 = "bit", v3 = "bitten",
-                                timestamp = System.currentTimeMillis(), isCreatedByUser = false),
-                            Word("hide", "hide", "скрывать, прятать, прятаться", "haɪd",
-                                listOf("irregular", "frequent_verbs"), v2 = "hid", v3 = "hidden",
-                                timestamp = System.currentTimeMillis(), isCreatedByUser = false),
-                            Word("absent", "absent", "отсутствовать, отсутствующий, отсутствует, в отсутствие", "ˈæbsənt",
-                                listOf("frequent_verbs"), timestamp = System.currentTimeMillis(), isCreatedByUser = false),
-                            Word("beard", "beard", "борода", "bɪrd",
-                                listOf("human_body"), timestamp = System.currentTimeMillis(), isCreatedByUser = false),
-                            Word("claim", "claim", "запрос, требование, требовать, иск, заявка, претензия", "kleɪm",
-                                listOf("tourists"), timestamp = System.currentTimeMillis(), isCreatedByUser = false),
-                            Word("desire", "desire", "желание, желать, страсть", "dɪˈzaɪər",
-                                listOf(), timestamp = System.currentTimeMillis(), isCreatedByUser = false),
-                            Word("elk", "elk", "лось, сохатый", "elk",
-                                listOf("animals"), timestamp = System.currentTimeMillis(), isCreatedByUser = false)
-                        )
+                    mainScope.launch {
+                        val defaultWords = Func.createDefaultWords()
                         insertWords(defaultWords)
                         SharedHelper.setDefaultWordsLoaded(true)
                     }
@@ -70,10 +44,8 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
             }
         }
     }
-    private var tagsInfo: List<TagInfo> = ArrayList()
-    val tempParsedWords = ArrayList<Word>()
 
-    fun clearDictionary() {
+    suspend fun clearDictionary() {
         wordDao.deleteAll()
     }
 
@@ -164,25 +136,21 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         }
     }
 
-    fun setWordLearnStage(word: Word, progress: Int, isSecondary: Boolean, isRemoteSave: Boolean = true) {
-        if (isSecondary) word.learnStageSecondary = progress else word.learnStage = progress
-        ioScope.launch {
-            val saveWord = Word(word)
-
-            if (isSecondary) saveWord.learnStageSecondary = progress else saveWord.learnStage = progress
-            updateWord(saveWord)
-        }
+    suspend fun setWordLearnStage(word: Word, progress: Int, isSecondary: Boolean) {
+        val saveWord = Word(word)
+        if (isSecondary) saveWord.learnStageSecondary = progress else saveWord.learnStage = progress
+        updateWord(saveWord)
     }
 
     fun updateTagsInfo(tagsInfo: List<TagInfo>) {
         this.tagsInfo = tagsInfo
     }
 
-    fun insertWord(word : Word, wordDao: WordDao = this.wordDao) {
+    suspend fun insertWord(word : Word, wordDao: WordDao = this.wordDao) {
         wordDao.insertAll(word)
     }
 
-    fun updateWords(words: List<Word>) {
+    suspend fun updateWords(words: List<Word>) {
         val existWords = ArrayList(this.words.value ?: ArrayList())
         val idsSet = HashSet<String>()
         var isAllExists = true
@@ -196,33 +164,28 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         }
     }
 
-    fun insertWords(words: List<Word>) {
+    suspend fun insertWords(words: List<Word>) {
         words.forEach {
             wordDao.insertAll(it)
         }
     }
 
-    fun updateWord(word : Word) {
+    suspend fun updateWord(word : Word) {
         wordDao.insert(word)
     }
 
-    fun swapProgress(onCompleted: () -> Unit) {
-        ioScope.launch {
-            val updateWords = ArrayList(words.value ?: ArrayList())
-            updateWords.forEach {
-                val secondaryProgress = it.learnStageSecondary
-                it.learnStageSecondary = it.learnStage
-                it.learnStage = secondaryProgress
-            }
-            wordDao.insertAll(*updateWords.toTypedArray())
-            uiScope.launch {
-                onCompleted()
-            }
+    suspend fun swapProgress() {
+        val updateWords = ArrayList(words.value ?: ArrayList())
+        updateWords.forEach {
+            val secondaryProgress = it.learnStageSecondary
+            it.learnStageSecondary = it.learnStage
+            it.learnStage = secondaryProgress
         }
+        wordDao.insertAll(*updateWords.toTypedArray())
     }
 
     //------------------------------------------------------------------------------------------------------------------
-    fun insertOwnCategoryWord(wordId: String, eng: String, rus: String, transcription: String, tags: List<String>) {
+    suspend fun insertOwnCategoryWord(wordId: String, eng: String, rus: String, transcription: String, tags: List<String>) {
         val word = Word(wordId, eng, rus, transcription, tags,
             timestamp = System.currentTimeMillis(), isCreatedByUser = true, isOwnCategory = true)
         updateWord(word)
@@ -260,9 +223,9 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
     }
 
     //------------------------------------------------------------------------------------------------------------------
-    fun getWord(wordId: String) = wordDao.findWordById(wordId)
+    suspend fun getWord(wordId: String) = wordDao.findWordById(wordId)
 
-    fun removeWordFromDb(wordId: String) {
+    suspend fun removeWordFromDb(wordId: String) {
         wordDao.deleteById(wordId)
     }
 

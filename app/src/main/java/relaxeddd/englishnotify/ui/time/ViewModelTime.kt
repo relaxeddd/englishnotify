@@ -2,6 +2,7 @@ package relaxeddd.englishnotify.ui.time
 
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
@@ -23,7 +24,7 @@ class ViewModelTime(private val repositoryUser: RepositoryUser) : ViewModelBase(
         if (receiveNotificationsTime < 7 && !user.isSubscribed()) {
             showToast(R.string.subscription_need)
         } else {
-            uiScope.launch {
+            viewModelScope.launch {
                 navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
 
                 val result = if (receiveNotificationsTime != user.notificationsTimeType) {

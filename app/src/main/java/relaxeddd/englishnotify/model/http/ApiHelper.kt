@@ -8,6 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import com.google.firebase.iid.FirebaseInstanceId
+import kotlinx.coroutines.tasks.await
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 import java.lang.Exception
 
@@ -122,29 +123,24 @@ object ApiHelper {
     }
 
     //------------------------------------------------------------------------------------------------------------------
-    fun initUserTokenId(firebaseUser: FirebaseUser?, resultListener: (tokenId: Resource<String>) -> Unit) {
-        firebaseUser?.getIdToken(false)?.addOnCompleteListener {
-            if (it.isSuccessful) {
-                val receivedTokenId = it.result?.token ?: ""
-                resultListener(Resource(status = RESULT_OK, value = receivedTokenId))
-            } else {
-                resultListener(Resource(errorStr = ERROR_NOT_AUTHORIZED))
-            }
-        } ?: resultListener(Resource(errorStr = ERROR_NOT_AUTHORIZED))
+    suspend fun initUserTokenId(firebaseUser: FirebaseUser?) : Resource<String> {
+        val tokenResult = firebaseUser?.getIdToken(false)?.await()
+
+        return if (tokenResult?.token?.isNotEmpty() == true) {
+            Resource(status = RESULT_OK, value = tokenResult.token)
+        } else {
+            Resource(errorStr = ERROR_NOT_AUTHORIZED)
+        }
     }
 
-    fun initPushTokenId(resultListener: (tokenId: Resource<String>) -> Unit) {
-        FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener {
-            val existsToken = SharedHelper.getPushToken()
+    suspend fun initPushTokenId() : Resource<String> {
+        val pushTokenResult = FirebaseInstanceId.getInstance().instanceId.await()
+        val existsToken = SharedHelper.getPushToken()
 
-            if (it.isSuccessful) {
-                val receivedTokenId = it.result?.token ?: ""
-                resultListener(Resource(status = RESULT_OK, value = receivedTokenId))
-            } else if (existsToken.isNotBlank()) {
-                resultListener(Resource(status = RESULT_OK, value = existsToken))
-            } else {
-                resultListener(Resource(errorStr = ERROR_NOT_AUTHORIZED))
-            }
+        return when {
+            pushTokenResult?.token?.isNotEmpty() == true -> Resource(status = RESULT_OK, value = pushTokenResult.token)
+            existsToken.isNotBlank() -> Resource(status = RESULT_OK, value = existsToken)
+            else -> Resource(errorStr = ERROR_NOT_AUTHORIZED)
         }
     }
 

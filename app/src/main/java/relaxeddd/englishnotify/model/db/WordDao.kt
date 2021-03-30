@@ -13,29 +13,36 @@ interface WordDao {
     fun getAll(): LiveData<List<Word>>
 
     @Query("SELECT * FROM $WORDS")
-    fun getAllItems(): List<Word>
-
-    @Query("SELECT * FROM $WORDS WHERE rus LIKE :rus LIMIT 1")
-    fun findByRus(rus: String): LiveData<Word>
-
-    @Query("SELECT * FROM $WORDS WHERE eng LIKE :id LIMIT 1")
-    fun findById(id: String): LiveData<Word>
+    fun getAllItemsNow(): List<Word>
 
     @Query("SELECT * FROM $WORDS WHERE id LIKE :id LIMIT 1")
-    fun findWordById(id: String): Word?
+    fun findWordByIdNow(id: String): Word?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg words: Word)
+    fun insertNow(word: Word)
+
+    //------------------------------------------------------------------------------------------------------------------
+    @Query("SELECT * FROM $WORDS WHERE rus LIKE :rus LIMIT 1")
+    suspend fun findByRus(rus: String): Word
+
+    @Query("SELECT * FROM $WORDS WHERE eng LIKE :id LIMIT 1")
+    suspend fun findById(id: String): Word
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(word: Word)
+    suspend fun insertAll(vararg words: Word)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(word: Word)
 
     @Delete
-    fun delete(word: Word)
+    suspend fun delete(word: Word)
 
     @Query("DELETE FROM $WORDS")
-    fun deleteAll()
+    suspend fun deleteAll()
 
     @Query("DELETE FROM $WORDS WHERE id = :id")
-    fun deleteById(id: String)
+    suspend fun deleteById(id: String)
+
+    @Query("SELECT * FROM $WORDS WHERE id LIKE :id LIMIT 1")
+    suspend fun findWordById(id: String): Word?
 }

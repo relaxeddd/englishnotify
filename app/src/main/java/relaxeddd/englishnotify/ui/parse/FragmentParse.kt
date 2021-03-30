@@ -34,6 +34,7 @@ class FragmentParse : BaseFragment<ViewModelParse, FragmentParseBinding>() {
     override fun configureBinding() {
         super.configureBinding()
 
+        val binding = binding ?: return
         binding.viewModel = viewModel
 
         adapter = AdapterCategories(viewModel)
@@ -67,6 +68,7 @@ class FragmentParse : BaseFragment<ViewModelParse, FragmentParseBinding>() {
     }
 
     override fun setupThemeColors() {
+        val binding = binding ?: return
         binding.containerTextParseDelimiterInner.boxStrokeColor = getPrimaryColorResId()
         binding.containerTextParseDelimiterWords.boxStrokeColor = getPrimaryColorResId()
         binding.containerTextParse.boxStrokeColor = getPrimaryColorResId()
@@ -74,6 +76,7 @@ class FragmentParse : BaseFragment<ViewModelParse, FragmentParseBinding>() {
     }
 
     private fun handleClickedAccept() {
+        val binding = binding ?: return
         val delimiterInner = binding.textParseDelimiterInner.text.toString()
         val delimiterWords = binding.textParseDelimiterWords.text.toString()
         val textWords = binding.textParseWords.text.toString()
@@ -105,6 +108,7 @@ class FragmentParse : BaseFragment<ViewModelParse, FragmentParseBinding>() {
     }
 
     private fun hideKeyboard() {
+        val binding = binding ?: return
         when {
             binding.textParseDelimiterInner.hasFocus() -> hideKeyboard(binding.textParseDelimiterInner)
             binding.textParseDelimiterWords.hasFocus() -> hideKeyboard(binding.textParseDelimiterWords)

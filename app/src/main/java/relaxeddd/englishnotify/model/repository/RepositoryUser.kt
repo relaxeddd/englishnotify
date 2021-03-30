@@ -4,9 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import relaxeddd.englishnotify.model.http.ApiHelper
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
@@ -23,7 +21,7 @@ class RepositoryUser private constructor() {
         }
     }
 
-    var liveDataUser = MutableLiveData<User>(null)
+    var liveDataUser = MutableLiveData<User?>(null)
     var liveDataHideSignIn = MutableLiveData(SharedHelper.isHideSignIn())
     var liveDataIsInitInProgress = MutableLiveData(false)
     val liveDataIsActualVersion = MutableLiveData(true)
@@ -32,71 +30,66 @@ class RepositoryUser private constructor() {
     fun isInit() = liveDataUser.value != null
 
     //------------------------------------------------------------------------------------------------------------------
-    suspend fun init(listener: ListenerResult<Boolean>? = null) {
+    suspend fun init() : Boolean {
         liveDataIsInitInProgress.postValue(true)
         if (liveDataUser.value != null) {
             liveDataIsInitInProgress.postValue(false)
-            withContext(Dispatchers.Main) { listener?.onResult(true) }
-            return
+            return true
         }
 
-        RepositoryCommon.getInstance().initFirebase { isSuccess ->
-            CoroutineScope(Dispatchers.Main).launch {
-                if (!isSuccess) {
-                    liveDataIsInitInProgress.postValue(false)
-                    listener?.onResult(false)
-                    return@launch
-                }
+        val isFirebaseInitialized = RepositoryCommon.getInstance().initFirebase()
 
-                val firebaseUser = RepositoryCommon.getInstance().firebaseUser
-                val tokenId = RepositoryCommon.getInstance().tokenId
-                var pushToken = MyFirebaseMessagingService.pushToken
+        if (!isFirebaseInitialized) {
+            liveDataIsInitInProgress.postValue(false)
+            return false
+        }
 
-                if (pushToken.isEmpty()) {
-                    pushToken = SharedHelper.getPushToken()
-                }
-                if (pushToken.isEmpty()) {
-                    @Suppress("DEPRECATION")
-                    pushToken = FirebaseInstanceId.getInstance().token ?: ""
-                }
-                if (pushToken.isEmpty()) {
-                    showToast(R.string.error_push_token)
-                }
-                if (firebaseUser == null) {
-                    showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
-                    liveDataIsInitInProgress.postValue(false)
-                    listener?.onResult(false)
-                    return@launch
-                }
+        val firebaseUser = RepositoryCommon.getInstance().firebaseUser
+        val tokenId = RepositoryCommon.getInstance().tokenId
+        var pushToken = MyFirebaseMessagingService.pushToken
 
-                val answerInitData = ApiHelper.requestInit(firebaseUser, tokenId, pushToken)
+        if (pushToken.isEmpty()) {
+            pushToken = SharedHelper.getPushToken()
+        }
+        if (pushToken.isEmpty()) {
+            @Suppress("DEPRECATION")
+            pushToken = FirebaseInstanceId.getInstance().token ?: ""
+        }
+        if (pushToken.isEmpty()) {
+            showToast(R.string.error_push_token)
+        }
+        if (firebaseUser == null) {
+            showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
+            liveDataIsInitInProgress.postValue(false)
+            return false
+        }
 
-                if (answerInitData?.result != null && answerInitData.result.isSuccess()
-                        && answerInitData.user?.userId?.isNotEmpty() == true) {
-                    liveDataUser.value = answerInitData.user
-                    SharedHelper.setLearnLanguageType(answerInitData.user.learnLanguageType)
-                    SharedHelper.setSelectedCategory(answerInitData.user.selectedTag)
-                    if (!answerInitData.isActualVersion) {
-                        liveDataIsActualVersion.value = answerInitData.isActualVersion
-                    }
+        val answerInitData = ApiHelper.requestInit(firebaseUser, tokenId, pushToken)
 
-                    /*if (answerInitData.words != null) {
-                        withContext(Dispatchers.IO) { RepositoryWord.getInstance().updateWords(answerInitData.words) }
-                        RepositoryWord.getInstance().updateTagsInfo(answerInitData.tagsInfo ?: ArrayList())
-                    }*/
-
-                    liveDataIsInitInProgress.postValue(false)
-                    listener?.onResult(true)
-                } else if (answerInitData?.result != null) {
-                    showToast(getErrorString(answerInitData.result))
-                    liveDataIsInitInProgress.postValue(false)
-                    listener?.onResult(false)
-                } else {
-                    showToast(R.string.error_initialization)
-                    liveDataIsInitInProgress.postValue(false)
-                    listener?.onResult(false)
-                }
+        if (answerInitData?.result != null && answerInitData.result.isSuccess()
+            && answerInitData.user?.userId?.isNotEmpty() == true) {
+            liveDataUser.value = answerInitData.user
+            SharedHelper.setLearnLanguageType(answerInitData.user.learnLanguageType)
+            SharedHelper.setSelectedCategory(answerInitData.user.selectedTag)
+            if (!answerInitData.isActualVersion) {
+                liveDataIsActualVersion.value = answerInitData.isActualVersion
             }
+
+            /*if (answerInitData.words != null) {
+                withContext(Dispatchers.IO) { RepositoryWord.getInstance().updateWords(answerInitData.words) }
+                RepositoryWord.getInstance().updateTagsInfo(answerInitData.tagsInfo ?: ArrayList())
+            }*/
+
+            liveDataIsInitInProgress.postValue(false)
+            return true
+        } else if (answerInitData?.result != null) {
+            showToast(getErrorString(answerInitData.result))
+            liveDataIsInitInProgress.postValue(false)
+            return false
+        } else {
+            showToast(R.string.error_initialization)
+            liveDataIsInitInProgress.postValue(false)
+            return false
         }
     }
 

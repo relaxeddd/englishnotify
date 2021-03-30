@@ -6,9 +6,8 @@ import androidx.annotation.CallSuper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import kotlinx.coroutines.Dispatchers
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.model.repository.RepositoryUser
@@ -85,8 +84,10 @@ open class ViewModelDictionary(private val repositoryWord: RepositoryWord, prote
     }
 
     fun resetProgress(word: Word) {
-        repositoryWord.setWordLearnStage(word, 0, false)
-        repositoryWord.setWordLearnStage(word, 0, true)
+        viewModelScope.launch {
+            repositoryWord.setWordLearnStage(word, 0, false)
+            repositoryWord.setWordLearnStage(word, 0, true)
+        }
     }
 
     fun edit(word: Word) {
@@ -96,46 +97,38 @@ open class ViewModelDictionary(private val repositoryWord: RepositoryWord, prote
 
     fun addToOwn(word: Word) {
         navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
-        ioScope.launch {
+        viewModelScope.launch {
             repositoryWord.addToOwn(word.id)
-            withContext(Dispatchers.Main) {
-                navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
-            }
+            navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
         }
     }
 
     fun removeFromOwnDict(word: Word) {
         navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
-        ioScope.launch {
+        viewModelScope.launch {
             repositoryWord.removeFromOwn(word.id)
-            withContext(Dispatchers.Main) {
-                navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
-            }
+            navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
         }
     }
 
     fun deleteWord(word: Word) {
         navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
-        ioScope.launch {
+        viewModelScope.launch {
             repositoryWord.deleteWord(word.id)
-            withContext(Dispatchers.Main) {
-                navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
-            }
+            navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
         }
     }
 
     fun deleteWords(words: Collection<Word>) {
         navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
-        ioScope.launch {
+        viewModelScope.launch {
             val listIds = HashSet<String>()
 
             words.forEach { listIds.add(it.id) }
             if (listIds.isNotEmpty()) {
                 repositoryWord.deleteWords(listIds.toList())
             }
-            withContext(Dispatchers.Main) {
-                navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
-            }
+            navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
         }
     }
 

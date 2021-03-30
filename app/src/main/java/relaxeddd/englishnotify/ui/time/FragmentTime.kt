@@ -3,7 +3,6 @@ package relaxeddd.englishnotify.ui.time
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import kotlinx.android.synthetic.main.fragment_time.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.BaseFragment
 import relaxeddd.englishnotify.common.InjectorUtils
@@ -25,16 +24,16 @@ class FragmentTime : BaseFragment<ViewModelTime, FragmentTimeBinding>() {
 
     override fun configureBinding() {
         super.configureBinding()
-        binding.viewModel = viewModel
+        binding?.viewModel = viewModel
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val checkedRadioButton = radio_group_time.getChildAt(viewModel.receiveNotificationsTime)
+        val checkedRadioButton = binding?.radioGroupTime?.getChildAt(viewModel.receiveNotificationsTime)
 
-        radio_group_time.setOnCheckedChangeListener(viewModel.checkedChangeListenerTime)
+        binding?.radioGroupTime?.setOnCheckedChangeListener(viewModel.checkedChangeListenerTime)
         if (checkedRadioButton != null) {
-            radio_group_time.check(checkedRadioButton.id)
+            binding?.radioGroupTime?.check(checkedRadioButton.id)
         }
     }
 

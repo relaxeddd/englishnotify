@@ -2,9 +2,8 @@ package relaxeddd.englishnotify.ui.statistic
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import kotlinx.coroutines.Dispatchers
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.model.repository.RepositoryWord
@@ -33,17 +32,17 @@ class ViewModelStatistic(private val repositoryWord: RepositoryWord) : ViewModel
     }
 
     fun resetProgress(word: Word) {
-        repositoryWord.setWordLearnStage(word, 0, false)
-        repositoryWord.setWordLearnStage(word, 0, true)
+        viewModelScope.launch {
+            repositoryWord.setWordLearnStage(word, 0, false)
+            repositoryWord.setWordLearnStage(word, 0, true)
+        }
     }
 
     fun deleteWord(word: Word) {
         navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
-        ioScope.launch {
+        viewModelScope.launch {
             repositoryWord.deleteWord(word.id)
-            withContext(Dispatchers.Main) {
-                navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
-            }
+            navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
         }
     }
 
