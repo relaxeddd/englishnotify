@@ -16,13 +16,9 @@ import relaxeddd.englishnotify.model.db.AppDatabase
 import relaxeddd.englishnotify.ui.main.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.json.JSONObject
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.preferences.SharedHelper
-import relaxeddd.englishnotify.model.repository.RepositoryWord
 import java.util.*
 import kotlin.collections.HashMap
 import kotlin.random.Random
@@ -51,9 +47,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     && viewType == SharedHelper.NOTIFICATIONS_VIEW_WITH_QUESTION && !withWrongTitle
 
             if (isSave) {
-                val repositoryWord = RepositoryWord.getInstance()
-                val wordDao = AppDatabase.getInstance(context).wordDao()
-                val existsWord = wordDao.findWordById(word.id)
+                val wordDao = AppDatabase.buildDatabase(context).wordDao()
+                val existsWord = wordDao.findWordByIdNow(word.id)
 
                 if (existsWord != null) {
                     existsWord.eng = word.eng
@@ -66,14 +61,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                         existsWord.isCreatedByUser = false
                     }
                 }
-                CoroutineScope(Dispatchers.IO).launch {
-                    if (existsWord != null) {
-                        repositoryWord.insertWord(existsWord, wordDao)
-                    } else {
-                        word.timestamp = System.currentTimeMillis()
-                        word.isCreatedByUser = false
-                        repositoryWord.insertWord(word, wordDao)
-                    }
+
+                if (existsWord != null) {
+                    wordDao.insertNow(existsWord)
+                } else {
+                    word.timestamp = System.currentTimeMillis()
+                    word.isCreatedByUser = false
+                    wordDao.insertNow(word)
                 }
             }
 
@@ -288,7 +282,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 val languageType = SharedHelper.getLearnLanguageType(this)
 
                 val wordDao = AppDatabase.getInstance(this).wordDao()
-                var words = wordDao.getAllItems()
+                var words = wordDao.getAllItemsNow()
                 val sortByLearnStage = HashMap<Int, ArrayList<Word>>()
 
                 words = words.filter { !it.isDeleted && it.isOwnCategory && (tag.isEmpty() || tag == OWN || it.tags.contains(tag)) }

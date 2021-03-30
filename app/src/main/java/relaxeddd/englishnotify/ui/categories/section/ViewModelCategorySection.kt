@@ -1,6 +1,7 @@
 package relaxeddd.englishnotify.ui.categories.section
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.google.android.material.radiobutton.MaterialRadioButton
 import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.R
@@ -104,7 +105,7 @@ class ViewModelCategorySection(type: CategorySection, private val repositoryUser
         }
 
         if (!category.equals(repositoryUser.liveDataUser.value?.selectedTag, true)) {
-            uiScope.launch {
+            viewModelScope.launch {
                 navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
                 val result = repositoryUser.setSelectedTag(category)
                 navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)

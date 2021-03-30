@@ -3,6 +3,8 @@ package relaxeddd.englishnotify.ui.training
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
@@ -188,9 +190,9 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
         return if (currentIx < trainingWords.size) trainingWords[currentIx] else null
     }
 
-    private fun checkResult(ix: Int, textAnswer: String) {
+    private fun checkResult(ix: Int, textAnswer: String) = viewModelScope.launch {
         if (ix >= trainingWords.size) {
-            return
+            return@launch
         }
 
         val word = trainingWords[ix]

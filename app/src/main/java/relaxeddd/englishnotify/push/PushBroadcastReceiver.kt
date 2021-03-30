@@ -6,12 +6,14 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.RemoteInput
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.db.AppDatabase
 import relaxeddd.englishnotify.model.preferences.SharedHelper
-import relaxeddd.englishnotify.model.repository.RepositoryWord
 
 class PushBroadcastReceiver : BroadcastReceiver() {
 
@@ -53,39 +55,38 @@ class PushBroadcastReceiver : BroadcastReceiver() {
                     }
 
                     if (!isCorrectAnswer) isRemove = false
-                    withContext(Dispatchers.Main) {
-                        if (isCorrectAnswer) {
-                            showToast(if (learnStage < learnStageMax) R.string.answer_correct else R.string.learned)
-                            if (isRemovableViaDelay) {
-                                //Update notification to cancel it it after that
-                                MyFirebaseMessagingService.showNotificationWord(context, wordId, "", title, false, notificationId)
-                            }
-                        } else {
-                            showToast(R.string.answer_incorrect)
-                            MyFirebaseMessagingService.handleWordNotification(context, word, false,
-                                SharedHelper.NOTIFICATIONS_VIEW_WITH_TRANSLATE, withWrongTitle = true,
-                                notificationId = notificationId, isShowAnswer = true, userAnswer = userText)
+                    if (isCorrectAnswer) {
+                        showToast(if (learnStage < learnStageMax) R.string.answer_correct else R.string.learned)
+                        if (isRemovableViaDelay) {
+                            //Update notification to cancel it it after that
+                            MyFirebaseMessagingService.showNotificationWord(context, wordId, "", title, false, notificationId)
                         }
+                    } else {
+                        showToast(R.string.answer_incorrect)
+                        MyFirebaseMessagingService.handleWordNotification(context, word, false,
+                            SharedHelper.NOTIFICATIONS_VIEW_WITH_TRANSLATE, withWrongTitle = true,
+                            notificationId = notificationId, isShowAnswer = true, userAnswer = userText)
                     }
                 }
             } else {
                 learnStage = 0
                 isRemove = false
 
-                withContext(Dispatchers.Main) {
-                    MyFirebaseMessagingService.handleWordNotification(context, word, false,
-                        SharedHelper.NOTIFICATIONS_VIEW_WITH_TRANSLATE, notificationId = notificationId, isShowAnswer = true)
-                }
+                MyFirebaseMessagingService.handleWordNotification(context, word, false,
+                    SharedHelper.NOTIFICATIONS_VIEW_WITH_TRANSLATE, notificationId = notificationId, isShowAnswer = true)
             }
-            withContext(Dispatchers.Main) {
-                RepositoryWord.getInstance().setWordLearnStage(saveWord, learnStage, isEnabledSecondaryProgress && languageType == TYPE_PUSH_RUSSIAN, false)
-            }
+
+            if (isEnabledSecondaryProgress && languageType == TYPE_PUSH_RUSSIAN) saveWord.learnStageSecondary = learnStage else saveWord.learnStage = learnStage
+            wordDao.insertNow(saveWord)
+
             if (isRemove && notificationId != -1) {
-                withContext(Dispatchers.Main) {
-                    if (isRemovableViaDelay) delay(700)
-                    val notificationCompat = NotificationManagerCompat.from(context.applicationContext)
+                val notificationCompat = NotificationManagerCompat.from(context.applicationContext)
+
+                if (isRemovableViaDelay) {
+                    delay(700)
                     notificationCompat.cancel(wordId, notificationId)
                 }
+                notificationCompat.cancel(wordId, notificationId)
             }
         }
     }
