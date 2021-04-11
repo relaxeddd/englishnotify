@@ -112,11 +112,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 notificationBuilder.addAction(R.drawable.ic_close, getAppString(R.string.show_translation), notKnowPendingIntent)
             }
 
-            showNotification(ctx, notificationBuilder, title, text, notificationId)
+            showNotification(ctx, notificationBuilder, title, text, notificationId, tag = wordId)
         }
 
         fun showNotification(ctx: Context, notificationBuilder: NotificationCompat.Builder?,
-                             title: String, text: String, existsNotificationId: Int = -1, isCancelAfterTimeout: Boolean = false) {
+                             title: String, text: String, existsNotificationId: Int = -1, isCancelAfterTimeout: Boolean = false, tag: String? = null) {
             val builder = if (notificationBuilder != null) notificationBuilder else {
                 val channelId = ctx.getString(R.string.default_notification_channel_id)
                 NotificationCompat.Builder(ctx, channelId)
@@ -149,7 +149,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 }
 
                 val notificationId = if (existsNotificationId != -1) existsNotificationId else Random.nextInt(10000)
-                NotificationManagerCompat.from(ctx.applicationContext).notify(notificationId, build())
+                NotificationManagerCompat.from(ctx.applicationContext).apply {
+                    if (tag != null) {
+                        notify(tag, notificationId, build())
+                    } else {
+                        notify(notificationId, build())
+                    }
+                }
             }
         }
 

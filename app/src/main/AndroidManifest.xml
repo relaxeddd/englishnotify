@@ -45,7 +45,6 @@
         <service android:name="relaxeddd.englishnotify.push.MyFirebaseMessagingService"
                  android:enabled="true"
                  android:exported="false"
-                 android:stopWithTask="false"
                  android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
