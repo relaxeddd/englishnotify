@@ -333,7 +333,7 @@ object SharedHelper {
 
     fun isShowOnlyOneNotification(context: Context = App.context) : Boolean {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        return sPref.getBoolean(IS_SHOW_ONLY_ONE_NOTIFICATION, false)
+        return sPref.getBoolean(IS_SHOW_ONLY_ONE_NOTIFICATION, true)
     }
 
     fun setShowOnlyOneNotification(value: Boolean, context: Context = App.context) {

@@ -295,9 +295,10 @@
     </string>
 
     <string name="patch_notes">
-        - Fixed bug with words pronunciation
+        - Notifications fixes
+        \n\n- Fixed bug with words pronunciation
         \n- Optimization, libs update
-        \n\n- Removed warning with no premium account text at the bottom
+        \n- Removed warning with no premium account text at the bottom
         \n- Fixed bug with selecting own categories at the adding multiple words screen
         \n- Optimized dictionary words view
         \n- Saving last own category when adding new words
