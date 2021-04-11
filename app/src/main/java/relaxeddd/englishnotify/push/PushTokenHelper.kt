@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
+import androidx.core.app.NotificationCompat
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.ENGLISH_WORDS_NOTIFICATIONS_CHANNEL
 
@@ -16,8 +17,11 @@ object PushTokenHelper {
             val channel = NotificationChannel(channelId, ENGLISH_WORDS_NOTIFICATIONS_CHANNEL, NotificationManager.IMPORTANCE_HIGH)
 
             channel.setSound(null, null)
+            channel.setShowBadge(false)
 
             notificationManager?.createNotificationChannel(channel)
         }
     }
+
+    val notificationsPriority get() = NotificationCompat.PRIORITY_HIGH
 }

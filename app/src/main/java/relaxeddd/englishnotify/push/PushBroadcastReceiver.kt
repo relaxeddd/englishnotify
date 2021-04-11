@@ -26,6 +26,8 @@ class PushBroadcastReceiver : BroadcastReceiver() {
     }
 
     override fun onReceive(context: Context, intent: Intent) {
+        val pendingResult = goAsync()
+
         CoroutineScope(Dispatchers.IO).launch {
             val wordDao = AppDatabase.getInstance(context).wordDao()
             val notificationId = intent.getIntExtra(NOTIFICATION_ID, -1)
@@ -56,10 +58,13 @@ class PushBroadcastReceiver : BroadcastReceiver() {
 
                     if (!isCorrectAnswer) isRemove = false
                     if (isCorrectAnswer) {
-                        showToast(if (learnStage < learnStageMax) R.string.answer_correct else R.string.learned)
+                        val text = context.getString(if (learnStage < learnStageMax) R.string.answer_correct else R.string.learned)
+
                         if (isRemovableViaDelay) {
                             //Update notification to cancel it it after that
-                            MyFirebaseMessagingService.showNotificationWord(context, wordId, "", title, false, notificationId)
+                            MyFirebaseMessagingService.showNotification(context, null, text, "", notificationId, true)
+                        } else {
+                            showToast(text)
                         }
                     } else {
                         showToast(R.string.answer_incorrect)
@@ -88,6 +93,8 @@ class PushBroadcastReceiver : BroadcastReceiver() {
                 }
                 notificationCompat.cancel(wordId, notificationId)
             }
+
+            pendingResult.finish()
         }
     }
 }

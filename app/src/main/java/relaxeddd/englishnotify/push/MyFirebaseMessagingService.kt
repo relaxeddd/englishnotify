@@ -1,16 +1,13 @@
 package relaxeddd.englishnotify.push
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import androidx.annotation.WorkerThread
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.RemoteInput
-import androidx.core.content.ContextCompat
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.model.db.AppDatabase
 import relaxeddd.englishnotify.ui.main.MainActivity
@@ -28,6 +25,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     companion object {
         var pushToken: String = ""
 
+        @WorkerThread
         fun handleWordNotification(context: Context, word: Word, isSave: Boolean = true, viewType: Int,
                                    withWrongTitle: Boolean = false, notificationId: Int = -1, isShowAnswer: Boolean = false, userAnswer: String = "") {
             val languageType = SharedHelper.getLearnLanguageType(context)
@@ -77,22 +75,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         fun showNotificationWord(ctx: Context, wordId: String, text: String, title: String,
                                  withButtons : Boolean, existsNotificationId: Int = -1) {
             val notificationId = if (existsNotificationId != -1) existsNotificationId else Random.nextInt(10000)
-            val intent = Intent(ctx, MainActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            val pendingIntent = PendingIntent.getActivity(ctx, 0, intent, PendingIntent.FLAG_ONE_SHOT)
-
             val channelId = getAppString(R.string.default_notification_channel_id)
             val notificationBuilder = NotificationCompat.Builder(ctx, channelId)
-                .setAutoCancel(true)
-                .setContentIntent(pendingIntent)
-
-            if (title.isNotEmpty()) {
-                notificationBuilder.setContentTitle(title)
-            }
-            if (text.isNotEmpty()) {
-                notificationBuilder.setContentText(text)
-                notificationBuilder.setStyle(NotificationCompat.BigTextStyle().bigText(text))
-            }
 
             if (withButtons && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 val knowIntent = Intent(ctx, PushBroadcastReceiver::class.java).apply {
@@ -113,87 +97,60 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     setLabel(replyLabel)
                     build()
                 }
-                val replyPendingIntent: PendingIntent = PendingIntent.getBroadcast(ctx, Random.nextInt(1000),
+                val replyPendingIntent: PendingIntent = PendingIntent.getBroadcast(ctx, Random.nextInt(10000),
                     knowIntent, PendingIntent.FLAG_UPDATE_CURRENT)
                 val action: NotificationCompat.Action = NotificationCompat.Action.Builder(R.drawable.ic_dictionary,
                     getAppString(R.string.i_know_it), replyPendingIntent)
                     .addRemoteInput(remoteInput)
+                    .setAllowGeneratedReplies(false)
                     .build()
                 notificationBuilder.addAction(action)
                 notificationBuilder.setOngoing(SharedHelper.isOngoing())
 
                 val notKnowPendingIntent: PendingIntent =
-                    PendingIntent.getBroadcast(ctx, Random.nextInt(1000), notKnowIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+                    PendingIntent.getBroadcast(ctx, Random.nextInt(10000), notKnowIntent, PendingIntent.FLAG_UPDATE_CURRENT)
                 notificationBuilder.addAction(R.drawable.ic_close, getAppString(R.string.show_translation), notKnowPendingIntent)
             }
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                notificationBuilder.setSmallIcon(R.drawable.ic_stat_onesignal_default)
-                notificationBuilder.color = ContextCompat.getColor(ctx, R.color.notificationTextColor)
-            } else {
-                notificationBuilder.setSmallIcon(R.drawable.ic_stat_onesignal_default)
-            }
-
-            val notificationManager = NotificationManagerCompat.from(ctx.applicationContext)
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val channel = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    NotificationChannel(channelId, ENGLISH_WORDS_NOTIFICATIONS_CHANNEL, NotificationManager.IMPORTANCE_HIGH)
-                } else null
-
-                if (channel != null) {
-                    notificationManager.createNotificationChannel(channel)
-                }
-            } else {
-                @Suppress("DEPRECATION")
-                notificationBuilder.priority = Notification.PRIORITY_HIGH
-            }
-
-            notificationManager.notify(wordId, notificationId, notificationBuilder.build())
+            showNotification(ctx, notificationBuilder, title, text, notificationId)
         }
 
-        private fun showNotification(ctx: Context, title: String, text: String) {
-            val notificationId = Random.nextInt(10000)
-            val intent = Intent(ctx, MainActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            val pendingIntent = PendingIntent.getActivity(ctx, 0, intent, PendingIntent.FLAG_ONE_SHOT)
-
-            val channelId = getAppString(R.string.default_notification_channel_id)
-            val notificationBuilder = NotificationCompat.Builder(ctx, channelId)
-                .setAutoCancel(true)
-                .setContentIntent(pendingIntent)
-
-            if (title.isNotEmpty()) {
-                notificationBuilder.setContentTitle(title)
-            }
-            if (text.isNotEmpty()) {
-                notificationBuilder.setContentText(text)
-                notificationBuilder.setStyle(NotificationCompat.BigTextStyle().bigText(text))
+        fun showNotification(ctx: Context, notificationBuilder: NotificationCompat.Builder?,
+                             title: String, text: String, existsNotificationId: Int = -1, isCancelAfterTimeout: Boolean = false) {
+            val builder = if (notificationBuilder != null) notificationBuilder else {
+                val channelId = ctx.getString(R.string.default_notification_channel_id)
+                NotificationCompat.Builder(ctx, channelId)
             }
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                notificationBuilder.setSmallIcon(R.drawable.ic_stat_onesignal_default)
-                notificationBuilder.color = ContextCompat.getColor(ctx, R.color.notificationTextColor)
-            } else {
-                notificationBuilder.setSmallIcon(R.drawable.ic_stat_onesignal_default)
-            }
-
-            val notificationManager = NotificationManagerCompat.from(ctx.applicationContext)
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val channel = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    NotificationChannel(channelId, ENGLISH_WORDS_NOTIFICATIONS_CHANNEL, NotificationManager.IMPORTANCE_HIGH)
-                } else null
-
-                if (channel != null) {
-                    notificationManager.createNotificationChannel(channel)
+            builder.apply {
+                if (title.isNotEmpty()) {
+                    setContentTitle(title)
                 }
-            } else {
-                @Suppress("DEPRECATION")
-                notificationBuilder.priority = Notification.PRIORITY_HIGH
-            }
+                if (text.isNotEmpty()) {
+                    setContentText(text)
+                    setStyle(NotificationCompat.BigTextStyle().bigText(text))
+                }
+                if (isCancelAfterTimeout) {
+                    setTimeoutAfter(500)
+                }
 
-            notificationManager.notify(notificationId, notificationBuilder.build())
+                setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                setAllowSystemGeneratedContextualActions(false)
+                //setDefaults(NotificationCompat.DEFAULT_ALL)
+                setContentIntent(createPendingIntent(ctx))
+                setAutoCancel(true)
+                setSmallIcon(R.drawable.ic_stat_onesignal_default)
+
+                /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    color = ContextCompat.getColor(ctx, R.color.notificationTextColor)
+                }*/
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                    priority = PushTokenHelper.notificationsPriority
+                }
+
+                val notificationId = if (existsNotificationId != -1) existsNotificationId else Random.nextInt(10000)
+                NotificationManagerCompat.from(ctx.applicationContext).notify(notificationId, build())
+            }
         }
 
         private fun getFullNotificationText(context: Context, word: Word, isShowTranslation: Boolean, withoutWordText: Boolean,
@@ -249,6 +206,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         private fun getWordTitle(word: Word, isShowTranslation: Boolean) : String {
             return if (isShowTranslation) word.rus else word.eng
         }
+
+        private fun createPendingIntent(ctx: Context) : PendingIntent {
+            val intent = Intent(ctx, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            return PendingIntent.getActivity(ctx, 0, intent, PendingIntent.FLAG_ONE_SHOT)
+        }
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -263,6 +226,19 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
 
+        val notificationManager = NotificationManagerCompat.from(applicationContext)
+        if (!notificationManager.areNotificationsEnabled()) {
+            return
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channelId = getAppString(R.string.default_notification_channel_id)
+            val channel = notificationManager.getNotificationChannel(channelId)
+
+            if (channel?.importance == NotificationManagerCompat.IMPORTANCE_NONE) {
+                return
+            }
+        }
+
         val data = remoteMessage.data
 
         when (if (data.containsKey(TYPE)) data[TYPE] else "") {
@@ -270,7 +246,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 val title = if (data.containsKey(TITLE)) data[TITLE] ?: "" else ""
                 val text = if (data.containsKey(TEXT)) data[TEXT] ?: "" else ""
 
-                showNotification(this, title, text)
+                showNotification(this, null, title, text)
             }
             OWN_WORD -> {
                 if (isNightTime()) {
@@ -310,7 +286,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
                     if (wordIx >= 0 && wordIx < words.size) {
                         if (SharedHelper.isShowOnlyOneNotification(this)) {
-                            NotificationManagerCompat.from(applicationContext).cancelAll()
+                            notificationManager.cancelAll()
                         }
                         handleWordNotification(this, words[wordIx], false, viewType = SharedHelper.getNotificationsView(this))
                     }
@@ -325,7 +301,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     val word = parseWord(JSONObject(data[CONTENT] ?: ""))
 
                     if (SharedHelper.isShowOnlyOneNotification(this)) {
-                        NotificationManagerCompat.from(applicationContext).cancelAll()
+                        notificationManager.cancelAll()
                     }
                     handleWordNotification(this, word, viewType = SharedHelper.getNotificationsView(this))
                 }
