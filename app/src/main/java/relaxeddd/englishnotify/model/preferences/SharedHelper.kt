@@ -371,4 +371,14 @@ object SharedHelper {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         sPref.edit().putInt(APP_THEME, value).apply()
     }
+
+    fun isReceiveOnlyExistWords(context: Context = App.context) : Boolean {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getBoolean(RECEIVE_ONLY_EXIST_WORDS, false)
+    }
+
+    fun setReceiveOnlyExistWords(value : Boolean, context: Context = App.context) {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putBoolean(RECEIVE_ONLY_EXIST_WORDS, value).apply()
+    }
 }
