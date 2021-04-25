@@ -35,6 +35,7 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
     val isShowOnlyOneNotification = MutableLiveData(SharedHelper.isShowOnlyOneNotification())
     val isHideOffNotificationsWarning = MutableLiveData(SharedHelper.isHideOffNotificationsWarning())
     val isNotDeletable = MutableLiveData(SharedHelper.isOngoing())
+    val isReceiveOnlyExistWords = MutableLiveData(SharedHelper.isReceiveOnlyExistWords())
 
     private val userObserver = Observer<User?> { user ->
         isEnableNotificationsClickable.value = user != null
@@ -61,6 +62,10 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
         } else {
             SharedHelper.setOngoing(isChecked)
         }
+    }
+
+    val checkedChangeListenerOnlyExistWords = CompoundButton.OnCheckedChangeListener { _, isChecked ->
+        SharedHelper.setReceiveOnlyExistWords(isChecked)
     }
 
     val clickListenerEnableNotifications = View.OnClickListener {

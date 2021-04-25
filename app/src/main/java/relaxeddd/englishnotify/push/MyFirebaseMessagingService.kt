@@ -304,15 +304,62 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 }
 
                 if (data.containsKey(CONTENT) && data[CONTENT] != null) {
-                    val word = parseWord(JSONObject(data[CONTENT] ?: ""))
+                    var word = parseWord(JSONObject(data[CONTENT] ?: ""))
 
                     if (SharedHelper.isShowOnlyOneNotification(this)) {
                         notificationManager.cancelAll()
                     }
+
+                    val selectedTag = SharedHelper.getSelectedCategory(this)
+                    if (SharedHelper.isReceiveOnlyExistWords(this) && selectedTag.isNotEmpty() && word.tags.contains(selectedTag)) {
+                        extractRandomWordByTag(selectedTag)?.let {
+                            word = it
+                        }
+                    }
+
                     handleWordNotification(this, word, viewType = SharedHelper.getNotificationsView(this))
                 }
             }
         }
+    }
+
+    private fun extractRandomWordByTag(tag: String) : Word? {
+        val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress(this)
+        val languageType = SharedHelper.getLearnLanguageType(this)
+
+        val wordDao = AppDatabase.getInstance(this).wordDao()
+        var words = wordDao.getAllItemsNow()
+        val sortByLearnStage = HashMap<Int, ArrayList<Word>>()
+
+        words = words.filter { !it.isDeleted && (tag.isEmpty() || tag == OWN || it.tags.contains(tag)) }
+
+        for (word in words) {
+            val wordLearnStage = if (languageType == TYPE_PUSH_RUSSIAN && isEnabledSecondaryProgress) word.learnStageSecondary else word.learnStage
+
+            if (!sortByLearnStage.containsKey(wordLearnStage)) {
+                val list = ArrayList<Word>()
+                list.add(word)
+                sortByLearnStage[wordLearnStage] = list
+            } else {
+                sortByLearnStage[wordLearnStage]?.add(word)
+            }
+        }
+        for (learnStage in 0..2) {
+            if (sortByLearnStage.containsKey(learnStage)) {
+                words = sortByLearnStage[learnStage] ?: ArrayList()
+                break
+            }
+        }
+
+        if (words.isNotEmpty()) {
+            val wordIx = (words.indices).random()
+
+            if (wordIx >= 0 && wordIx < words.size) {
+                return words[wordIx]
+            }
+        }
+
+        return null
     }
 
     private fun isNightTime() : Boolean {

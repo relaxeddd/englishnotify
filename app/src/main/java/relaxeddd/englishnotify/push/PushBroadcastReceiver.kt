@@ -62,7 +62,7 @@ class PushBroadcastReceiver : BroadcastReceiver() {
 
                         if (isRemovableViaDelay) {
                             //Update notification to cancel it it after that
-                            MyFirebaseMessagingService.showNotification(context, null, text, "", notificationId, true)
+                            MyFirebaseMessagingService.showNotification(context, null, text, "", notificationId, true, wordId)
                         } else {
                             showToast(text)
                         }

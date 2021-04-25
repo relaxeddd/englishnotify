@@ -156,6 +156,7 @@
     <string name="rating_users">Users rating</string>
     <string name="rate">Rate</string>
     <string name="receive_notifications_time">Receive notifications time</string>
+    <string name="receive_only_exist_words">Receive only exist words</string>
     <string name="remove_from_own_category">Remove from own category</string>
     <string name="renew_subscription">Get premium account</string>
     <string name="reset_progress">Reset progress</string>
@@ -295,8 +296,9 @@
     </string>
 
     <string name="patch_notes">
-        - Notifications fixes
-        \n\n- Fixed bug with words pronunciation
+        - New option of receiving only exists words from your dictionary in Notifications tab
+        \n\n- Notifications fixes
+        \n- Fixed bug with words pronunciation
         \n- Optimization, libs update
         \n- Removed warning with no premium account text at the bottom
         \n- Fixed bug with selecting own categories at the adding multiple words screen
