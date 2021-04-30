@@ -296,8 +296,9 @@
     </string>
 
     <string name="patch_notes">
-        - New option of receiving only exists words from your dictionary in Notifications tab
-        \n\n- Notifications fixes
+        - Possible authorization fix
+        \n\n- New option of receiving only exists words from your dictionary in Notifications tab
+        \n- Notifications fixes
         \n- Fixed bug with words pronunciation
         \n- Optimization, libs update
         \n- Removed warning with no premium account text at the bottom

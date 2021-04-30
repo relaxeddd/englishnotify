@@ -202,6 +202,7 @@ const val ERROR_NOT_AUTHORIZED = "User not authorized"
 const val ERROR_USER_NOT_FOUND = "User not found"
 const val ERROR_APP_INFO = "App info not found"
 const val ERROR_SEND_TEST_NOTIFICATION = "Error send test notification"
+const val ERROR_FIREBASE_NETWORK = "Firebase Network exception"
 
 const val APP = "app"
 const val APP_THEME = "appTheme"

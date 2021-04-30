@@ -1,5 +1,6 @@
 package relaxeddd.englishnotify.model.http
 
+import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseUser
 import okhttp3.OkHttpClient
 import relaxeddd.englishnotify.BuildConfig
@@ -124,23 +125,31 @@ object ApiHelper {
 
     //------------------------------------------------------------------------------------------------------------------
     suspend fun initUserTokenId(firebaseUser: FirebaseUser?) : Resource<String> {
-        val tokenResult = firebaseUser?.getIdToken(false)?.await()
+        return try {
+            val tokenResult = firebaseUser?.getIdToken(true)?.await()
 
-        return if (tokenResult?.token?.isNotEmpty() == true) {
-            Resource(status = RESULT_OK, value = tokenResult.token)
-        } else {
-            Resource(errorStr = ERROR_NOT_AUTHORIZED)
+            if (tokenResult?.token?.isNotEmpty() == true) {
+                Resource(status = RESULT_OK, value = tokenResult.token)
+            } else {
+                Resource(errorStr = ERROR_NOT_AUTHORIZED)
+            }
+        } catch(e: FirebaseNetworkException) {
+            Resource(errorStr = ERROR_FIREBASE_NETWORK)
         }
     }
 
     suspend fun initPushTokenId() : Resource<String> {
-        val pushTokenResult = FirebaseInstanceId.getInstance().instanceId.await()
-        val existsToken = SharedHelper.getPushToken()
+        return try {
+            val pushTokenResult = FirebaseInstanceId.getInstance().instanceId.await()
+            val existsToken = SharedHelper.getPushToken()
 
-        return when {
-            pushTokenResult?.token?.isNotEmpty() == true -> Resource(status = RESULT_OK, value = pushTokenResult.token)
-            existsToken.isNotBlank() -> Resource(status = RESULT_OK, value = existsToken)
-            else -> Resource(errorStr = ERROR_NOT_AUTHORIZED)
+            when {
+                pushTokenResult?.token?.isNotEmpty() == true -> Resource(status = RESULT_OK, value = pushTokenResult.token)
+                existsToken.isNotBlank() -> Resource(status = RESULT_OK, value = existsToken)
+                else -> Resource(errorStr = ERROR_NOT_AUTHORIZED)
+            }
+        } catch(e: FirebaseNetworkException) {
+            Resource(errorStr = ERROR_FIREBASE_NETWORK)
         }
     }
 
