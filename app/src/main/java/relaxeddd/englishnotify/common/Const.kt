@@ -13,6 +13,7 @@ const val WORDS = "words"
 const val USERS = "users"
 
 const val FUNC_REQUEST_INIT = "requestInit2/"
+const val FUNC_REQUEST_LOGOUT = "requestLogout/"
 const val FUNC_REQUEST_INSERT_OWN_WORD = "requestInsertOwnWord2/"
 const val FUNC_REQUEST_UPDATE_WORD_LEARN_STAGE = "requestUpdateWordLearnStage/"
 const val FUNC_REQUEST_UPDATE_WORDS = "requestUpdateWords/"
@@ -73,6 +74,8 @@ const val RESULT_ERROR_OWN_GET = 6311
 const val RESULT_ERROR_NO_SUBSCRIPTION = 6401
 
 const val RESULT_ERROR_UPDATE_WORD_LEARN_STAGE = 6587
+
+const val RESULT_ERROR_LOGOUT = 9800
 
 const val NAVIGATION_EXIT = 999
 const val NAVIGATION_DIALOG_REPEAT = 1000
@@ -202,6 +205,7 @@ const val ERROR_NOT_AUTHORIZED = "User not authorized"
 const val ERROR_USER_NOT_FOUND = "User not found"
 const val ERROR_APP_INFO = "App info not found"
 const val ERROR_SEND_TEST_NOTIFICATION = "Error send test notification"
+const val ERROR_FIREBASE_NETWORK = "Firebase Network exception"
 
 const val APP = "app"
 const val APP_THEME = "appTheme"

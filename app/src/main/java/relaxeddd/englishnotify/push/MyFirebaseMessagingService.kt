@@ -224,9 +224,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onNewToken(p0: String) {
         super.onNewToken(p0)
         pushToken = p0
-        if (p0.isNotEmpty()) {
-            SharedHelper.setPushToken(p0, this)
-        }
+        SharedHelper.setPushToken(p0, this)
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {

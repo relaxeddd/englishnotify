@@ -1,12 +1,12 @@
 package relaxeddd.englishnotify.ui.training
 
-import android.content.Context
+import android.os.Bundle
 import android.view.View
 import android.view.animation.*
-import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
+import androidx.core.view.doOnLayout
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.FragmentTrainingBinding
@@ -97,20 +97,24 @@ class FragmentTraining : BaseFragment<ViewModelTraining, FragmentTrainingBinding
         }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding?.editTextTrainingAnswer?.doOnLayout {
+            showKeyboard(it)
+        }
+    }
+
     override fun onNavigationEvent(eventId: Int) {
         when (eventId) {
+            NAVIGATION_SHOW_KEYBOARD -> {
+                showKeyboard(binding?.editTextTrainingAnswer)
+            }
             NAVIGATION_HIDE_KEYBOARD -> hideKeyboard(binding?.editTextTrainingAnswer)
             NAVIGATION_PLAY_WORD -> {
                 val ac = activity
                 if (ac is MainActivity) {
                     ac.playWord(viewModel.getCurrentWord())
                 }
-            }
-            NAVIGATION_SHOW_KEYBOARD -> {
-                val binding = binding ?: return
-                binding.editTextTrainingAnswer.requestFocus()
-                val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-                inputMethodManager?.showSoftInput(binding.editTextTrainingAnswer, InputMethodManager.SHOW_IMPLICIT)
             }
             NAVIGATION_PLAY_WORD_DEPENDS_ON_TRANSLATION -> {
                 val ac = activity

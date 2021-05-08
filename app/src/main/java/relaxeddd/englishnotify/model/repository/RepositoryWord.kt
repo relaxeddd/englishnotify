@@ -142,15 +142,15 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         updateWord(saveWord)
     }
 
-    fun updateTagsInfo(tagsInfo: List<TagInfo>) {
+    /*fun updateTagsInfo(tagsInfo: List<TagInfo>) {
         this.tagsInfo = tagsInfo
-    }
+    }*/
 
-    suspend fun insertWord(word : Word, wordDao: WordDao = this.wordDao) {
+    /*suspend fun insertWord(word : Word, wordDao: WordDao = this.wordDao) {
         wordDao.insertAll(word)
-    }
+    }*/
 
-    suspend fun updateWords(words: List<Word>) {
+    private suspend fun updateWords(words: List<Word>) {
         val existWords = ArrayList(this.words.value ?: ArrayList())
         val idsSet = HashSet<String>()
         var isAllExists = true

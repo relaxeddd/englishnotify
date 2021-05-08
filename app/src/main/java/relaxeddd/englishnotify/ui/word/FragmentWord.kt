@@ -5,14 +5,15 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.View
-import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.*
-import relaxeddd.englishnotify.databinding.FragmentWordBinding
 import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.view.doOnLayout
 import com.google.android.play.core.review.ReviewManagerFactory
+import relaxeddd.englishnotify.R
+import relaxeddd.englishnotify.common.*
+import relaxeddd.englishnotify.databinding.FragmentWordBinding
 import relaxeddd.englishnotify.dialogs.DialogRestoreWord
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.ui.categories.AdapterCategories
@@ -104,7 +105,8 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
             val fromLanguage = binding.spinnerWordLanguage.selectedItem as? String ?: ""
             val toLanguage = binding.spinnerWordLanguageTranslation.selectedItem as? String ?: ""
 
-            if (text.isNotEmpty()) {
+            hideKeyboard()
+            if (text.isNotBlank()) {
                 binding.imageWordTranslate.visibility = View.INVISIBLE
                 binding.progressBarWordTranslate.visibility = View.VISIBLE
                 viewModel.onClickTranslate(text, fromLanguage, toLanguage) { translated ->
@@ -128,6 +130,8 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
                         }
                     }
                 }
+            } else {
+                showToast(R.string.word_should_not_be_empty)
             }
         }
         //TODO refactor
@@ -136,7 +140,8 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
             val fromLanguage = binding.spinnerWordLanguageTranslation.selectedItem as? String ?: ""
             val toLanguage = binding.spinnerWordLanguage.selectedItem as? String ?: ""
 
-            if (text.isNotEmpty()) {
+            hideKeyboard()
+            if (text.isNotBlank()) {
                 binding.imageWordTranslateTranslation.visibility = View.INVISIBLE
                 binding.progressBarWordTranslateTranslation.visibility = View.VISIBLE
                 viewModel.onClickTranslate(text, fromLanguage, toLanguage) { translated ->
@@ -160,6 +165,8 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
                         }
                     }
                 }
+            } else {
+                showToast(R.string.word_should_not_be_empty)
             }
         }
 
@@ -241,6 +248,10 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
                 false
             }
         }
+
+        binding.textInputWord.doOnLayout {
+            showKeyboard(it)
+        }
     }
 
     override fun setupThemeColors() {
@@ -262,7 +273,7 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
                 dialog.show(childFragmentManager, "Restore word Dialog")
             }
             NAVIGATION_ACTIVITY_BACK -> {
-                hideKeyboard(view)
+                hideKeyboard()
                 super.onNavigationEvent(eventId)
             }
             else -> super.onNavigationEvent(eventId)

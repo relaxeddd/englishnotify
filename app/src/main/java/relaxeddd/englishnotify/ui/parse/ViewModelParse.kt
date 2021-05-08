@@ -11,7 +11,7 @@ class ViewModelParse : ViewModelBase(), ISelectCategory {
 
     val isEnabledOwnCategories = MutableLiveData(true)
     val categories = MutableLiveData<List<CategoryItem>>(ArrayList())
-    var checkedItem: CategoryItem? = null
+    private var checkedItem: CategoryItem? = null
 
     init {
         updateCategories()
