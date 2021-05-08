@@ -18,6 +18,11 @@ interface IApi {
                             @Query("pushToken") pushToken: String,
                             @Query("email") email: String) : InitData?
 
+    @GET(FUNC_REQUEST_LOGOUT)
+    suspend fun requestLogout(@Header("Authorization") idToken: String,
+                              @Query("userId") userId: String,
+                              @Query("pushToken") pushToken: String) : LogoutResult?
+
     @GET(FUNC_REQUEST_VERIFY_PURCHASE)
     suspend fun requestVerifyPurchase(@Header("Authorization") idToken: String,
                                       @Query("userId") userId: String,

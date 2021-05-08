@@ -149,16 +149,16 @@ open class ViewModelDictionary(private val repositoryWord: RepositoryWord, prote
         }
 
         if (searchText.isNotEmpty()) {
-            filteredItems = filteredItems.filter { it.eng.toLowerCase().contains(searchText)
-                    || it.rus.toLowerCase().contains(searchText)
-                    || it.transcription.toLowerCase().contains(searchText) }.toHashSet()
+            filteredItems = filteredItems.filter { it.eng.lowercase().contains(searchText)
+                    || it.rus.lowercase().contains(searchText)
+                    || it.transcription.lowercase().contains(searchText) }.toHashSet()
         }
 
         filteredItems = filterWords(filteredItems)
 
         val sortList = when (sortByType.value) {
-            SortByType.ALPHABETICAL_NAME -> filteredItems.sortedBy{ it.eng.toLowerCase() }
-            SortByType.ALPHABETICAL_TRANSLATE -> filteredItems.sortedBy{ it.rus.toLowerCase() }
+            SortByType.ALPHABETICAL_NAME -> filteredItems.sortedBy{ it.eng.lowercase() }
+            SortByType.ALPHABETICAL_TRANSLATE -> filteredItems.sortedBy{ it.rus.lowercase() }
             SortByType.TIME_OLD -> filteredItems.sortedBy{ it.timestamp }
             else -> filteredItems.sortedByDescending{ it.timestamp }
         }

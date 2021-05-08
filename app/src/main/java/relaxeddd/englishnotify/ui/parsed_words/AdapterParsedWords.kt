@@ -17,8 +17,8 @@ import relaxeddd.englishnotify.model.preferences.SharedHelper
 
 class AdapterParsedWords(val viewModel: ViewModelParsedWords): ListAdapter<Word, AdapterParsedWords.ViewHolder>(WordDiffCallback()) {
 
-    private val learnStageMax = SharedHelper.getTrueAnswersToLearn()
-    private val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
+    //private val learnStageMax = SharedHelper.getTrueAnswersToLearn()
+    //private val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_item_parsed_word, parent, false))

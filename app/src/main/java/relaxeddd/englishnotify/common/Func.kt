@@ -73,10 +73,36 @@ fun showToastLong(@StringRes resId: Int) {
     CoroutineScope(Dispatchers.Main).launch { Toast.makeText(App.context, resId, Toast.LENGTH_LONG).show() }
 }
 
+fun showKeyboard(view: View?) {
+    view ?: return
+    view.postDelayed({
+        if (!view.isShown) {
+            return@postDelayed
+        }
+        view.requestFocus()
+    }, 100)
+    view.postDelayed({
+        if (!view.isShown) {
+            return@postDelayed
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            view.windowInsetsController?.show(WindowInsets.Type.ime())
+        } else {
+            val imm: InputMethodManager? = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+            imm?.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+        }
+    }, 300)
+}
+
 fun hideKeyboard(view: View?) {
     view ?: return
-    val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-    imm?.hideSoftInputFromWindow(view.windowToken, 0)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        view.windowInsetsController?.hide(WindowInsets.Type.ime())
+    } else {
+        val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+        imm?.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+    view.clearFocus()
 }
 
 fun convertDpToPixel(dp: Float): Float {
@@ -215,7 +241,7 @@ fun isCorrectAnswer(userAnswer: String, trueAnswer: String) : Boolean {
 }
 
 private fun getDefaultWord(word: String) = word
-    .toLowerCase()
+    .lowercase()
     .replace(".", "")
     .replace("-", "")
     .replace("?", "")
@@ -250,10 +276,6 @@ fun isValidNickname(nickname: String) : Boolean {
     val pattern = Pattern.compile("^[a-zA-Zа-яА-Я][a-zA-Zа-яА-Я0-9_]{3,16}$")
     val matcher = pattern.matcher(nickname)
     return matcher.matches() && nickname != "null" && nickname != "NoName"
-}
-
-internal fun String.toLowerCase() : String {
-    return toLowerCase(Locale.getDefault())
 }
 
 internal fun NavController.myNavigate(@IdRes resId: Int) {

@@ -21,7 +21,7 @@ class ViewModelMain(private val repositoryUser: RepositoryUser) : ViewModelBase(
     val isShowLoading = MutableLiveData(false)
     val isShowHorizontalProgress = MutableLiveData(false)
     val isOldNavigation = MutableLiveData(SharedHelper.isOldNavigationDesign())
-    private var isRateDialogShown = false
+    //private var isRateDialogShown = false
 
     private val userObserver = Observer<User?> { user ->
         isShowGoogleAuth.value = (user == null || RepositoryCommon.getInstance().firebaseUser == null) && !SharedHelper.isHideSignIn()

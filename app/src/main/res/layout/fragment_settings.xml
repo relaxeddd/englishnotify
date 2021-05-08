@@ -711,6 +711,40 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/size_16"
+                android:paddingBottom="@dimen/size_16"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/size_8"
+                android:background="@color/card_view_color"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:onClick="@{viewModel.clickListenerUpdatesHistory}"
+                android:elevation="@dimen/default_elevation">
+
+                <ImageView
+                    android:id="@+id/image_settings_updates_history"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_info_2"
+                    android:contentDescription="@string/updates_history"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/size_16"
+                    android:scaleType="centerInside"/>
+
+                <TextView
+                    android:id="@+id/text_settings_updates_history"
+                    android:text="@string/updates_history"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color_main"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="@dimen/font_14"
+                    android:layout_marginStart="@dimen/size_16"/>
+
+            </LinearLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -784,6 +818,7 @@
                     android:visibility="@{safeUnbox(viewModel.isShowPrivacyPolicy) ? View.VISIBLE : View.GONE}"
                     android:background="@color/background_main"
                     android:text="@string/privacy_policy_text"
+                    android:textColorLink="@color/text_color_main"
                     android:textSize="@dimen/font_12"/>
 
             </LinearLayout>

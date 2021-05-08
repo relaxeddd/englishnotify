@@ -3,8 +3,9 @@ package relaxeddd.englishnotify.model.repository
 import androidx.lifecycle.MutableLiveData
 import relaxeddd.englishnotify.model.http.ApiHelper
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
@@ -48,14 +49,13 @@ class RepositoryUser private constructor() {
         val tokenId = RepositoryCommon.getInstance().tokenId
         var pushToken = MyFirebaseMessagingService.pushToken
 
-        if (pushToken.isEmpty()) {
+        if (pushToken.isBlank()) {
             pushToken = SharedHelper.getPushToken()
         }
-        if (pushToken.isEmpty()) {
-            @Suppress("DEPRECATION")
-            pushToken = FirebaseInstanceId.getInstance().token ?: ""
+        if (pushToken.isBlank()) {
+            pushToken = FirebaseMessaging.getInstance().token.await() ?: ""
         }
-        if (pushToken.isEmpty()) {
+        if (pushToken.isBlank()) {
             showToast(R.string.error_push_token)
         }
         if (firebaseUser == null) {
@@ -161,6 +161,44 @@ class RepositoryUser private constructor() {
             }
             answer != null -> showToast(getErrorString(answer))
             else -> showToast(R.string.error_request)
+        }
+    }
+
+    suspend fun logout() : Boolean {
+        if (FirebaseAuth.getInstance().currentUser == null) {
+            showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
+            return false
+        }
+
+        val firebaseUser = RepositoryCommon.getInstance().firebaseUser
+        val tokenId = RepositoryCommon.getInstance().tokenId
+        var pushToken = MyFirebaseMessagingService.pushToken
+
+        if (pushToken.isBlank()) {
+            pushToken = SharedHelper.getPushToken()
+        }
+        if (pushToken.isBlank()) {
+            pushToken = FirebaseMessaging.getInstance().token.await() ?: ""
+        }
+        if (pushToken.isBlank()) {
+            showToast(R.string.error_push_token)
+        }
+        if (firebaseUser == null) {
+            showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
+            return false
+        }
+
+        val answerLogout = ApiHelper.requestLogout(firebaseUser, tokenId, pushToken)
+
+        return if (answerLogout?.result != null && answerLogout.result.isSuccess()) {
+            SharedHelper.setPushToken("")
+            true
+        } else if (answerLogout?.result != null) {
+            showToast(getErrorString(answerLogout.result))
+            false
+        } else {
+            showToast(getErrorString(RESULT_ERROR_LOGOUT))
+            false
         }
     }
 

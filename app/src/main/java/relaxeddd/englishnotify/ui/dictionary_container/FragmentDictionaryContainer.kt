@@ -74,8 +74,12 @@ class FragmentDictionaryContainer : BaseFragment<ViewModelDictionaryContainer, F
 
     override fun onDestroyView() {
         binding?.viewPagerDictionaryContainer?.unregisterOnPageChangeCallback(onPageChangeCallback)
-        adapterFragmentsMap.clear()
         super.onDestroyView()
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        adapterFragmentsMap.clear()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
