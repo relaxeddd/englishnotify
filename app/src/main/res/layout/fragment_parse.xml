@@ -44,7 +44,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginTop="@dimen/size_8"
-            android:layout_marginHorizontal="@dimen/size_12">
+            android:layout_marginHorizontal="@dimen/size_12"
+            android:baselineAligned="false">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/container_text_parse_delimiter_inner"

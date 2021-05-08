@@ -156,7 +156,7 @@
     <string name="rate_app_question">Может быть хотите оценить приложение? Это дает мотивацию развивать продукт.</string>
     <string name="rating_users">Рейтинг пользователей</string>
     <string name="receive_notifications_time">Получать уведомления</string>
-    <string name="receive_only_exist_words">Получать только слова из своего словаря</string>
+    <string name="receive_only_exist_words">Получать только уже имеющиеся слова</string>
     <string name="remove_from_own_category">Убрать из своей категории</string>
     <string name="renew_subscription">Продлить премиум аккаунт</string>
     <string name="reset_progress">Сбросить прогресс</string>
@@ -212,6 +212,7 @@
     <string name="update">Обновление</string>
     <string name="update_verb">Обновить</string>
     <string name="update_text">Доступна новая версия приложения. Пожалуйста, обновите</string>
+    <string name="updates_history">История обновлений</string>
     <string name="unknown_action">Неизвестное действие</string>
     <string name="user_not_found">Пользователь не найден</string>
     <string name="voice_input_error">Голосовой ввод не поддерживается на вашем устройстве. Скрыть иконки голосового ввода?</string>
@@ -281,8 +282,14 @@
     </string>
 
     <string name="patch_notes">
-        - Вероятный фикс бага авторизации
-        \n\n- Новая опция получения уведомлений только с теми словами которые находятся в вашем словаре. Опция располагается во вкладке Уведомления
+        - Пофикшен баг получения уведомлений после выхода из аккаунта
+        \n- Правки показа клавиатуры при переходе на экраны добавления слова и тренировки
+        \n- Добавлен пункт меню История обновлений во вкладке Общее
+        \n- Пофикшен баг поиска после перехода на экран добавления слова и обратно
+        \n- Пофикшен баг сброса прогресса при добавлении существующего слова
+        \n- Feel free to message for.gamer.develop@gmail.com to ask for fixes, new features
+        \n\n- Вероятный фикс бага авторизации
+        \n- Новая опция получения уведомлений только с теми словами которые находятся в вашем словаре. Опция располагается во вкладке Уведомления
         \n- Правки уведомлений
         \n- Исправлен баг озвучки слов
         \n- Оптимизация, обновление библиотек

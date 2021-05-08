@@ -212,6 +212,7 @@
     <string name="update">Update</string>
     <string name="update_verb">Update</string>
     <string name="update_text">New app version is available. Please, update</string>
+    <string name="updates_history">Updates history</string>
     <string name="unknown_action">Unknown action</string>
     <string name="user_not_found">User not found</string>
     <string name="voice_input_error">Voice input is not supporting on your device. Hide voice input icons?</string>
@@ -296,8 +297,14 @@
     </string>
 
     <string name="patch_notes">
-        - Possible authorization fix
-        \n\n- New option of receiving only exists words from your dictionary in Notifications tab
+        - Fixed logout bug when notifications can be received after logout
+        \n- Display keyboard fixes on Add word screen and Training screen
+        \n- Added Updates History menu item in Common tab
+        \n- Fixed resetting learn progress bug while adding exists word
+        \n- Fixed search bug when you got to Add work screen and the go back
+        \n- Feel free to message for.gamer.develop@gmail.com to ask for fixes, new features
+        \n\n- Possible authorization fix
+        \n- New option of receiving only exists words from your dictionary in Notifications tab
         \n- Notifications fixes
         \n- Fixed bug with words pronunciation
         \n- Optimization, libs update

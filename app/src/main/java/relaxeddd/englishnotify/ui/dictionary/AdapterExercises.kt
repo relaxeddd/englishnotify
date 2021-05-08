@@ -40,13 +40,11 @@ class AdapterExercises(viewModel: ViewModelDictionary) : AdapterWords<AdapterExe
                           clickListenerPlay: View.OnClickListener, checkedChangeListener: CompoundButton.OnCheckedChangeListener) {
             super.bind(word, isSelectState, checkList, clickListener, longClickListener, clickListenerPlay, checkedChangeListener)
 
-            with(itemView) {
-                val transcription = if (word.transcription.isNotEmpty()) word.transcription else ""
+            val transcription = if (word.transcription.isNotEmpty()) word.transcription else ""
 
-                textWord?.text = word.eng
-                textWordTranscription?.text = transcription
-                textWordTranslation?.text = word.rus
-            }
+            textWord?.text = word.eng
+            textWordTranscription?.text = transcription
+            textWordTranslation?.text = word.rus
         }
     }
 }

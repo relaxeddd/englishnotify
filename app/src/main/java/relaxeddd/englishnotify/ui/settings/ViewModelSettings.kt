@@ -7,7 +7,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.common.*
@@ -41,8 +40,8 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     }
 
     val user: LiveData<User?> = repositoryUser.liveDataUser
-    val isHideSignIn = repositoryUser.liveDataHideSignIn
-    val isInitInProgress = repositoryUser.liveDataIsInitInProgress
+    private val isHideSignIn = repositoryUser.liveDataHideSignIn
+    private val isInitInProgress = repositoryUser.liveDataIsInitInProgress
     val liveDataSubDays = MutableLiveData("")
     var textTheme: String = App.context.resources.getStringArray(R.array.array_themes)[SharedHelper.getAppThemeType()]
     val isVisibleReceiveHelp = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
@@ -58,6 +57,9 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     
     val clickListenerAppInfo = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_APP_ABOUT)
+    }
+    val clickListenerUpdatesHistory = View.OnClickListener {
+        navigateEvent.value = Event(NAVIGATION_DIALOG_PATCH_NOTES)
     }
     val clickListenerSubscription = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_SUBSCRIPTION)
@@ -189,7 +191,12 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
 
     fun onLogoutDialogResult(isConfirmed: Boolean) {
         if (isConfirmed) {
-            navigateEvent.value = Event(NAVIGATION_GOOGLE_LOGOUT)
+            navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
+            viewModelScope.launch {
+                repositoryUser.logout()
+                navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
+                navigateEvent.value = Event(NAVIGATION_GOOGLE_LOGOUT)
+            }
         }
     }
 

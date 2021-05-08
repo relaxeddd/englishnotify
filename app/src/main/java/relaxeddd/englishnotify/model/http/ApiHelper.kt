@@ -2,13 +2,13 @@ package relaxeddd.englishnotify.model.http
 
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.messaging.FirebaseMessaging
 import okhttp3.OkHttpClient
 import relaxeddd.englishnotify.BuildConfig
 import relaxeddd.englishnotify.common.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.coroutines.tasks.await
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 import java.lang.Exception
@@ -36,7 +36,7 @@ object ApiHelper {
         val userId = firebaseUser?.uid ?: ""
         val email = firebaseUser?.email ?: ""
 
-        if (!isNetworkAvailable() || tokenId?.isNotEmpty() != true || userId.isEmpty() || email.isEmpty()) {
+        if (!isNetworkAvailable() || tokenId.isNullOrBlank() || userId.isBlank() || email.isBlank()) {
             return InitData(Result(RESULT_ERROR_INTERNET), User())
         }
 
@@ -45,10 +45,22 @@ object ApiHelper {
         }, InitData(Result(RESULT_ERROR_INTERNET), User()))
     }
 
+    suspend fun requestLogout(firebaseUser: FirebaseUser?, tokenId: String?, pushToken: String) : LogoutResult? {
+        val userId = firebaseUser?.uid ?: ""
+
+        if (!isNetworkAvailable() || tokenId.isNullOrBlank() || userId.isBlank()) {
+            return LogoutResult(Result(RESULT_ERROR_INTERNET))
+        }
+
+        return executeRequest( suspend {
+            apiHelper.requestLogout(TOKEN_PREFIX + tokenId, userId, pushToken)
+        }, LogoutResult(Result(RESULT_ERROR_INTERNET)))
+    }
+
     suspend fun requestSendTestNotification(firebaseUser: FirebaseUser?, tokenId: String?) : Result? {
         val userId = firebaseUser?.uid ?: ""
 
-        if (!isNetworkAvailable() || tokenId?.isNotEmpty() != true || userId.isEmpty()) {
+        if (!isNetworkAvailable() || tokenId.isNullOrBlank() || userId.isBlank()) {
             return Result(RESULT_ERROR_INTERNET)
         }
 
@@ -61,7 +73,7 @@ object ApiHelper {
                                   receiveNotifications: Boolean, learnLanguageType: Int, selectedTag: String) : UpdateUserResult? {
         val userId = firebaseUser?.uid ?: ""
 
-        if (!isNetworkAvailable() || tokenId?.isNotEmpty() != true || userId.isEmpty()) {
+        if (!isNetworkAvailable() || tokenId.isNullOrBlank() || userId.isBlank()) {
             return UpdateUserResult(Result(RESULT_ERROR_INTERNET), User())
         }
 
@@ -75,7 +87,7 @@ object ApiHelper {
                                       signature: String, originalJson: String, itemType: String) : PurchaseResult? {
         val userId = firebaseUser?.uid ?: ""
 
-        if (!isNetworkAvailable() || tokenId?.isNotEmpty() != true || userId.isEmpty()) {
+        if (!isNetworkAvailable() || tokenId.isNullOrBlank() || userId.isBlank()) {
             return PurchaseResult(Result(RESULT_ERROR_INTERNET))
         }
 
@@ -89,7 +101,7 @@ object ApiHelper {
                                    translateFromLanguage: String, translateToLanguage: String) : TranslationResult? {
         val userId = firebaseUser?.uid ?: ""
 
-        if (!isNetworkAvailable() || tokenId?.isNotEmpty() != true || userId.isEmpty()) {
+        if (!isNetworkAvailable() || tokenId.isNullOrBlank() || userId.isBlank()) {
             return TranslationResult(Result(RESULT_ERROR_INTERNET), translationText, translateFromLanguage, translateToLanguage)
         }
 
@@ -102,7 +114,7 @@ object ApiHelper {
     suspend fun requestSaveWords(firebaseUser: FirebaseUser?, tokenId: String?, words: List<Word>) : Result? {
         val userId = firebaseUser?.uid ?: ""
 
-        if (!isNetworkAvailable() || tokenId?.isNotEmpty() != true || userId.isEmpty()) {
+        if (!isNetworkAvailable() || tokenId.isNullOrBlank() || userId.isBlank()) {
             return Result(RESULT_ERROR_INTERNET)
         }
 
@@ -114,7 +126,7 @@ object ApiHelper {
     suspend fun requestLoadWords(firebaseUser: FirebaseUser?, tokenId: String?) : WordsResult? {
         val userId = firebaseUser?.uid ?: ""
 
-        if (!isNetworkAvailable() || tokenId?.isNotEmpty() != true || userId.isEmpty()) {
+        if (!isNetworkAvailable() || tokenId.isNullOrBlank() || userId.isBlank()) {
             return WordsResult(Result(RESULT_ERROR_INTERNET), ArrayList())
         }
 
@@ -140,11 +152,11 @@ object ApiHelper {
 
     suspend fun initPushTokenId() : Resource<String> {
         return try {
-            val pushTokenResult = FirebaseInstanceId.getInstance().instanceId.await()
+            val pushToken = FirebaseMessaging.getInstance().token.await()
             val existsToken = SharedHelper.getPushToken()
 
             when {
-                pushTokenResult?.token?.isNotEmpty() == true -> Resource(status = RESULT_OK, value = pushTokenResult.token)
+                pushToken?.isNotBlank() == true -> Resource(status = RESULT_OK, value = pushToken)
                 existsToken.isNotBlank() -> Resource(status = RESULT_OK, value = existsToken)
                 else -> Resource(errorStr = ERROR_NOT_AUTHORIZED)
             }

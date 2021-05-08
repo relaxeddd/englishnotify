@@ -176,13 +176,17 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
         when {
             currentResult == STATE_ANSWER -> checkResult(currentIx, textAnswer)
             currentIx >= (size - 1) -> navigateEvent.value = Event(NAVIGATION_ACTIVITY_BACK)
-            else -> current.value = currentIx + 1
+            else -> {
+                current.value = currentIx + 1
+                navigateEvent.value = Event(NAVIGATION_SHOW_KEYBOARD)
+            }
         }
     }
 
     fun onClickOneMore() {
         clearState()
         onBind()
+        navigateEvent.value = Event(NAVIGATION_SHOW_KEYBOARD)
     }
 
     fun getCurrentWord() : Word? {
@@ -240,7 +244,6 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
 
             current.value = currentIx
 
-            navigateEvent.value = Event(NAVIGATION_HIDE_KEYBOARD)
             resultAnimationType.value = if (textAnswer.isEmpty()) RESULT_MEMORIZE else RESULT_WRONG
             navigateEvent.value = Event(NAVIGATION_ANIMATE_RESULT)
         }

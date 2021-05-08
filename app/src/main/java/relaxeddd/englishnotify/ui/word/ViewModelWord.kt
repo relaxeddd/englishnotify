@@ -16,7 +16,7 @@ class ViewModelWord : ViewModelBase(), ISelectCategory {
     val isReadyToRateApp: Boolean
     val isEnabledOwnCategories = MutableLiveData(true)
     val categories = MutableLiveData<List<CategoryItem>>(ArrayList())
-    var checkedItem: CategoryItem? = null
+    private var checkedItem: CategoryItem? = null
     var existsWordId = ""
         set(value) {
             field = value
@@ -121,8 +121,8 @@ class ViewModelWord : ViewModelBase(), ISelectCategory {
             val tags = if (ownTag?.isNotEmpty() == true) listOf(ownTag) else emptyList()
 
             val updateWord = Word(findWord.id, eng, rus, transcription, tags, findWord.sampleEng, findWord.sampleRus,
-                findWord.v2, findWord.v3, findWord.timestamp, false, findWord.learnStage, findWord.type, findWord.isCreatedByUser,
-                true, findWord.level, findWord.learnStageSecondary)
+                findWord.v2, findWord.v3, findWord.timestamp, false, 0, findWord.type, findWord.isCreatedByUser,
+                true, findWord.level, 0)
 
             RepositoryWord.getInstance().updateWord(updateWord)
             if (updateEng != oldWordId) {

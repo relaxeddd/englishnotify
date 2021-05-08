@@ -141,7 +141,7 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
             }
             searchView?.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    val changedText = newText?.toLowerCase() ?: ""
+                    val changedText = newText?.lowercase() ?: ""
                     if (textSearch != changedText) {
                         textSearch = changedText
                     }

@@ -91,6 +91,7 @@
                         android:background="@color/background_main"
                         android:layout_centerHorizontal="true"
                         android:text="@string/privacy_policy_text"
+                        android:textColorLink="@color/text_color_main"
                         android:textSize="@dimen/font_12"/>
 
                     <ImageView
@@ -102,7 +103,8 @@
                         android:background="@color/background_main"
                         android:onClick="@{viewModel.clickListenerHideSignIn}"
                         app:srcCompat="@drawable/ic_close_gray"
-                        android:layout_alignParentEnd="true"/>
+                        android:layout_alignParentEnd="true"
+                        android:contentDescription="@string/close"/>
 
                 </RelativeLayout>
 
