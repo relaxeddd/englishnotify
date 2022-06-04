@@ -30,11 +30,14 @@
         android:allowBackup="false"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="false">
 
         <activity android:name="relaxeddd.englishnotify.ui.main.MainActivity"
-                  android:windowSoftInputMode="adjustPan"
-                  android:launchMode="singleTask">
+            android:windowSoftInputMode="adjustPan"
+            android:launchMode="singleTask"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

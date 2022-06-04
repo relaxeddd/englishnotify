@@ -122,19 +122,19 @@
                     android:layout_toStartOf="@+id/image_settings_subscribe_info"/>
 
                 <TextView
-                    android:text="@{@string/subscription_days(viewModel.liveDataSubDays)}"
+                    android:id="@+id/text_settings_sub_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/text_settings_sub_time"
-                    android:textSize="@dimen/font_12"
-                    android:layout_marginEnd="@dimen/size_8"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    android:visibility="@{(viewModel.user == null || viewModel.user.email.isEmpty()) ? View.GONE : View.VISIBLE}"
+                    android:layout_below="@+id/text_settings_subscribe"
                     android:layout_marginStart="@dimen/size_16"
-                    android:layout_toEndOf="@+id/image_settings_subscribe"
+                    android:layout_marginEnd="@dimen/size_8"
                     android:layout_toStartOf="@+id/image_settings_subscribe_info"
-                    android:layout_below="@+id/text_settings_subscribe"/>
+                    android:layout_toEndOf="@+id/image_settings_subscribe"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{@string/subscription_days(viewModel.liveDataSubDays)}"
+                    android:textSize="@dimen/font_12"
+                    android:visibility="@{(viewModel.user == null || viewModel.user.email.isEmpty()) ? View.GONE : View.VISIBLE}" />
 
                 <ImageView
                     android:layout_width="wrap_content"
