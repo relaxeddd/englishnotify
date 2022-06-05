@@ -43,7 +43,11 @@ class SendNotificationWorker(context: Context, workerParams: WorkerParameters) :
         var words = wordDao.getAllItemsNow()
         val sortByLearnStage = HashMap<Int, ArrayList<Word>>()
 
-        words = words.filter { !it.isDeleted && it.isOwnCategory && (tag.isEmpty() || tag == OWN || it.tags.contains(tag)) }
+        words = words.filter { !it.isDeleted && (it.isOwnCategory || tag.isEmpty() || tag == OWN || it.tags.contains(tag)) }
+
+        if (words.isEmpty()) {
+            words = words.filter { !it.isDeleted }
+        }
 
         for (word in words) {
             val wordLearnStage = if (languageType == TYPE_PUSH_RUSSIAN && isEnabledSecondaryProgress) word.learnStageSecondary else word.learnStage

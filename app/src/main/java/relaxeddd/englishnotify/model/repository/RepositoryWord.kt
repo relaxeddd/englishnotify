@@ -88,7 +88,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
 
         words.forEach {
             if (!it.isDeleted) {
-                it.tags.forEach { tag -> if (tag != OWN && isOwnCategory(tag)) categories.add(tag) }
+                it.tags.forEach { tag -> categories.add(tag) }
             }
         }
         return categories

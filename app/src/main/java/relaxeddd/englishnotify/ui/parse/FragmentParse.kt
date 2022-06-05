@@ -43,19 +43,6 @@ class FragmentParse : BaseFragment<ViewModelParse, FragmentParseBinding>() {
         viewModel.categories.observe(viewLifecycleOwner, { items ->
             if (items != null && items.isNotEmpty()) adapter?.submitList(items)
         })
-
-        viewModel.isEnabledOwnCategories.observe(viewLifecycleOwner, { isEnabled ->
-            binding.containerTextParseOwnTag.setOnClickListener {
-                viewModel.onClickOwnCategoryContent()
-            }
-            binding.textInputOwnTag.setOnClickListener {
-                viewModel.onClickOwnCategoryContent()
-            }
-            adapter?.isClickableItems = isEnabled
-            adapter?.additionalItemClickListener = {
-                viewModel.onClickOwnCategoryContent()
-            }
-        })
     }
 
     override fun onNavigationEvent(eventId: Int) {

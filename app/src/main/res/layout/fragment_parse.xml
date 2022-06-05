@@ -114,7 +114,6 @@
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:boxStrokeColor="@color/colorPrimary"
-            android:alpha="@{viewModel.isEnabledOwnCategories ? 1f : 0.5f}"
             android:layout_marginHorizontal="@dimen/size_12"
             android:layout_marginTop="@dimen/size_8">
 
@@ -125,7 +124,6 @@
                 android:textColor="@color/text_color_main"
                 android:singleLine="true"
                 android:maxLength="200"
-                android:focusable="@{viewModel.isEnabledOwnCategories}"
                 android:hint="@string/own_category"/>
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -146,7 +144,6 @@
             android:layout_marginTop="@dimen/size_8"
             android:clipToPadding="false"
             android:nestedScrollingEnabled="false"
-            android:alpha="@{viewModel.isEnabledOwnCategories ? 1f : 0.5f}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/view_item_category"/>
 
