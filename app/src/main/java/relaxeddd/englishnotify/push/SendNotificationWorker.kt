@@ -18,7 +18,7 @@ import java.util.ArrayList
 class SendNotificationWorker(context: Context, workerParams: WorkerParameters) : Worker(context, workerParams) {
 
     override fun doWork(): Result {
-        if (isNightTime(context = applicationContext)) {
+        if (isNightTime(context = applicationContext) || !SharedHelper.isNotificationsEnabled()) {
             return Result.success()
         }
 
@@ -70,7 +70,7 @@ class SendNotificationWorker(context: Context, workerParams: WorkerParameters) :
                 if (SharedHelper.isShowOnlyOneNotification(applicationContext)) {
                     notificationManager.cancelAll()
                 }
-                MyFirebaseMessagingService.handleWordNotification(
+                NotificationHelper.handleWordNotification(
                     applicationContext,
                     words[wordIx],
                     isSave = false,

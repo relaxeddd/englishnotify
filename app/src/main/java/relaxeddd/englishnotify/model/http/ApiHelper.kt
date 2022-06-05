@@ -2,16 +2,13 @@ package relaxeddd.englishnotify.model.http
 
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.messaging.FirebaseMessaging
+import kotlinx.coroutines.tasks.await
 import okhttp3.OkHttpClient
 import relaxeddd.englishnotify.BuildConfig
 import relaxeddd.englishnotify.common.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-import kotlinx.coroutines.tasks.await
-import relaxeddd.englishnotify.model.preferences.SharedHelper
-import java.lang.Exception
 
 object ApiHelper {
 
@@ -32,7 +29,7 @@ object ApiHelper {
         apiHelper = retrofit.create(IApi::class.java)
     }
 
-    suspend fun requestInit(firebaseUser: FirebaseUser?, tokenId: String?, pushToken: String) : InitData? {
+    suspend fun requestInit(firebaseUser: FirebaseUser?, tokenId: String?) : InitData? {
         val userId = firebaseUser?.uid ?: ""
         val email = firebaseUser?.email ?: ""
 
@@ -41,11 +38,11 @@ object ApiHelper {
         }
 
         return executeRequest( suspend {
-            apiHelper.requestInit(TOKEN_PREFIX + tokenId, userId, BuildConfig.VERSION_CODE, pushToken, email)
+            apiHelper.requestInit(TOKEN_PREFIX + tokenId, userId, BuildConfig.VERSION_CODE, "", email)
         }, InitData(Result(RESULT_ERROR_INTERNET), User()))
     }
 
-    suspend fun requestLogout(firebaseUser: FirebaseUser?, tokenId: String?, pushToken: String) : LogoutResult? {
+    suspend fun requestLogout(firebaseUser: FirebaseUser?, tokenId: String?) : LogoutResult? {
         val userId = firebaseUser?.uid ?: ""
 
         if (!isNetworkAvailable() || tokenId.isNullOrBlank() || userId.isBlank()) {
@@ -53,7 +50,7 @@ object ApiHelper {
         }
 
         return executeRequest( suspend {
-            apiHelper.requestLogout(TOKEN_PREFIX + tokenId, userId, pushToken)
+            apiHelper.requestLogout(TOKEN_PREFIX + tokenId, userId, "")
         }, LogoutResult(Result(RESULT_ERROR_INTERNET)))
     }
 
@@ -144,21 +141,6 @@ object ApiHelper {
                 Resource(status = RESULT_OK, value = tokenResult.token)
             } else {
                 Resource(errorStr = ERROR_NOT_AUTHORIZED)
-            }
-        } catch(e: FirebaseNetworkException) {
-            Resource(errorStr = ERROR_FIREBASE_NETWORK)
-        }
-    }
-
-    suspend fun initPushTokenId() : Resource<String> {
-        return try {
-            val pushToken = FirebaseMessaging.getInstance().token.await()
-            val existsToken = SharedHelper.getPushToken()
-
-            when {
-                pushToken?.isNotBlank() == true -> Resource(status = RESULT_OK, value = pushToken)
-                existsToken.isNotBlank() -> Resource(status = RESULT_OK, value = existsToken)
-                else -> Resource(errorStr = ERROR_NOT_AUTHORIZED)
             }
         } catch(e: FirebaseNetworkException) {
             Resource(errorStr = ERROR_FIREBASE_NETWORK)

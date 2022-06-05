@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import androidx.annotation.WorkerThread
@@ -14,19 +13,13 @@ import androidx.core.app.RemoteInput
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.model.db.AppDatabase
 import relaxeddd.englishnotify.ui.main.MainActivity
-import com.google.firebase.messaging.FirebaseMessagingService
-import com.google.firebase.messaging.RemoteMessage
-import org.json.JSONObject
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.preferences.SharedHelper
-import java.util.*
-import kotlin.collections.HashMap
 import kotlin.random.Random
 
-class MyFirebaseMessagingService : FirebaseMessagingService() {
+class NotificationHelper {
 
     companion object {
-        var pushToken: String = ""
 
         @WorkerThread
         fun handleWordNotification(context: Context, word: Word, isSave: Boolean = true, viewType: Int,
@@ -83,21 +76,21 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             val notificationBuilder = NotificationCompat.Builder(ctx, channelId)
 
             if (withButtons && VERSION.SDK_INT >= VERSION_CODES.N) {
-                val knowIntent = Intent(ctx, PushBroadcastReceiver::class.java).apply {
-                    action = PushBroadcastReceiver.ACTION_KNOW
-                    putExtra(IS_KNOW, PushBroadcastReceiver.KNOW)
+                val knowIntent = Intent(ctx, NotificationAnswerBroadcastReceiver::class.java).apply {
+                    action = NotificationAnswerBroadcastReceiver.ACTION_KNOW
+                    putExtra(IS_KNOW, NotificationAnswerBroadcastReceiver.KNOW)
                     putExtra(WORD_ID, wordId)
                     putExtra(NOTIFICATION_ID, notificationId)
                 }
-                val notKnowIntent = Intent(ctx, PushBroadcastReceiver::class.java).apply {
-                    action = PushBroadcastReceiver.ACTION_KNOW
-                    putExtra(IS_KNOW, PushBroadcastReceiver.NOT_KNOW)
+                val notKnowIntent = Intent(ctx, NotificationAnswerBroadcastReceiver::class.java).apply {
+                    action = NotificationAnswerBroadcastReceiver.ACTION_KNOW
+                    putExtra(IS_KNOW, NotificationAnswerBroadcastReceiver.NOT_KNOW)
                     putExtra(WORD_ID, wordId)
                     putExtra(NOTIFICATION_ID, notificationId)
                 }
 
                 val replyLabel: String = getAppString(R.string.enter_translation)
-                val remoteInput: RemoteInput = RemoteInput.Builder(PushBroadcastReceiver.KEY_TEXT_REPLY).run {
+                val remoteInput: RemoteInput = RemoteInput.Builder(NotificationAnswerBroadcastReceiver.KEY_TEXT_REPLY).run {
                     setLabel(replyLabel)
                     build()
                 }
@@ -233,145 +226,5 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 PendingIntent.getActivity(ctx, 0, intent, PendingIntent.FLAG_ONE_SHOT)
             }
         }
-    }
-
-    //------------------------------------------------------------------------------------------------------------------
-    override fun onNewToken(p0: String) {
-        super.onNewToken(p0)
-        pushToken = p0
-        SharedHelper.setPushToken(p0, this)
-    }
-
-    override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        super.onMessageReceived(remoteMessage)
-
-        val notificationManager = NotificationManagerCompat.from(applicationContext)
-        if (!notificationManager.areNotificationsEnabled()) {
-            return
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channelId = getAppString(R.string.default_notification_channel_id)
-            val channel = notificationManager.getNotificationChannel(channelId)
-
-            if (channel?.importance == NotificationManagerCompat.IMPORTANCE_NONE) {
-                return
-            }
-        }
-
-        val data = remoteMessage.data
-
-        when (if (data.containsKey(TYPE)) data[TYPE] else "") {
-            SYSTEM -> {
-                val title = if (data.containsKey(TITLE)) data[TITLE] ?: "" else ""
-                val text = if (data.containsKey(TEXT)) data[TEXT] ?: "" else ""
-
-                showNotification(this, null, title, text)
-            }
-            OWN_WORD -> {
-                if (isNightTime(context = this)) {
-                    return
-                }
-
-                val tag = SharedHelper.getSelectedCategory(this)
-                val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress(this)
-                val languageType = SharedHelper.getLearnLanguageType(this)
-
-                val wordDao = AppDatabase.getInstance(this).wordDao()
-                var words = wordDao.getAllItemsNow()
-                val sortByLearnStage = HashMap<Int, ArrayList<Word>>()
-
-                words = words.filter { !it.isDeleted && it.isOwnCategory && (tag.isEmpty() || tag == OWN || it.tags.contains(tag)) }
-
-                for (word in words) {
-                    val wordLearnStage = if (languageType == TYPE_PUSH_RUSSIAN && isEnabledSecondaryProgress) word.learnStageSecondary else word.learnStage
-
-                    if (!sortByLearnStage.containsKey(wordLearnStage)) {
-                        val list = ArrayList<Word>()
-                        list.add(word)
-                        sortByLearnStage[wordLearnStage] = list
-                    } else {
-                        sortByLearnStage[wordLearnStage]?.add(word)
-                    }
-                }
-                for (learnStage in 0..2) {
-                    if (sortByLearnStage.containsKey(learnStage)) {
-                        words = sortByLearnStage[learnStage] ?: ArrayList()
-                        break
-                    }
-                }
-
-                if (words.isNotEmpty()) {
-                    val wordIx = (words.indices).random()
-
-                    if (wordIx >= 0 && wordIx < words.size) {
-                        if (SharedHelper.isShowOnlyOneNotification(this)) {
-                            notificationManager.cancelAll()
-                        }
-                        handleWordNotification(this, words[wordIx], false, viewType = SharedHelper.getNotificationsView(this))
-                    }
-                }
-            }
-            PUSH -> {
-                if (isNightTime(context = this)) {
-                    return
-                }
-
-                if (data.containsKey(CONTENT) && data[CONTENT] != null) {
-                    var word = parseWord(JSONObject(data[CONTENT] ?: ""))
-
-                    if (SharedHelper.isShowOnlyOneNotification(this)) {
-                        notificationManager.cancelAll()
-                    }
-
-                    val selectedTag = SharedHelper.getSelectedCategory(this)
-                    if (SharedHelper.isReceiveOnlyExistWords(this) && selectedTag.isNotEmpty() && word.tags.contains(selectedTag)) {
-                        extractRandomWordByTag(selectedTag)?.let {
-                            word = it
-                        }
-                    }
-
-                    handleWordNotification(this, word, viewType = SharedHelper.getNotificationsView(this))
-                }
-            }
-        }
-    }
-
-    private fun extractRandomWordByTag(tag: String) : Word? {
-        val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress(this)
-        val languageType = SharedHelper.getLearnLanguageType(this)
-
-        val wordDao = AppDatabase.getInstance(this).wordDao()
-        var words = wordDao.getAllItemsNow()
-        val sortByLearnStage = HashMap<Int, ArrayList<Word>>()
-
-        words = words.filter { !it.isDeleted && (tag.isEmpty() || tag == OWN || it.tags.contains(tag)) }
-
-        for (word in words) {
-            val wordLearnStage = if (languageType == TYPE_PUSH_RUSSIAN && isEnabledSecondaryProgress) word.learnStageSecondary else word.learnStage
-
-            if (!sortByLearnStage.containsKey(wordLearnStage)) {
-                val list = ArrayList<Word>()
-                list.add(word)
-                sortByLearnStage[wordLearnStage] = list
-            } else {
-                sortByLearnStage[wordLearnStage]?.add(word)
-            }
-        }
-        for (learnStage in 0..2) {
-            if (sortByLearnStage.containsKey(learnStage)) {
-                words = sortByLearnStage[learnStage] ?: ArrayList()
-                break
-            }
-        }
-
-        if (words.isNotEmpty()) {
-            val wordIx = (words.indices).random()
-
-            if (wordIx >= 0 && wordIx < words.size) {
-                return words[wordIx]
-            }
-        }
-
-        return null
     }
 }

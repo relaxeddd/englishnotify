@@ -3,14 +3,12 @@ package relaxeddd.englishnotify.model.repository
 import androidx.lifecycle.MutableLiveData
 import relaxeddd.englishnotify.model.http.ApiHelper
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.model.preferences.SharedHelper
-import relaxeddd.englishnotify.push.MyFirebaseMessagingService
+import relaxeddd.englishnotify.push.NotificationHelper
 
 class RepositoryUser private constructor() {
 
@@ -47,24 +45,14 @@ class RepositoryUser private constructor() {
 
         val firebaseUser = RepositoryCommon.getInstance().firebaseUser
         val tokenId = RepositoryCommon.getInstance().tokenId
-        var pushToken = MyFirebaseMessagingService.pushToken
 
-        if (pushToken.isBlank()) {
-            pushToken = SharedHelper.getPushToken()
-        }
-        if (pushToken.isBlank()) {
-            pushToken = FirebaseMessaging.getInstance().token.await() ?: ""
-        }
-        if (pushToken.isBlank()) {
-            showToast(R.string.error_push_token)
-        }
         if (firebaseUser == null) {
             showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
             liveDataIsInitInProgress.postValue(false)
             return false
         }
 
-        val answerInitData = ApiHelper.requestInit(firebaseUser, tokenId, pushToken)
+        val answerInitData = ApiHelper.requestInit(firebaseUser, tokenId)
 
         if (answerInitData?.result != null && answerInitData.result.isSuccess()
             && answerInitData.user?.userId?.isNotEmpty() == true) {
@@ -109,12 +97,6 @@ class RepositoryUser private constructor() {
         val user = User(liveDataUser.value ?: return)
         user.savedWordsCount = count
         liveDataUser.postValue(user)
-    }
-
-    suspend fun setReceiveNotifications(isReceive: Boolean) {
-        val user = User(liveDataUser.value ?: return)
-        user.receiveNotifications = isReceive
-        updateUser(user, liveDataUser.value)
     }
 
     suspend fun setLearnLanguageType(timeType: Int) {
@@ -166,26 +148,15 @@ class RepositoryUser private constructor() {
 
         val firebaseUser = RepositoryCommon.getInstance().firebaseUser
         val tokenId = RepositoryCommon.getInstance().tokenId
-        var pushToken = MyFirebaseMessagingService.pushToken
 
-        if (pushToken.isBlank()) {
-            pushToken = SharedHelper.getPushToken()
-        }
-        if (pushToken.isBlank()) {
-            pushToken = FirebaseMessaging.getInstance().token.await() ?: ""
-        }
-        if (pushToken.isBlank()) {
-            showToast(R.string.error_push_token)
-        }
         if (firebaseUser == null) {
             showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
             return false
         }
 
-        val answerLogout = ApiHelper.requestLogout(firebaseUser, tokenId, pushToken)
+        val answerLogout = ApiHelper.requestLogout(firebaseUser, tokenId)
 
         return if (answerLogout?.result != null && answerLogout.result.isSuccess()) {
-            SharedHelper.setPushToken("")
             true
         } else if (answerLogout?.result != null) {
             showToast(getErrorString(answerLogout.result))

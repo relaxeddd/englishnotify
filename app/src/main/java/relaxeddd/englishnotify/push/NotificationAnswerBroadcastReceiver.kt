@@ -15,7 +15,7 @@ import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.db.AppDatabase
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 
-class PushBroadcastReceiver : BroadcastReceiver() {
+class NotificationAnswerBroadcastReceiver : BroadcastReceiver() {
 
     companion object {
         const val ACTION_KNOW = "relaxeddd.englishnotify.KNOW"
@@ -26,11 +26,6 @@ class PushBroadcastReceiver : BroadcastReceiver() {
     }
 
     override fun onReceive(context: Context, intent: Intent) {
-        if (true) {
-            // TODO: remove remote notifications receiving
-            return
-        }
-
         val pendingResult = goAsync()
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -67,13 +62,13 @@ class PushBroadcastReceiver : BroadcastReceiver() {
 
                         if (isRemovableViaDelay) {
                             //Update notification to cancel it it after that
-                            MyFirebaseMessagingService.showNotification(context, null, text, "", notificationId, true, wordId)
+                            NotificationHelper.showNotification(context, null, text, "", notificationId, true, wordId)
                         } else {
                             showToast(text)
                         }
                     } else {
                         showToast(R.string.answer_incorrect)
-                        MyFirebaseMessagingService.handleWordNotification(context, word, false,
+                        NotificationHelper.handleWordNotification(context, word, false,
                             SharedHelper.NOTIFICATIONS_VIEW_WITH_TRANSLATE, withWrongTitle = true,
                             notificationId = notificationId, isShowAnswer = true, userAnswer = userText)
                     }
@@ -82,7 +77,7 @@ class PushBroadcastReceiver : BroadcastReceiver() {
                 learnStage = 0
                 isRemove = false
 
-                MyFirebaseMessagingService.handleWordNotification(context, word, false,
+                NotificationHelper.handleWordNotification(context, word, false,
                     SharedHelper.NOTIFICATIONS_VIEW_WITH_TRANSLATE, notificationId = notificationId, isShowAnswer = true)
             }
 
