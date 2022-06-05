@@ -99,12 +99,6 @@ class RepositoryUser private constructor() {
         liveDataUser.postValue(user)
     }
 
-    suspend fun setReceiveNotifications(isReceive: Boolean) {
-        val user = User(liveDataUser.value ?: return)
-        user.receiveNotifications = isReceive
-        updateUser(user, liveDataUser.value)
-    }
-
     suspend fun setLearnLanguageType(timeType: Int) {
         val user = User(liveDataUser.value ?: return)
         user.learnLanguageType = timeType

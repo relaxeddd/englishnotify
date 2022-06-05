@@ -15,6 +15,16 @@ object SharedHelper {
     const val NOTIFICATIONS_VIEW_WITH_TRANSLATE = 0
     const val NOTIFICATIONS_VIEW_WITH_QUESTION = 1
 
+    fun setNotificationsEnabled(value: Boolean, context: Context = App.context) {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putBoolean(NOTIFICATIONS_ENABLED, value).apply()
+    }
+
+    fun isNotificationsEnabled(context: Context = App.context) : Boolean {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        return sPref.getBoolean(NOTIFICATIONS_ENABLED, true)
+    }
+
     fun isPrivacyPolicyConfirmed(context: Context = App.context) : Boolean {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         return sPref.getBoolean(PRIVACY_POLICY_CONFIRMED, false)

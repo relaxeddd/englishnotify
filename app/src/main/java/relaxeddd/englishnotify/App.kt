@@ -22,7 +22,6 @@ class App : Application() {
 
         NotificationsWorkManagerHelper.launchWork(
             context = this,
-            repeatTimeInMinutes = SharedHelper.getNotificationsRepeatTime(this).valueInMinutes,
             isForceUpdate = false,
         )
     }

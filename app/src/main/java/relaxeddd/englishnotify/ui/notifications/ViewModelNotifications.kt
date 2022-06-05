@@ -16,6 +16,7 @@ import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.model.repository.RepositoryWord
+import relaxeddd.englishnotify.push.NotificationsWorkManagerHelper
 
 class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewModelBase() {
 
@@ -47,8 +48,9 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
         textLearnLanguage.value = App.context.resources.getStringArray(R.array.array_learn_language)[user?.learnLanguageType ?: 0]
     }
 
+    var isNotificationsEnabled = MutableLiveData(SharedHelper.isNotificationsEnabled())
     var checkedChangeListenerEnableNotifications = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
-        if (isChecked != repositoryUser.liveDataUser.value?.receiveNotifications) {
+        if (isChecked != SharedHelper.isNotificationsEnabled()) {
             if (!isChecked) {
                 buttonView.isChecked = true
                 navigateEvent.value = Event(NAVIGATION_DIALOG_CONFIRM_DISABLE_NOTIFICATIONS)
@@ -110,7 +112,7 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
 
         if (userValue == null) {
             showToast(R.string.please_authorize)
-        } else if (!userValue.receiveNotifications) {
+        } else if (!SharedHelper.isNotificationsEnabled()) {
             showToast(R.string.enable_notifications_warning)
         } else if (userValue.testCount <= 0) {
             showToast(R.string.no_test_notifications)
@@ -188,8 +190,13 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
     }
 
     private fun setNotificationsEnable(isEnabled: Boolean) {
-        viewModelScope.launch {
-            repositoryUser.setReceiveNotifications(isEnabled)
+        SharedHelper.setNotificationsEnabled(isEnabled)
+        isNotificationsEnabled.value = isEnabled
+
+        if (isEnabled) {
+            NotificationsWorkManagerHelper.launchWork(App.context, isForceUpdate = false)
+        } else {
+            NotificationsWorkManagerHelper.cancelWork(App.context)
         }
     }
 }
