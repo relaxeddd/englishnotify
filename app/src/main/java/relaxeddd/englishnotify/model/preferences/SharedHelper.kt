@@ -2,9 +2,13 @@ package relaxeddd.englishnotify.model.preferences
 
 import android.content.Context
 import android.os.Build
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
+import relaxeddd.englishnotify.common.NotificationRepeatTime.MINUTES_60
 
 object SharedHelper {
 
@@ -380,5 +384,30 @@ object SharedHelper {
     fun setReceiveOnlyExistWords(value : Boolean, context: Context = App.context) {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         sPref.edit().putBoolean(RECEIVE_ONLY_EXIST_WORDS, value).apply()
+    }
+
+    fun getNotificationsRepeatTime(context: Context = App.context) : NotificationRepeatTime {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        val value = sPref.getInt(NOTIFICATIONS_REPEAT_TIME, MINUTES_60.ordinal)
+        return NotificationRepeatTime.valueOf(value)
+    }
+
+    private val _notificationsRepeatTimeFlow: MutableStateFlow<NotificationRepeatTime> by lazy {
+        MutableStateFlow(getNotificationsRepeatTime(App.context))
+    }
+    val notificationsRepeatTimeFlow: StateFlow<NotificationRepeatTime> by lazy {
+        _notificationsRepeatTimeFlow.asStateFlow()
+    }
+
+    fun getNotificationsRepeatTimeFlow(context: Context = App.context) : NotificationRepeatTime {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        val value = sPref.getInt(NOTIFICATIONS_REPEAT_TIME, MINUTES_60.ordinal)
+        return NotificationRepeatTime.valueOf(value)
+    }
+
+    fun setNotificationsRepeatTime(value : Int, context: Context = App.context) {
+        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
+        sPref.edit().putInt(NOTIFICATIONS_REPEAT_TIME, value).apply()
+        _notificationsRepeatTimeFlow.value = NotificationRepeatTime.valueOf(value)
     }
 }

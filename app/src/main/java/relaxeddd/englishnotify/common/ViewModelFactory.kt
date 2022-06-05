@@ -138,11 +138,11 @@ class StatisticViewModelFactory(private val repositoryWord: RepositoryWord) : Vi
     }
 }
 
-class TimeViewModelFactory(private val repositoryUser: RepositoryUser) : ViewModelProvider.NewInstanceFactory() {
+class TimeViewModelFactory : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return ViewModelTime(repositoryUser) as T
+        return ViewModelTime() as T
     }
 }
 

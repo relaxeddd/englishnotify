@@ -7,6 +7,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 import relaxeddd.englishnotify.model.repository.RepositoryUser
 import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.App
@@ -25,7 +27,9 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
     val selectedTagLiveData = MutableLiveData("")
     val isVisibleNotificationsView = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
 
-    val textRepeatTime = MutableLiveData("")
+    val textRepeatTime = MutableLiveData(App.context.resources.getStringArray(R.array.array_time_repeat)[
+            SharedHelper.getNotificationsRepeatTime(App.context).ordinal
+    ])
     val textLearnLanguage = MutableLiveData("")
     val textNotificationsView = MutableLiveData(App.context.resources.getStringArray(R.array.array_notifications_view)[SharedHelper.getNotificationsView()])
 
@@ -41,7 +45,6 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
         isEnableNotificationsClickable.value = user != null
         selectedTagLiveData.value = if (user != null) getStringByResName(user.selectedTag).replaceFirst(OWN_KEY_SYMBOL, "") else ""
         textLearnLanguage.value = App.context.resources.getStringArray(R.array.array_learn_language)[user?.learnLanguageType ?: 0]
-        textRepeatTime.value = App.context.resources.getStringArray(R.array.array_time_repeat)[user?.notificationsTimeType ?: 0]
     }
 
     var checkedChangeListenerEnableNotifications = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
@@ -90,13 +93,7 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
         }
     }
     val clickListenerRepeatTime = View.OnClickListener {
-        val userValue = user.value
-
-        if (userValue != null) {
-            navigateEvent.value = Event(NAVIGATION_FRAGMENT_TIME)
-        } else {
-            showToast(R.string.please_authorize)
-        }
+        navigateEvent.value = Event(NAVIGATION_FRAGMENT_TIME)
     }
     val clickListenerNotificationsView = View.OnClickListener {
         when {
@@ -124,6 +121,13 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
 
     init {
         repositoryUser.liveDataUser.observeForever(userObserver)
+        viewModelScope.launch {
+            SharedHelper.notificationsRepeatTimeFlow.collect {
+                textRepeatTime.value = App.context.resources.getStringArray(R.array.array_time_repeat)[
+                        SharedHelper.getNotificationsRepeatTime(App.context).ordinal
+                ]
+            }
+        }
 
         val startHour = SharedHelper.getStartHour()
         val duration = SharedHelper.getDurationHours()

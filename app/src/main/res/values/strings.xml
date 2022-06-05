@@ -337,13 +337,13 @@
     </string>
 
     <!-- =========================================================================================================== -->
-    <string name="every_30_min">Every 30 min (premium account required)</string>
-    <string name="every_1_hour">Every hour (premium account required)</string>
-    <string name="every_1_5_hours">Every 1,5 hours (premium account required)</string>
-    <string name="every_2_hours">Every 2 hours (premium account required)</string>
-    <string name="every_2_5_hours">Every 2,5 hours (premium account required)</string>
-    <string name="every_3_hours">Every 3 hours (premium account required)</string>
-    <string name="every_3_5_hours">Every 3,5 hours (premium account required)</string>
+    <string name="every_30_min">Every 30 min</string>
+    <string name="every_1_hour">Every hour</string>
+    <string name="every_1_5_hours">Every 1,5 hours</string>
+    <string name="every_2_hours">Every 2 hours</string>
+    <string name="every_2_5_hours">Every 2,5 hours</string>
+    <string name="every_3_hours">Every 3 hours</string>
+    <string name="every_3_5_hours">Every 3,5 hours</string>
     <string name="every_4_hours">Every 4 hours</string>
     <string name="every_4_5_hours">Every 4,5 hours</string>
     <string name="every_5_hours">Every 5 hours</string>

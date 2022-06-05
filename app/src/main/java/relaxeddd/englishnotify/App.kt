@@ -5,6 +5,7 @@ import android.app.Application
 import android.content.Context
 import com.google.firebase.FirebaseApp
 import relaxeddd.englishnotify.model.preferences.SharedHelper
+import relaxeddd.englishnotify.push.NotificationsWorkManagerHelper
 
 class App : Application() {
 
@@ -18,5 +19,11 @@ class App : Application() {
         context = this
         FirebaseApp.initializeApp(this)
         SharedHelper.setLaunchCount(SharedHelper.getLaunchCount() + 1)
+
+        NotificationsWorkManagerHelper.launchWork(
+            context = this,
+            repeatTimeInMinutes = SharedHelper.getNotificationsRepeatTime(this).valueInMinutes,
+            isForceUpdate = false,
+        )
     }
 }

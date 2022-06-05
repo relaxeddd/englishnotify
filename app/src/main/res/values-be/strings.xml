@@ -322,13 +322,13 @@
     </string>
 
     <!-- =========================================================================================================== -->
-    <string name="every_30_min">Каждые 30 минут (с наличием премиум аккаунта)</string>
-    <string name="every_1_hour">Каждый час (с наличием премиум аккаунта)</string>
-    <string name="every_1_5_hours">Каждые 1,5 часа (с наличием премиум аккаунта)</string>
-    <string name="every_2_hours">Каждые 2 часа (с наличием премиум аккаунта)</string>
-    <string name="every_2_5_hours">Каждые 2,5 часа  (с наличием премиум аккаунта)</string>
-    <string name="every_3_hours">Каждые 3 часа (с наличием премиум аккаунта)</string>
-    <string name="every_3_5_hours">Каждые 3,5 часа (с наличием премиум аккаунта)</string>
+    <string name="every_30_min">Каждые 30 минут</string>
+    <string name="every_1_hour">Каждый час</string>
+    <string name="every_1_5_hours">Каждые 1,5 часа</string>
+    <string name="every_2_hours">Каждые 2 часа</string>
+    <string name="every_2_5_hours">Каждые 2,5 часа</string>
+    <string name="every_3_hours">Каждые 3 часа</string>
+    <string name="every_3_5_hours">Каждые 3,5 часа</string>
     <string name="every_4_hours">Каждые 4 часа</string>
     <string name="every_4_5_hours">Каждые 4,5 часа</string>
     <string name="every_5_hours">Каждые 5 часов</string>
