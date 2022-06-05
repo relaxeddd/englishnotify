@@ -22,7 +22,7 @@ object InjectorUtils {
     fun provideTrainingSettingViewModelFactory(context: Context) = TrainingSettingViewModelFactory(RepositoryFactory.getWordRepository(context))
     fun provideTrainingViewModelFactory(context: Context) = TrainingViewModelFactory(RepositoryFactory.getWordRepository(context))
     fun provideStatisticViewModelFactory(context: Context) = StatisticViewModelFactory(RepositoryFactory.getWordRepository(context))
-    fun provideTimeViewModelFactory() = TimeViewModelFactory(RepositoryFactory.getUserRepository())
+    fun provideTimeViewModelFactory() = TimeViewModelFactory()
     fun provideDictionaryContainerViewModelFactory() = DictionaryContainerViewModelFactory()
     /*fun provideCategoriesViewModelFactory() = CategoriesViewModelFactory()*/
 }

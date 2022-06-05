@@ -503,8 +503,8 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
         if (status != ConnectionResult.SUCCESS) {
             if (googleApiAvailability.isUserResolvableError(status)) {
                 val dialog = googleApiAvailability.getErrorDialog(this, status, REQUEST_PLAY_SERVICES_RESULT)
-                dialog.setOnCancelListener { finish() }
-                dialog.show()
+                dialog?.setOnCancelListener { finish() }
+                dialog?.show()
             }
         } else {
             GoogleApiAvailability.getInstance().makeGooglePlayServicesAvailable(this)

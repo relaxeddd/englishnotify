@@ -297,12 +297,11 @@
     </string>
 
     <string name="patch_notes">
-        - Fixed logout bug when notifications can be received after logout
+        - Fixed bug when notifications can be received after logout
         \n- Display keyboard fixes on Add word screen and Training screen
-        \n- Added Updates History menu item in Common tab
-        \n- Fixed resetting learn progress bug while adding exists word
-        \n- Fixed search bug when you got to Add work screen and the go back
-        \n- Feel free to message for.gamer.develop@gmail.com to ask for fixes, new features
+        \n- Added Updates History menu item at Common tab
+        \n- Fixed reset learn progress bug while adding exists word
+        \n- Fixed search bug when you go to Add word screen and then go back
         \n\n- Possible authorization fix
         \n- New option of receiving only exists words from your dictionary in Notifications tab
         \n- Notifications fixes
@@ -338,13 +337,13 @@
     </string>
 
     <!-- =========================================================================================================== -->
-    <string name="every_30_min">Every 30 min (premium account required)</string>
-    <string name="every_1_hour">Every hour (premium account required)</string>
-    <string name="every_1_5_hours">Every 1,5 hours (premium account required)</string>
-    <string name="every_2_hours">Every 2 hours (premium account required)</string>
-    <string name="every_2_5_hours">Every 2,5 hours (premium account required)</string>
-    <string name="every_3_hours">Every 3 hours (premium account required)</string>
-    <string name="every_3_5_hours">Every 3,5 hours (premium account required)</string>
+    <string name="every_30_min">Every 30 min</string>
+    <string name="every_1_hour">Every hour</string>
+    <string name="every_1_5_hours">Every 1,5 hours</string>
+    <string name="every_2_hours">Every 2 hours</string>
+    <string name="every_2_5_hours">Every 2,5 hours</string>
+    <string name="every_3_hours">Every 3 hours</string>
+    <string name="every_3_5_hours">Every 3,5 hours</string>
     <string name="every_4_hours">Every 4 hours</string>
     <string name="every_4_5_hours">Every 4,5 hours</string>
     <string name="every_5_hours">Every 5 hours</string>

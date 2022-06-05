@@ -35,7 +35,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/every_30_min"
                 android:tag="0"
-                android:enabled="@{safeUnbox(!viewModel.isDisableSubTime)}"
                 android:textSize="@dimen/font_18"/>
 
             <com.google.android.material.radiobutton.MaterialRadioButton
@@ -43,7 +42,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/every_1_hour"
                 android:tag="1"
-                android:enabled="@{safeUnbox(!viewModel.isDisableSubTime)}"
                 android:textSize="@dimen/font_18"
                 android:layout_marginTop="@dimen/size_4"/>
 
@@ -52,7 +50,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/every_1_5_hours"
                 android:tag="2"
-                android:enabled="@{safeUnbox(!viewModel.isDisableSubTime)}"
                 android:textSize="@dimen/font_18"
                 android:layout_marginTop="@dimen/size_4"/>
 
@@ -62,7 +59,6 @@
                 android:text="@string/every_2_hours"
                 android:tag="3"
                 android:textSize="@dimen/font_18"
-                android:enabled="@{safeUnbox(!viewModel.isDisableSubTime)}"
                 android:layout_marginTop="@dimen/size_4"/>
 
             <com.google.android.material.radiobutton.MaterialRadioButton
@@ -70,7 +66,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/every_2_5_hours"
                 android:tag="4"
-                android:enabled="@{safeUnbox(!viewModel.isDisableSubTime)}"
                 android:textSize="@dimen/font_18"
                 android:layout_marginTop="@dimen/size_4"/>
 
@@ -80,7 +75,6 @@
                 android:text="@string/every_3_hours"
                 android:tag="5"
                 android:textSize="@dimen/font_18"
-                android:enabled="@{safeUnbox(!viewModel.isDisableSubTime)}"
                 android:layout_marginTop="@dimen/size_4"/>
 
             <com.google.android.material.radiobutton.MaterialRadioButton
@@ -88,7 +82,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/every_3_5_hours"
                 android:tag="6"
-                android:enabled="@{safeUnbox(!viewModel.isDisableSubTime)}"
                 android:textSize="@dimen/font_18"
                 android:layout_marginTop="@dimen/size_4"/>
 

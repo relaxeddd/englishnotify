@@ -26,6 +26,11 @@ class PushBroadcastReceiver : BroadcastReceiver() {
     }
 
     override fun onReceive(context: Context, intent: Intent) {
+        if (true) {
+            // TODO: remove remote notifications receiving
+            return
+        }
+
         val pendingResult = goAsync()
 
         CoroutineScope(Dispatchers.IO).launch {

@@ -2,16 +2,17 @@ package relaxeddd.englishnotify.ui.time
 
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
-import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.*
-import relaxeddd.englishnotify.model.repository.RepositoryUser
+import relaxeddd.englishnotify.App
+import relaxeddd.englishnotify.common.Event
+import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK
+import relaxeddd.englishnotify.common.NotificationRepeatTime
+import relaxeddd.englishnotify.common.ViewModelBase
+import relaxeddd.englishnotify.model.preferences.SharedHelper
+import relaxeddd.englishnotify.push.NotificationsWorkManagerHelper
 
-class ViewModelTime(private val repositoryUser: RepositoryUser) : ViewModelBase() {
+class ViewModelTime : ViewModelBase() {
 
-    val isDisableSubTime: Boolean = (repositoryUser.liveDataUser.value?.subscriptionTime ?: 0) <= System.currentTimeMillis()
-    var receiveNotificationsTime: Int = repositoryUser.liveDataUser.value?.notificationsTimeType ?: 7
+    var receiveNotificationsTime: Int = SharedHelper.getNotificationsRepeatTime(App.context).ordinal
 
     val checkedChangeListenerTime = RadioGroup.OnCheckedChangeListener { view, _ ->
         val radioButton = view.findViewById<RadioButton>(view?.checkedRadioButtonId ?: 0)
@@ -19,26 +20,17 @@ class ViewModelTime(private val repositoryUser: RepositoryUser) : ViewModelBase(
     }
 
     fun onClickAccept() {
-        val user = repositoryUser.liveDataUser.value ?: return
+        val currentRepeatTime = SharedHelper.getNotificationsRepeatTime(App.context)
 
-        if (receiveNotificationsTime < 7 && !user.isSubscribed()) {
-            showToast(R.string.subscription_need)
-        } else {
-            viewModelScope.launch {
-                navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
-
-                val result = if (receiveNotificationsTime != user.notificationsTimeType) {
-                    repositoryUser.setNotificationsTimeType(receiveNotificationsTime)
-                } else {
-                    true
-                }
-
-                navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
-
-                if (result) {
-                    navigateEvent.value = Event(NAVIGATION_ACTIVITY_BACK)
-                }
-            }
+        if (receiveNotificationsTime != currentRepeatTime.ordinal) {
+            SharedHelper.setNotificationsRepeatTime(receiveNotificationsTime)
+            NotificationsWorkManagerHelper.launchWork(
+                context = App.context,
+                repeatTimeInMinutes = NotificationRepeatTime.valueOf(receiveNotificationsTime).valueInMinutes,
+                isForceUpdate = true,
+            )
         }
+
+        navigateEvent.value = Event(NAVIGATION_ACTIVITY_BACK)
     }
 }

@@ -123,12 +123,6 @@ class RepositoryUser private constructor() {
         updateUser(user, liveDataUser.value)
     }
 
-    suspend fun setNotificationsTimeType(timeType: Int) : Boolean {
-        val user = User(liveDataUser.value ?: return false)
-        user.notificationsTimeType = timeType
-        return updateUser(user, liveDataUser.value)
-    }
-
     suspend fun setSelectedTag(selectedTag: String) : Boolean {
         if (selectedTag.isNotEmpty()) {
             val user = User(liveDataUser.value ?: return false)

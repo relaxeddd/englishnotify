@@ -186,7 +186,7 @@ abstract class ActivityBilling<VM : ViewModelBase, B : ViewDataBinding> : Activi
             }
 
             val purchaseResult = ApiHelper.requestVerifyPurchase(firebaseUser, tokenId, purchase.purchaseToken,
-                purchase.signature, purchase.originalJson, purchase.sku)
+                purchase.signature, purchase.originalJson, purchase.skus.first())
 
             if (this@ActivityBilling is MainActivity) {
                 setLoadingVisible(false)

@@ -1,9 +1,12 @@
 package relaxeddd.englishnotify.push
 
+import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.Build.VERSION
+import android.os.Build.VERSION_CODES
 import androidx.annotation.WorkerThread
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -36,12 +39,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             val isLongWord = wordTitle.length > 16
             val title = if (isLongWord) "" else wordTitle
 
-            val notificationText = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N
+            val notificationText = if (VERSION.SDK_INT < VERSION_CODES.N
                     || viewType == SharedHelper.NOTIFICATIONS_VIEW_WITH_TRANSLATE || withWrongTitle) {
                 getFullNotificationText(context, word, isShowTranslation, !isLongWord, withWrongTitle, userAnswer)
             } else if (isLongWord) wordTitle else ""
 
-            val isShowButtons = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
+            val isShowButtons = VERSION.SDK_INT >= VERSION_CODES.N
                     && viewType == SharedHelper.NOTIFICATIONS_VIEW_WITH_QUESTION && !withWrongTitle
 
             if (isSave) {
@@ -72,13 +75,14 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             showNotificationWord(context, word.id, notificationText, title, isShowButtons, notificationId)
         }
 
+        @SuppressLint("InlinedApi")
         fun showNotificationWord(ctx: Context, wordId: String, text: String, title: String,
                                  withButtons : Boolean, existsNotificationId: Int = -1) {
             val notificationId = if (existsNotificationId != -1) existsNotificationId else Random.nextInt(10000)
             val channelId = getAppString(R.string.default_notification_channel_id)
             val notificationBuilder = NotificationCompat.Builder(ctx, channelId)
 
-            if (withButtons && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            if (withButtons && VERSION.SDK_INT >= VERSION_CODES.N) {
                 val knowIntent = Intent(ctx, PushBroadcastReceiver::class.java).apply {
                     action = PushBroadcastReceiver.ACTION_KNOW
                     putExtra(IS_KNOW, PushBroadcastReceiver.KNOW)
@@ -98,7 +102,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     build()
                 }
                 val replyPendingIntent: PendingIntent = PendingIntent.getBroadcast(ctx, Random.nextInt(10000),
-                    knowIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+                    knowIntent, PendingIntent.FLAG_UPDATE_CURRENT + PendingIntent.FLAG_MUTABLE)
                 val action: NotificationCompat.Action = NotificationCompat.Action.Builder(R.drawable.ic_dictionary,
                     getAppString(R.string.i_know_it), replyPendingIntent)
                     .addRemoteInput(remoteInput)
@@ -108,7 +112,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 notificationBuilder.setOngoing(SharedHelper.isOngoing())
 
                 val notKnowPendingIntent: PendingIntent =
-                    PendingIntent.getBroadcast(ctx, Random.nextInt(10000), notKnowIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+                    PendingIntent.getBroadcast(
+                        ctx,
+                        Random.nextInt(10000),
+                        notKnowIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT + PendingIntent.FLAG_MUTABLE
+                    )
                 notificationBuilder.addAction(R.drawable.ic_close, getAppString(R.string.show_translation), notKnowPendingIntent)
             }
 
@@ -144,7 +153,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     color = ContextCompat.getColor(ctx, R.color.notificationTextColor)
                 }*/
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                if (VERSION.SDK_INT < VERSION_CODES.O) {
                     priority = PushTokenHelper.notificationsPriority
                 }
 
@@ -213,10 +222,16 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             return if (isShowTranslation) word.rus else word.eng
         }
 
+        @SuppressLint("UnspecifiedImmutableFlag")
         private fun createPendingIntent(ctx: Context) : PendingIntent {
             val intent = Intent(ctx, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            return PendingIntent.getActivity(ctx, 0, intent, PendingIntent.FLAG_ONE_SHOT)
+
+            return if (VERSION.SDK_INT >= VERSION_CODES.M) {
+                PendingIntent.getActivity(ctx, 0, intent, PendingIntent.FLAG_IMMUTABLE + PendingIntent.FLAG_ONE_SHOT)
+            } else {
+                PendingIntent.getActivity(ctx, 0, intent, PendingIntent.FLAG_ONE_SHOT)
+            }
         }
     }
 
@@ -253,7 +268,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 showNotification(this, null, title, text)
             }
             OWN_WORD -> {
-                if (isNightTime()) {
+                if (isNightTime(context = this)) {
                     return
                 }
 
@@ -297,7 +312,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 }
             }
             PUSH -> {
-                if (isNightTime()) {
+                if (isNightTime(context = this)) {
                     return
                 }
 
@@ -358,16 +373,5 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
 
         return null
-    }
-
-    private fun isNightTime() : Boolean {
-        val startHour = SharedHelper.getStartHour(this)
-        val durationHours = SharedHelper.getDurationHours(this)
-        val endHour = if (startHour + durationHours >= 24) startHour + durationHours - 24 else startHour + durationHours
-        val calendar = Calendar.getInstance()
-        val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
-
-        return durationHours != 0 && ((currentHour in startHour until endHour)
-                || (startHour + durationHours >= 24 && currentHour < endHour) )
     }
 }
