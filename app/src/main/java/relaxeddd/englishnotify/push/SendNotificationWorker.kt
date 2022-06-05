@@ -70,7 +70,7 @@ class SendNotificationWorker(context: Context, workerParams: WorkerParameters) :
                 if (SharedHelper.isShowOnlyOneNotification(applicationContext)) {
                     notificationManager.cancelAll()
                 }
-                MyFirebaseMessagingService.handleWordNotification(
+                NotificationHelper.handleWordNotification(
                     applicationContext,
                     words[wordIx],
                     isSave = false,

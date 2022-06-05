@@ -8,11 +8,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="com.android.vending.BILLING" />
-    <permission android:name="com.example.gcm.permission.C2D_MESSAGE"
-                android:protectionLevel="signature" />
-    <uses-permission android:name="relaxeddd.englishnotify.permission.C2D_MESSAGE"
-        android:protectionLevel="signature"/>
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
@@ -45,16 +40,6 @@
             </intent-filter>
         </activity>
 
-        <service android:name="relaxeddd.englishnotify.push.MyFirebaseMessagingService"
-                 android:enabled="true"
-                 android:exported="false"
-                 android:permission="com.google.android.c2dm.permission.SEND">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-            </intent-filter>
-        </service>
-
         <meta-data
                 android:name="com.google.firebase.messaging.default_notification_channel_id"
                 android:value="@string/default_notification_channel_id"/>
@@ -65,7 +50,7 @@
                    android:resource="@color/notificationTextColor" />
         <meta-data android:name="com.onesignal.NotificationAccentColor.DEFAULT" android:value="@color/notificationTextColor" />
 
-        <receiver android:name=".push.PushBroadcastReceiver"
+        <receiver android:name=".push.NotificationAnswerBroadcastReceiver"
                   android:exported="false">
             <intent-filter>
                 <action android:name="relaxeddd.englishnotify.KNOW"/>

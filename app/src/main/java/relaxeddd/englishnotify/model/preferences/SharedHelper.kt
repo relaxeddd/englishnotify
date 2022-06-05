@@ -215,16 +215,6 @@ object SharedHelper {
         sPref.edit().putString(LAST_OWN_CATEGORY, pushToken).apply()
     }
 
-    fun getPushToken(context: Context = App.context) : String {
-        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        return sPref.getString(PUSH_TOKEN, "") ?: ""
-    }
-
-    fun setPushToken(pushToken : String, context: Context = App.context) {
-        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        sPref.edit().putString(PUSH_TOKEN, pushToken).apply()
-    }
-
     fun getSortByType(context: Context = App.context) : String {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         return sPref.getString(SORT_BY_TYPE, SortByType.TIME_NEW.name) ?: ""

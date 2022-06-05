@@ -4,7 +4,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.http.ApiHelper
-import relaxeddd.englishnotify.push.MyFirebaseMessagingService
+import relaxeddd.englishnotify.push.NotificationHelper
 
 class RepositoryCommon private constructor() {
 
@@ -30,11 +30,6 @@ class RepositoryCommon private constructor() {
         val isTokenInitialized = tokenResult.isSuccess() && tokenResult.value != null
 
         if (isTokenInitialized) {
-            val pushTokenResult = ApiHelper.initPushTokenId()
-
-            if (pushTokenResult.isSuccess() && pushTokenResult.value != null) {
-                MyFirebaseMessagingService.pushToken = pushTokenResult.value
-            }
             tokenId = tokenResult.value
         }
 
