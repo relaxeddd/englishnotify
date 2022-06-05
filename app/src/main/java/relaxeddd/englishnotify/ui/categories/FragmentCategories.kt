@@ -35,7 +35,7 @@ class FragmentCategories : BaseFragment<ViewModelCategories, FragmentCategoriesB
 
         binding.viewPagerCategories.adapter = adapter
         TabLayoutMediator(binding.tabLayoutCategories, binding.viewPagerCategories) { tab, position ->
-            tab.text = getAppString(CategorySection.values()[position].titleResId)
+            tab.text = getAppString(CategorySection.OWN_CATEGORIES.titleResId)
         }.attach()
     }
 
@@ -49,10 +49,10 @@ class FragmentCategories : BaseFragment<ViewModelCategories, FragmentCategoriesB
 
     inner class CategoryFragmentsAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
-        override fun getItemCount() = CategorySection.values().size
+        override fun getItemCount() = 1
 
         override fun createFragment(position: Int) : Fragment {
-            val fragment = FragmentCategorySection(CategorySection.values()[position])
+            val fragment = FragmentCategorySection(CategorySection.OWN_CATEGORIES)
             fragmentsMap[position] = fragment
             return fragment
         }

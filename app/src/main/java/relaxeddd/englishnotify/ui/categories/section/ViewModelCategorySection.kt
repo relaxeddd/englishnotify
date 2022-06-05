@@ -22,7 +22,7 @@ class ViewModelCategorySection(type: CategorySection, private val repositoryUser
     val categories = MutableLiveData<List<CategoryItem>>(ArrayList())
 
     init {
-        val allTags = ArrayList((repositoryUser.liveDataUser.value?.tagsAvailable ?: ArrayList()))
+        val allTags = arrayListOf("all_app_words", "own")
         allTags.addAll(RepositoryWord.getInstance().getOwnWordCategories())
 
         val list = ArrayList<CategoryItem>()
@@ -30,17 +30,9 @@ class ViewModelCategorySection(type: CategorySection, private val repositoryUser
         if (selectedCategory.isEmpty()) {
             selectedCategory = repositoryUser.liveDataUser.value?.selectedTag ?: ""
         }
-        for (tag in allTags) {
-            var isFit = isCategoryFit(tag, type)
-
-            if (type == CategorySection.OWN_CATEGORIES && !isFit) {
-                isFit = !isCategoryFit(tag, CategorySection.MAIN) && !isCategoryFit(tag, CategorySection.EXERCISES)
-                        && !isCategoryFit(tag, CategorySection.OTHER)
-            }
-            if (isFit) {
-                val categoryItem = CategoryItem(tag)
-                list.add(categoryItem)
-            }
+        allTags.filter { isCategoryFit(it) }.forEach {
+            val categoryItem = CategoryItem(it)
+            list.add(categoryItem)
         }
 
         categories.value = list
@@ -119,24 +111,17 @@ class ViewModelCategorySection(type: CategorySection, private val repositoryUser
         }
     }
 
-    private fun isCategoryFit(category: String, type: CategorySection) = when(type) {
-        CategorySection.MAIN -> {
-            when (category) {
-                ALL_APP_WORDS, ALL_APP_WORDS_WITHOUT_SIMPLE, IRREGULAR, PROVERB, HARD, HARD_5 -> true
-                else -> false
-            }
-        }
-        CategorySection.OWN_CATEGORIES -> isOwnCategory(category)
-        CategorySection.EXERCISES -> category.contains(EXERCISE)
-        CategorySection.OTHER -> {
-            when (category) {
-                TOURISTS, TOURISTS_5, PRONOUN, HUMAN_BODY, HUMAN_BODY_5, COLORS, COLORS_5, TIME, TIME_5, PHRASES, PHRASES_5, ANIMALS, ANIMALS_5,
-                FAMILY, FAMILY_5, HUMAN_QUALITIES, HUMAN_QUALITIES_5, FEELINGS, FEELINGS_5, EMOTIONS, EMOTIONS_5, WORK, WORK_5,
-                MOVEMENT, MOVEMENT_5, PROFESSIONS, PROFESSIONS_5, FREQUENT, FREQUENT_5, EDUCATION, EDUCATION_5, FOOD, FOOD_5,
-                WEATHER, WEATHER_5, HOUSE, HOUSE_5, GEOGRAPHY, GEOGRAPHY_5, ENTERTAINMENT, ENTERTAINMENT_5, SPORT, SPORT_5,
-                AUTO, AUTO_5, FREQUENT_VERBS, FREQUENT_VERBS_5 -> true
-                else -> false
-            }
+    private fun isCategoryFit(category: String) : Boolean {
+        return when (category) {
+            ALL_APP_WORDS, ALL_APP_WORDS_WITHOUT_SIMPLE, IRREGULAR, PROVERB, HARD, HARD_5 -> true
+
+            TOURISTS, TOURISTS_5, PRONOUN, HUMAN_BODY, HUMAN_BODY_5, COLORS, COLORS_5, TIME, TIME_5, PHRASES, PHRASES_5, ANIMALS, ANIMALS_5,
+            FAMILY, FAMILY_5, HUMAN_QUALITIES, HUMAN_QUALITIES_5, FEELINGS, FEELINGS_5, EMOTIONS, EMOTIONS_5, WORK, WORK_5,
+            MOVEMENT, MOVEMENT_5, PROFESSIONS, PROFESSIONS_5, FREQUENT, FREQUENT_5, EDUCATION, EDUCATION_5, FOOD, FOOD_5,
+            WEATHER, WEATHER_5, HOUSE, HOUSE_5, GEOGRAPHY, GEOGRAPHY_5, ENTERTAINMENT, ENTERTAINMENT_5, SPORT, SPORT_5,
+            AUTO, AUTO_5, FREQUENT_VERBS, FREQUENT_VERBS_5 -> true
+
+            else -> isOwnCategory(category)
         }
     }
 }

@@ -80,11 +80,7 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
     }
 
     val clickListenerSelectCategory = View.OnClickListener {
-        if (user.value != null) {
-            navigateEvent.value = Event(NAVIGATION_FRAGMENT_SELECT_CATEGORY)
-        } else {
-            showToast(R.string.please_authorize)
-        }
+        navigateEvent.value = Event(NAVIGATION_FRAGMENT_SELECT_CATEGORY)
     }
 
     val clickListenerLearnLanguage = View.OnClickListener {

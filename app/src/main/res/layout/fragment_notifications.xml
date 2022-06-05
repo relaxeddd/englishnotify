@@ -78,18 +78,17 @@
                 android:background="@color/card_view_color"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:elevation="@dimen/default_elevation"
-                android:onClick="@{viewModel.clickListenerSelectCategory}"
-                android:alpha="@{viewModel.user != null ? 1f : 0.5f}">
+                android:onClick="@{viewModel.clickListenerSelectCategory}">
 
                 <TextView
                     android:id="@+id/text_categories_categories"
-                    android:text="@string/notification_categories"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/text_color_main"
-                    android:textSize="@dimen/font_14"
                     android:layout_marginStart="@dimen/size_16"
-                    android:layout_toEndOf="@+id/imageView4"/>
+                    android:layout_toEndOf="@+id/imageView4"
+                    android:text="@string/notification_categories"
+                    android:textColor="@color/text_color_main"
+                    android:textSize="@dimen/font_14" />
 
                 <TextView
                     android:text="@{viewModel.selectedTagLiveData}"
@@ -99,7 +98,7 @@
                     android:textSize="@dimen/font_12"
                     android:maxLines="1"
                     android:ellipsize="end"
-                    android:visibility="@{viewModel.user.selectedTag.isEmpty() ? View.GONE : View.VISIBLE}"
+                    android:visibility="@{viewModel.selectedTagLiveData.isEmpty() ? View.GONE : View.VISIBLE}"
                     android:layout_toEndOf="@+id/imageView4"
                     android:layout_below="@+id/text_categories_categories"
                     android:layout_marginStart="@dimen/size_16"

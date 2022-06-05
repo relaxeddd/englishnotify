@@ -9,13 +9,11 @@ import relaxeddd.englishnotify.model.repository.RepositoryWord
 
 class ViewModelParse : ViewModelBase(), ISelectCategory {
 
-    val isEnabledOwnCategories = MutableLiveData(true)
     val categories = MutableLiveData<List<CategoryItem>>(ArrayList())
     private var checkedItem: CategoryItem? = null
 
     init {
         updateCategories()
-        updateOwnCategoriesAvailability()
     }
 
     override fun getSelectedCategory() = checkedItem?.key
@@ -59,16 +57,6 @@ class ViewModelParse : ViewModelBase(), ISelectCategory {
         }
     }
 
-    fun onClickOwnCategoryContent() {
-        val user = RepositoryUser.getInstance().liveDataUser.value
-
-        if (user == null) {
-            showToast(R.string.please_authorize)
-        } else if (isEnabledOwnCategories.value == false) {
-            navigateEvent.value = Event(NAVIGATION_DIALOG_SUBSCRIPTION_REQUIRED)
-        }
-    }
-
     private fun updateCategories() {
         val list = ArrayList<CategoryItem>()
         val allTags = RepositoryWord.getInstance().getOwnWordCategories()
@@ -77,10 +65,5 @@ class ViewModelParse : ViewModelBase(), ISelectCategory {
             list.add(CategoryItem(tag))
         }
         categories.postValue(list)
-    }
-
-    private fun updateOwnCategoriesAvailability() {
-        val user = RepositoryUser.getInstance().liveDataUser.value
-        isEnabledOwnCategories.value = user != null && user.isSubscribed()
     }
 }
