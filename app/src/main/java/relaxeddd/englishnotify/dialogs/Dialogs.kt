@@ -6,7 +6,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import relaxeddd.englishnotify.BuildConfig
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.*
+import relaxeddd.englishnotify.common.EMPTY_RES
+import relaxeddd.englishnotify.common.ListenerResult
+import relaxeddd.englishnotify.common.SELECTED_ITEM
 
 class DialogSecondaryProgressInfo : DialogSimpleInfo() {
 
@@ -82,14 +84,6 @@ class DialogCheckLoadWords : DialogSimpleChoice() {
     override val textResId: Int = R.string.text_dialog_check_load_words
     override val positiveButtonTextResId: Int = R.string.yes
     override val negativeButtonTextResId: Int = R.string.cancel
-}
-
-class DialogSubscriptionInfo : DialogSimpleChoice() {
-
-    override val titleResId: Int = R.string.sub_advantages
-    override val textResId: Int = R.string.sub_advantages_info
-    override val positiveButtonTextResId: Int = R.string.list
-    override val negativeButtonTextResId: Int = EMPTY_RES
 }
 
 class DialogVoiceInput : DialogSimpleChoice() {

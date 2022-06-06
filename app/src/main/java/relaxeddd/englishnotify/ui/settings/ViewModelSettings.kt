@@ -9,8 +9,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.App
-import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
+import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.model.repository.RepositoryCommon
 import relaxeddd.englishnotify.model.repository.RepositoryUser
@@ -19,11 +19,6 @@ import relaxeddd.englishnotify.model.repository.RepositoryWord
 class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelBase() {
 
     private val userObserver = Observer<User?> { user ->
-        var subTime = user?.subscriptionTime ?: System.currentTimeMillis()
-        subTime -= System.currentTimeMillis()
-        if (subTime < 0) subTime = 0
-        liveDataSubDays.value = (subTime / 1000 / 60 / 60 / 24).toString()
-
         val savedWordsString = getAppString(R.string.words_saved, user?.savedWordsCount?.toString() ?: "0")
         textWordsSaved.value = savedWordsString
 
@@ -42,7 +37,6 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     val user: LiveData<User?> = repositoryUser.liveDataUser
     private val isHideSignIn = repositoryUser.liveDataHideSignIn
     private val isInitInProgress = repositoryUser.liveDataIsInitInProgress
-    val liveDataSubDays = MutableLiveData("")
     var textTheme: String = App.context.resources.getStringArray(R.array.array_themes)[SharedHelper.getAppThemeType()]
     val isVisibleReceiveHelp = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
     val isOldNavigationDesign = MutableLiveData(SharedHelper.isOldNavigationDesign())
@@ -60,12 +54,6 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     }
     val clickListenerUpdatesHistory = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_PATCH_NOTES)
-    }
-    val clickListenerSubscription = View.OnClickListener {
-        navigateEvent.value = Event(NAVIGATION_DIALOG_SUBSCRIPTION)
-    }
-    val clickListenerSubscriptionInfo = View.OnClickListener {
-        navigateEvent.value = Event(NAVIGATION_DIALOG_SUBSCRIPTION_INFO)
     }
     val clickListenerSecondaryProgressInfo = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_SECONDARY_PROGRESS_INFO)
@@ -108,10 +96,6 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
             showToast(R.string.please_authorize)
             return@OnClickListener
         }
-        if (!user.isSubscribed()) {
-            navigateEvent.value = Event(NAVIGATION_DIALOG_SUBSCRIPTION_REQUIRED)
-            return@OnClickListener
-        }
         if (RepositoryWord.getInstance().words.value?.isEmpty() == true) {
             showToast(getErrorString(RESULT_ERROR_SAVE_WORDS_EMPTY))
             return@OnClickListener
@@ -126,14 +110,6 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
             showToast(R.string.please_authorize)
             return@OnClickListener
         }
-        if (!user.isSubscribed()) {
-            navigateEvent.value = Event(NAVIGATION_DIALOG_SUBSCRIPTION_REQUIRED)
-            return@OnClickListener
-        }
-        /*if (user.savedWordsCount == 0) {
-            showToast(getErrorString(RESULT_ERROR_LOAD_WORDS_EMPTY))
-            return@OnClickListener
-        }*/
 
         navigateEvent.value = Event(NAVIGATION_DIALOG_CHECK_LOAD_WORDS)
     }

@@ -33,14 +33,16 @@ import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.MainActivityBinding
 import relaxeddd.englishnotify.databinding.NavigationHeaderBinding
-import relaxeddd.englishnotify.dialogs.*
-import relaxeddd.englishnotify.donate.ActivityBilling
+import relaxeddd.englishnotify.dialogs.DialogNewVersion
+import relaxeddd.englishnotify.dialogs.DialogPatchNotes
+import relaxeddd.englishnotify.dialogs.DialogRateApp
+import relaxeddd.englishnotify.dialogs.DialogVoiceInput
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.push.PushTokenHelper
 import java.util.*
 import kotlin.system.exitProcess
 
-class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), NavigationHost, FloatingActionButtonHost {
+class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>(), NavigationHost, FloatingActionButtonHost {
 
     companion object {
         const val REQUEST_SIGN_IN = 1312
@@ -374,32 +376,6 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
                 if (isMyResumed) {
                     finish()
                     startActivity(Intent(this, MainActivity::class.java).apply { addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION) })
-                }
-            }
-            NAVIGATION_DIALOG_SUBSCRIPTION_INFO -> {
-                if (isMyResumed) {
-                    val dialog = DialogSubscriptionInfo()
-                    dialog.confirmListener = object : ListenerResult<Boolean> {
-                        override fun onResult(result: Boolean) {
-                            if (result) {
-                                onNavigationEvent(NAVIGATION_DIALOG_SUBSCRIPTION)
-                            }
-                        }
-                    }
-                    dialog.show(supportFragmentManager, "Sub Info Dialog")
-                }
-            }
-            NAVIGATION_DIALOG_SUBSCRIPTION_REQUIRED -> {
-                if (isMyResumed) {
-                    val dialog = DialogNeedSubscription()
-                    dialog.confirmListener = object : ListenerResult<Boolean> {
-                        override fun onResult(result: Boolean) {
-                            if (result) {
-                                onNavigationEvent(NAVIGATION_DIALOG_SUBSCRIPTION_INFO)
-                            }
-                        }
-                    }
-                    dialog.show(supportFragmentManager, "Sub Info Dialog")
                 }
             }
             NAVIGATION_LOADING_SHOW -> setLoadingVisible(true)
