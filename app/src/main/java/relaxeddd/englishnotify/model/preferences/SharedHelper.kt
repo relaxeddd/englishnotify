@@ -85,16 +85,6 @@ object SharedHelper {
         sPref.edit().putBoolean(SECONDARY_PROGRESS_ENABLED, value).apply()
     }
 
-    /*fun isHideOffNotificationsWarning(context: Context = App.context) : Boolean {
-        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        return sPref.getBoolean(HIDE_OFF_NOTIFICATIONS_WARNING, false)
-    }*/
-
-    /*fun setHideOffNotificationsWarning(value: Boolean, context: Context = App.context) {
-        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        sPref.edit().putBoolean(HIDE_OFF_NOTIFICATIONS_WARNING, value).apply()
-    }*/
-
     fun isHearAnswer(context: Context = App.context) : Boolean {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         return sPref.getBoolean(HEAR_ANSWER, false)
@@ -390,16 +380,6 @@ object SharedHelper {
     fun setAppThemeType(value : Int, context: Context = App.context) {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         sPref.edit().putInt(APP_THEME, value).apply()
-    }
-
-    fun isReceiveOnlyExistWords(context: Context = App.context) : Boolean {
-        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        return sPref.getBoolean(RECEIVE_ONLY_EXIST_WORDS, false)
-    }
-
-    fun setReceiveOnlyExistWords(value : Boolean, context: Context = App.context) {
-        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        sPref.edit().putBoolean(RECEIVE_ONLY_EXIST_WORDS, value).apply()
     }
 
     fun getNotificationsRepeatTime(context: Context = App.context) : NotificationRepeatTime {

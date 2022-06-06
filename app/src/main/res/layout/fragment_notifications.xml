@@ -213,8 +213,7 @@
                 android:background="@color/card_view_color"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:elevation="@dimen/default_elevation"
-                android:onClick="@{viewModel.clickListenerNotificationsView}"
-                android:visibility="@{viewModel.user != null &amp;&amp; viewModel.isVisibleNotificationsView == true ? View.VISIBLE : View.GONE}">
+                android:onClick="@{viewModel.clickListenerNotificationsView}">
 
                 <TextView
                     android:id="@+id/text_notifications_view"
@@ -260,41 +259,7 @@
                 android:background="@color/card_view_color"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:elevation="@dimen/default_elevation"
-                android:visibility="@{viewModel.user != null &amp;&amp; viewModel.isVisibleNotificationsView == true ? View.VISIBLE : View.GONE}">
-
-                <ImageView
-                    android:id="@+id/image_notifications_only_exist_words"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_own"
-                    android:contentDescription="@string/receive_only_exist_words"
-                    android:layout_marginStart="@dimen/size_16"
-                    android:layout_gravity="center_vertical"/>
-
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/switch_notifications_only_exist_words"
-                    android:text="@string/receive_only_exist_words"
-                    android:textColor="@color/text_color_main"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:checked="@{safeUnbox(viewModel.isReceiveOnlyExistWords)}"
-                    android:textSize="@dimen/font_12"
-                    android:paddingStart="@dimen/size_16"
-                    android:paddingEnd="@dimen/size_32"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/size_4"
-                android:paddingBottom="@dimen/size_4"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/size_8"
-                android:background="@color/card_view_color"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:elevation="@dimen/default_elevation"
-                android:visibility="@{viewModel.user != null &amp;&amp; viewModel.isVisibleNotificationsView == true ? View.VISIBLE : View.GONE}">
+                android:visibility="@{viewModel.isVisibleNotificationsView == true ? View.VISIBLE : View.GONE}">
 
                 <ImageView
                     android:id="@+id/image_notifications_deletable"

@@ -56,7 +56,6 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
         binding.switchNotificationsEnable.setOnCheckedChangeListener(viewModel.checkedChangeListenerEnableNotifications)
         binding.switchNotificationsDeletable.setOnCheckedChangeListener(viewModel.checkedChangeListenerDeletable)
         binding.switchNotificationsShowOnlyOne.setOnCheckedChangeListener(viewModel.checkedChangeListenerShowOnlyOneNotification)
-        binding.switchNotificationsOnlyExistWords.setOnCheckedChangeListener(viewModel.checkedChangeListenerOnlyExistWords)
 
         binding.scrollViewNotifications.doOnApplyWindowInsets { v, insets, padding ->
             v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)

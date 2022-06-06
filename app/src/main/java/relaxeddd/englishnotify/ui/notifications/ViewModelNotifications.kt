@@ -34,9 +34,7 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
         SharedHelper.setShowOnlyOneNotification(isChecked)
     }
     val isShowOnlyOneNotification = MutableLiveData(SharedHelper.isShowOnlyOneNotification())
-    //val isHideOffNotificationsWarning = MutableLiveData(SharedHelper.isHideOffNotificationsWarning())
     val isNotDeletable = MutableLiveData(SharedHelper.isOngoing())
-    val isReceiveOnlyExistWords = MutableLiveData(SharedHelper.isReceiveOnlyExistWords())
 
     var isNotificationsEnabled = MutableLiveData(SharedHelper.isNotificationsEnabled())
     var checkedChangeListenerEnableNotifications = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
@@ -59,10 +57,6 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
         }
     }
 
-    val checkedChangeListenerOnlyExistWords = CompoundButton.OnCheckedChangeListener { _, isChecked ->
-        SharedHelper.setReceiveOnlyExistWords(isChecked)
-    }
-
     val clickListenerSelectCategory = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_FRAGMENT_SELECT_CATEGORY)
     }
@@ -75,8 +69,7 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
     val clickListenerNotificationsView = View.OnClickListener {
         when {
             Build.VERSION.SDK_INT < Build.VERSION_CODES.N -> showToast(R.string.android_version_7_required)
-            user.value != null -> navigateEvent.value = Event(NAVIGATION_DIALOG_NOTIFICATIONS_VIEW)
-            else -> showToast(R.string.please_authorize)
+            else -> navigateEvent.value = Event(NAVIGATION_DIALOG_NOTIFICATIONS_VIEW)
         }
     }
     val clickListenerNightTime = View.OnClickListener {
