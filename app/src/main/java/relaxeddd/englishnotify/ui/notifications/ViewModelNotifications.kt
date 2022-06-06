@@ -3,25 +3,20 @@ package relaxeddd.englishnotify.ui.notifications
 import android.os.Build
 import android.view.View
 import android.widget.CompoundButton
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import relaxeddd.englishnotify.model.repository.RepositoryUser
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.App
-import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
+import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.model.repository.RepositoryWord
+import relaxeddd.englishnotify.push.NotificationHelper
 import relaxeddd.englishnotify.push.NotificationsWorkManagerHelper
 
-class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewModelBase() {
+class ViewModelNotifications : ViewModelBase() {
 
-    val user: LiveData<User?> = repositoryUser.liveDataUser
-    val isEnableNotificationsClickable = MutableLiveData(false)
     val timeDurationOffValue = MutableLiveData(SharedHelper.getDurationHours())
     val timeStartOff = MutableLiveData("20:00")
     val timeEndOff = MutableLiveData("07:00")
@@ -38,15 +33,7 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
         SharedHelper.setShowOnlyOneNotification(isChecked)
     }
     val isShowOnlyOneNotification = MutableLiveData(SharedHelper.isShowOnlyOneNotification())
-    //val isHideOffNotificationsWarning = MutableLiveData(SharedHelper.isHideOffNotificationsWarning())
     val isNotDeletable = MutableLiveData(SharedHelper.isOngoing())
-    val isReceiveOnlyExistWords = MutableLiveData(SharedHelper.isReceiveOnlyExistWords())
-
-    private val userObserver = Observer<User?> { user ->
-        isEnableNotificationsClickable.value = user != null
-        selectedTagLiveData.value = if (user != null) getStringByResName(user.selectedTag).replaceFirst(OWN_KEY_SYMBOL, "") else ""
-        textLearnLanguage.value = App.context.resources.getStringArray(R.array.array_learn_language)[user?.learnLanguageType ?: 0]
-    }
 
     var isNotificationsEnabled = MutableLiveData(SharedHelper.isNotificationsEnabled())
     var checkedChangeListenerEnableNotifications = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
@@ -69,26 +56,11 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
         }
     }
 
-    val checkedChangeListenerOnlyExistWords = CompoundButton.OnCheckedChangeListener { _, isChecked ->
-        SharedHelper.setReceiveOnlyExistWords(isChecked)
-    }
-
-    val clickListenerEnableNotifications = View.OnClickListener {
-        if (user.value == null) {
-            showToast(R.string.please_authorize)
-        }
-    }
-
     val clickListenerSelectCategory = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_FRAGMENT_SELECT_CATEGORY)
     }
-
     val clickListenerLearnLanguage = View.OnClickListener {
-        if (user.value != null) {
-            navigateEvent.value = Event(NAVIGATION_DIALOG_LEARN_ENGLISH)
-        } else {
-            showToast(R.string.please_authorize)
-        }
+        navigateEvent.value = Event(NAVIGATION_DIALOG_LEARN_ENGLISH)
     }
     val clickListenerRepeatTime = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_FRAGMENT_TIME)
@@ -96,34 +68,33 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
     val clickListenerNotificationsView = View.OnClickListener {
         when {
             Build.VERSION.SDK_INT < Build.VERSION_CODES.N -> showToast(R.string.android_version_7_required)
-            user.value != null -> navigateEvent.value = Event(NAVIGATION_DIALOG_NOTIFICATIONS_VIEW)
-            else -> showToast(R.string.please_authorize)
+            else -> navigateEvent.value = Event(NAVIGATION_DIALOG_NOTIFICATIONS_VIEW)
         }
     }
     val clickListenerNightTime = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_NIGHT_TIME)
     }
     val clickListenerTestNotifications = View.OnClickListener {
-        val userValue = user.value
-
-        if (userValue == null) {
-            showToast(R.string.please_authorize)
-        } else if (!SharedHelper.isNotificationsEnabled()) {
-            showToast(R.string.enable_notifications_warning)
-        } else if (userValue.testCount <= 0) {
-            showToast(R.string.no_test_notifications)
-        } else {
-            navigateEvent.value = Event(NAVIGATION_DIALOG_TEST_NOTIFICATIONS)
-        }
+        navigateEvent.value = Event(NAVIGATION_DIALOG_TEST_NOTIFICATIONS)
     }
 
+    //------------------------------------------------------------------------------------------------------------------
     init {
-        repositoryUser.liveDataUser.observeForever(userObserver)
+        viewModelScope.launch {
+            SharedHelper.selectedCategoryFlow.collect {
+                selectedTagLiveData.value = getStringByResName(it).replaceFirst(OWN_KEY_SYMBOL, "")
+            }
+        }
         viewModelScope.launch {
             SharedHelper.notificationsRepeatTimeFlow.collect {
                 textRepeatTime.value = App.context.resources.getStringArray(R.array.array_time_repeat)[
                         SharedHelper.getNotificationsRepeatTime(App.context).ordinal
                 ]
+            }
+        }
+        viewModelScope.launch {
+            SharedHelper.learnLanguageTypeFlow.collect {
+                textLearnLanguage.value = App.context.resources.getStringArray(R.array.array_learn_language)[it]
             }
         }
 
@@ -137,16 +108,9 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
         timeEndOff.value = endHourStr
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        repositoryUser.liveDataUser.removeObserver(userObserver)
-    }
-
     fun onDialogLearnLanguageResult(learnEnglishType: Int) {
-        if (learnEnglishType != repositoryUser.liveDataUser.value?.learnLanguageType) {
-            viewModelScope.launch {
-                repositoryUser.setLearnLanguageType(learnEnglishType)
-            }
+        if (learnEnglishType != SharedHelper.getLearnLanguageType()) {
+            SharedHelper.setLearnLanguageType(learnEnglishType)
         }
     }
 
@@ -169,12 +133,12 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
 
     fun onDialogTestNotificationsResult(result: Boolean) {
         if (result) {
-            if (user.value?.selectedTag == OWN && RepositoryWord.getInstance().getOwnWords().isEmpty()) {
+            if (RepositoryWord.getInstance().words.value?.isNullOrEmpty() == true) {
                 showToast(R.string.category_own_not_selected)
                 return
             }
-            viewModelScope.launch {
-                repositoryUser.sendTestNotification()
+            viewModelScope.launch(Dispatchers.Default) {
+                NotificationHelper.generateNotification(App.context)
             }
         }
     }

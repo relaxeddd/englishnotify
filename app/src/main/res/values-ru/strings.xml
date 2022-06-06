@@ -172,7 +172,7 @@
     <string name="secondary_word_progress">Вторичный прогресс изучения слов</string>
     <string name="secondary_word_progress_info">Вторичный прогресс изучения слов зависит от ввода слова по его переводу (тренировка типа перевод-слово), в то время как основной прогресс изменяется во время ввода перевода слова при тренировке или в уведомлении. Также можно поменять местами прогрессы слов для необходимой настройки.</string>
     <string name="send_feedback">Отправить отзыв</string>
-    <string name="send_test_notification">Отправить тестовое уведомление? (Осталось: %s)</string>
+    <string name="send_test_notification">Отправить тестовое уведомление?</string>
     <string name="select">Выбрать</string>
     <string name="settings">Настройки</string>
     <string name="settings_not_found">Настройки не найдены</string>

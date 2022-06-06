@@ -52,7 +52,7 @@ class FragmentCategories : BaseFragment<ViewModelCategories, FragmentCategoriesB
         override fun getItemCount() = 1
 
         override fun createFragment(position: Int) : Fragment {
-            val fragment = FragmentCategorySection(CategorySection.OWN_CATEGORIES)
+            val fragment = FragmentCategorySection()
             fragmentsMap[position] = fragment
             return fragment
         }

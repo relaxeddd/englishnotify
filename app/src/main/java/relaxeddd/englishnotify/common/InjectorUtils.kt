@@ -4,7 +4,6 @@ import android.content.Context
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 import relaxeddd.englishnotify.model.db.AppDatabase
 import relaxeddd.englishnotify.model.repository.RepositoryUser
-import relaxeddd.englishnotify.ui.categories.CategorySection
 
 object InjectorUtils {
 
@@ -13,18 +12,17 @@ object InjectorUtils {
     fun provideDictionaryOwnViewModelFactory(context: Context) = DictionaryOwnViewModelFactory(RepositoryFactory.getWordRepository(context), RepositoryFactory.getUserRepository())
     fun provideDictionaryExercisesViewModelFactory(context: Context) = DictionaryExercisesViewModelFactory(RepositoryFactory.getWordRepository(context), RepositoryFactory.getUserRepository())
     fun provideDictionaryKnowViewModelFactory(context: Context) = DictionaryKnowViewModelFactory(RepositoryFactory.getWordRepository(context), RepositoryFactory.getUserRepository())
-    fun provideNotificationsViewModelFactory() = NotificationsViewModelFactory(RepositoryFactory.getUserRepository())
+    fun provideNotificationsViewModelFactory() = NotificationsViewModelFactory()
     fun provideSettingsViewModelFactory() = SettingsViewModelFactory(RepositoryFactory.getUserRepository())
     fun provideWordViewModelFactory() = WordViewModelFactory()
     fun provideParseViewModelFactory() = ParseViewModelFactory()
     fun provideParsedWordsViewModelFactory() = ParsedWordsViewModelFactory()
-    fun provideCategorySectionViewModelFactory(type: CategorySection) = CategorySectionViewModelFactory(type, RepositoryFactory.getUserRepository())
+    fun provideCategorySectionViewModelFactory() = CategorySectionViewModelFactory()
     fun provideTrainingSettingViewModelFactory(context: Context) = TrainingSettingViewModelFactory(RepositoryFactory.getWordRepository(context))
     fun provideTrainingViewModelFactory(context: Context) = TrainingViewModelFactory(RepositoryFactory.getWordRepository(context))
     fun provideStatisticViewModelFactory(context: Context) = StatisticViewModelFactory(RepositoryFactory.getWordRepository(context))
     fun provideTimeViewModelFactory() = TimeViewModelFactory()
     fun provideDictionaryContainerViewModelFactory() = DictionaryContainerViewModelFactory()
-    /*fun provideCategoriesViewModelFactory() = CategoriesViewModelFactory()*/
 }
 
 object RepositoryFactory {

@@ -56,7 +56,6 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
         binding.switchNotificationsEnable.setOnCheckedChangeListener(viewModel.checkedChangeListenerEnableNotifications)
         binding.switchNotificationsDeletable.setOnCheckedChangeListener(viewModel.checkedChangeListenerDeletable)
         binding.switchNotificationsShowOnlyOne.setOnCheckedChangeListener(viewModel.checkedChangeListenerShowOnlyOneNotification)
-        binding.switchNotificationsOnlyExistWords.setOnCheckedChangeListener(viewModel.checkedChangeListenerOnlyExistWords)
 
         binding.scrollViewNotifications.doOnApplyWindowInsets { v, insets, padding ->
             v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
@@ -74,7 +73,7 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
             NAVIGATION_DIALOG_LEARN_ENGLISH -> {
                 val dialog = DialogLearnLanguage()
                 val args = Bundle()
-                args.putInt(SELECTED_ITEM, viewModel.user.value?.learnLanguageType ?: 0)
+                args.putInt(SELECTED_ITEM, SharedHelper.getLearnLanguageType())
                 dialog.arguments = args
                 dialog.listener = listenerLearnEnglish
                 dialog.show(this@FragmentNotifications.childFragmentManager, "Learn Language Dialog")
@@ -98,9 +97,6 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
             }
             NAVIGATION_DIALOG_TEST_NOTIFICATIONS -> {
                 val dialog = DialogTestNotifications()
-                val args = Bundle()
-                args.putInt(COUNT, viewModel.user.value?.testCount ?: 0)
-                dialog.arguments = args
                 dialog.confirmListener = listenerTestNotifications
                 dialog.show(this@FragmentNotifications.childFragmentManager, "Test Notifications Dialog")
             }

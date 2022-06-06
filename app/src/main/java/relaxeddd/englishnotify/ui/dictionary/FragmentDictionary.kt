@@ -8,6 +8,7 @@ import android.os.Looper
 import android.view.MenuItem
 import android.view.View
 import androidx.core.view.updatePaddingRelative
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import relaxeddd.englishnotify.R
@@ -76,9 +77,11 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
             binding.hasWords = (words != null && words.isNotEmpty())
             updateAdapter(words)
         })
-        viewModel.user.observe(viewLifecycleOwner, { user ->
-            adapter?.languageType = user?.learnLanguageType ?: 0
-        })
+        lifecycleScope.launchWhenCreated {
+            SharedHelper.learnLanguageTypeFlow.collect {
+                adapter?.languageType = it
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

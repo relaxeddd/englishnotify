@@ -1,14 +1,17 @@
 package relaxeddd.englishnotify.model.repository
 
 import androidx.lifecycle.MutableLiveData
-import relaxeddd.englishnotify.model.http.ApiHelper
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
+import relaxeddd.englishnotify.common.RESULT_ERROR_LOGOUT
+import relaxeddd.englishnotify.common.RESULT_ERROR_UNAUTHORIZED
+import relaxeddd.englishnotify.common.User
+import relaxeddd.englishnotify.common.getErrorString
+import relaxeddd.englishnotify.common.showToast
+import relaxeddd.englishnotify.model.http.ApiHelper
 import relaxeddd.englishnotify.model.preferences.SharedHelper
-import relaxeddd.englishnotify.push.NotificationHelper
 
 class RepositoryUser private constructor() {
 
@@ -57,7 +60,6 @@ class RepositoryUser private constructor() {
         if (answerInitData?.result != null && answerInitData.result.isSuccess()
             && answerInitData.user?.userId?.isNotEmpty() == true) {
             liveDataUser.value = answerInitData.user
-            SharedHelper.setLearnLanguageType(answerInitData.user.learnLanguageType)
             SharedHelper.setSelectedCategory(answerInitData.user.selectedTag)
             if (!answerInitData.isActualVersion) {
                 liveDataIsActualVersion.value = answerInitData.isActualVersion
@@ -99,47 +101,6 @@ class RepositoryUser private constructor() {
         liveDataUser.postValue(user)
     }
 
-    suspend fun setLearnLanguageType(timeType: Int) {
-        val user = User(liveDataUser.value ?: return)
-        user.learnLanguageType = timeType
-        updateUser(user, liveDataUser.value)
-    }
-
-    suspend fun setSelectedTag(selectedTag: String) : Boolean {
-        if (selectedTag.isNotEmpty()) {
-            val user = User(liveDataUser.value ?: return false)
-            user.selectedTag = selectedTag
-            SharedHelper.setSelectedCategory(selectedTag)
-            return updateUser(user, liveDataUser.value)
-        } else {
-            showToast(R.string.tags_should_not_be_empty)
-            return false
-        }
-    }
-
-    suspend fun sendTestNotification() {
-        if (FirebaseAuth.getInstance().currentUser == null) {
-            showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
-            return
-        }
-
-        val firebaseUser = RepositoryCommon.getInstance().firebaseUser
-        val tokenId = RepositoryCommon.getInstance().tokenId
-
-        val answer = ApiHelper.requestSendTestNotification(firebaseUser, tokenId)
-
-        when {
-            answer?.isSuccess() == true -> {
-                showToast(R.string.test_notification_sent)
-                val user = User(liveDataUser.value ?: return)
-                user.testCount -= 1
-                liveDataUser.postValue(user)
-            }
-            answer != null -> showToast(getErrorString(answer))
-            else -> showToast(R.string.error_request)
-        }
-    }
-
     suspend fun logout() : Boolean {
         if (FirebaseAuth.getInstance().currentUser == null) {
             showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
@@ -163,28 +124,6 @@ class RepositoryUser private constructor() {
             false
         } else {
             showToast(getErrorString(RESULT_ERROR_LOGOUT))
-            false
-        }
-    }
-
-    //------------------------------------------------------------------------------------------------------------------
-    private suspend fun updateUser(user: User, oldUser: User?) : Boolean {
-        liveDataUser.postValue(user)
-
-        val firebaseUser = RepositoryCommon.getInstance().firebaseUser
-        val tokenId = RepositoryCommon.getInstance().tokenId
-        val updateResult = ApiHelper.requestUpdateUser(firebaseUser, tokenId, user.notificationsTimeType,
-            user.receiveNotifications, user.learnLanguageType, user.selectedTag)
-
-        return if (updateResult != null && updateResult.result !== null && !updateResult.result.isSuccess()) {
-            withContext(Dispatchers.Main) { showToast(getErrorString(updateResult.result)) }
-            liveDataUser.postValue(oldUser)
-            false
-        } else if (updateResult != null && updateResult.result !== null) {
-            SharedHelper.setLearnLanguageType(user.learnLanguageType)
-            true
-        } else {
-            withContext(Dispatchers.Main) { showToast(R.string.error_update) }
             false
         }
     }

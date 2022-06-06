@@ -66,11 +66,11 @@ class MainViewModelFactory(private val repositoryUser: RepositoryUser) : ViewMod
     }
 }
 
-class NotificationsViewModelFactory(private val repositoryUser: RepositoryUser) : ViewModelProvider.NewInstanceFactory() {
+class NotificationsViewModelFactory : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return ViewModelNotifications(repositoryUser) as T
+        return ViewModelNotifications() as T
     }
 }
 
@@ -106,11 +106,11 @@ class ParsedWordsViewModelFactory : ViewModelProvider.NewInstanceFactory() {
     }
 }
 
-class CategorySectionViewModelFactory(private val type: CategorySection, private val repositoryUser: RepositoryUser) : ViewModelProvider.NewInstanceFactory() {
+class CategorySectionViewModelFactory : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return ViewModelCategorySection(type, repositoryUser) as T
+        return ViewModelCategorySection() as T
     }
 }
 

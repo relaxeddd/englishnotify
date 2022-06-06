@@ -6,11 +6,10 @@ import com.google.android.material.radiobutton.MaterialRadioButton
 import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
-import relaxeddd.englishnotify.model.repository.RepositoryUser
+import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.model.repository.RepositoryWord
-import relaxeddd.englishnotify.ui.categories.CategorySection
 
-class ViewModelCategorySection(type: CategorySection, private val repositoryUser: RepositoryUser) : ViewModelBase(), ISelectCategory {
+class ViewModelCategorySection : ViewModelBase(), ISelectCategory {
 
     companion object {
 
@@ -28,7 +27,7 @@ class ViewModelCategorySection(type: CategorySection, private val repositoryUser
         val list = ArrayList<CategoryItem>()
 
         if (selectedCategory.isEmpty()) {
-            selectedCategory = repositoryUser.liveDataUser.value?.selectedTag ?: ""
+            selectedCategory = SharedHelper.getSelectedCategory()
         }
         allTags.filter { isCategoryFit(it) }.forEach {
             val categoryItem = CategoryItem(it)
@@ -96,14 +95,13 @@ class ViewModelCategorySection(type: CategorySection, private val repositoryUser
             return
         }
 
-        if (!category.equals(repositoryUser.liveDataUser.value?.selectedTag, true)) {
+        if (!category.equals(SharedHelper.getSelectedCategory(), true)) {
             viewModelScope.launch {
-                navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
-                val result = repositoryUser.setSelectedTag(category)
-                navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
-
-                if (result) {
+                if (category.isNotEmpty()) {
+                    SharedHelper.setSelectedCategory(category)
                     navigateEvent.value = Event(NAVIGATION_ACTIVITY_BACK)
+                } else {
+                    showToast(R.string.tags_should_not_be_empty)
                 }
             }
         } else {

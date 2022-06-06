@@ -4,22 +4,92 @@ import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import androidx.annotation.WorkerThread
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.RemoteInput
+import androidx.work.ListenableWorker.Result
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.model.db.AppDatabase
-import relaxeddd.englishnotify.ui.main.MainActivity
 import relaxeddd.englishnotify.common.*
+import relaxeddd.englishnotify.model.db.AppDatabase
 import relaxeddd.englishnotify.model.preferences.SharedHelper
+import relaxeddd.englishnotify.ui.main.MainActivity
 import kotlin.random.Random
 
 class NotificationHelper {
 
     companion object {
+
+        @WorkerThread
+        fun generateNotification(context: Context) {
+            if (isNightTime(context = context) || !SharedHelper.isNotificationsEnabled()) {
+                return
+            }
+
+            val notificationManager = NotificationManagerCompat.from(context)
+            if (!notificationManager.areNotificationsEnabled()) {
+                return
+            }
+            if (VERSION.SDK_INT >= VERSION_CODES.O) {
+                val channelId = getAppString(R.string.default_notification_channel_id)
+                val channel = notificationManager.getNotificationChannel(channelId)
+
+                if (channel?.importance == NotificationManagerCompat.IMPORTANCE_NONE) {
+                    return
+                }
+            }
+
+            val tag = SharedHelper.getSelectedCategory(context)
+            val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress(context)
+            val languageType = SharedHelper.getLearnLanguageType(context)
+
+            val wordDao = AppDatabase.getInstance(context).wordDao()
+            var words = wordDao.getAllItemsNow()
+            val sortByLearnStage = HashMap<Int, ArrayList<Word>>()
+
+            words = words.filter { !it.isDeleted && (it.isOwnCategory || tag.isEmpty() || tag == OWN || it.tags.contains(tag)) }
+
+            if (words.isEmpty()) {
+                words = words.filter { !it.isDeleted }
+            }
+
+            for (word in words) {
+                val wordLearnStage = if (languageType == TYPE_PUSH_RUSSIAN && isEnabledSecondaryProgress) word.learnStageSecondary else word.learnStage
+
+                if (!sortByLearnStage.containsKey(wordLearnStage)) {
+                    val list = ArrayList<Word>()
+                    list.add(word)
+                    sortByLearnStage[wordLearnStage] = list
+                } else {
+                    sortByLearnStage[wordLearnStage]?.add(word)
+                }
+            }
+            for (learnStage in 0..2) {
+                if (sortByLearnStage.containsKey(learnStage)) {
+                    words = sortByLearnStage[learnStage] ?: ArrayList()
+                    break
+                }
+            }
+
+            if (words.isNotEmpty()) {
+                val wordIx = (words.indices).random()
+
+                if (wordIx >= 0 && wordIx < words.size) {
+                    if (SharedHelper.isShowOnlyOneNotification(context)) {
+                        notificationManager.cancelAll()
+                    }
+                    handleWordNotification(
+                        context,
+                        words[wordIx],
+                        isSave = false,
+                        viewType = SharedHelper.getNotificationsView(context),
+                    )
+                }
+            }
+        }
 
         @WorkerThread
         fun handleWordNotification(context: Context, word: Word, isSave: Boolean = true, viewType: Int,
