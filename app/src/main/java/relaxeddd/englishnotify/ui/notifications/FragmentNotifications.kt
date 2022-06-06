@@ -74,7 +74,7 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
             NAVIGATION_DIALOG_LEARN_ENGLISH -> {
                 val dialog = DialogLearnLanguage()
                 val args = Bundle()
-                args.putInt(SELECTED_ITEM, viewModel.user.value?.learnLanguageType ?: 0)
+                args.putInt(SELECTED_ITEM, SharedHelper.getLearnLanguageType())
                 dialog.arguments = args
                 dialog.listener = listenerLearnEnglish
                 dialog.show(this@FragmentNotifications.childFragmentManager, "Learn Language Dialog")
