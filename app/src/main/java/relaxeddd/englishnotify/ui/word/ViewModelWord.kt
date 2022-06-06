@@ -141,11 +141,6 @@ class ViewModelWord : ViewModelBase(), ISelectCategory {
             callback(null)
             return
         }
-        if (!user.isSubscribed()) {
-            navigateEvent.value = Event(NAVIGATION_DIALOG_SUBSCRIPTION_REQUIRED)
-            callback(null)
-            return
-        }
         if (text.trim().isEmpty() || isTranslating) {
             callback(null)
             return
@@ -175,7 +170,7 @@ class ViewModelWord : ViewModelBase(), ISelectCategory {
         if (user == null) {
             showToast(R.string.please_authorize)
         } else if (isEnabledOwnCategories.value == false) {
-            navigateEvent.value = Event(NAVIGATION_DIALOG_SUBSCRIPTION_REQUIRED)
+            // TODO remove subscription required
         }
     }
 
