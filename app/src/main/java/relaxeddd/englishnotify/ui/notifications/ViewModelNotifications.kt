@@ -3,21 +3,20 @@ package relaxeddd.englishnotify.ui.notifications
 import android.os.Build
 import android.view.View
 import android.widget.CompoundButton
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.preferences.SharedHelper
-import relaxeddd.englishnotify.model.repository.RepositoryUser
 import relaxeddd.englishnotify.model.repository.RepositoryWord
+import relaxeddd.englishnotify.push.NotificationHelper
 import relaxeddd.englishnotify.push.NotificationsWorkManagerHelper
 
-class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewModelBase() {
+class ViewModelNotifications : ViewModelBase() {
 
-    val user: LiveData<User?> = repositoryUser.liveDataUser
     val timeDurationOffValue = MutableLiveData(SharedHelper.getDurationHours())
     val timeStartOff = MutableLiveData("20:00")
     val timeEndOff = MutableLiveData("07:00")
@@ -76,19 +75,10 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
         navigateEvent.value = Event(NAVIGATION_DIALOG_NIGHT_TIME)
     }
     val clickListenerTestNotifications = View.OnClickListener {
-        val userValue = user.value
-
-        if (userValue == null) {
-            showToast(R.string.please_authorize)
-        } else if (!SharedHelper.isNotificationsEnabled()) {
-            showToast(R.string.enable_notifications_warning)
-        } else if (userValue.testCount <= 0) {
-            showToast(R.string.no_test_notifications)
-        } else {
-            navigateEvent.value = Event(NAVIGATION_DIALOG_TEST_NOTIFICATIONS)
-        }
+        navigateEvent.value = Event(NAVIGATION_DIALOG_TEST_NOTIFICATIONS)
     }
 
+    //------------------------------------------------------------------------------------------------------------------
     init {
         viewModelScope.launch {
             SharedHelper.selectedCategoryFlow.collect {
@@ -143,12 +133,12 @@ class ViewModelNotifications(private val repositoryUser: RepositoryUser) : ViewM
 
     fun onDialogTestNotificationsResult(result: Boolean) {
         if (result) {
-            if (user.value?.selectedTag == OWN && RepositoryWord.getInstance().getOwnWords().isEmpty()) {
+            if (RepositoryWord.getInstance().words.value?.isNullOrEmpty() == true) {
                 showToast(R.string.category_own_not_selected)
                 return
             }
-            viewModelScope.launch {
-                repositoryUser.sendTestNotification()
+            viewModelScope.launch(Dispatchers.Default) {
+                NotificationHelper.generateNotification(App.context)
             }
         }
     }

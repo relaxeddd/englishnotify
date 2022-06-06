@@ -1,14 +1,17 @@
 package relaxeddd.englishnotify.model.repository
 
 import androidx.lifecycle.MutableLiveData
-import relaxeddd.englishnotify.model.http.ApiHelper
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
+import relaxeddd.englishnotify.common.RESULT_ERROR_LOGOUT
+import relaxeddd.englishnotify.common.RESULT_ERROR_UNAUTHORIZED
+import relaxeddd.englishnotify.common.User
+import relaxeddd.englishnotify.common.getErrorString
+import relaxeddd.englishnotify.common.showToast
+import relaxeddd.englishnotify.model.http.ApiHelper
 import relaxeddd.englishnotify.model.preferences.SharedHelper
-import relaxeddd.englishnotify.push.NotificationHelper
 
 class RepositoryUser private constructor() {
 
@@ -96,29 +99,6 @@ class RepositoryUser private constructor() {
         val user = User(liveDataUser.value ?: return)
         user.savedWordsCount = count
         liveDataUser.postValue(user)
-    }
-
-    suspend fun sendTestNotification() {
-        if (FirebaseAuth.getInstance().currentUser == null) {
-            showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
-            return
-        }
-
-        val firebaseUser = RepositoryCommon.getInstance().firebaseUser
-        val tokenId = RepositoryCommon.getInstance().tokenId
-
-        val answer = ApiHelper.requestSendTestNotification(firebaseUser, tokenId)
-
-        when {
-            answer?.isSuccess() == true -> {
-                showToast(R.string.test_notification_sent)
-                val user = User(liveDataUser.value ?: return)
-                user.testCount -= 1
-                liveDataUser.postValue(user)
-            }
-            answer != null -> showToast(getErrorString(answer))
-            else -> showToast(R.string.error_request)
-        }
     }
 
     suspend fun logout() : Boolean {

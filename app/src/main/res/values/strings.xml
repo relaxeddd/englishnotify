@@ -172,7 +172,7 @@
     <string name="secondary_word_progress">Secondary word progress</string>
     <string name="secondary_word_progress_info">Secondary progress depends on translation to word training. To increase main progress you have to write translation in trainings or notifications. Secondary progress is increasing when you have translation and input the word of this translation. Also you can swap progress values between themselves to get needed setting.</string>
     <string name="send_feedback">Send feedback</string>
-    <string name="send_test_notification">Send test notification? (%s notifications left)</string>
+    <string name="send_test_notification">Send test notification?</string>
     <string name="select">Select</string>
     <string name="settings">Settings</string>
     <string name="settings_not_found">Settings not found</string>

@@ -66,11 +66,11 @@ class MainViewModelFactory(private val repositoryUser: RepositoryUser) : ViewMod
     }
 }
 
-class NotificationsViewModelFactory(private val repositoryUser: RepositoryUser) : ViewModelProvider.NewInstanceFactory() {
+class NotificationsViewModelFactory : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return ViewModelNotifications(repositoryUser) as T
+        return ViewModelNotifications() as T
     }
 }
 

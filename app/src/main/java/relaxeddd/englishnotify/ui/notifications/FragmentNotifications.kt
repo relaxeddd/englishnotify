@@ -97,9 +97,6 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
             }
             NAVIGATION_DIALOG_TEST_NOTIFICATIONS -> {
                 val dialog = DialogTestNotifications()
-                val args = Bundle()
-                args.putInt(COUNT, viewModel.user.value?.testCount ?: 0)
-                dialog.arguments = args
                 dialog.confirmListener = listenerTestNotifications
                 dialog.show(this@FragmentNotifications.childFragmentManager, "Test Notifications Dialog")
             }

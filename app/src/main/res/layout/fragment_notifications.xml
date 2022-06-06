@@ -368,8 +368,7 @@
                 android:background="@color/card_view_color"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:elevation="@dimen/default_elevation"
-                android:onClick="@{viewModel.clickListenerTestNotifications}"
-                android:alpha="@{viewModel.user != null ? 1f : 0.5f}">
+                android:onClick="@{viewModel.clickListenerTestNotifications}">
 
                 <TextView
                     android:id="@+id/text_notifications_test"
@@ -380,16 +379,6 @@
                     android:textColor="@color/text_color_main"
                     android:textSize="@dimen/font_14"
                     android:layout_toEndOf="@+id/image_view_notifications_test"/>
-
-                <TextView
-                    android:id="@+id/text_notifications_test_value"
-                    android:text="@{@string/test_notifications_left(viewModel.user.testCount)}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/font_12"
-                    android:layout_marginStart="@dimen/size_16"
-                    android:layout_toEndOf="@+id/image_view_notifications_test"
-                    android:layout_below="@+id/text_notifications_test"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
