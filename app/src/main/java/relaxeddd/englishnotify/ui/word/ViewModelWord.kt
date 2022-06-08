@@ -7,14 +7,11 @@ import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.preferences.SharedHelper
-import relaxeddd.englishnotify.model.repository.RepositoryCommon
-import relaxeddd.englishnotify.model.repository.RepositoryUser
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 
 class ViewModelWord : ViewModelBase(), ISelectCategory {
 
     val isReadyToRateApp: Boolean
-    val isEnabledOwnCategories = MutableLiveData(true)
     val categories = MutableLiveData<List<CategoryItem>>(ArrayList())
     private var checkedItem: CategoryItem? = null
     var existsWordId = ""
@@ -29,16 +26,7 @@ class ViewModelWord : ViewModelBase(), ISelectCategory {
     private var updateRus: String = ""
     private var updateOwnTag: String? = ""
 
-    private var isTranslating = false
-    private var lastTranslationText = ""
-    private var lastTranslationResult = ""
-    private var lastTranslationLanguage = ""
-
     init {
-        val user = RepositoryUser.getInstance().liveDataUser.value
-        val isEnabledOwnCategoriesValue = user != null && user.isSubscribed()
-        isEnabledOwnCategories.value = isEnabledOwnCategoriesValue
-
         val isRated = SharedHelper.isCancelledRateDialog()
         isReadyToRateApp = !isRated && RepositoryWord.getInstance().isEnoughLearnedWordsToRate()
     }
@@ -50,11 +38,7 @@ class ViewModelWord : ViewModelBase(), ISelectCategory {
     override fun onRadioButtonInit(category: String, radioButton: MaterialRadioButton) {}
 
     fun createOwnWord(eng: String, transcription: String, rus: String, ownTag: String) {
-        val finalOwnTag = if (isEnabledOwnCategories.value == true) {
-            if (ownTag.isBlank()) checkedItem?.key ?: "" else "!$ownTag"
-        } else {
-            null
-        }
+        val finalOwnTag = if (ownTag.isBlank()) checkedItem?.key ?: "" else "!$ownTag"
         if (finalOwnTag != null) {
             SharedHelper.setLastOwnCategory(finalOwnTag)
         }
@@ -65,7 +49,6 @@ class ViewModelWord : ViewModelBase(), ISelectCategory {
             if (existsWordId.isNotEmpty()) {
                 existsWord = RepositoryWord.getInstance().getWord(existsWordId)
                 val tags = when {
-                    finalOwnTag == null -> null
                     finalOwnTag.isNotEmpty() -> listOf(finalOwnTag)
                     else -> emptyList()
                 }
@@ -133,47 +116,6 @@ class ViewModelWord : ViewModelBase(), ISelectCategory {
         }
     }
 
-    fun onClickTranslate(text: String, fromLanguage: String, toLanguage: String, callback: (String?) -> Unit) {
-        val user = RepositoryUser.getInstance().liveDataUser.value
-
-        if (user == null) {
-            showToast(R.string.please_authorize)
-            callback(null)
-            return
-        }
-        if (text.trim().isEmpty() || isTranslating) {
-            callback(null)
-            return
-        }
-        if (text == lastTranslationText && toLanguage == lastTranslationLanguage) {
-            callback(lastTranslationResult)
-            return
-        }
-
-        isTranslating = true
-        viewModelScope.launch {
-            isTranslating = false
-
-            val translation = RepositoryCommon.getInstance().requestTranslation(text, fromLanguage, toLanguage)
-
-            lastTranslationText = text
-            lastTranslationResult = translation
-            lastTranslationLanguage = toLanguage
-
-            callback(translation)
-        }
-    }
-
-    fun onClickOwnCategoryContent() {
-        val user = RepositoryUser.getInstance().liveDataUser.value
-
-        if (user == null) {
-            showToast(R.string.please_authorize)
-        } else if (isEnabledOwnCategories.value == false) {
-            // TODO remove subscription required
-        }
-    }
-
     private fun updateCategories() {
         viewModelScope.launch {
             val list = ArrayList<CategoryItem>()
@@ -183,20 +125,18 @@ class ViewModelWord : ViewModelBase(), ISelectCategory {
                 list.add(CategoryItem(tag))
             }
 
-            if (isEnabledOwnCategories.value == true) {
-                val lastOwnCategory = CategoryItem(SharedHelper.getLastOwnCategory())
+            val lastOwnCategory = CategoryItem(SharedHelper.getLastOwnCategory())
 
-                if (existsWordId.isNotEmpty()) {
-                    val existsWord = RepositoryWord.getInstance().getWord(existsWordId)
-                    val existsWordOwnCategoryKey = existsWord?.tags?.find { isOwnCategory(it) }
+            if (existsWordId.isNotEmpty()) {
+                val existsWord = RepositoryWord.getInstance().getWord(existsWordId)
+                val existsWordOwnCategoryKey = existsWord?.tags?.find { isOwnCategory(it) }
 
-                    if (existsWordOwnCategoryKey != null && list.contains(CategoryItem(existsWordOwnCategoryKey))) {
-                        checkedItem = CategoryItem(existsWordOwnCategoryKey)
-                    }
-                } else if (lastOwnCategory.key.isNotEmpty()) {
-                    if (list.contains(lastOwnCategory)) {
-                        checkedItem = lastOwnCategory
-                    }
+                if (existsWordOwnCategoryKey != null && list.contains(CategoryItem(existsWordOwnCategoryKey))) {
+                    checkedItem = CategoryItem(existsWordOwnCategoryKey)
+                }
+            } else if (lastOwnCategory.key.isNotEmpty()) {
+                if (list.contains(lastOwnCategory)) {
+                    checkedItem = lastOwnCategory
                 }
             }
 

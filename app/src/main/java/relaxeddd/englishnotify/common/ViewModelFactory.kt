@@ -2,9 +2,7 @@ package relaxeddd.englishnotify.common
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import relaxeddd.englishnotify.model.repository.RepositoryUser
 import relaxeddd.englishnotify.model.repository.RepositoryWord
-import relaxeddd.englishnotify.ui.categories.CategorySection
 import relaxeddd.englishnotify.ui.categories.section.ViewModelCategorySection
 import relaxeddd.englishnotify.ui.dictionary_all.ViewModelDictionaryAll
 import relaxeddd.englishnotify.ui.dictionary_container.ViewModelDictionaryContainer
@@ -22,47 +20,47 @@ import relaxeddd.englishnotify.ui.training.ViewModelTraining
 import relaxeddd.englishnotify.ui.training_setting.ViewModelTrainingSetting
 import relaxeddd.englishnotify.ui.word.ViewModelWord
 
-class DictionaryAllViewModelFactory(private val repositoryWord: RepositoryWord, private val repositoryUser: RepositoryUser)
+class DictionaryAllViewModelFactory(private val repositoryWord: RepositoryWord)
     : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return ViewModelDictionaryAll(repositoryWord, repositoryUser) as T
+        return ViewModelDictionaryAll(repositoryWord) as T
     }
 }
 
-class DictionaryOwnViewModelFactory(private val repositoryWord: RepositoryWord, private val repositoryUser: RepositoryUser)
+class DictionaryOwnViewModelFactory(private val repositoryWord: RepositoryWord)
     : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return ViewModelDictionaryOwn(repositoryWord, repositoryUser) as T
+        return ViewModelDictionaryOwn(repositoryWord) as T
     }
 }
 
-class DictionaryExercisesViewModelFactory(private val repositoryWord: RepositoryWord, private val repositoryUser: RepositoryUser)
+class DictionaryExercisesViewModelFactory(private val repositoryWord: RepositoryWord)
     : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return ViewModelDictionaryExercises(repositoryWord, repositoryUser) as T
+        return ViewModelDictionaryExercises(repositoryWord) as T
     }
 }
 
-class DictionaryKnowViewModelFactory(private val repositoryWord: RepositoryWord, private val repositoryUser: RepositoryUser)
+class DictionaryKnowViewModelFactory(private val repositoryWord: RepositoryWord)
     : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return ViewModelDictionaryKnow(repositoryWord, repositoryUser) as T
+        return ViewModelDictionaryKnow(repositoryWord) as T
     }
 }
 
-class MainViewModelFactory(private val repositoryUser: RepositoryUser) : ViewModelProvider.NewInstanceFactory() {
+class MainViewModelFactory : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return ViewModelMain(repositoryUser) as T
+        return ViewModelMain() as T
     }
 }
 
@@ -74,11 +72,11 @@ class NotificationsViewModelFactory : ViewModelProvider.NewInstanceFactory() {
     }
 }
 
-class SettingsViewModelFactory(private val repositoryUser: RepositoryUser) : ViewModelProvider.NewInstanceFactory() {
+class SettingsViewModelFactory : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return ViewModelSettings(repositoryUser) as T
+        return ViewModelSettings() as T
     }
 }
 

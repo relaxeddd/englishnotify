@@ -10,14 +10,12 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.preferences.SharedHelper
-import relaxeddd.englishnotify.model.repository.RepositoryUser
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 
-open class ViewModelDictionary(private val repositoryWord: RepositoryWord, protected val repositoryUser: RepositoryUser) : ViewModelBase() {
+open class ViewModelDictionary(private val repositoryWord: RepositoryWord) : ViewModelBase() {
 
     open val isShowOwnWordsContainer = true
 
-    val user: LiveData<User?> = repositoryUser.liveDataUser
     val sortByType = MutableLiveData(SortByType.getByName(SharedHelper.getSortByType()))
     val filterTags = MutableLiveData<HashSet<String>>(HashSet())
     val isShowOwnWords = MutableLiveData(SharedHelper.isShowOwnWords())

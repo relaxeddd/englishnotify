@@ -8,7 +8,6 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.doOnLayout
 import com.google.android.play.core.review.ReviewManagerFactory
 import relaxeddd.englishnotify.R
@@ -100,94 +99,12 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
-        binding.imageWordTranslate.setOnClickListener {
-            val text = binding.textInputWord.text.toString()
-            val fromLanguage = binding.spinnerWordLanguage.selectedItem as? String ?: ""
-            val toLanguage = binding.spinnerWordLanguageTranslation.selectedItem as? String ?: ""
-
-            hideKeyboard()
-            if (text.isNotBlank()) {
-                binding.imageWordTranslate.visibility = View.INVISIBLE
-                binding.progressBarWordTranslate.visibility = View.VISIBLE
-                viewModel.onClickTranslate(text, fromLanguage, toLanguage) { translated ->
-                    binding.imageWordTranslate.visibility = View.VISIBLE
-                    binding.progressBarWordTranslate.visibility = View.INVISIBLE
-
-                    if (translated != null) {
-                        if (translated.isEmpty()) {
-                            showToast(R.string.no_translation)
-                        } else {
-                            showPopupTranslation(binding.imageWordTranslate, translated) {
-                                val existsTranslation = binding.textInputTranslation.text.toString()
-
-                                if (existsTranslation.isEmpty()) {
-                                    binding.textInputTranslation.setText(translated)
-                                } else {
-                                    val result = "$existsTranslation, $translated"
-                                    binding.textInputTranslation.setText(result)
-                                }
-                            }
-                        }
-                    }
-                }
-            } else {
-                showToast(R.string.word_should_not_be_empty)
-            }
-        }
-        //TODO refactor
-        binding.imageWordTranslateTranslation.setOnClickListener {
-            val text = binding.textInputTranslation.text.toString()
-            val fromLanguage = binding.spinnerWordLanguageTranslation.selectedItem as? String ?: ""
-            val toLanguage = binding.spinnerWordLanguage.selectedItem as? String ?: ""
-
-            hideKeyboard()
-            if (text.isNotBlank()) {
-                binding.imageWordTranslateTranslation.visibility = View.INVISIBLE
-                binding.progressBarWordTranslateTranslation.visibility = View.VISIBLE
-                viewModel.onClickTranslate(text, fromLanguage, toLanguage) { translated ->
-                    binding.imageWordTranslateTranslation.visibility = View.VISIBLE
-                    binding.progressBarWordTranslateTranslation.visibility = View.INVISIBLE
-
-                    if (translated != null) {
-                        if (translated.isEmpty()) {
-                            showToast(R.string.no_translation)
-                        } else {
-                            showPopupTranslation(binding.imageWordTranslateTranslation, translated) {
-                                val existsTranslation = binding.textInputWord.text.toString()
-
-                                if (existsTranslation.isEmpty()) {
-                                    binding.textInputWord.setText(translated)
-                                } else {
-                                    val result = "$existsTranslation, $translated"
-                                    binding.textInputWord.setText(result)
-                                }
-                            }
-                        }
-                    }
-                }
-            } else {
-                showToast(R.string.word_should_not_be_empty)
-            }
-        }
 
         adapter = AdapterCategories(viewModel)
         binding.recyclerViewWordOwnCategories.itemAnimator = null
         binding.recyclerViewWordOwnCategories.adapter = adapter
         viewModel.categories.observe(viewLifecycleOwner, { items ->
             if (items != null && items.isNotEmpty()) adapter?.submitList(items)
-        })
-
-        viewModel.isEnabledOwnCategories.observe(viewLifecycleOwner, { isEnabled ->
-            binding.containerTextWordOwnTag.setOnClickListener {
-                viewModel.onClickOwnCategoryContent()
-            }
-            binding.textInputOwnTag.setOnClickListener {
-                viewModel.onClickOwnCategoryContent()
-            }
-            adapter?.isClickableItems = isEnabled
-            adapter?.additionalItemClickListener = {
-                viewModel.onClickOwnCategoryContent()
-            }
         })
 
         updateVoiceInputVisibility(SharedHelper.isShowVoiceInput())
@@ -335,22 +252,5 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
         binding.spinnerWordLanguage.visibility = if (isShow) View.VISIBLE else View.GONE
         binding.imageWordMicrophoneTranslation.visibility = if (isShow) View.VISIBLE else View.GONE
         binding.spinnerWordLanguageTranslation.visibility = if (isShow) View.VISIBLE else View.GONE
-    }
-
-    private fun showPopupTranslation(view: View, translationText: String, callback: () -> Unit) {
-        val popupMenu = PopupMenu(view.context, view)
-
-        popupMenu.inflate(R.menu.menu_popup_translation)
-        popupMenu.menu.findItem(R.id.item_menu_translation)?.title = translationText
-        popupMenu.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.item_menu_translation -> {
-                    callback()
-                }
-            }
-            true
-        }
-
-        popupMenu.show()
     }
 }

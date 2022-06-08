@@ -11,7 +11,6 @@ import android.view.View
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.updatePaddingRelative
 import androidx.navigation.Navigation
-import com.firebase.ui.auth.AuthUI
 import com.judemanutd.autostarter.AutoStartPermissionHelper
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
@@ -22,12 +21,6 @@ import kotlin.math.max
 import kotlin.math.min
 
 class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding>() {
-
-    private val listenerConfirmLogout: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
-        override fun onResult(result: Boolean) {
-            viewModel.onLogoutDialogResult(result)
-        }
-    }
 
     private val listenerTheme: ListenerResult<Int> = object: ListenerResult<Int> {
         override fun onResult(result: Int) {
@@ -66,8 +59,6 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
         binding.switchSettingsProgressInTraining.setOnCheckedChangeListener(viewModel.checkedChangeListenerProgressInTraining)
         binding.switchSettingsVoiceInput.setOnCheckedChangeListener(viewModel.checkedChangeListenerVoiceInput)
         binding.switchSettingsSecondaryProgress.setOnCheckedChangeListener(viewModel.checkedChangeListenerEnabledSecondaryProgress)
-
-        initPrivacyPolicyText(binding.textSettingsPrivacyPolicy, activity)
     }
 
     @SuppressLint("BatteryLife")
@@ -165,22 +156,6 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
                         }
                     }
                     show(this@FragmentSettings.childFragmentManager, "Notifications not Show Dialog")
-                }
-            }
-            NAVIGATION_DIALOG_CONFIRM_LOGOUT -> {
-                if (isResumed) {
-                    val dialog = DialogConfirmLogout()
-                    dialog.confirmListener = listenerConfirmLogout
-                    dialog.show(this@FragmentSettings.childFragmentManager, "Confirm Logout Dialog")
-                }
-            }
-            NAVIGATION_GOOGLE_LOGOUT -> {
-                if (isResumed) {
-                    activity?.let {
-                        AuthUI.getInstance().signOut(it).addOnCompleteListener { resultTask ->
-                            viewModel.onLogoutResult(resultTask.isSuccessful)
-                        }
-                    }
                 }
             }
             NAVIGATION_WEB_PLAY_MARKET -> {

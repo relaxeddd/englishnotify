@@ -4,11 +4,6 @@ package relaxeddd.englishnotify.common
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
-import relaxeddd.englishnotify.App
-import android.util.DisplayMetrics
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
@@ -16,27 +11,29 @@ import android.net.Uri
 import android.os.Build
 import android.text.SpannableString
 import android.text.Spanned
-import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.UnderlineSpan
+import android.util.DisplayMetrics
+import android.view.View
+import android.view.ViewGroup
 import android.view.WindowInsets
-import androidx.annotation.StringRes
-import androidx.fragment.app.FragmentActivity
 import android.view.inputmethod.InputMethodManager
-import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.annotation.RequiresApi
+import androidx.annotation.StringRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.model.preferences.SharedHelper
-import java.lang.IllegalStateException
 import java.util.*
 import java.util.regex.Pattern
 
@@ -364,25 +361,6 @@ fun navigationItemBackground(context: Context): Drawable? {
 }
 
 fun isOwnCategory(category: String) = category == OWN || category.contains(OWN_KEY_SYMBOL)
-
-fun initPrivacyPolicyText(textView: TextView, activity: FragmentActivity?) {
-    if (SharedHelper.isPrivacyPolicyConfirmed()) {
-        return
-    }
-
-    val privacyPolicy = textView.text.toString()
-    val spannablePrivacyPolicy = SpannableString(privacyPolicy)
-    val clickablePrivacyPolicy = object : ClickableSpan() {
-        override fun onClick(textView: View) {
-            openWebPrivacyPolicy(activity)
-        }
-    }
-
-    setClickableSubstring(privacyPolicy, spannablePrivacyPolicy, textView.context.getString(R.string.privacy_policy_in_sentence), clickablePrivacyPolicy)
-
-    textView.text = spannablePrivacyPolicy
-    textView.movementMethod = LinkMovementMethod.getInstance()
-}
 
 fun setClickableSubstring(string: String, spannableString: SpannableString, substring: String, clickableSpan: ClickableSpan) {
     val firstIndex = string.indexOf(substring)

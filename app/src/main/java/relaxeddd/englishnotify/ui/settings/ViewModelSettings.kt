@@ -3,45 +3,23 @@ package relaxeddd.englishnotify.ui.settings
 import android.os.Build
 import android.view.View
 import android.widget.CompoundButton
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.model.preferences.SharedHelper
-import relaxeddd.englishnotify.model.repository.RepositoryCommon
-import relaxeddd.englishnotify.model.repository.RepositoryUser
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 
-class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelBase() {
+class ViewModelSettings : ViewModelBase() {
 
-    private val userObserver = Observer<User?> { user ->
-        updateSignInVisibility()
-        if (user != null && user.email.isNotEmpty()) {
-            isShowPrivacyPolicy.value = false
-        }
-    }
-    private val isHideSignInObserver = Observer<Boolean> {
-        updateSignInVisibility()
-    }
-    private val isInitInProgressObserver = Observer<Boolean> {
-        updateSignInVisibility()
-    }
-
-    val user: LiveData<User?> = repositoryUser.liveDataUser
-    private val isHideSignIn = repositoryUser.liveDataHideSignIn
-    private val isInitInProgress = repositoryUser.liveDataIsInitInProgress
     var textTheme: String = App.context.resources.getStringArray(R.array.array_themes)[SharedHelper.getAppThemeType()]
     val isVisibleReceiveHelp = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
     val isOldNavigationDesign = MutableLiveData(SharedHelper.isOldNavigationDesign())
     val isShowProgressInTraining = MutableLiveData(SharedHelper.isShowProgressInTraining())
     val isShowVoiceInput = MutableLiveData(SharedHelper.isShowVoiceInput())
     val isEnableSecondaryProgress = MutableLiveData(SharedHelper.isEnabledSecondaryProgress())
-    val isShowGoogleAuth = MutableLiveData(false)
-    val isShowPrivacyPolicy = MutableLiveData(!SharedHelper.isPrivacyPolicyConfirmed())
     val textTrueAnswersToLearn = MutableLiveData(SharedHelper.getTrueAnswersToLearn().toString())
     val textNotificationsLearnPoints = MutableLiveData(SharedHelper.getNotificationLearnPoints().toString())
     
@@ -124,30 +102,6 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
         }
     }
 
-    init {
-        user.observeForever(userObserver)
-        repositoryUser.liveDataHideSignIn.observeForever(isHideSignInObserver)
-        isInitInProgress.observeForever(isInitInProgressObserver)
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        user.removeObserver(userObserver)
-        repositoryUser.liveDataHideSignIn.removeObserver(isHideSignInObserver)
-        isInitInProgress.removeObserver(isInitInProgressObserver)
-    }
-
-    fun onLogoutDialogResult(isConfirmed: Boolean) {
-        if (isConfirmed) {
-            navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
-            viewModelScope.launch {
-                repositoryUser.logout()
-                navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
-                navigateEvent.value = Event(NAVIGATION_GOOGLE_LOGOUT)
-            }
-        }
-    }
-
     fun onSwapProgressResult(isConfirmed: Boolean) {
         if (isConfirmed) {
             viewModelScope.launch {
@@ -162,16 +116,6 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
         SharedHelper.setAppThemeType(themeIx)
     }
 
-    fun onLogoutResult(isSuccess: Boolean) {
-        if (isSuccess) {
-            viewModelScope.launch {
-                repositoryUser.deleteUserInfo()
-            }
-        } else {
-            showToast(R.string.logout_error)
-        }
-    }
-
     fun onDialogTrueAnswersToLearnResult(result: Int) {
         val value = App.context.resources.getStringArray(R.array.array_true_answers_number_to_learn)[result]
         textTrueAnswersToLearn.value = value
@@ -182,10 +126,5 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
         val value = App.context.resources.getStringArray(R.array.array_notifications_learn_points)[result]
         textNotificationsLearnPoints.value = value
         SharedHelper.setNotificationLearnPoints(value.toInt())
-    }
-
-    private fun updateSignInVisibility() {
-        isShowGoogleAuth.value = (user.value == null || RepositoryCommon.getInstance().firebaseUser == null) && isHideSignIn.value == true
-                && isInitInProgress.value == false
     }
 }

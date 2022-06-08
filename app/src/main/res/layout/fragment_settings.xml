@@ -604,90 +604,10 @@
 
             </LinearLayout>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/size_8"
-                android:paddingTop="@dimen/size_16"
-                android:paddingBottom="@dimen/size_16"
-                android:background="@color/card_view_color"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:onClick="@{viewModel.user != null ? viewModel.clickListenerLogout : null}"
-                android:alpha="@{viewModel.user != null ? 1f : 0.5f}"
-                android:visibility="@{safeUnbox(viewModel.isShowGoogleAuth) ? View.GONE : View.VISIBLE}"
-                android:elevation="@dimen/default_elevation">
-
-                <TextView
-                    android:id="@+id/text_settings_logout"
-                    android:text="@string/logout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/text_color_main"
-                    android:textSize="@dimen/font_14"
-                    android:layout_marginStart="@dimen/size_16"
-                    android:layout_toEndOf="@+id/imageView2"/>
-
-                <TextView
-                    android:text="@{@string/you_sign_in_as(viewModel.user.email)}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/text_settings_login_email"
-                    android:textSize="@dimen/font_12"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    android:visibility="@{(viewModel.user == null || viewModel.user.email.isEmpty()) ? View.GONE : View.VISIBLE}"
-                    android:layout_toEndOf="@+id/imageView2"
-                    android:layout_marginStart="@dimen/size_16"
-                    android:layout_below="@+id/text_settings_logout"/>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_logout"
-                    android:id="@+id/imageView2"
-                    android:contentDescription="@string/ic_logout"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/size_16" />
-
-            </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="@{safeUnbox(viewModel.isShowGoogleAuth) ? View.VISIBLE : View.GONE}"
-                android:background="@color/background_main"
-                android:orientation="vertical"
-                android:gravity="center_horizontal"
-                android:layout_marginTop="@dimen/size_16">
-
-                <com.google.android.gms.common.SignInButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:buttonSize="wide"
-                    android:onClick="@{viewModel.clickListenerGoogleAuth}"
-                    android:layout_marginTop="@dimen/size_4"
-                    android:layout_marginBottom="@dimen/size_4"/>
-
-                <TextView
-                    android:id="@+id/text_settings_privacy_policy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/text_color_main"
-                    android:gravity="center"
-                    android:visibility="@{safeUnbox(viewModel.isShowPrivacyPolicy) ? View.VISIBLE : View.GONE}"
-                    android:background="@color/background_main"
-                    android:text="@string/privacy_policy_text"
-                    android:textColorLink="@color/text_color_main"
-                    android:textSize="@dimen/font_12"/>
-
-            </LinearLayout>
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/size_46"
-                android:layout_marginBottom="@dimen/size_8"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/card_view_settings_logout"/>
+                android:layout_marginBottom="@dimen/size_8"/>
 
         </LinearLayout>
 
