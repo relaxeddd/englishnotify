@@ -1,19 +1,18 @@
 package relaxeddd.englishnotify.common
 
 import android.content.Context
-import relaxeddd.englishnotify.model.repository.RepositoryWord
 import relaxeddd.englishnotify.model.db.AppDatabase
-import relaxeddd.englishnotify.model.repository.RepositoryUser
+import relaxeddd.englishnotify.model.repository.RepositoryWord
 
 object InjectorUtils {
 
-    fun provideMainViewModelFactory() = MainViewModelFactory(RepositoryFactory.getUserRepository())
-    fun provideDictionaryAllViewModelFactory(context: Context) = DictionaryAllViewModelFactory(RepositoryFactory.getWordRepository(context), RepositoryFactory.getUserRepository())
-    fun provideDictionaryOwnViewModelFactory(context: Context) = DictionaryOwnViewModelFactory(RepositoryFactory.getWordRepository(context), RepositoryFactory.getUserRepository())
-    fun provideDictionaryExercisesViewModelFactory(context: Context) = DictionaryExercisesViewModelFactory(RepositoryFactory.getWordRepository(context), RepositoryFactory.getUserRepository())
-    fun provideDictionaryKnowViewModelFactory(context: Context) = DictionaryKnowViewModelFactory(RepositoryFactory.getWordRepository(context), RepositoryFactory.getUserRepository())
+    fun provideMainViewModelFactory() = MainViewModelFactory()
+    fun provideDictionaryAllViewModelFactory(context: Context) = DictionaryAllViewModelFactory(RepositoryFactory.getWordRepository(context))
+    fun provideDictionaryOwnViewModelFactory(context: Context) = DictionaryOwnViewModelFactory(RepositoryFactory.getWordRepository(context))
+    fun provideDictionaryExercisesViewModelFactory(context: Context) = DictionaryExercisesViewModelFactory(RepositoryFactory.getWordRepository(context))
+    fun provideDictionaryKnowViewModelFactory(context: Context) = DictionaryKnowViewModelFactory(RepositoryFactory.getWordRepository(context))
     fun provideNotificationsViewModelFactory() = NotificationsViewModelFactory()
-    fun provideSettingsViewModelFactory() = SettingsViewModelFactory(RepositoryFactory.getUserRepository())
+    fun provideSettingsViewModelFactory() = SettingsViewModelFactory()
     fun provideWordViewModelFactory() = WordViewModelFactory()
     fun provideParseViewModelFactory() = ParseViewModelFactory()
     fun provideParsedWordsViewModelFactory() = ParsedWordsViewModelFactory()
@@ -27,6 +26,5 @@ object InjectorUtils {
 
 object RepositoryFactory {
 
-    internal fun getUserRepository() = RepositoryUser.getInstance()
     internal fun getWordRepository(context: Context) = RepositoryWord.getInstance(AppDatabase.getInstance(context.applicationContext).wordDao())
 }

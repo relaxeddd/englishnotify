@@ -1,12 +1,11 @@
 package relaxeddd.englishnotify.ui.dictionary_own
 
-import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.common.Word
-import relaxeddd.englishnotify.model.repository.RepositoryUser
+import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 import relaxeddd.englishnotify.ui.dictionary.ViewModelDictionary
 
-class ViewModelDictionaryOwn(repositoryWord: RepositoryWord, repositoryUser: RepositoryUser) : ViewModelDictionary(repositoryWord, repositoryUser) {
+class ViewModelDictionaryOwn(repositoryWord: RepositoryWord) : ViewModelDictionary(repositoryWord) {
 
     override val isShowOwnWordsContainer = false
 

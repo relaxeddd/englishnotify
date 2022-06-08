@@ -11,7 +11,6 @@ import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.speech.tts.TextToSpeech
 import android.view.View
-import android.view.ViewGroup
 import android.view.WindowInsets
 import android.widget.ImageView
 import androidx.appcompat.widget.Toolbar
@@ -25,15 +24,10 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.IdpResponse
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.GoogleApiAvailability
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.MainActivityBinding
 import relaxeddd.englishnotify.databinding.NavigationHeaderBinding
-import relaxeddd.englishnotify.dialogs.DialogNewVersion
 import relaxeddd.englishnotify.dialogs.DialogPatchNotes
 import relaxeddd.englishnotify.dialogs.DialogRateApp
 import relaxeddd.englishnotify.dialogs.DialogVoiceInput
@@ -45,8 +39,6 @@ import kotlin.system.exitProcess
 class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>(), NavigationHost, FloatingActionButtonHost {
 
     companion object {
-        const val REQUEST_SIGN_IN = 1312
-        const val REQUEST_PLAY_SERVICES_RESULT = 7245
         const val REQUEST_RECOGNIZE_SPEECH = 5242
 
         private const val NAV_ID_NONE = -1
@@ -61,7 +53,6 @@ class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>(), Navigat
 
     private var currentFragmentId: Int = NAV_ID_NONE
     private lateinit var navController: NavController
-    private val providers: List<AuthUI.IdpConfig> = listOf(AuthUI.IdpConfig.GoogleBuilder().build())
     private var navigationHeaderBinding: NavigationHeaderBinding? = null
 
     private var tts: TextToSpeech? = null
@@ -72,14 +63,6 @@ class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>(), Navigat
     private var isLastPlayedEng = true
     private var isPlaying = false
     private var recognizeSpeechCallback: ((String?) -> Unit)? = null
-
-    private val listenerNewVersion: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
-        override fun onResult(result: Boolean) {
-            if (result) {
-                openWebApplication(this@MainActivity)
-            }
-        }
-    }
 
     override fun getLayoutResId() = R.layout.main_activity
     override fun getViewModelFactory() = InjectorUtils.provideMainViewModelFactory()
@@ -95,7 +78,6 @@ class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>(), Navigat
 
         volumeControlStream = AudioManager.STREAM_MUSIC
         PushTokenHelper.initChannelNotifications(this)
-        initGooglePlayServices()
 
         val isOldDesign = SharedHelper.isOldNavigationDesign()
 
@@ -153,11 +135,6 @@ class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>(), Navigat
 
         binding.containerMainActivity.setOnApplyWindowInsetsListener(NoopWindowInsetsListener)
         binding.statusBarScrim.setOnApplyWindowInsetsListener(HeightTopWindowInsetsListener)
-        binding.containerMainSignIn.doOnApplyWindowInsets { v, insets, padding ->
-            if (!isOldDesign) {
-                (v.layoutParams as? ViewGroup.MarginLayoutParams)?.bottomMargin = padding.bottom + insets.systemWindowInsetBottom
-            }
-        }
 
         val initialNavigationId = SharedHelper.getStartFragmentId()
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_navigation_host) as NavHostFragment
@@ -224,8 +201,6 @@ class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>(), Navigat
             onNavigationEvent(NAVIGATION_DIALOG_RATE_APP)
         }
 
-        initPrivacyPolicyText(binding.textMainPrivacyPolicy, this)
-
         viewModel.onViewCreate()
 
         if (!isOldDesign) {
@@ -285,17 +260,6 @@ class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>(), Navigat
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when(requestCode) {
-            REQUEST_SIGN_IN -> {
-                val response: IdpResponse? = IdpResponse.fromResultIntent(data)
-
-                if (resultCode == Activity.RESULT_OK) {
-                    binding.textMainPrivacyPolicy.visibility = View.GONE
-                    viewModel.requestInit()
-                } else if (isMyResumed && response != null) {
-                    AuthUI.getInstance().signOut(this).addOnCompleteListener {}
-                    showToast(response.error.toString())
-                }
-            }
             REQUEST_RECOGNIZE_SPEECH -> {
                 if (resultCode == Activity.RESULT_OK) {
                     val spokenText = data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).let { results ->
@@ -304,9 +268,6 @@ class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>(), Navigat
                     recognizeSpeechCallback?.invoke(spokenText)
                 }
                 recognizeSpeechCallback = null
-            }
-            REQUEST_PLAY_SERVICES_RESULT -> {
-                finish()
             }
             else -> {
                 super.onActivityResult(requestCode, resultCode, data)
@@ -346,31 +307,9 @@ class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>(), Navigat
                 finishAffinity()
                 exitProcess(0)
             }
-            NAVIGATION_GOOGLE_AUTH -> {
-                startActivityForResult(
-                    AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(providers)
-                        .build(),
-                    REQUEST_SIGN_IN
-                )
-            }
-            NAVIGATION_DIALOG_NEW_VERSION -> {
-                val dialogNewVersion = DialogNewVersion()
-                dialogNewVersion.confirmListener = listenerNewVersion
-                dialogNewVersion.show(supportFragmentManager, "New version Dialog")
-            }
             NAVIGATION_DIALOG_PATCH_NOTES -> {
                 val dialog = DialogPatchNotes()
                 dialog.show(supportFragmentManager, "Patch Notes Dialog")
-            }
-            NAVIGATION_GOOGLE_LOGOUT -> {
-                if (isMyResumed) {
-                    viewModel.isShowLoading.value = true
-                    AuthUI.getInstance().signOut(this).addOnCompleteListener {
-                        viewModel.isShowLoading.value = false
-                    }
-                }
             }
             NAVIGATION_RECREATE_ACTIVITY -> {
                 if (isMyResumed) {
@@ -469,21 +408,6 @@ class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>(), Navigat
             @Suppress("DEPRECATION")
             tts?.speak(textToSpeak, TextToSpeech.QUEUE_FLUSH, null)
             isPlaying = false
-        }
-    }
-
-    private fun initGooglePlayServices() {
-        val googleApiAvailability = GoogleApiAvailability.getInstance()
-        val status = googleApiAvailability.isGooglePlayServicesAvailable(this)
-
-        if (status != ConnectionResult.SUCCESS) {
-            if (googleApiAvailability.isUserResolvableError(status)) {
-                val dialog = googleApiAvailability.getErrorDialog(this, status, REQUEST_PLAY_SERVICES_RESULT)
-                dialog?.setOnCancelListener { finish() }
-                dialog?.show()
-            }
-        } else {
-            GoogleApiAvailability.getInstance().makeGooglePlayServicesAvailable(this)
         }
     }
 

@@ -3,8 +3,13 @@ package relaxeddd.englishnotify.ui.parse
 import androidx.lifecycle.MutableLiveData
 import com.google.android.material.radiobutton.MaterialRadioButton
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.*
-import relaxeddd.englishnotify.model.repository.RepositoryUser
+import relaxeddd.englishnotify.common.CategoryItem
+import relaxeddd.englishnotify.common.Event
+import relaxeddd.englishnotify.common.ISelectCategory
+import relaxeddd.englishnotify.common.NAVIGATION_FRAGMENT_PARSED_WORDS
+import relaxeddd.englishnotify.common.ViewModelBase
+import relaxeddd.englishnotify.common.Word
+import relaxeddd.englishnotify.common.showToast
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 
 class ViewModelParse : ViewModelBase(), ISelectCategory {
