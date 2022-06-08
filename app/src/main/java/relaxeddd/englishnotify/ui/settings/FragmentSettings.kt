@@ -1,24 +1,23 @@
 package relaxeddd.englishnotify.ui.settings
 
 import android.annotation.SuppressLint
-import androidx.navigation.Navigation
-import com.firebase.ui.auth.AuthUI
-import relaxeddd.englishnotify.common.*
-import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.databinding.FragmentSettingsBinding
-import relaxeddd.englishnotify.dialogs.*
 import android.content.Intent
 import android.net.Uri
-import android.provider.Settings
-import android.os.PowerManager
-import androidx.core.content.ContextCompat.getSystemService
 import android.os.Build
 import android.os.Bundle
+import android.os.PowerManager
+import android.provider.Settings
 import android.view.View
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.updatePaddingRelative
+import androidx.navigation.Navigation
+import com.firebase.ui.auth.AuthUI
 import com.judemanutd.autostarter.AutoStartPermissionHelper
+import relaxeddd.englishnotify.R
+import relaxeddd.englishnotify.common.*
+import relaxeddd.englishnotify.databinding.FragmentSettingsBinding
+import relaxeddd.englishnotify.dialogs.*
 import relaxeddd.englishnotify.model.preferences.SharedHelper
-import java.lang.Exception
 import kotlin.math.max
 import kotlin.math.min
 
@@ -105,32 +104,6 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
                     val dialog = DialogSwapProgress()
                     dialog.confirmListener = listenerSwapProgress
                     dialog.show(this@FragmentSettings.childFragmentManager, "Swap Progress Dialog")
-                }
-            }
-            NAVIGATION_DIALOG_CHECK_SAVE_WORDS -> {
-                if (isResumed) {
-                    val dialog = DialogCheckSaveWords()
-                    dialog.confirmListener = object : ListenerResult<Boolean> {
-                        override fun onResult(result: Boolean) {
-                            if (result) {
-                                viewModel.saveDictionary()
-                            }
-                        }
-                    }
-                    dialog.show(this@FragmentSettings.childFragmentManager, "Check save words Dialog")
-                }
-            }
-            NAVIGATION_DIALOG_CHECK_LOAD_WORDS -> {
-                if (isResumed) {
-                    val dialog = DialogCheckLoadWords()
-                    dialog.confirmListener = object : ListenerResult<Boolean> {
-                        override fun onResult(result: Boolean) {
-                            if (result) {
-                                viewModel.loadDictionary()
-                            }
-                        }
-                    }
-                    dialog.show(this@FragmentSettings.childFragmentManager, "Check load words Dialog")
                 }
             }
             NAVIGATION_DIALOG_TRUE_ANSWERS_TO_LEARN -> {

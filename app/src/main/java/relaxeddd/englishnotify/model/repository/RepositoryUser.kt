@@ -95,12 +95,6 @@ class RepositoryUser private constructor() {
     }
 
     //------------------------------------------------------------------------------------------------------------------
-    fun setSavedWordsCount(count: Int) {
-        val user = User(liveDataUser.value ?: return)
-        user.savedWordsCount = count
-        liveDataUser.postValue(user)
-    }
-
     suspend fun logout() : Boolean {
         if (FirebaseAuth.getInstance().currentUser == null) {
             showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
