@@ -120,18 +120,6 @@ object ApiHelper {
         }, Result(RESULT_ERROR_INTERNET))
     }
 
-    suspend fun requestLoadWords(firebaseUser: FirebaseUser?, tokenId: String?) : WordsResult? {
-        val userId = firebaseUser?.uid ?: ""
-
-        if (!isNetworkAvailable() || tokenId.isNullOrBlank() || userId.isBlank()) {
-            return WordsResult(Result(RESULT_ERROR_INTERNET), ArrayList())
-        }
-
-        return executeRequest( suspend {
-            apiHelper.requestLoadWords(TOKEN_PREFIX + tokenId, userId)
-        }, WordsResult(Result(RESULT_ERROR_INTERNET), ArrayList()))
-    }
-
     //------------------------------------------------------------------------------------------------------------------
     suspend fun initUserTokenId(firebaseUser: FirebaseUser?) : Resource<String> {
         return try {

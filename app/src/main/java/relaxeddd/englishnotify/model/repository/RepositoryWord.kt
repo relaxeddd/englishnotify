@@ -1,18 +1,20 @@
 package relaxeddd.englishnotify.model.repository
 
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.App
-import relaxeddd.englishnotify.common.*
+import relaxeddd.englishnotify.common.ALL_APP_WORDS
+import relaxeddd.englishnotify.common.Func
+import relaxeddd.englishnotify.common.OWN
+import relaxeddd.englishnotify.common.TRAINING_ENG_TO_RUS
+import relaxeddd.englishnotify.common.TRAINING_RUS_TO_ENG
+import relaxeddd.englishnotify.common.TagInfo
+import relaxeddd.englishnotify.common.Word
 import relaxeddd.englishnotify.model.db.AppDatabase
 import relaxeddd.englishnotify.model.db.WordDao
-import relaxeddd.englishnotify.model.http.ApiHelper
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashSet
 
 class RepositoryWord private constructor(private val wordDao: WordDao) {
 
@@ -245,57 +247,5 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         }
 
         return true
-    }
-
-    suspend fun requestSaveAllWords() : Boolean {
-        if (FirebaseAuth.getInstance().currentUser == null) {
-            showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
-            return false
-        }
-
-        val words = ArrayList(words.value?: ArrayList()).filter { !it.isDeleted }
-
-        if (words.isEmpty()) {
-            showToast(getErrorString(RESULT_ERROR_SAVE_WORDS_EMPTY))
-            return false
-        }
-
-        if (words.size > WORDS_SAVE_LIMIT) {
-            showToast(getErrorString(RESULT_ERROR_SAVE_WORDS_TOO_MANY))
-            return false
-        }
-
-        val firebaseUser = RepositoryCommon.getInstance().firebaseUser
-        val tokenId = RepositoryCommon.getInstance().tokenId
-        val answer = ApiHelper.requestSaveWords(firebaseUser, tokenId, words)
-        val isSuccess = answer?.isSuccess() == true
-
-        if (isSuccess) {
-            RepositoryUser.getInstance().setSavedWordsCount(words.size)
-        } else {
-            showToast(getErrorString(answer?.code ?: RESULT_ERROR_SAVE_WORDS))
-        }
-
-        return isSuccess
-    }
-    
-    suspend fun requestLoadAllWords() : Boolean {
-        if (FirebaseAuth.getInstance().currentUser == null) {
-            showToast(getErrorString(RESULT_ERROR_UNAUTHORIZED))
-            return false
-        }
-
-        val firebaseUser = RepositoryCommon.getInstance().firebaseUser
-        val tokenId = RepositoryCommon.getInstance().tokenId
-        val answer = ApiHelper.requestLoadWords(firebaseUser, tokenId)
-
-        if (answer?.result?.isSuccess() == true) {
-            wordDao.deleteAll()
-            updateWords(answer.words)
-            return true
-        } else {
-            showToast(getErrorString(answer?.result?.code ?: RESULT_ERROR_LOAD_WORDS))
-            return false
-        }
     }
 }

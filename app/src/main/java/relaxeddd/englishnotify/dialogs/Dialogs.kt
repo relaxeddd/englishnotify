@@ -72,20 +72,6 @@ abstract class DialogSimpleInfo : DialogFragment() {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-class DialogCheckSaveWords : DialogSimpleChoice() {
-
-    override val textResId: Int = R.string.text_dialog_check_save_words
-    override val positiveButtonTextResId: Int = R.string.yes
-    override val negativeButtonTextResId: Int = R.string.cancel
-}
-
-class DialogCheckLoadWords : DialogSimpleChoice() {
-
-    override val textResId: Int = R.string.text_dialog_check_load_words
-    override val positiveButtonTextResId: Int = R.string.yes
-    override val negativeButtonTextResId: Int = R.string.cancel
-}
-
 class DialogVoiceInput : DialogSimpleChoice() {
 
     override val textResId: Int = R.string.voice_input_error

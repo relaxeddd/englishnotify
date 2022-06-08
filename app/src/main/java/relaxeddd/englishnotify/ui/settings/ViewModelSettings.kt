@@ -19,9 +19,6 @@ import relaxeddd.englishnotify.model.repository.RepositoryWord
 class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelBase() {
 
     private val userObserver = Observer<User?> { user ->
-        val savedWordsString = getAppString(R.string.words_saved, user?.savedWordsCount?.toString() ?: "0")
-        textWordsSaved.value = savedWordsString
-
         updateSignInVisibility()
         if (user != null && user.email.isNotEmpty()) {
             isShowPrivacyPolicy.value = false
@@ -45,7 +42,6 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     val isEnableSecondaryProgress = MutableLiveData(SharedHelper.isEnabledSecondaryProgress())
     val isShowGoogleAuth = MutableLiveData(false)
     val isShowPrivacyPolicy = MutableLiveData(!SharedHelper.isPrivacyPolicyConfirmed())
-    val textWordsSaved = MutableLiveData("")
     val textTrueAnswersToLearn = MutableLiveData(SharedHelper.getTrueAnswersToLearn().toString())
     val textNotificationsLearnPoints = MutableLiveData(SharedHelper.getNotificationLearnPoints().toString())
     
@@ -88,30 +84,6 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
     }
     val clickListenerTheme = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_THEME)
-    }
-    val clickListenerSaveDictionary = View.OnClickListener {
-        val user = repositoryUser.liveDataUser.value
-
-        if (user == null) {
-            showToast(R.string.please_authorize)
-            return@OnClickListener
-        }
-        if (RepositoryWord.getInstance().words.value?.isEmpty() == true) {
-            showToast(getErrorString(RESULT_ERROR_SAVE_WORDS_EMPTY))
-            return@OnClickListener
-        }
-
-        navigateEvent.value = Event(NAVIGATION_DIALOG_CHECK_SAVE_WORDS)
-    }
-    val clickListenerLoadDictionary = View.OnClickListener {
-        val user = repositoryUser.liveDataUser.value
-
-        if (user == null) {
-            showToast(R.string.please_authorize)
-            return@OnClickListener
-        }
-
-        navigateEvent.value = Event(NAVIGATION_DIALOG_CHECK_LOAD_WORDS)
     }
     val clickListenerTrueAnswersToLearn = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_TRUE_ANSWERS_TO_LEARN)
@@ -197,28 +169,6 @@ class ViewModelSettings(private val repositoryUser: RepositoryUser) : ViewModelB
             }
         } else {
             showToast(R.string.logout_error)
-        }
-    }
-
-    fun saveDictionary() {
-        navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
-        viewModelScope.launch {
-            val isSuccess = RepositoryWord.getInstance().requestSaveAllWords()
-            navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
-            if (isSuccess) {
-                showToast(R.string.words_saved_success)
-            }
-        }
-    }
-
-    fun loadDictionary() {
-        navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
-        viewModelScope.launch {
-            val isSuccess = RepositoryWord.getInstance().requestLoadAllWords()
-            navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
-            if (isSuccess) {
-                showToast(R.string.words_loaded)
-            }
         }
     }
 
