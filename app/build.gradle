@@ -20,8 +20,8 @@ android {
         applicationId 'relaxeddd.englishnotify'
         minSdkVersion 21
         targetSdkVersion 31
-        versionCode 87
-        versionName "3.7.5"
+        versionCode 88
+        versionName "4.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
@@ -31,9 +31,8 @@ android {
     }
     buildTypes {
         release {
-            debuggable true
-            minifyEnabled false
-            shrinkResources false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
         }
