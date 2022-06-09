@@ -102,7 +102,6 @@
     <string name="memorize">Memorize</string>
     <string name="mixed">Mixed</string>
     <string name="need_enable_secondary_progress">Need to enable word secondary progress</string>
-    <string name="need_subscription_desc">Sorry, you need to have premium account</string>
     <string name="new_categories">New</string>
     <string name="new_version">New version</string>
     <string name="network_not_available">Network error</string>
@@ -158,7 +157,6 @@
     <string name="receive_notifications_time">Receive notifications time</string>
     <string name="receive_only_exist_words">Receive only exist words</string>
     <string name="remove_from_own_category">Remove from own category</string>
-    <string name="renew_subscription">Get premium account</string>
     <string name="reset_progress">Reset progress</string>
     <string name="right">Right!</string>
     <string name="russian_at_english">Translation-word</string>
@@ -178,16 +176,6 @@
     <string name="settings_not_found">Settings not found</string>
     <string name="sort_by">Sort by</string>
     <string name="statistic">Statistic</string>
-    <string name="sub_advantages">Premium account advantages</string>
-    <string name="sub_advantages_info">Renewing premium account is one-time purchase. No automatic renewing after getting premium account.
-        \n\n- Receive notifications more than once per 4 hours
-        \n\n- Saving and loading saved dictionary option
-        \n\n- Creating your own categories
-        \n\n- Words translation on adding words screen
-        \n\n- Extra test notifications</string>
-    <string name="subscription_days">Premium account days: %s</string>
-    <string name="subscription_time_error">Expired premium account, you can renew it to get advantages</string>
-    <string name="subscription_need">Premium account required</string>
     <string name="swap_main_and_secondary_progress">Swap main and secondary word progress</string>
     <string name="swap_main_and_secondary_progress_text">Swap main and secondary word progress. It is applying to all words</string>
     <string name="swipe_delete_disable">Notifications swipe delete disable</string>
@@ -297,7 +285,11 @@
     </string>
 
     <string name="patch_notes">
-        - Fixed bug when notifications can be received after logout
+        - The application doesn`t use Internet at all. Now it is offline app
+        \n- It is no way to receive words from the backend, so you need to fill the dictionary by your own words
+        \n- Words translation feature while adding words was removed
+        \n- Now you can choose to receive notification every 30 minutes without subscription, but this is new way to send notifications and it is not 100% will work on all Android devices :(
+        \n\n- Fixed bug when notifications can be received after logout
         \n- Display keyboard fixes on Add word screen and Training screen
         \n- Added Updates History menu item at Common tab
         \n- Fixed reset learn progress bug while adding exists word
@@ -439,7 +431,6 @@
     <string name="ic_night_time" translatable="false">Notifications night time option</string>
     <string name="ic_send_test_notification" translatable="false">Send test notification</string>
     <string name="ic_application_info" translatable="false">Application info</string>
-    <string name="ic_subscription_settings" translatable="false">Premium account settings</string>
     <string name="ic_send_feedback" translatable="false">Send feedback</string>
     <string name="ic_training_words_information" translatable="false">Training words information</string>
     <string name="ic_own_words_information" translatable="false">Own words information</string>
@@ -447,7 +438,6 @@
     <string name="ic_learn_stage_settings" translatable="false">Is show learn stage option</string>
     <string name="ic_logout" translatable="false">Logout</string>
     <string name="ic_main_warning_notifications" translatable="false">Warning notifications</string>
-    <string name="ic_main_warning_subscription" translatable="false">Warning premium account</string>
     <string name="ic_own" translatable="false">Word in own category</string>
     <string name="ic_own_created" translatable="false">Word in own category which created by you</string>
     <string name="ic_rating" translatable="false">Users rating by learned words</string>

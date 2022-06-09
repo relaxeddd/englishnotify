@@ -102,7 +102,6 @@
     <string name="memorize">Запоминай</string>
     <string name="mixed">Смешанная</string>
     <string name="need_enable_secondary_progress">Необходимо включить второстепенный прогресс у слов</string>
-    <string name="need_subscription_desc">Извините, необходимо наличие премиум аккаунта</string>
     <string name="new_categories">Новые</string>
     <string name="new_version">Новая версия</string>
     <string name="network_not_available">Ошибка интернет соединения</string>
@@ -158,7 +157,6 @@
     <string name="receive_notifications_time">Получать уведомления</string>
     <string name="receive_only_exist_words">Получать только уже имеющиеся слова</string>
     <string name="remove_from_own_category">Убрать из своей категории</string>
-    <string name="renew_subscription">Продлить премиум аккаунт</string>
     <string name="reset_progress">Сбросить прогресс</string>
     <string name="right">Верно!</string>
     <string name="russian_at_english">Перевод-слово</string>
@@ -178,16 +176,6 @@
     <string name="settings_not_found">Настройки не найдены</string>
     <string name="sort_by">Сортировать по</string>
     <string name="statistic">Статистика</string>
-    <string name="sub_advantages">Премиум аккаунт</string>
-    <string name="sub_advantages_info">Продление премиум аккаунта - это единоразовая покупка. Никакого автоматического списания после покупки или окончания действия премиум аккаунта нету.
-        \n\n- Получение уведомлений чаще чем раз в 4 часа
-        \n\n- Функция сохранения и загрузки сохраненного словаря
-        \n\n- Создание собственных категорий слов
-        \n\n- Функция перевода слов при их добавлении в словарь
-        \n\n- Дополнительные тестовые уведомления</string>
-    <string name="subscription_days">Дней премиум аккаунта: %s</string>
-    <string name="subscription_time_error">Время премиум аккаунта истекло, можно продлить для получения преимуществ</string>
-    <string name="subscription_need">Необходимо продлить премиум аккаунт</string>
     <string name="swap_main_and_secondary_progress">Поменять местами значение основного и второстепенного прогрессов слова</string>
     <string name="swap_main_and_secondary_progress_text">Основной прогресс будет равен второстепенному, а второстепенный - основному. Применяется для всех слов</string>
     <string name="swipe_delete_disable">Нельзя удалять уведомления свайпом</string>
@@ -282,7 +270,11 @@
     </string>
 
     <string name="patch_notes">
-        - Пофикшен баг получения уведомлений после выхода из аккаунта
+        - Приложение теперь не использует интернет и полностью перешло в оффлайн режим
+        \n- Убрано получение слов с сервера из-за пункта выше, теперь необходимо самому заносить слова в словарь
+        \n- Убрана функция перевода слов при добавлении
+        \n- Получение уведомлений возможно каждые 30 минут без подписки, но при этом это новый способ отправки уведомлений и не факт что он будет работать на всех устройствах :(
+        \n\n- Пофикшен баг получения уведомлений после выхода из аккаунта
         \n- Правки показа клавиатуры при переходе на экран добавления слова и экран тренировки
         \n- Добавлен пункт меню История обновлений во вкладке Общее
         \n- Пофикшен баг поиска после перехода на экран добавления слова и обратно

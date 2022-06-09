@@ -125,13 +125,6 @@ class DialogRestoreWord : DialogSimpleChoice() {
     override val positiveButtonTextResId: Int = R.string.reset_progress
 }
 
-class DialogNeedSubscription : DialogSimpleChoice() {
-
-    override val textResId: Int = R.string.need_subscription_desc
-    override val positiveButtonTextResId: Int = R.string.sub_advantages
-    override val negativeButtonTextResId: Int = android.R.string.ok
-}
-
 abstract class DialogSimpleChoice : DialogFragment() {
 
     open val titleResId: Int = EMPTY_RES
