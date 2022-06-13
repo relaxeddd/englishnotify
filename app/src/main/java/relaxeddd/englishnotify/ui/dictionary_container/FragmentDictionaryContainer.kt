@@ -6,14 +6,13 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.*
+import relaxeddd.englishnotify.common.BaseFragment
+import relaxeddd.englishnotify.common.InjectorUtils
 import relaxeddd.englishnotify.databinding.FragmentDictionaryContainerBinding
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.ui.dictionary.FragmentDictionary
 import relaxeddd.englishnotify.ui.dictionary_all.FragmentDictionaryAll
-import relaxeddd.englishnotify.ui.dictionary_exercises.FragmentDictionaryExercises
 import relaxeddd.englishnotify.ui.dictionary_know.FragmentDictionaryKnow
-import relaxeddd.englishnotify.ui.dictionary_own.FragmentDictionaryOwn
 
 class FragmentDictionaryContainer : BaseFragment<ViewModelDictionaryContainer, FragmentDictionaryContainerBinding>() {
 
@@ -55,8 +54,6 @@ class FragmentDictionaryContainer : BaseFragment<ViewModelDictionaryContainer, F
             viewPagerDictionaryContainer.adapter = adapter
             TabLayoutMediator(tabLayoutDictionaryContainer, viewPagerDictionaryContainer) { tab, position ->
                 tab.text = getString(when(position) {
-                    DictionaryTab.OWN.ordinal -> R.string.own_words
-                    DictionaryTab.EXERCISES.ordinal -> R.string.exercises
                     DictionaryTab.KNOW.ordinal -> R.string.already_know
                     else -> R.string.all_words
                 })
@@ -152,8 +149,6 @@ class FragmentDictionaryContainer : BaseFragment<ViewModelDictionaryContainer, F
 
         override fun createFragment(position: Int) : Fragment {
             val fragment = when (position) {
-                DictionaryTab.OWN.ordinal -> FragmentDictionaryOwn()
-                DictionaryTab.EXERCISES.ordinal -> FragmentDictionaryExercises()
                 DictionaryTab.KNOW.ordinal -> FragmentDictionaryKnow()
                 else -> FragmentDictionaryAll()
             }
@@ -165,6 +160,6 @@ class FragmentDictionaryContainer : BaseFragment<ViewModelDictionaryContainer, F
     }
 
     private enum class DictionaryTab {
-        ALL, OWN, EXERCISES, KNOW
+        ALL, KNOW
     }
 }

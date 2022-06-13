@@ -130,8 +130,6 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
         abstract fun getWordContainerDropDawn() : ViewGroup?
         abstract fun getTextTimestamp() : TextView
         abstract fun getTextTags() : TextView
-        abstract fun getImageOwnWord() : ImageView
-        abstract fun getImageOwnCreatedWord() : ImageView
         abstract fun getCheckBoxSelect() : MaterialCheckBox
         abstract fun getImagePlay() : ImageView
         abstract fun getProgressLearn() : ProgressBar
@@ -156,8 +154,6 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
             getTextTimestamp().text = SimpleDateFormat("hh:mm dd.MM", Locale.getDefault()).format(word.timestamp) ?: ""
             getTextTags().text = tagsString
             getTextTags().visibility = if (word.tags.isNotEmpty()) View.VISIBLE else View.GONE
-            getImageOwnWord().visibility = if (word.isOwnCategory) View.VISIBLE else View.GONE
-            getImageOwnCreatedWord().visibility = if (word.isCreatedByUser) View.VISIBLE else View.GONE
 
             getImagePlay().visibility = if (!isSelectState) View.VISIBLE else View.GONE
             getCheckBoxSelect().visibility = if (isSelectState) View.VISIBLE else View.GONE

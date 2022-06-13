@@ -35,8 +35,6 @@ class AdapterDictionary(viewModel: ViewModelDictionary) : AdapterWords<AdapterDi
         override fun getWordContainerDropDawn(): ViewGroup? = itemView.findViewById(R.id.constraint_word_drop_dawn)
         override fun getTextTimestamp(): TextView = itemView.findViewById(R.id.text_word_timestamp)
         override fun getTextTags(): TextView = itemView.findViewById(R.id.text_word_tags)
-        override fun getImageOwnWord(): ImageView = itemView.findViewById(R.id.image_word_own)
-        override fun getImageOwnCreatedWord(): ImageView = itemView.findViewById(R.id.image_word_own_created)
         override fun getCheckBoxSelect(): MaterialCheckBox = itemView.findViewById(R.id.check_box_word_select)
         override fun getImagePlay(): ImageView = itemView.findViewById(R.id.image_word_play)
         override fun getProgressLearn(): ProgressBar = itemView.findViewById(R.id.progress_bar_word_learn_stage)

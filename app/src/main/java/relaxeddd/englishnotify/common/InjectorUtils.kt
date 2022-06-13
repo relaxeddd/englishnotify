@@ -8,8 +8,6 @@ object InjectorUtils {
 
     fun provideMainViewModelFactory() = MainViewModelFactory()
     fun provideDictionaryAllViewModelFactory(context: Context) = DictionaryAllViewModelFactory(RepositoryFactory.getWordRepository(context))
-    fun provideDictionaryOwnViewModelFactory(context: Context) = DictionaryOwnViewModelFactory(RepositoryFactory.getWordRepository(context))
-    fun provideDictionaryExercisesViewModelFactory(context: Context) = DictionaryExercisesViewModelFactory(RepositoryFactory.getWordRepository(context))
     fun provideDictionaryKnowViewModelFactory(context: Context) = DictionaryKnowViewModelFactory(RepositoryFactory.getWordRepository(context))
     fun provideNotificationsViewModelFactory() = NotificationsViewModelFactory()
     fun provideSettingsViewModelFactory() = SettingsViewModelFactory()

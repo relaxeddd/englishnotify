@@ -40,23 +40,6 @@
         android:layout_below="@+id/text_word"
         android:layout_toStartOf="@+id/container_word_icons" />
 
-    <ImageView
-        android:id="@+id/image_word_own"
-        android:layout_width="@dimen/size_16"
-        android:layout_height="@dimen/size_16"
-        app:srcCompat="@drawable/ic_own"
-        android:contentDescription="@string/ic_own"
-        android:layout_alignParentEnd="true"/>
-
-    <ImageView
-        android:id="@+id/image_word_own_created"
-        android:layout_width="@dimen/size_16"
-        android:layout_height="@dimen/size_16"
-        app:srcCompat="@drawable/ic_dictionary_own"
-        android:contentDescription="@string/ic_own_created"
-        android:layout_marginEnd="@dimen/size_4"
-        android:layout_toStartOf="@+id/image_word_own"/>
-
     <FrameLayout
         android:id="@+id/container_word_icons"
         android:layout_width="wrap_content"
