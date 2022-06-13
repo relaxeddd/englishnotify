@@ -256,7 +256,9 @@
 
     <string name="text_app_about">
         Select categories of words which you want to learn and you will receive English words in push notifications. Categories of words adding without app update.
-        \n\nВерсия приложения: %s</string>
+        \n\nApp version: %s
+        \n\nFill free to message me: for.gamer.develop@gmail.com
+    </string>
     <string name="text_own_category">
         You will receive words from here if select "Own category" in notification settings
         \n\nYou can add words here from dictionary (long tap on word) or input via plus button
