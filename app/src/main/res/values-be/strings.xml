@@ -82,7 +82,7 @@
     <string name="i_not_know_it">Я не знаю</string>
     <string name="i_know_it">Я знаю это</string>
     <string name="if_notifications_not_receive">Если не ходят уведомления</string>
-    <string name="is_old_navigation_design">Старая навигационная панель</string>
+    <string name="is_old_navigation_design">Навигация внизу</string>
     <string name="is_show_voice_input">Показывать голосовой ввод</string>
     <string name="incorrect_answer">Неправильный ответ</string>
     <string name="information">Информация</string>
@@ -334,13 +334,13 @@
     <string name="own">Все свои слова</string>
     <string name="irregular">Неправильные глаголы</string>
     <string name="hard">Сложные</string>
-    <string name="all_app_words">Все слова приложения</string>
+    <string name="all_app_words">Все слова</string>
     <string name="all_app_words_without_simple">Все слова (уровень 2)</string>
     <string name="hard_5">Сложные (уровень 2)</string>
     <string name="pronoun">Местоимения</string>
     <string name="proverb">Пословицы</string>
-    <string name="tourists">Для туристов</string>
-    <string name="tourists_5">Для туристов (уровень 2)</string>
+    <string name="tourists">Путешествия</string>
+    <string name="tourists_5">Путешествия (уровень 2)</string>
 
     <string name="human_body">Строение человека</string>
     <string name="human_body_5">Строение человека (уровень 2)</string>

@@ -17,13 +17,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.checkbox.MaterialCheckBox
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.OWN_KEY_SYMBOL
-import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.common.Word
 import relaxeddd.englishnotify.common.animateDropdown
+import relaxeddd.englishnotify.model.preferences.SharedHelper
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashSet
 
 abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewModelDictionary) : ListAdapter<Word, VH>(WordDiffCallback) {
 
@@ -96,8 +94,6 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
             when (it.itemId) {
                 R.id.item_menu_edit -> viewModel.edit(word)
                 R.id.item_menu_delete -> viewModel.deleteWord(word)
-                R.id.item_menu_add_own -> viewModel.addToOwn(word)
-                R.id.item_menu_delete_own -> viewModel.removeFromOwnDict(word)
                 R.id.item_menu_reset_progress -> viewModel.resetProgress(word)
             }
             true
@@ -105,8 +101,6 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
 
         popupMenu.menu.findItem(R.id.item_menu_edit)?.isVisible = word.isCreatedByUser
         popupMenu.menu.findItem(R.id.item_menu_reset_progress)?.isVisible = word.learnStage > 0 || (isEnabledSecondaryProgress && word.learnStageSecondary > 0)
-        popupMenu.menu.findItem(R.id.item_menu_add_own)?.isVisible = !word.isOwnCategory
-        popupMenu.menu.findItem(R.id.item_menu_delete_own)?.isVisible = word.isOwnCategory
         val menuHelper = MenuPopupHelper(view.context, popupMenu.menu as MenuBuilder, view)
         menuHelper.setForceShowIcon(true)
         menuHelper.show()

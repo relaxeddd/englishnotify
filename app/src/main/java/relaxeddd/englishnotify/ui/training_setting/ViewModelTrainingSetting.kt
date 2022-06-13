@@ -4,7 +4,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.google.android.material.radiobutton.MaterialRadioButton
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.*
+import relaxeddd.englishnotify.common.ALL_APP_WORDS
+import relaxeddd.englishnotify.common.CategoryItem
+import relaxeddd.englishnotify.common.Event
+import relaxeddd.englishnotify.common.ISelectCategory
+import relaxeddd.englishnotify.common.NAVIGATION_FRAGMENT_TRAINING
+import relaxeddd.englishnotify.common.ViewModelBase
+import relaxeddd.englishnotify.common.Word
+import relaxeddd.englishnotify.common.showToast
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 
@@ -68,7 +75,6 @@ class ViewModelTrainingSetting(private val repositoryWord: RepositoryWord) : Vie
             }
             when (tag) {
                 ALL_APP_WORDS -> list.add(0, categoryItem)
-                OWN -> list.add(0, categoryItem)
                 else -> list.add(categoryItem)
             }
         }

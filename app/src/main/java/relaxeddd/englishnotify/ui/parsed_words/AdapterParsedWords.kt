@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.Word
-import relaxeddd.englishnotify.model.preferences.SharedHelper
 
 class AdapterParsedWords(val viewModel: ViewModelParsedWords): ListAdapter<Word, AdapterParsedWords.ViewHolder>(WordDiffCallback()) {
 
@@ -47,8 +46,6 @@ class AdapterParsedWords(val viewModel: ViewModelParsedWords): ListAdapter<Word,
 
         popupMenu.menu.findItem(R.id.item_menu_edit)?.isVisible = false
         popupMenu.menu.findItem(R.id.item_menu_reset_progress)?.isVisible = false
-        popupMenu.menu.findItem(R.id.item_menu_add_own)?.isVisible = false
-        popupMenu.menu.findItem(R.id.item_menu_delete_own)?.isVisible = false
         val menuHelper = MenuPopupHelper(view.context, popupMenu.menu as MenuBuilder, view)
         menuHelper.setForceShowIcon(true)
         menuHelper.show()

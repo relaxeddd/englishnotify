@@ -93,22 +93,6 @@ open class ViewModelDictionary(private val repositoryWord: RepositoryWord) : Vie
         navigateEvent.value = Event(NAVIGATION_FRAGMENT_WORD)
     }
 
-    fun addToOwn(word: Word) {
-        navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
-        viewModelScope.launch {
-            repositoryWord.addToOwn(word.id)
-            navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
-        }
-    }
-
-    fun removeFromOwnDict(word: Word) {
-        navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
-        viewModelScope.launch {
-            repositoryWord.removeFromOwn(word.id)
-            navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
-        }
-    }
-
     fun deleteWord(word: Word) {
         navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
         viewModelScope.launch {
