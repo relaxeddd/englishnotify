@@ -35,12 +35,6 @@ class DialogInfoTraining : DialogSimpleInfo() {
     override val textResId: Int = R.string.text_info_words_training
 }
 
-class DialogOwnCategory : DialogSimpleInfo() {
-
-    override val titleResId: Int = R.string.own_category
-    override val textResId: Int = R.string.text_own_category
-}
-
 class DialogPatchNotes : DialogSimpleInfo() {
 
     override val titleResId: Int = R.string.new_version
