@@ -4,10 +4,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import relaxeddd.englishnotify.common.*
+import relaxeddd.englishnotify.common.Event
+import relaxeddd.englishnotify.common.NAVIGATION_LOADING_HIDE
+import relaxeddd.englishnotify.common.NAVIGATION_LOADING_SHOW
+import relaxeddd.englishnotify.common.TagInfo
+import relaxeddd.englishnotify.common.ViewModelBase
+import relaxeddd.englishnotify.common.Word
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.model.repository.RepositoryWord
-import java.util.Comparator
 import kotlin.math.min
 
 class ViewModelStatistic(private val repositoryWord: RepositoryWord) : ViewModelBase() {
@@ -18,7 +22,7 @@ class ViewModelStatistic(private val repositoryWord: RepositoryWord) : ViewModel
         updateOwnWords()
     }
 
-    var ownTagInfo = TagInfo(OWN)
+    var ownTagInfo = TagInfo()
     val ownWords = MutableLiveData<List<Word>>(ArrayList())
 
     init {
@@ -49,7 +53,7 @@ class ViewModelStatistic(private val repositoryWord: RepositoryWord) : ViewModel
     private fun updateWordsTagInfo(words: List<Word>) {
         val learnStageMax = SharedHelper.getTrueAnswersToLearn()
         val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
-        val tagInfoOwn = TagInfo(OWN)
+        val tagInfoOwn = TagInfo()
 
         tagInfoOwn.received = 0
         tagInfoOwn.learned = 0

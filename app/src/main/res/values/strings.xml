@@ -8,7 +8,7 @@
     <string name="add_multiple_words">Add multiple words</string>
     <string name="add_to_own_category">Add to own category</string>
     <string name="add_word">Add word</string>
-    <string name="all_words">All words</string>
+    <string name="all_words">My words</string>
     <string name="alphabetical_name">Alphabetical name</string>
     <string name="alphabetical_translate">Alphabetical translate</string>
     <string name="already_know">Already know</string>
@@ -81,7 +81,7 @@
     <string name="i_not_know_it">I don`t know</string>
     <string name="i_know_it">I know it</string>
     <string name="if_notifications_not_receive">If you do not receive notifications</string>
-    <string name="is_old_navigation_design">Old navigation design</string>
+    <string name="is_old_navigation_design">Bottom navigation</string>
     <string name="is_show_voice_input">Show voice input</string>
     <string name="incorrect">Incorrect</string>
     <string name="incorrect_answer">Incorrect answer</string>
@@ -256,7 +256,9 @@
 
     <string name="text_app_about">
         Select categories of words which you want to learn and you will receive English words in push notifications. Categories of words adding without app update.
-        \n\nВерсия приложения: %s</string>
+        \n\nApp version: %s
+        \n\nFill free to message me: for.gamer.develop@gmail.com
+    </string>
     <string name="text_own_category">
         You will receive words from here if select "Own category" in notification settings
         \n\nYou can add words here from dictionary (long tap on word) or input via plus button
@@ -349,13 +351,13 @@
     <string name="own">All own words</string>
     <string name="irregular">Irregular verbs</string>
     <string name="hard">Hard</string>
-    <string name="all_app_words">All app words</string>
-    <string name="all_app_words_without_simple">All app words (level 2)</string>
+    <string name="all_app_words">All words</string>
+    <string name="all_app_words_without_simple">All words (level 2)</string>
     <string name="hard_5">Hard (level 2)</string>
     <string name="pronoun">Pronouns</string>
     <string name="proverb">Proverbs</string>
-    <string name="tourists">For tourists</string>
-    <string name="tourists_5">For tourists (level 2)</string>
+    <string name="tourists">Travel</string>
+    <string name="tourists_5">Travel (level 2)</string>
 
     <string name="human_body">Human body</string>
     <string name="human_body_5">Human body (level 2)</string>

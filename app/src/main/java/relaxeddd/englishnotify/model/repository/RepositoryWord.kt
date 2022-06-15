@@ -6,7 +6,6 @@ import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.common.ALL_APP_WORDS
 import relaxeddd.englishnotify.common.Func
-import relaxeddd.englishnotify.common.OWN
 import relaxeddd.englishnotify.common.TRAINING_ENG_TO_RUS
 import relaxeddd.englishnotify.common.TRAINING_RUS_TO_ENG
 import relaxeddd.englishnotify.common.TagInfo
@@ -73,7 +72,6 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
                 it.tags.forEach { tag -> if (tag.isNotEmpty()) categories.add(tag) }
             }
         }
-        categories.add(OWN)
         categories.add(ALL_APP_WORDS)
         return categories
     }
@@ -105,7 +103,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         for (word in words) {
             val isWordAlreadyLearned = word.isLearnedForTraining(isEnabledSecondaryProgress, trainingLanguage, learnStageMax)
 
-            if ((word.tags.contains(category) || category == ALL_APP_WORDS || (category == OWN && word.isOwnCategory))
+            if ((word.tags.contains(category) || category == ALL_APP_WORDS)
                     && (!isWordAlreadyLearned && !isTrainLearned || isTrainLearned && isWordAlreadyLearned) && !word.isDeleted) {
                 trainingWords.add(word)
             }
@@ -191,37 +189,6 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         val word = Word(wordId, eng, rus, transcription, tags,
             timestamp = System.currentTimeMillis(), isCreatedByUser = true, isOwnCategory = true)
         updateWord(word)
-    }
-
-    //------------------------------------------------------------------------------------------------------------------
-    suspend fun addToOwn(wordId: String) : Boolean {
-        return addToOwn(Collections.singletonList(wordId))
-    }
-
-    suspend fun removeFromOwn(wordId: String) : Boolean {
-        return removeFromOwn(Collections.singletonList(wordId))
-    }
-
-    private suspend fun addToOwn(wordIds: List<String>) : Boolean {
-        return setIsOwnCategory(wordIds, true)
-    }
-
-    private suspend fun removeFromOwn(wordIds: List<String>) : Boolean {
-        return setIsOwnCategory(wordIds, false)
-    }
-
-    private suspend fun setIsOwnCategory(wordIds: List<String>, isOwnCategory: Boolean) : Boolean {
-        for (wordId in wordIds) {
-            val word = wordDao.findWordById(wordId)
-
-            if (word != null) {
-                val saveWord = Word(word)
-                saveWord.isOwnCategory = isOwnCategory
-                getInstance(wordDao).updateWord(saveWord)
-            }
-        }
-
-        return true
     }
 
     //------------------------------------------------------------------------------------------------------------------

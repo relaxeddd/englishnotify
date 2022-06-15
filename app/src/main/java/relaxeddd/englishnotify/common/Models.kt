@@ -152,7 +152,7 @@ data class InitData(val result: Result?, val user: User?, val words: List<Word>?
 data class CategoryItem(val key: String)
 
 @Keep
-data class TagInfo(val key: String, var total: Int = 0, var learned: Int = 0, var received: Int = 0)
+data class TagInfo(var total: Int = 0, var learned: Int = 0, var received: Int = 0)
 
 @Keep
 data class RatingItem(val name: String, var value: Int = 0)

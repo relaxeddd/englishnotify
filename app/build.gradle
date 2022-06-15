@@ -20,8 +20,8 @@ android {
         applicationId 'relaxeddd.englishnotify'
         minSdkVersion 21
         targetSdkVersion 31
-        versionCode 88
-        versionName "4.0.0"
+        versionCode 89
+        versionName "4.0.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
@@ -48,7 +48,6 @@ android {
 }
 
 dependencies {
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.21'
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.android.material:material:1.6.1'

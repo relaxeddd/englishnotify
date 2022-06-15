@@ -8,19 +8,9 @@
           android:icon="@drawable/ic_edit"
           app:showAsAction="never"/>
 
-    <item android:id="@+id/item_menu_add_own"
-          android:title="@string/add_to_own_category"
-          android:icon="@drawable/ic_own"
-          app:showAsAction="never"/>
-
     <item android:id="@+id/item_menu_reset_progress"
           android:title="@string/reset_progress"
           android:icon="@drawable/ic_reset"
-          app:showAsAction="never"/>
-
-    <item android:id="@+id/item_menu_delete_own"
-          android:title="@string/remove_from_own_category"
-          android:icon="@drawable/ic_close_gray"
           app:showAsAction="never"/>
 
     <item android:id="@+id/item_menu_delete"

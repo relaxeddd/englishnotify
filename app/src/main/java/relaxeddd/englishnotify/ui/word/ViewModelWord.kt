@@ -5,7 +5,15 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.material.radiobutton.MaterialRadioButton
 import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.*
+import relaxeddd.englishnotify.common.CategoryItem
+import relaxeddd.englishnotify.common.Event
+import relaxeddd.englishnotify.common.ISelectCategory
+import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK
+import relaxeddd.englishnotify.common.NAVIGATION_WORD_EXISTS_DIALOG
+import relaxeddd.englishnotify.common.NAVIGATION_WORD_EXISTS_ERROR
+import relaxeddd.englishnotify.common.ViewModelBase
+import relaxeddd.englishnotify.common.Word
+import relaxeddd.englishnotify.common.showToast
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 
@@ -38,9 +46,14 @@ class ViewModelWord : ViewModelBase(), ISelectCategory {
     override fun onRadioButtonInit(category: String, radioButton: MaterialRadioButton) {}
 
     fun createOwnWord(eng: String, transcription: String, rus: String, ownTag: String) {
-        val finalOwnTag = if (ownTag.isBlank()) checkedItem?.key ?: "" else "!$ownTag"
-        if (finalOwnTag != null) {
+        val finalOwnTag = ownTag.ifBlank { checkedItem?.key ?: "" }
+
+        if (finalOwnTag.isNotBlank()) {
             SharedHelper.setLastOwnCategory(finalOwnTag)
+        }
+        val tags = when {
+            finalOwnTag.isNotEmpty() -> listOf(finalOwnTag)
+            else -> emptyList()
         }
 
         viewModelScope.launch {
@@ -48,14 +61,13 @@ class ViewModelWord : ViewModelBase(), ISelectCategory {
 
             if (existsWordId.isNotEmpty()) {
                 existsWord = RepositoryWord.getInstance().getWord(existsWordId)
-                val tags = when {
-                    finalOwnTag.isNotEmpty() -> listOf(finalOwnTag)
-                    else -> emptyList()
-                }
+                val updateIsRequired = existsWord == null || existsWord.eng != eng || existsWord.rus != rus
+                        || existsWord.transcription != transcription
+                        || tags.size != existsWord.tags.size || tags.firstOrNull() != existsWord.tags.firstOrNull()
 
-                if (existsWord == null || existsWord.eng != eng || existsWord.rus != rus || existsWord.transcription != transcription
-                        || (tags != null && (tags.size != existsWord.tags.size || !tags.containsAll(existsWord.tags)))) {
-                    RepositoryWord.getInstance().insertOwnCategoryWord(eng, eng, rus, transcription, tags ?: existsWord?.tags ?: emptyList())
+                if (updateIsRequired) {
+                    RepositoryWord.getInstance().insertOwnCategoryWord(eng, eng, rus, transcription, tags)
+
                     if (eng != this@ViewModelWord.existsWordId) {
                         RepositoryWord.getInstance().removeWordFromDb(this@ViewModelWord.existsWordId)
                     }
@@ -75,7 +87,6 @@ class ViewModelWord : ViewModelBase(), ISelectCategory {
                     }
                     return@launch
                 } else {
-                    val tags = if (finalOwnTag?.isNotEmpty() == true) listOf(finalOwnTag) else emptyList()
                     RepositoryWord.getInstance().insertOwnCategoryWord(eng, eng, rus, transcription, tags)
                 }
             }
@@ -125,18 +136,18 @@ class ViewModelWord : ViewModelBase(), ISelectCategory {
                 list.add(CategoryItem(tag))
             }
 
-            val lastOwnCategory = CategoryItem(SharedHelper.getLastOwnCategory())
+            val lastCategory = CategoryItem(SharedHelper.getLastOwnCategory())
 
             if (existsWordId.isNotEmpty()) {
                 val existsWord = RepositoryWord.getInstance().getWord(existsWordId)
-                val existsWordOwnCategoryKey = existsWord?.tags?.find { isOwnCategory(it) }
+                val existsWordCategoryKey = existsWord?.tags?.firstOrNull()
 
-                if (existsWordOwnCategoryKey != null && list.contains(CategoryItem(existsWordOwnCategoryKey))) {
-                    checkedItem = CategoryItem(existsWordOwnCategoryKey)
+                if (existsWordCategoryKey != null && list.contains(CategoryItem(existsWordCategoryKey))) {
+                    checkedItem = CategoryItem(existsWordCategoryKey)
                 }
-            } else if (lastOwnCategory.key.isNotEmpty()) {
-                if (list.contains(lastOwnCategory)) {
-                    checkedItem = lastOwnCategory
+            } else if (lastCategory.key.isNotEmpty()) {
+                if (list.contains(lastCategory)) {
+                    checkedItem = lastCategory
                 }
             }
 

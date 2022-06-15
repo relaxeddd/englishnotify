@@ -4,16 +4,22 @@ import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import androidx.annotation.WorkerThread
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.RemoteInput
-import androidx.work.ListenableWorker.Result
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.*
+import relaxeddd.englishnotify.common.EXERCISE
+import relaxeddd.englishnotify.common.IS_KNOW
+import relaxeddd.englishnotify.common.NOTIFICATION_ID
+import relaxeddd.englishnotify.common.TYPE_PUSH_ENGLISH
+import relaxeddd.englishnotify.common.TYPE_PUSH_RUSSIAN
+import relaxeddd.englishnotify.common.WORD_ID
+import relaxeddd.englishnotify.common.Word
+import relaxeddd.englishnotify.common.getAppString
+import relaxeddd.englishnotify.common.isNightTime
 import relaxeddd.englishnotify.model.db.AppDatabase
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.ui.main.MainActivity
@@ -47,13 +53,13 @@ class NotificationHelper {
             val languageType = SharedHelper.getLearnLanguageType(context)
 
             val wordDao = AppDatabase.getInstance(context).wordDao()
-            var words = wordDao.getAllItemsNow()
+            val allWords = wordDao.getAllItemsNow()
             val sortByLearnStage = HashMap<Int, ArrayList<Word>>()
 
-            words = words.filter { !it.isDeleted && (it.isOwnCategory || tag.isEmpty() || tag == OWN || it.tags.contains(tag)) }
+            var words = allWords.filter { !it.isDeleted && (it.isOwnCategory || tag.isEmpty() || it.tags.contains(tag)) }
 
             if (words.isEmpty()) {
-                words = words.filter { !it.isDeleted }
+                words = allWords.filter { !it.isDeleted }
             }
 
             for (word in words) {

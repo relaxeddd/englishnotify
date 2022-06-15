@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.common.Word
+import relaxeddd.englishnotify.model.preferences.SharedHelper
 import kotlin.math.min
 
 class AdapterStatistic(val viewModel: ViewModelStatistic): ListAdapter<Word, AdapterStatistic.ViewHolder>(WordDiffCallback()) {
@@ -53,8 +53,6 @@ class AdapterStatistic(val viewModel: ViewModelStatistic): ListAdapter<Word, Ada
 
         popupMenu.menu.findItem(R.id.item_menu_edit)?.isVisible = false
         popupMenu.menu.findItem(R.id.item_menu_reset_progress)?.isVisible = word.learnStage > 0 || (isEnabledSecondaryProgress && word.learnStageSecondary > 0)
-        popupMenu.menu.findItem(R.id.item_menu_add_own)?.isVisible = false
-        popupMenu.menu.findItem(R.id.item_menu_delete_own)?.isVisible = false
         val menuHelper = MenuPopupHelper(view.context, popupMenu.menu as MenuBuilder, view)
         menuHelper.setForceShowIcon(true)
         menuHelper.show()
