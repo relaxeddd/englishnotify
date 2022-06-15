@@ -1,21 +1,20 @@
 package relaxeddd.englishnotify.ui.settings
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.PowerManager
-import android.provider.Settings
 import android.view.View
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.updatePaddingRelative
 import androidx.navigation.Navigation
-import com.judemanutd.autostarter.AutoStartPermissionHelper
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.FragmentSettingsBinding
-import relaxeddd.englishnotify.dialogs.*
+import relaxeddd.englishnotify.dialogs.DialogAppAbout
+import relaxeddd.englishnotify.dialogs.DialogAppTheme
+import relaxeddd.englishnotify.dialogs.DialogInfoTraining
+import relaxeddd.englishnotify.dialogs.DialogNotificationLearnPoints
+import relaxeddd.englishnotify.dialogs.DialogSecondaryProgressInfo
+import relaxeddd.englishnotify.dialogs.DialogSwapProgress
+import relaxeddd.englishnotify.dialogs.DialogTrueAnswersToLearn
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 import kotlin.math.max
 import kotlin.math.min
@@ -80,11 +79,6 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
                     DialogSecondaryProgressInfo().show(this@FragmentSettings.childFragmentManager, "Secondary Progress Info Dialog")
                 }
             }
-            NAVIGATION_DIALOG_OWN_CATEGORY -> {
-                if (isResumed) {
-                    DialogOwnCategory().show(this@FragmentSettings.childFragmentManager, "Check tags Dialog")
-                }
-            }
             NAVIGATION_DIALOG_INFO_TRAINING -> {
                 if (isResumed) {
                     DialogInfoTraining().show(this@FragmentSettings.childFragmentManager, "Info Training Dialog")
@@ -124,39 +118,6 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
                     }
                 }
                 dialog.show(this@FragmentSettings.childFragmentManager, "Notification learn points Dialog")
-            }
-            NAVIGATION_DIALOG_RECEIVE_HELP -> {
-                val ctx = context ?: return
-
-                DialogNotificationsNotShow().apply {
-                    this.confirmListener = object : ListenerResult<Boolean> {
-                        override fun onResult(result: Boolean) {
-                            if (!result) {
-                                return
-                            }
-
-                            if (AutoStartPermissionHelper.getInstance().isAutoStartPermissionAvailable(ctx)) {
-                                val isStarted = AutoStartPermissionHelper.getInstance().getAutoStartPermission(ctx)
-
-                                if (!isStarted) {
-                                    showToast(R.string.settings_not_found)
-                                }
-                            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                val pkg = ctx.packageName
-                                val pm = getSystemService(ctx, PowerManager::class.java) ?: return
-
-                                if (!pm.isIgnoringBatteryOptimizations(pkg)) {
-                                    try {
-                                        startActivity(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).setData(Uri.parse("package:$pkg")))
-                                    } catch (e: Exception) {}
-                                } else {
-                                    DialogInfoReceiveHelp().show(this@FragmentSettings.childFragmentManager, "Receive help Dialog")
-                                }
-                            }
-                        }
-                    }
-                    show(this@FragmentSettings.childFragmentManager, "Notifications not Show Dialog")
-                }
             }
             NAVIGATION_WEB_PLAY_MARKET -> {
                 openWebApplication(activity)
