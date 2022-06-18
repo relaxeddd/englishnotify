@@ -12,7 +12,6 @@ import android.speech.RecognizerIntent
 import android.speech.tts.TextToSpeech
 import android.view.View
 import android.view.WindowInsets
-import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -57,7 +56,6 @@ class MainActivity : AppCompatActivity(), NavigationHost, FloatingActionButtonHo
 
     private var currentFragmentId: Int = NAV_ID_NONE
     private lateinit var navController: NavController
-    private var navigationHeaderBinding: NavigationHeaderBinding? = null
 
     private var tts: TextToSpeech? = null
     private var isTtsInit = false
@@ -76,151 +74,20 @@ class MainActivity : AppCompatActivity(), NavigationHost, FloatingActionButtonHo
         super.onCreate(savedInstanceState)
 
         binding = MainActivityBinding.inflate(layoutInflater).also {
-            it.lifecycleOwner = this
             setContentView(it.root)
+            setupTheme(it)
         }
-
-        setupTheme()
-        setupThemeColors()
-
-        subscribeToViewModel()
 
         volumeControlStream = AudioManager.STREAM_MUSIC
 
         val isBottomNavigation = SharedHelper.isOldNavigationDesign()
-
-        navigationHeaderBinding = NavigationHeaderBinding.inflate(layoutInflater).apply {
-            lifecycleOwner = this@MainActivity
-        }
-
-        if (!isBottomNavigation) {
-            binding.drawerContainer.setOnApplyWindowInsetsListener { v, insets ->
-                v.onApplyWindowInsets(insets)
-                v.updatePadding(
-                    left = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                        insets.getInsets(WindowInsets.Type.systemBars()).left
-                    } else {
-                        @Suppress("DEPRECATION")
-                        insets.systemWindowInsetLeft
-                    },
-                    right = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                        insets.getInsets(WindowInsets.Type.systemBars()).right
-                    } else {
-                        @Suppress("DEPRECATION")
-                        insets.systemWindowInsetRight
-                    }
-                )
-
-                val topInset = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                    insets.getInsets(WindowInsets.Type.systemBars()).top
-                } else {
-                    @Suppress("DEPRECATION")
-                    insets.systemWindowInsetTop
-                }
-                val bottomInset = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                    insets.getInsets(WindowInsets.Type.systemBars()).bottom
-                } else {
-                    @Suppress("DEPRECATION")
-                    insets.systemWindowInsetBottom
-                }
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                    WindowInsets.Builder(insets).setInsets(WindowInsets.Type.systemBars(), Insets.of(0, topInset, 0, bottomInset)).build()
-                } else {
-                    @Suppress("DEPRECATION")
-                    insets.replaceSystemWindowInsets(0, topInset, 0, bottomInset)
-                }
-            }
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.setDecorFitsSystemWindows(false)
-        } else {
-            @Suppress("DEPRECATION")
-            binding.containerMainActivity.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                    View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-        }
-
-        binding.containerMainActivity.setOnApplyWindowInsetsListener(NoopWindowInsetsListener)
-        binding.statusBarScrim.setOnApplyWindowInsetsListener(HeightTopWindowInsetsListener)
-
         val initialNavigationId = SharedHelper.getStartFragmentId()
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_navigation_host) as NavHostFragment
-        navController = navHostFragment.navController
-
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            val isTopLevelTab = isTopLevelTab(destination.id)
-
-            currentFragmentId = destination.id
-            if (isTopLevelTab) {
-                SharedHelper.setStartFragmentId(destination.id)
-            }
-            if (!isBottomNavigation) {
-                val lockMode = if (isTopLevelTab) {
-                    DrawerLayout.LOCK_MODE_UNLOCKED
-                } else {
-                    DrawerLayout.LOCK_MODE_LOCKED_CLOSED
-                }
-                binding.drawer.setDrawerLockMode(lockMode)
-            } else {
-                binding.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-            }
-        }
-
-        Navigation.setViewNavController(binding.buttonMainFab, navController)
-
-        binding.bottomNavigationViewMain.setOnNavigationItemSelectedListener {
-            if (it.itemId == currentFragmentId) {
-                return@setOnNavigationItemSelectedListener true
-            }
-            when (it.itemId) {
-                R.id.fragmentDictionaryContainer -> navController.myNavigate(R.id.action_global_fragmentDictionaryContainer)
-                R.id.fragmentTrainingSetting -> navController.myNavigate(R.id.action_global_fragmentTrainingSetting)
-                R.id.fragmentNotifications -> navController.myNavigate(R.id.action_global_fragmentNotifications)
-                R.id.fragmentSettings -> navController.myNavigate(R.id.action_global_fragmentSettings)
-                else -> return@setOnNavigationItemSelectedListener false
-            }
-            currentFragmentId = it.itemId
-
-            return@setOnNavigationItemSelectedListener true
-        }
-
-        if (!isBottomNavigation) {
-            binding.drawerNavigation.apply {
-                val menuView = findViewById<RecyclerView>(R.id.design_navigation_view)
-
-                navigationHeaderBinding?.apply {
-                    doOnApplyWindowInsets { v, insets, padding ->
-                        v.updatePadding(top = padding.top + insets.systemWindowInsetTop)
-                        menuView?.updatePadding(bottom = insets.systemWindowInsetBottom)
-                    }
-                    addHeaderView(root)
-                    imageNavigationHeaderLike.setOnClickListener {
-                        openWebApplication(this@MainActivity)
-                    }
-                }
-                itemBackground = navigationItemBackground(context)
-
-                setupWithNavController(this, navController)
-            }
-        }
-
-        findViewById<ImageView>(R.id.image_header_logo)?.setOnClickListener {
-            onNavigationEvent(NAVIGATION_DIALOG_RATE_APP)
-        }
+        initInsets(binding, isBottomNavigation)
+        initNavigation(binding, isBottomNavigation, initialNavigationId)
 
         viewModel.onViewCreate()
 
-        if (!isBottomNavigation) {
-            binding.drawerNavigation.setCheckedItem(initialNavigationId)
-        } else {
-            binding.bottomNavigationViewMain.selectedItemId = initialNavigationId
-        }
-        when (initialNavigationId) {
-            R.id.fragmentTrainingSetting -> navController.myNavigate(R.id.action_global_fragmentTrainingSetting)
-            R.id.fragmentNotifications -> navController.myNavigate(R.id.action_global_fragmentNotifications)
-            R.id.fragmentSettings -> navController.myNavigate(R.id.action_global_fragmentSettings)
-        }
+        subscribeToViewModel()
     }
 
     override fun onResume() {
@@ -426,8 +293,6 @@ class MainActivity : AppCompatActivity(), NavigationHost, FloatingActionButtonHo
         isPlaying = false
     }
 
-    private fun isTopLevelTab(tabResId: Int) = TOP_LEVEL_DESTINATIONS.contains(tabResId)
-
     private fun getLocaleStringByKey(key: String) = when(key) {
         "EN" -> Locale.US.toString()
         "RU" -> Locale("ru", "RU").toString()
@@ -440,7 +305,7 @@ class MainActivity : AppCompatActivity(), NavigationHost, FloatingActionButtonHo
         else -> null
     }
 
-    private fun setupTheme() {
+    private fun setupTheme(binding: MainActivityBinding) {
         when (SharedHelper.getAppThemeType(this)) {
             THEME_STANDARD -> setTheme(R.style.AppTheme)
             THEME_BLUE -> setTheme(R.style.AppTheme2)
@@ -448,12 +313,139 @@ class MainActivity : AppCompatActivity(), NavigationHost, FloatingActionButtonHo
             THEME_BLUE_LIGHT -> setTheme(R.style.AppTheme4)
             else -> setTheme(R.style.AppTheme)
         }
-    }
 
-    private fun setupThemeColors() {
         val isNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
         binding.bottomNavigationViewMain.setBackgroundColor(ContextCompat.getColor(this, if (isNightMode) R.color.bottom_navigation_color else getPrimaryColorResId()))
         binding.bottomNavigationViewMain.itemBackgroundResource = if (isNightMode) R.color.bottom_navigation_color else getPrimaryColorResId()
         binding.buttonMainFab.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, if (isNightMode) R.color.floating_button_color else getPrimaryColorResId()))
     }
+
+    private fun initInsets(binding: MainActivityBinding, isBottomNavigation: Boolean) {
+        if (!isBottomNavigation) {
+            binding.drawerContainer.setOnApplyWindowInsetsListener { v, insets ->
+                v.onApplyWindowInsets(insets)
+                v.updatePadding(
+                    left = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        insets.getInsets(WindowInsets.Type.systemBars()).left
+                    } else {
+                        @Suppress("DEPRECATION")
+                        insets.systemWindowInsetLeft
+                    },
+                    right = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        insets.getInsets(WindowInsets.Type.systemBars()).right
+                    } else {
+                        @Suppress("DEPRECATION")
+                        insets.systemWindowInsetRight
+                    }
+                )
+
+                val topInset = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    insets.getInsets(WindowInsets.Type.systemBars()).top
+                } else {
+                    @Suppress("DEPRECATION")
+                    insets.systemWindowInsetTop
+                }
+                val bottomInset = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    insets.getInsets(WindowInsets.Type.systemBars()).bottom
+                } else {
+                    @Suppress("DEPRECATION")
+                    insets.systemWindowInsetBottom
+                }
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    WindowInsets.Builder(insets).setInsets(WindowInsets.Type.systemBars(), Insets.of(0, topInset, 0, bottomInset)).build()
+                } else {
+                    @Suppress("DEPRECATION")
+                    insets.replaceSystemWindowInsets(0, topInset, 0, bottomInset)
+                }
+            }
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.setDecorFitsSystemWindows(false)
+        } else {
+            @Suppress("DEPRECATION")
+            binding.containerMainActivity.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                    View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+        }
+
+        binding.containerMainActivity.setOnApplyWindowInsetsListener(NoopWindowInsetsListener)
+        binding.statusBarScrim.setOnApplyWindowInsetsListener(HeightTopWindowInsetsListener)
+    }
+
+    private fun initNavigation(binding: MainActivityBinding, isBottomNavigation: Boolean, initialNavigationId: Int) {
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_navigation_host) as NavHostFragment
+        navController = navHostFragment.navController
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            val isTopLevelTab = isTopLevelTab(destination.id)
+
+            currentFragmentId = destination.id
+            if (isTopLevelTab) {
+                SharedHelper.setStartFragmentId(destination.id)
+            }
+            if (!isBottomNavigation) {
+                val lockMode = if (isTopLevelTab) {
+                    DrawerLayout.LOCK_MODE_UNLOCKED
+                } else {
+                    DrawerLayout.LOCK_MODE_LOCKED_CLOSED
+                }
+                binding.drawer.setDrawerLockMode(lockMode)
+            } else {
+                binding.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+            }
+        }
+
+        Navigation.setViewNavController(binding.buttonMainFab, navController)
+
+        binding.bottomNavigationViewMain.setOnNavigationItemSelectedListener {
+            if (it.itemId == currentFragmentId) {
+                return@setOnNavigationItemSelectedListener true
+            }
+            when (it.itemId) {
+                R.id.fragmentDictionaryContainer -> navController.myNavigate(R.id.action_global_fragmentDictionaryContainer)
+                R.id.fragmentTrainingSetting -> navController.myNavigate(R.id.action_global_fragmentTrainingSetting)
+                R.id.fragmentNotifications -> navController.myNavigate(R.id.action_global_fragmentNotifications)
+                R.id.fragmentSettings -> navController.myNavigate(R.id.action_global_fragmentSettings)
+                else -> return@setOnNavigationItemSelectedListener false
+            }
+            currentFragmentId = it.itemId
+
+            return@setOnNavigationItemSelectedListener true
+        }
+
+        if (!isBottomNavigation) {
+            binding.drawerNavigation.let { drawerNavigation ->
+                val menuView = findViewById<RecyclerView>(R.id.design_navigation_view)
+
+                NavigationHeaderBinding.inflate(layoutInflater).let { navigationHeaderView ->
+                    drawerNavigation.doOnApplyWindowInsets { v, insets, padding ->
+                        v.updatePadding(top = padding.top + insets.systemWindowInsetTop)
+                        menuView?.updatePadding(bottom = insets.systemWindowInsetBottom)
+                    }
+                    drawerNavigation.addHeaderView(navigationHeaderView.root)
+                    navigationHeaderView.imageNavigationHeaderLike.setOnClickListener {
+                        openWebApplication(this@MainActivity)
+                    }
+                    navigationHeaderView.imageHeaderLogo.setOnClickListener {
+                        onNavigationEvent(NAVIGATION_DIALOG_RATE_APP)
+                    }
+                }
+                drawerNavigation.itemBackground = navigationItemBackground(this)
+
+                setupWithNavController(drawerNavigation, navController)
+                drawerNavigation.setCheckedItem(initialNavigationId)
+            }
+        } else {
+            binding.bottomNavigationViewMain.selectedItemId = initialNavigationId
+        }
+
+        when (initialNavigationId) {
+            R.id.fragmentTrainingSetting -> navController.myNavigate(R.id.action_global_fragmentTrainingSetting)
+            R.id.fragmentNotifications -> navController.myNavigate(R.id.action_global_fragmentNotifications)
+            R.id.fragmentSettings -> navController.myNavigate(R.id.action_global_fragmentSettings)
+        }
+    }
+
+    private fun isTopLevelTab(tabResId: Int) = TOP_LEVEL_DESTINATIONS.contains(tabResId)
 }
