@@ -13,8 +13,11 @@ import android.speech.tts.TextToSpeech
 import android.view.View
 import android.view.WindowInsets
 import android.widget.ImageView
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
@@ -32,11 +35,10 @@ import relaxeddd.englishnotify.dialogs.DialogPatchNotes
 import relaxeddd.englishnotify.dialogs.DialogRateApp
 import relaxeddd.englishnotify.dialogs.DialogVoiceInput
 import relaxeddd.englishnotify.model.preferences.SharedHelper
-import relaxeddd.englishnotify.push.PushTokenHelper
 import java.util.*
 import kotlin.system.exitProcess
 
-class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>(), NavigationHost, FloatingActionButtonHost {
+class MainActivity : AppCompatActivity(), NavigationHost, FloatingActionButtonHost {
 
     companion object {
         const val REQUEST_RECOGNIZE_SPEECH = 5242
@@ -51,6 +53,8 @@ class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>(), Navigat
         )
     }
 
+    private lateinit var binding: MainActivityBinding
+
     private var currentFragmentId: Int = NAV_ID_NONE
     private lateinit var navController: NavController
     private var navigationHeaderBinding: NavigationHeaderBinding? = null
@@ -64,28 +68,32 @@ class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>(), Navigat
     private var isPlaying = false
     private var recognizeSpeechCallback: ((String?) -> Unit)? = null
 
-    override fun getLayoutResId() = R.layout.main_activity
-    override fun getViewModelFactory() = InjectorUtils.provideMainViewModelFactory()
-    override fun getViewModelClass(): Class<ViewModelMain> = ViewModelMain::class.java
+    var isMyResumed = false
+    val viewModel: ViewModelMain by viewModels()
 
-    override fun configureBinding() {
-        super.configureBinding()
-        binding.viewModel = viewModel
-    }
-
+    //------------------------------------------------------------------------------------------------------------------
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        volumeControlStream = AudioManager.STREAM_MUSIC
-        PushTokenHelper.initChannelNotifications(this)
+        binding = MainActivityBinding.inflate(layoutInflater).also {
+            it.lifecycleOwner = this
+            setContentView(it.root)
+        }
 
-        val isOldDesign = SharedHelper.isOldNavigationDesign()
+        setupTheme()
+        setupThemeColors()
+
+        subscribeToViewModel()
+
+        volumeControlStream = AudioManager.STREAM_MUSIC
+
+        val isBottomNavigation = SharedHelper.isOldNavigationDesign()
 
         navigationHeaderBinding = NavigationHeaderBinding.inflate(layoutInflater).apply {
             lifecycleOwner = this@MainActivity
         }
 
-        if (!isOldDesign) {
+        if (!isBottomNavigation) {
             binding.drawerContainer.setOnApplyWindowInsetsListener { v, insets ->
                 v.onApplyWindowInsets(insets)
                 v.updatePadding(
@@ -147,7 +155,7 @@ class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>(), Navigat
             if (isTopLevelTab) {
                 SharedHelper.setStartFragmentId(destination.id)
             }
-            if (!isOldDesign) {
+            if (!isBottomNavigation) {
                 val lockMode = if (isTopLevelTab) {
                     DrawerLayout.LOCK_MODE_UNLOCKED
                 } else {
@@ -161,7 +169,7 @@ class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>(), Navigat
 
         Navigation.setViewNavController(binding.buttonMainFab, navController)
 
-        binding.navigationViewMain.setOnNavigationItemSelectedListener {
+        binding.bottomNavigationViewMain.setOnNavigationItemSelectedListener {
             if (it.itemId == currentFragmentId) {
                 return@setOnNavigationItemSelectedListener true
             }
@@ -177,8 +185,8 @@ class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>(), Navigat
             return@setOnNavigationItemSelectedListener true
         }
 
-        if (!isOldDesign) {
-            binding.navigation.apply {
+        if (!isBottomNavigation) {
+            binding.drawerNavigation.apply {
                 val menuView = findViewById<RecyclerView>(R.id.design_navigation_view)
 
                 navigationHeaderBinding?.apply {
@@ -203,10 +211,10 @@ class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>(), Navigat
 
         viewModel.onViewCreate()
 
-        if (!isOldDesign) {
-            binding.navigation.setCheckedItem(initialNavigationId)
+        if (!isBottomNavigation) {
+            binding.drawerNavigation.setCheckedItem(initialNavigationId)
         } else {
-            binding.navigationViewMain.selectedItemId = initialNavigationId
+            binding.bottomNavigationViewMain.selectedItemId = initialNavigationId
         }
         when (initialNavigationId) {
             R.id.fragmentTrainingSetting -> navController.myNavigate(R.id.action_global_fragmentTrainingSetting)
@@ -217,7 +225,12 @@ class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>(), Navigat
 
     override fun onResume() {
         super.onResume()
-        viewModel.onViewResume()
+        isMyResumed = true
+    }
+
+    override fun onPause() {
+        super.onPause()
+        isMyResumed = false
     }
 
     override fun onStop() {
@@ -238,7 +251,7 @@ class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>(), Navigat
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        currentFragmentId = binding.navigation.checkedItem?.itemId ?: NAV_ID_NONE
+        currentFragmentId = binding.drawerNavigation.checkedItem?.itemId ?: NAV_ID_NONE
     }
 
     override fun registerToolbar(toolbar: Toolbar) {
@@ -275,7 +288,8 @@ class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>(), Navigat
         }
     }
 
-    override fun onNavigationEvent(eventId: Int) {
+    //------------------------------------------------------------------------------------------------------------------
+    fun onNavigationEvent(eventId: Int) {
         when (eventId) {
             NAVIGATION_ACTIVITY_BACK -> {
                 onBackPressed()
@@ -319,16 +333,7 @@ class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>(), Navigat
             }
             NAVIGATION_LOADING_SHOW -> setLoadingVisible(true)
             NAVIGATION_LOADING_HIDE -> setLoadingVisible(false)
-            else -> super.onNavigationEvent(eventId)
         }
-    }
-
-    override fun setupThemeColors() {
-        super.setupThemeColors()
-        val isNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
-        binding.navigationViewMain.setBackgroundColor(ContextCompat.getColor(this, if (isNightMode) R.color.bottom_navigation_color else getPrimaryColorResId()))
-        binding.navigationViewMain.itemBackgroundResource = if (isNightMode) R.color.bottom_navigation_color else getPrimaryColorResId()
-        binding.buttonMainFab.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, if (isNightMode) R.color.floating_button_color else getPrimaryColorResId()))
     }
 
     fun setLoadingVisible(isVisible: Boolean) {
@@ -393,6 +398,22 @@ class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>(), Navigat
         }
     }
 
+    //------------------------------------------------------------------------------------------------------------------
+    private fun subscribeToViewModel() {
+        viewModel.navigation.observe(this) {
+            it.getContentIfNotHandled()?.let { eventId ->
+                onNavigationEvent(eventId)
+            }
+        }
+        viewModel.isShowLoading.observe(this) {
+            binding.containerMainProgressBar.isVisible = it
+        }
+        viewModel.isBottomNavigation.observe(this) {
+            binding.bottomNavigationViewMain.isVisible = it
+            binding.drawerNavigation.isVisible = !it
+        }
+    }
+
     private fun speak(textToSpeak: String) {
         if (textToSpeak == lastVoiceText && isFastSpeechSpeed) {
             tts?.setSpeechRate(0.5f)
@@ -401,14 +422,8 @@ class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>(), Navigat
             tts?.setSpeechRate(1f)
             isFastSpeechSpeed = true
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            tts?.speak(textToSpeak, TextToSpeech.QUEUE_FLUSH, null, null)
-            isPlaying = false
-        } else {
-            @Suppress("DEPRECATION")
-            tts?.speak(textToSpeak, TextToSpeech.QUEUE_FLUSH, null)
-            isPlaying = false
-        }
+        tts?.speak(textToSpeak, TextToSpeech.QUEUE_FLUSH, null, null)
+        isPlaying = false
     }
 
     private fun isTopLevelTab(tabResId: Int) = TOP_LEVEL_DESTINATIONS.contains(tabResId)
@@ -423,5 +438,22 @@ class MainActivity : ActivityBase<ViewModelMain, MainActivityBinding>(), Navigat
         "JA" -> Locale.JAPAN.toString()
         "IT" -> Locale.ITALY.toString()
         else -> null
+    }
+
+    private fun setupTheme() {
+        when (SharedHelper.getAppThemeType(this)) {
+            THEME_STANDARD -> setTheme(R.style.AppTheme)
+            THEME_BLUE -> setTheme(R.style.AppTheme2)
+            THEME_BLACK -> setTheme(R.style.AppTheme3)
+            THEME_BLUE_LIGHT -> setTheme(R.style.AppTheme4)
+            else -> setTheme(R.style.AppTheme)
+        }
+    }
+
+    private fun setupThemeColors() {
+        val isNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+        binding.bottomNavigationViewMain.setBackgroundColor(ContextCompat.getColor(this, if (isNightMode) R.color.bottom_navigation_color else getPrimaryColorResId()))
+        binding.bottomNavigationViewMain.itemBackgroundResource = if (isNightMode) R.color.bottom_navigation_color else getPrimaryColorResId()
+        binding.buttonMainFab.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, if (isNightMode) R.color.floating_button_color else getPrimaryColorResId()))
     }
 }

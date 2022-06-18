@@ -6,7 +6,6 @@ import relaxeddd.englishnotify.model.repository.RepositoryWord
 
 object InjectorUtils {
 
-    fun provideMainViewModelFactory() = MainViewModelFactory()
     fun provideDictionaryAllViewModelFactory(context: Context) = DictionaryAllViewModelFactory(RepositoryFactory.getWordRepository(context))
     fun provideDictionaryKnowViewModelFactory(context: Context) = DictionaryKnowViewModelFactory(RepositoryFactory.getWordRepository(context))
     fun provideNotificationsViewModelFactory() = NotificationsViewModelFactory()

@@ -7,7 +7,6 @@ import relaxeddd.englishnotify.ui.categories.section.ViewModelCategorySection
 import relaxeddd.englishnotify.ui.dictionary_all.ViewModelDictionaryAll
 import relaxeddd.englishnotify.ui.dictionary_container.ViewModelDictionaryContainer
 import relaxeddd.englishnotify.ui.dictionary_know.ViewModelDictionaryKnow
-import relaxeddd.englishnotify.ui.main.ViewModelMain
 import relaxeddd.englishnotify.ui.notifications.ViewModelNotifications
 import relaxeddd.englishnotify.ui.parse.ViewModelParse
 import relaxeddd.englishnotify.ui.parsed_words.ViewModelParsedWords
@@ -33,14 +32,6 @@ class DictionaryKnowViewModelFactory(private val repositoryWord: RepositoryWord)
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return ViewModelDictionaryKnow(repositoryWord) as T
-    }
-}
-
-class MainViewModelFactory : ViewModelProvider.NewInstanceFactory() {
-
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return ViewModelMain() as T
     }
 }
 

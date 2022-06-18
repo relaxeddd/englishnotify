@@ -3,15 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-        <import type="android.view.View"/>
-        <variable
-            name="viewModel"
-            type="relaxeddd.englishnotify.ui.main.ViewModelMain"/>
-
-    </data>
-
     <relaxeddd.englishnotify.common.NavigationBarContentFrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -37,7 +28,7 @@
                     android:name="androidx.navigation.fragment.NavHostFragment"
                     app:navGraph="@navigation/navigation_graph"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toTopOf="@+id/navigation_view_main"
+                    app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_view_main"
                     app:defaultNavHost="true"/>
 
                 <View
@@ -52,7 +43,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toTopOf="@+id/navigation_view_main"
+                    app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_view_main"
                     android:src="@drawable/ic_plus"
                     app:tint="@color/white"
                     app:borderWidth="0dp"
@@ -63,7 +54,7 @@
                     tools:visibility="visible"/>
 
                 <com.google.android.material.bottomnavigation.BottomNavigationView
-                    android:id="@+id/navigation_view_main"
+                    android:id="@+id/bottom_navigation_view_main"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:itemIconTint="@drawable/selector_bottom_navigation"
@@ -73,15 +64,13 @@
                     android:backgroundTintMode="src_over"
                     android:background="@color/bottom_navigation_color"
                     app:itemBackground="@color/bottom_navigation_color"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:visibility="@{safeUnbox(viewModel.isOldNavigation()) ? View.VISIBLE : View.GONE}"/>
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
                 <RelativeLayout
                     android:id="@+id/container_main_progress_bar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:elevation="@dimen/size_16"
-                    android:visibility="@{safeUnbox(viewModel.isShowLoading) ? View.VISIBLE : View.GONE}"
                     android:clickable="true"
                     android:focusable="true">
 
@@ -95,14 +84,13 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.navigation.NavigationView
-                android:id="@+id/navigation"
+                android:id="@+id/drawer_navigation"
                 android:layout_width="@dimen/nav_drawer_width"
                 android:layout_height="match_parent"
                 android:layout_gravity="start"
                 app:insetForeground="@color/transparent"
                 app:menu="@menu/navigation"
-                tools:visibility="gone"
-                android:visibility="@{safeUnbox(viewModel.isOldNavigation()) ? View.GONE : View.VISIBLE}"/>
+                tools:visibility="gone"/>
 
         </androidx.drawerlayout.widget.DrawerLayout>
 
