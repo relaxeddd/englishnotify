@@ -2,11 +2,16 @@ package relaxeddd.englishnotify.ui.training
 
 import android.os.Bundle
 import android.view.View
-import android.view.animation.*
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
+import android.view.animation.AnimationSet
+import android.view.animation.TranslateAnimation
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.core.view.doOnLayout
+import androidx.fragment.app.viewModels
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.FragmentTrainingBinding
@@ -30,16 +35,16 @@ class FragmentTraining : BaseFragment<ViewModelTraining, FragmentTrainingBinding
 
     override fun getLayoutResId() = R.layout.fragment_training
     override fun getToolbarTitle() = toolbarTitleTraining
-    override fun getViewModelFactory() = InjectorUtils.provideTrainingViewModelFactory(requireContext())
-    override fun getViewModelClass() = ViewModelTraining::class.java
     override fun isHomeMenuButtonEnabled() = true
     override fun getHomeMenuButtonIconResId() = R.drawable.ic_back
     override fun getHomeMenuButtonListener(): () -> Unit = {
         onNavigationEvent(NAVIGATION_ACTIVITY_BACK)
     }
 
-    override fun configureBinding() {
-        super.configureBinding()
+    override val viewModel: ViewModelTraining by viewModels()
+
+    override fun subscribeToViewModel() {
+        super.subscribeToViewModel()
         val category = arguments?.getString(CATEGORY) ?: ALL_APP_WORDS
         toolbarTitleTraining = getStringByResName(category).replaceFirst(OWN_KEY_SYMBOL, "")
         viewModel.category = category

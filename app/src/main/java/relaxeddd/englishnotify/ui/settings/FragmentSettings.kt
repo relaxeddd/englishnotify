@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.updatePaddingRelative
+import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
@@ -38,12 +39,12 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
 
     override fun getLayoutResId() = R.layout.fragment_settings
     override fun getToolbarTitleResId() = R.string.common
-    override fun getViewModelFactory() = InjectorUtils.provideSettingsViewModelFactory()
-    override fun getViewModelClass() = ViewModelSettings::class.java
     override fun isTopLevelFragment() = true
 
-    override fun configureBinding() {
-        super.configureBinding()
+    override val viewModel: ViewModelSettings by viewModels()
+
+    override fun subscribeToViewModel() {
+        super.subscribeToViewModel()
         binding?.viewModel = viewModel
     }
 

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.core.view.updatePaddingRelative
+import androidx.fragment.app.viewModels
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.FragmentTrainingSettingBinding
@@ -16,8 +17,6 @@ class FragmentTrainingSetting : BaseFragment<ViewModelTrainingSetting, FragmentT
 
     override fun getLayoutResId() = R.layout.fragment_training_setting
     override fun getToolbarTitleResId() = R.string.training_setting
-    override fun getViewModelFactory() = InjectorUtils.provideTrainingSettingViewModelFactory(requireContext())
-    override fun getViewModelClass() = ViewModelTrainingSetting::class.java
     override fun getMenuResId() = R.menu.menu_accept
     override fun isHomeMenuButtonEnabled() = true
     override fun getHomeMenuButtonIconResId() = R.drawable.ic_back
@@ -28,6 +27,8 @@ class FragmentTrainingSetting : BaseFragment<ViewModelTrainingSetting, FragmentT
     override fun getFabIconResId() = R.drawable.ic_accept
     override fun getFabListener() = View.OnClickListener { viewModel.onClickAccept() }
 
+    override val viewModel: ViewModelTrainingSetting by viewModels()
+
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.item_menu_accept -> {
             viewModel.onClickAccept()
@@ -36,8 +37,8 @@ class FragmentTrainingSetting : BaseFragment<ViewModelTrainingSetting, FragmentT
         else -> super.onOptionsItemSelected(item)
     }
 
-    override fun configureBinding() {
-        super.configureBinding()
+    override fun subscribeToViewModel() {
+        super.subscribeToViewModel()
         adapter = AdapterCategories(viewModel)
         val binding = binding ?: return
 

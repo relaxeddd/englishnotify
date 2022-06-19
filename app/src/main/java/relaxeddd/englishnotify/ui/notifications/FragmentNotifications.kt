@@ -3,11 +3,16 @@ package relaxeddd.englishnotify.ui.notifications
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.updatePaddingRelative
+import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
-import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.R
+import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.FragmentNotificationsBinding
-import relaxeddd.englishnotify.dialogs.*
+import relaxeddd.englishnotify.dialogs.DialogConfirmDisableNotifications
+import relaxeddd.englishnotify.dialogs.DialogLearnLanguage
+import relaxeddd.englishnotify.dialogs.DialogNotificationsView
+import relaxeddd.englishnotify.dialogs.DialogPushOffTime
+import relaxeddd.englishnotify.dialogs.DialogTestNotifications
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 
 class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotificationsBinding>() {
@@ -40,12 +45,12 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
 
     override fun getLayoutResId() = R.layout.fragment_notifications
     override fun getToolbarTitleResId() = R.string.notifications
-    override fun getViewModelFactory() = InjectorUtils.provideNotificationsViewModelFactory()
-    override fun getViewModelClass() = ViewModelNotifications::class.java
     override fun isTopLevelFragment() = true
 
-    override fun configureBinding() {
-        super.configureBinding()
+    override val viewModel: ViewModelNotifications by viewModels()
+
+    override fun subscribeToViewModel() {
+        super.subscribeToViewModel()
         binding?.viewModel = viewModel
     }
 

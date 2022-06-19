@@ -12,14 +12,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.dialogs.DialogCheckTags
-import relaxeddd.englishnotify.dialogs.DialogSortBy
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.FragmentDictionaryBinding
+import relaxeddd.englishnotify.dialogs.DialogCheckTags
 import relaxeddd.englishnotify.dialogs.DialogDeleteWords
+import relaxeddd.englishnotify.dialogs.DialogSortBy
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.ui.main.MainActivity
-import java.lang.IllegalStateException
 
 abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>> : BaseFragment<VM, FragmentDictionaryBinding>() {
 
@@ -50,8 +49,8 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
     override fun getFabIconResId() = R.drawable.ic_plus
     override fun getFabListener() = Navigation.createNavigateOnClickListener(R.id.action_fragmentDictionaryContainer_to_fragmentWord)
 
-    override fun configureBinding() {
-        super.configureBinding()
+    override fun subscribeToViewModel() {
+        super.subscribeToViewModel()
         binding?.viewModel = viewModel
         binding?.clickListenerCloseFilter = clickListenerCloseFilter
     }
@@ -190,9 +189,7 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
     }
 
     override fun onSearchTextChanged(searchText: String) {
-        if (isViewModelInitialized()) {
-            viewModel.applySearch(searchText)
-        }
+        viewModel.applySearch(searchText)
     }
 
     fun onMenuFilterClicked() {

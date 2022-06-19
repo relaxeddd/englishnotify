@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity(), NavigationHost, FloatingActionButtonHo
     private var recognizeSpeechCallback: ((String?) -> Unit)? = null
 
     var isMyResumed = false
-    val viewModel: ViewModelMain by viewModels()
+    private val viewModel: ViewModelMain by viewModels()
 
     //------------------------------------------------------------------------------------------------------------------
     override fun onCreate(savedInstanceState: Bundle?) {

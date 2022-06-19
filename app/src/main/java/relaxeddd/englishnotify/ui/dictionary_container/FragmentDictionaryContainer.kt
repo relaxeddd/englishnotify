@@ -2,12 +2,12 @@ package relaxeddd.englishnotify.ui.dictionary_container
 
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.BaseFragment
-import relaxeddd.englishnotify.common.InjectorUtils
 import relaxeddd.englishnotify.databinding.FragmentDictionaryContainerBinding
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.ui.dictionary.FragmentDictionary
@@ -42,12 +42,12 @@ class FragmentDictionaryContainer : BaseFragment<ViewModelDictionaryContainer, F
     override fun getToolbarTitleResId() = R.string.dictionary
     override fun getMenuResId() = R.menu.menu_fragment_dictionary
     override fun getSearchMenuItemId() = R.id.item_menu_search_dictionary
-    override fun getViewModelFactory() = InjectorUtils.provideDictionaryContainerViewModelFactory()
-    override fun getViewModelClass() = ViewModelDictionaryContainer::class.java
     override fun isTopLevelFragment() = true
 
-    override fun configureBinding() {
-        super.configureBinding()
+    override val viewModel: ViewModelDictionaryContainer by viewModels()
+
+    override fun subscribeToViewModel() {
+        super.subscribeToViewModel()
         val adapter = DictionaryFragmentsAdapter(this)
 
         binding?.apply {

@@ -2,11 +2,11 @@ package relaxeddd.englishnotify.ui.categories
 
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.BaseFragment
-import relaxeddd.englishnotify.common.InjectorUtils
 import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK
 import relaxeddd.englishnotify.common.getAppString
 import relaxeddd.englishnotify.databinding.FragmentCategoriesBinding
@@ -20,16 +20,16 @@ class FragmentCategories : BaseFragment<ViewModelCategories, FragmentCategoriesB
 
     override fun getLayoutResId() = R.layout.fragment_categories
     override fun getToolbarTitleResId() = R.string.dictionary
-    override fun getViewModelFactory() = InjectorUtils.provideDictionaryContainerViewModelFactory()
-    override fun getViewModelClass() = ViewModelCategories::class.java
     override fun getMenuResId() = R.menu.menu_accept
     override fun getToolbarElevation() = 0f
     override fun isHomeMenuButtonEnabled() = true
     override fun getHomeMenuButtonIconResId() = R.drawable.ic_back
     override fun getHomeMenuButtonListener(): () -> Unit = { onNavigationEvent(NAVIGATION_ACTIVITY_BACK) }
 
-    override fun configureBinding() {
-        super.configureBinding()
+    override val viewModel: ViewModelCategories by viewModels()
+
+    override fun subscribeToViewModel() {
+        super.subscribeToViewModel()
         val adapter = CategoryFragmentsAdapter(this)
         val binding = binding ?: return
 

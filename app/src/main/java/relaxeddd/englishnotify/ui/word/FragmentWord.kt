@@ -9,6 +9,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.view.doOnLayout
+import androidx.fragment.app.viewModels
 import com.google.android.play.core.review.ReviewManagerFactory
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
@@ -32,12 +33,12 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
 
     override fun getLayoutResId() = R.layout.fragment_word
     override fun getToolbarTitleResId() = R.string.add_word
-    override fun getViewModelFactory() = InjectorUtils.provideWordViewModelFactory()
-    override fun getViewModelClass() = ViewModelWord::class.java
     override fun getMenuResId() = R.menu.menu_accept
     override fun isHomeMenuButtonEnabled() = true
     override fun getHomeMenuButtonIconResId() = R.drawable.ic_back
     override fun getHomeMenuButtonListener(): () -> Unit = { onNavigationEvent(NAVIGATION_ACTIVITY_BACK) }
+
+    override val viewModel: ViewModelWord by viewModels()
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
@@ -49,8 +50,8 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
         }
     }
 
-    override fun configureBinding() {
-        super.configureBinding()
+    override fun subscribeToViewModel() {
+        super.subscribeToViewModel()
 
         val binding = binding ?: return
         binding.viewModel = viewModel

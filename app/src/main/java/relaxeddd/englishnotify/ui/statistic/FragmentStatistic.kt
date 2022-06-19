@@ -2,10 +2,10 @@ package relaxeddd.englishnotify.ui.statistic
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.BaseFragment
-import relaxeddd.englishnotify.common.InjectorUtils
 import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK
 import relaxeddd.englishnotify.databinding.FragmentStatisticBinding
 
@@ -15,14 +15,14 @@ class FragmentStatistic : BaseFragment<ViewModelStatistic, FragmentStatisticBind
 
     override fun getLayoutResId() = R.layout.fragment_statistic
     override fun getToolbarTitleResId() = R.string.own_words_statistic
-    override fun getViewModelFactory() = InjectorUtils.provideStatisticViewModelFactory(requireContext())
-    override fun getViewModelClass() = ViewModelStatistic::class.java
     override fun isHomeMenuButtonEnabled() = true
     override fun getHomeMenuButtonIconResId() = R.drawable.ic_back
     override fun getHomeMenuButtonListener(): () -> Unit = { onNavigationEvent(NAVIGATION_ACTIVITY_BACK) }
 
-    override fun configureBinding() {
-        super.configureBinding()
+    override val viewModel: ViewModelStatistic by viewModels()
+
+    override fun subscribeToViewModel() {
+        super.subscribeToViewModel()
         binding?.viewModel = viewModel
     }
 
@@ -34,10 +34,10 @@ class FragmentStatistic : BaseFragment<ViewModelStatistic, FragmentStatisticBind
         binding.recyclerViewStatistic.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewStatistic.adapter = adapter
 
-        viewModel.ownWords.observe(viewLifecycleOwner, { words ->
+        viewModel.ownWords.observe(viewLifecycleOwner) { words ->
             updateTagsInfo()
             adapter.submitList(words)
-        })
+        }
     }
 
     private fun updateTagsInfo() {
