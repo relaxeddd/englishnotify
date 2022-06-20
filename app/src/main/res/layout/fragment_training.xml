@@ -1,29 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <data>
-
-        <import type="android.view.View"/>
-        <variable
-            name="viewModel"
-            type="relaxeddd.englishnotify.ui.training.ViewModelTraining"/>
-        <variable
-            name="clickListenerOk"
-            type="android.view.View.OnClickListener"/>
-        <variable
-            name="clickListenerOneMore"
-            type="android.view.View.OnClickListener"/>
-
-    </data>
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/info_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        tools:ignore="ContentDescription">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/info_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:ignore="ContentDescription">
 
     <include layout="@layout/view_toolbar"/>
 
@@ -56,19 +40,13 @@
                     <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/radio_button_training_1"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/size_32"
-                        android:checked="@{safeUnbox(viewModel.result1) != 0 || safeUnbox(viewModel.current) == 0}"
-                        android:enabled="@{safeUnbox(viewModel.result1) != 0 || safeUnbox(viewModel.current) == 0}"
-                        android:buttonTint="@{(safeUnbox(viewModel.result1) == 1) ? @color/green_success : ((safeUnbox(viewModel.result1) == 2) ? @color/red_wrong : @color/gray)}"
-                        android:onClick="@{viewModel.clickListenerRadioButton1}"
-                        android:visibility="@{safeUnbox(viewModel.wordsSize) > 0 ? View.VISIBLE : View.GONE}"/>
+                        android:layout_height="@dimen/size_32"/>
 
                     <View
                         android:id="@+id/view_training_current_1"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/size_1"
-                        android:background="@color/gray_light_3"
-                        android:visibility="@{safeUnbox(viewModel.current) == 0 ? View.VISIBLE : View.INVISIBLE}"/>
+                        android:background="@color/gray_light_3"/>
 
                 </LinearLayout>
 
@@ -82,19 +60,13 @@
                     <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/radio_button_training_2"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/size_32"
-                        android:checked="@{safeUnbox(viewModel.result1) != 0 || safeUnbox(viewModel.result2) != 0 || safeUnbox(viewModel.current) == 1}"
-                        android:enabled="@{safeUnbox(viewModel.result1) != 0 || safeUnbox(viewModel.result2) != 0 || safeUnbox(viewModel.current) == 1}"
-                        android:buttonTint="@{(safeUnbox(viewModel.result2) == 1) ? @color/green_success : ((safeUnbox(viewModel.result2) == 2) ? @color/red_wrong : @color/gray)}"
-                        android:onClick="@{viewModel.clickListenerRadioButton2}"
-                        android:visibility="@{safeUnbox(viewModel.wordsSize) > 1 ? View.VISIBLE : View.GONE}"/>
+                        android:layout_height="@dimen/size_32"/>
 
                     <View
                         android:id="@+id/view_training_current_2"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/size_1"
-                        android:background="@color/gray_light_3"
-                        android:visibility="@{safeUnbox(viewModel.current) == 1 ? View.VISIBLE : View.INVISIBLE}"/>
+                        android:background="@color/gray_light_3"/>
 
                 </LinearLayout>
 
@@ -108,19 +80,13 @@
                     <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/radio_button_training_3"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/size_32"
-                        android:checked="@{safeUnbox(viewModel.result2) != 0 || safeUnbox(viewModel.result3) != 0 || safeUnbox(viewModel.current) == 2}"
-                        android:enabled="@{safeUnbox(viewModel.result2) != 0 || safeUnbox(viewModel.result3) != 0 || safeUnbox(viewModel.current) == 2}"
-                        android:buttonTint="@{(safeUnbox(viewModel.result3) == 1) ? @color/green_success : ((safeUnbox(viewModel.result3) == 2) ? @color/red_wrong : @color/gray)}"
-                        android:onClick="@{viewModel.clickListenerRadioButton3}"
-                        android:visibility="@{safeUnbox(viewModel.wordsSize) > 2 ? View.VISIBLE : View.GONE}"/>
+                        android:layout_height="@dimen/size_32"/>
 
                     <View
                         android:id="@+id/view_training_current_3"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/size_1"
-                        android:background="@color/gray_light_3"
-                        android:visibility="@{safeUnbox(viewModel.current) == 2 ? View.VISIBLE : View.INVISIBLE}"/>
+                        android:background="@color/gray_light_3"/>
 
                 </LinearLayout>
 
@@ -134,19 +100,13 @@
                     <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/radio_button_training_4"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/size_32"
-                        android:checked="@{safeUnbox(viewModel.result3) != 0 || safeUnbox(viewModel.result4) != 0 || safeUnbox(viewModel.current) == 3}"
-                        android:enabled="@{safeUnbox(viewModel.result3) != 0 || safeUnbox(viewModel.result4) != 0 || safeUnbox(viewModel.current) == 3}"
-                        android:buttonTint="@{(safeUnbox(viewModel.result4) == 1) ? @color/green_success : ((safeUnbox(viewModel.result4) == 2) ? @color/red_wrong : @color/gray)}"
-                        android:onClick="@{viewModel.clickListenerRadioButton4}"
-                        android:visibility="@{safeUnbox(viewModel.wordsSize) > 3 ? View.VISIBLE : View.GONE}"/>
+                        android:layout_height="@dimen/size_32"/>
 
                     <View
                         android:id="@+id/view_training_current_4"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/size_1"
-                        android:background="@color/gray_light_3"
-                        android:visibility="@{safeUnbox(viewModel.current) == 3 ? View.VISIBLE : View.INVISIBLE}"/>
+                        android:background="@color/gray_light_3"/>
 
                 </LinearLayout>
 
@@ -160,19 +120,13 @@
                     <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/radio_button_training_5"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/size_32"
-                        android:checked="@{safeUnbox(viewModel.result4) != 0 || safeUnbox(viewModel.result5) != 0 || safeUnbox(viewModel.current) == 4}"
-                        android:enabled="@{safeUnbox(viewModel.result4) != 0 || safeUnbox(viewModel.result5) != 0 || safeUnbox(viewModel.current) == 4}"
-                        android:buttonTint="@{(safeUnbox(viewModel.result5) == 1) ? @color/green_success : ((safeUnbox(viewModel.result5) == 2) ? @color/red_wrong : @color/gray)}"
-                        android:onClick="@{viewModel.clickListenerRadioButton5}"
-                        android:visibility="@{safeUnbox(viewModel.wordsSize) > 4 ? View.VISIBLE : View.GONE}"/>
+                        android:layout_height="@dimen/size_32"/>
 
                     <View
                         android:id="@+id/view_training_current_5"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/size_1"
-                        android:background="@color/gray_light_3"
-                        android:visibility="@{safeUnbox(viewModel.current) == 4 ? View.VISIBLE : View.INVISIBLE}"/>
+                        android:background="@color/gray_light_3"/>
 
                 </LinearLayout>
 
@@ -186,19 +140,13 @@
                     <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/radio_button_training_6"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/size_32"
-                        android:checked="@{safeUnbox(viewModel.result5) != 0 || safeUnbox(viewModel.result6) != 0 || safeUnbox(viewModel.current) == 5}"
-                        android:enabled="@{safeUnbox(viewModel.result5) != 0 || safeUnbox(viewModel.result6) != 0 || safeUnbox(viewModel.current) == 5}"
-                        android:buttonTint="@{(safeUnbox(viewModel.result6) == 1) ? @color/green_success : ((safeUnbox(viewModel.result6) == 2) ? @color/red_wrong : @color/gray)}"
-                        android:onClick="@{viewModel.clickListenerRadioButton6}"
-                        android:visibility="@{safeUnbox(viewModel.wordsSize) > 5 ? View.VISIBLE : View.GONE}"/>
+                        android:layout_height="@dimen/size_32"/>
 
                     <View
                         android:id="@+id/view_training_current_6"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/size_1"
-                        android:background="@color/gray_light_3"
-                        android:visibility="@{safeUnbox(viewModel.current) == 5 ? View.VISIBLE : View.INVISIBLE}"/>
+                        android:background="@color/gray_light_3"/>
 
                 </LinearLayout>
 
@@ -212,19 +160,13 @@
                     <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/radio_button_training_7"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/size_32"
-                        android:checked="@{safeUnbox(viewModel.result6) != 0 || safeUnbox(viewModel.result7) != 0 || safeUnbox(viewModel.current) == 6}"
-                        android:enabled="@{safeUnbox(viewModel.result6) != 0 || safeUnbox(viewModel.result7) != 0 || safeUnbox(viewModel.current) == 6}"
-                        android:buttonTint="@{(safeUnbox(viewModel.result7) == 1) ? @color/green_success : ((safeUnbox(viewModel.result7) == 2) ? @color/red_wrong : @color/gray)}"
-                        android:onClick="@{viewModel.clickListenerRadioButton7}"
-                        android:visibility="@{safeUnbox(viewModel.wordsSize) > 6 ? View.VISIBLE : View.GONE}"/>
+                        android:layout_height="@dimen/size_32"/>
 
                     <View
                         android:id="@+id/view_training_current_7"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/size_1"
-                        android:background="@color/gray_light_3"
-                        android:visibility="@{safeUnbox(viewModel.current) == 6 ? View.VISIBLE : View.INVISIBLE}"/>
+                        android:background="@color/gray_light_3"/>
 
                 </LinearLayout>
 
@@ -238,19 +180,13 @@
                     <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/radio_button_training_8"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/size_32"
-                        android:checked="@{safeUnbox(viewModel.result7) != 0 || safeUnbox(viewModel.result8) != 0 || safeUnbox(viewModel.current) == 7}"
-                        android:enabled="@{safeUnbox(viewModel.result7) != 0 || safeUnbox(viewModel.result8) != 0 || safeUnbox(viewModel.current) == 7}"
-                        android:buttonTint="@{(safeUnbox(viewModel.result8) == 1) ? @color/green_success : ((safeUnbox(viewModel.result8) == 2) ? @color/red_wrong : @color/gray)}"
-                        android:onClick="@{viewModel.clickListenerRadioButton8}"
-                        android:visibility="@{safeUnbox(viewModel.wordsSize) > 7 ? View.VISIBLE : View.GONE}"/>
+                        android:layout_height="@dimen/size_32"/>
 
                     <View
                         android:id="@+id/view_training_current_8"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/size_1"
-                        android:background="@color/gray_light_3"
-                        android:visibility="@{safeUnbox(viewModel.current) == 7 ? View.VISIBLE : View.INVISIBLE}"/>
+                        android:background="@color/gray_light_3"/>
 
                 </LinearLayout>
 
@@ -264,19 +200,13 @@
                     <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/radio_button_training_9"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/size_32"
-                        android:checked="@{safeUnbox(viewModel.result8) != 0 || safeUnbox(viewModel.result9) != 0 || safeUnbox(viewModel.current) == 8}"
-                        android:enabled="@{safeUnbox(viewModel.result8) != 0 || safeUnbox(viewModel.result9) != 0 || safeUnbox(viewModel.current) == 8}"
-                        android:buttonTint="@{(safeUnbox(viewModel.result9) == 1) ? @color/green_success : ((safeUnbox(viewModel.result9) == 2) ? @color/red_wrong : @color/gray)}"
-                        android:onClick="@{viewModel.clickListenerRadioButton9}"
-                        android:visibility="@{safeUnbox(viewModel.wordsSize) > 8 ? View.VISIBLE : View.GONE}"/>
+                        android:layout_height="@dimen/size_32"/>
 
                     <View
                         android:id="@+id/view_training_current_9"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/size_1"
-                        android:background="@color/gray_light_3"
-                        android:visibility="@{safeUnbox(viewModel.current) == 8 ? View.VISIBLE : View.INVISIBLE}"/>
+                        android:background="@color/gray_light_3"/>
 
                 </LinearLayout>
 
@@ -291,19 +221,13 @@
                     <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/radio_button_training_10"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/size_32"
-                        android:checked="@{safeUnbox(viewModel.result9) != 0 || safeUnbox(viewModel.result10) != 0 || safeUnbox(viewModel.current) == 9}"
-                        android:enabled="@{safeUnbox(viewModel.result9) != 0 || safeUnbox(viewModel.result10) != 0 || safeUnbox(viewModel.current) == 9}"
-                        android:buttonTint="@{(safeUnbox(viewModel.result10) == 1) ? @color/green_success : ((safeUnbox(viewModel.result10) == 2) ? @color/red_wrong : @color/gray)}"
-                        android:onClick="@{viewModel.clickListenerRadioButton10}"
-                        android:visibility="@{safeUnbox(viewModel.wordsSize) > 9 ? View.VISIBLE : View.GONE}"/>
+                        android:layout_height="@dimen/size_32"/>
 
                     <View
                         android:id="@+id/view_training_current_10"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/size_1"
-                        android:background="@color/gray_light_3"
-                        android:visibility="@{safeUnbox(viewModel.current) == 9 ? View.VISIBLE : View.INVISIBLE}"/>
+                        android:background="@color/gray_light_3"/>
 
                 </LinearLayout>
 
@@ -322,7 +246,6 @@
                 android:id="@+id/text_training_learned_statistic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{viewModel.textStatistic}"
                 tools:text="Learned 46/100"
                 android:layout_gravity="end"
                 android:layout_marginEnd="@dimen/size_4"/>
@@ -354,9 +277,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_color_main"
                 android:inputType="textPersonName"
-                android:enabled="@{safeUnbox(viewModel.isVisibleInputAnswer) == true}"
                 android:maxLength="100"
-                android:alpha="@{safeUnbox(viewModel.isVisibleInputAnswer) == true ? 1f : 0.5f}"
                 android:hint="@string/enter_translation"
                 android:gravity="center"
                 android:layout_weight="1"
@@ -395,28 +316,22 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_training_confirm"
-            android:text="@{viewModel.textButtonOk}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="Answer"
             android:layout_marginTop="@dimen/size_16"
             android:layout_marginStart="@dimen/size_32"
-            android:layout_marginEnd="@dimen/size_32"
-            android:onClick="@{clickListenerOk}"
-            android:visibility="@{safeUnbox(viewModel.isVisibleButtonOk) == true ? View.VISIBLE : View.INVISIBLE}"/>
+            android:layout_marginEnd="@dimen/size_32"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_training_one_more"
-            android:text="@{viewModel.textButtonOneMore}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="One more"
             android:layout_marginTop="@dimen/size_24"
             android:layout_marginStart="@dimen/size_32"
             android:layout_marginEnd="@dimen/size_32"
-            tools:visibility="gone"
-            android:onClick="@{clickListenerOneMore}"
-            android:visibility="@{safeUnbox(viewModel.isVisibleButtonOneMore) == true ? View.VISIBLE : View.GONE}"/>
+            tools:visibility="gone"/>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -435,14 +350,11 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/size_4"
                     android:background="?android:attr/selectableItemBackground"
-                    android:onClick="@{viewModel.clickListenerListen}"
-                    android:visibility="@{safeUnbox(viewModel.isVisibleButtonListen) == true ? View.VISIBLE : View.GONE}"
                     android:src="@drawable/ic_volume"
                     android:contentDescription="@string/listening_training" />
 
                 <TextView
                     android:id="@+id/text_training_word"
-                    android:text="@{viewModel.wordText}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
@@ -454,7 +366,6 @@
                     android:paddingEnd="@dimen/size_16"
                     android:lines="3"
                     android:textSize="@dimen/font_18"
-                    android:visibility="@{safeUnbox(viewModel.isVisibleTextWord) == true ? View.VISIBLE : View.GONE}"
                     android:layout_marginTop="@dimen/size_4"/>
 
                 <ProgressBar
@@ -462,8 +373,6 @@
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="@dimen/size_120"
                     android:layout_height="wrap_content"
-                    android:visibility="@{safeUnbox(viewModel.isVisibleWordProgress) == true ? View.VISIBLE : View.INVISIBLE}"
-                    android:progress="@{safeUnbox(viewModel.wordProgress)}"
                     tools:progress="33"
                     android:layout_gravity="center_horizontal"/>
 
@@ -472,14 +381,11 @@
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="@dimen/size_120"
                     android:layout_height="wrap_content"
-                    android:visibility="@{safeUnbox(viewModel.isVisibleWordProgressSecondary) == true ? View.VISIBLE : View.GONE}"
-                    android:progress="@{safeUnbox(viewModel.wordProgressSecondary)}"
                     tools:progress="33"
                     android:layout_gravity="center_horizontal"/>
 
                 <TextView
                     android:id="@+id/text_training_transcription"
-                    android:text="@{viewModel.transcription}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/size_40"
@@ -489,18 +395,14 @@
                     android:background="?android:attr/selectableItemBackground"
                     app:drawableEndCompat="@drawable/ic_volume"
                     android:gravity="center"
-                    android:onClick="@{viewModel.clickListenerPlayWord}"
-                    android:visibility="@{safeUnbox(viewModel.isVisibleTranscription) == true ? View.VISIBLE : View.INVISIBLE}"
                     android:textSize="@dimen/font_16"/>
 
                 <TextView
                     android:id="@+id/text_training_translation"
-                    android:text="@{viewModel.translation}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     tools:text="точный, четкий"
                     android:textColor="@color/text_color_main"
-                    android:visibility="@{safeUnbox(viewModel.isVisibleTranslation) == true ? View.VISIBLE : View.INVISIBLE}"
                     android:textSize="@dimen/font_20"
                     android:gravity="center_horizontal"
                     android:lines="4"
@@ -509,10 +411,8 @@
 
                 <TextView
                     android:id="@+id/text_training_answer"
-                    android:text="@{viewModel.answer}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="@{safeUnbox(viewModel.isVisibleAnswer) == true ? View.VISIBLE : View.INVISIBLE}"
                     android:textSize="@dimen/font_18"
                     tools:text="your answer"
                     android:gravity="center_horizontal"
@@ -523,11 +423,9 @@
 
                 <TextView
                     android:id="@+id/text_training_result_text"
-                    android:text="@{viewModel.resultText}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     tools:text="Incorrect"
-                    android:visibility="@{safeUnbox(viewModel.isVisibleResultText) == true ? View.VISIBLE : View.INVISIBLE}"
                     android:textSize="@dimen/font_14"
                     android:lines="1"
                     android:gravity="center_horizontal"
@@ -540,6 +438,4 @@
 
     </LinearLayout>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-</layout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

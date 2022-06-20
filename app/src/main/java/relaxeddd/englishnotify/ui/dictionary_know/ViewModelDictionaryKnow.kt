@@ -9,7 +9,6 @@ class ViewModelDictionaryKnow : ViewModelDictionary() {
     override fun filterWords(items: HashSet<Word>) : HashSet<Word> {
         val learnStageMax = SharedHelper.getTrueAnswersToLearn()
         val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
-        return super.filterWords(items).filter { it.isLearned(isEnabledSecondaryProgress, learnStageMax)
-                && (!it.isCreatedByUser || isShowOwnWords.value == true) }.toHashSet()
+        return super.filterWords(items).filter { it.isLearned(isEnabledSecondaryProgress, learnStageMax) }.toHashSet()
     }
 }

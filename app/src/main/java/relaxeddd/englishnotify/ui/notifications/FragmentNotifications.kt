@@ -1,7 +1,10 @@
 package relaxeddd.englishnotify.ui.notifications
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.core.view.updatePaddingRelative
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
@@ -43,27 +46,73 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
         }
     }
 
-    override fun getLayoutResId() = R.layout.fragment_notifications
     override fun getToolbarTitleResId() = R.string.notifications
     override fun isTopLevelFragment() = true
 
     override val viewModel: ViewModelNotifications by viewModels()
 
-    override fun subscribeToViewModel() {
-        super.subscribeToViewModel()
-        binding?.viewModel = viewModel
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = FragmentNotificationsBinding.inflate(inflater)
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = binding ?: return
-        binding.switchNotificationsEnable.setOnCheckedChangeListener(viewModel.checkedChangeListenerEnableNotifications)
-        binding.switchNotificationsDeletable.setOnCheckedChangeListener(viewModel.checkedChangeListenerDeletable)
-        binding.switchNotificationsShowOnlyOne.setOnCheckedChangeListener(viewModel.checkedChangeListenerShowOnlyOneNotification)
+        binding?.apply {
+            switchNotificationsEnable.setOnCheckedChangeListener(viewModel.checkedChangeListenerEnableNotifications)
+            switchNotificationsDeletable.setOnCheckedChangeListener(viewModel.checkedChangeListenerDeletable)
+            switchNotificationsShowOnlyOne.setOnCheckedChangeListener(viewModel.checkedChangeListenerShowOnlyOneNotification)
 
-        binding.scrollViewNotifications.doOnApplyWindowInsets { v, insets, padding ->
-            v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
+            scrollViewNotifications.doOnApplyWindowInsets { v, insets, padding ->
+                v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
+            }
+            containerNotificationsRepeatTime.setOnClickListener(viewModel.clickListenerRepeatTime)
+            containerNotificationsSelectCategory.setOnClickListener(viewModel.clickListenerSelectCategory)
+            containerNotificationsLearnLanguage.setOnClickListener(viewModel.clickListenerLearnLanguage)
+            containerNotificationsViewType.setOnClickListener(viewModel.clickListenerNotificationsView)
+            containerNotificationsNightTime.setOnClickListener(viewModel.clickListenerNightTime)
+            containerNotificationsTest.setOnClickListener(viewModel.clickListenerTestNotifications)
+        }
+    }
+
+    override fun subscribeToViewModel() {
+        super.subscribeToViewModel()
+
+        viewModel.isNotificationsEnabled.observe(viewLifecycleOwner) {
+            binding?.switchNotificationsEnable?.isChecked = it
+        }
+        viewModel.selectedTagLiveData.observe(viewLifecycleOwner) {
+            binding?.textNotificationsCategoriesValue?.isVisible = it.isNotBlank()
+            binding?.textNotificationsCategoriesValue?.text = it
+        }
+        viewModel.textRepeatTime.observe(viewLifecycleOwner) {
+            binding?.textView7?.isVisible = it.isNotBlank()
+            binding?.textView7?.text = it
+        }
+        viewModel.textLearnLanguage.observe(viewLifecycleOwner) {
+            binding?.textNotificationLearnLanguageValue?.text = it
+        }
+        viewModel.textNotificationsView.observe(viewLifecycleOwner) {
+            binding?.textNotificationsViewValue?.text = it
+        }
+        viewModel.isVisibleNotificationsView.observe(viewLifecycleOwner) {
+            binding?.containerNotificationsDeletable?.isVisible = it
+        }
+        viewModel.isNotDeletable.observe(viewLifecycleOwner) {
+            binding?.switchNotificationsDeletable?.isChecked = it
+        }
+        viewModel.isShowOnlyOneNotification.observe(viewLifecycleOwner) {
+            binding?.switchNotificationsShowOnlyOne?.isChecked = it
+        }
+        viewModel.timeDurationOffValue.observe(viewLifecycleOwner) {
+            binding?.textNotificationsNightTimeValue?.isVisible = it > 0
+        }
+        viewModel.timeStartOff.observe(viewLifecycleOwner) {
+            binding?.textNotificationsNightTimeValue?.text = getString(R.string.night_time_value, it, viewModel.timeEndOff.value)
+        }
+        viewModel.timeEndOff.observe(viewLifecycleOwner) {
+            binding?.textNotificationsNightTimeValue?.text = getString(R.string.night_time_value, viewModel.timeStartOff.value, it)
         }
     }
 

@@ -1,29 +1,25 @@
 package relaxeddd.englishnotify.common
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
-import androidx.annotation.LayoutRes
 import androidx.annotation.MenuRes
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.forEach
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import androidx.viewbinding.ViewBinding
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.ui.main.MainActivity
 
-abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment() {
+abstract class BaseFragment<VM : ViewModelBase, B : ViewBinding> : Fragment() {
 
     protected abstract val viewModel: VM
 
@@ -38,8 +34,6 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
     protected var menu: Menu? = null
     protected var searchView: SearchView? = null
 
-    @LayoutRes
-    abstract fun getLayoutResId() : Int
     protected open fun getToolbarTitleResId() = EMPTY_RES
     protected open fun getToolbarTitle() = ""
     protected open fun isHomeMenuButtonEnabled() = false
@@ -58,18 +52,10 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
     protected open fun getFabIconResId() = EMPTY_RES
     protected open fun getFabListener(): View.OnClickListener? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, getLayoutResId(), null, false)
-
-        subscribeToViewModel()
-        binding?.lifecycleOwner = viewLifecycleOwner
-        binding?.executePendingBindings()
-
-        return binding?.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        subscribeToViewModel()
 
         view.findViewById<Toolbar>(R.id.toolbar)?.apply {
             val isOldNavigationDesign = SharedHelper.isOldNavigationDesign()

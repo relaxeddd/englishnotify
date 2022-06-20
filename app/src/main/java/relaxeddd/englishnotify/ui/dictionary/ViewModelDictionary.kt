@@ -1,7 +1,5 @@
 package relaxeddd.englishnotify.ui.dictionary
 
-import android.view.View
-import android.widget.CompoundButton
 import androidx.annotation.CallSuper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -22,7 +20,6 @@ open class ViewModelDictionary : ViewModelBase() {
 
     val sortByType = MutableLiveData(SortByType.getByName(SharedHelper.getSortByType()))
     val filterTags = MutableLiveData<HashSet<String>>(HashSet())
-    val isShowOwnWords = MutableLiveData(SharedHelper.isShowOwnWords())
     val tags = HashSet<String>()
     val wordsFiltered = MutableLiveData<List<Word>>(ArrayList())
     var playWord: Word? = null
@@ -37,12 +34,6 @@ open class ViewModelDictionary : ViewModelBase() {
     private val sortObserver = Observer<SortByType> { sort ->
         SharedHelper.setSortByType(sort.name)
     }
-    val checkedChangeListenerShowOwnWords = CompoundButton.OnCheckedChangeListener { _, isChecked ->
-        SharedHelper.setShowOwnWords(isChecked)
-        isShowOwnWords.value = isChecked
-        updateFilteredWords()
-        navigateEvent.value = Event(NAVIGATION_ACTION_HIDE_FILTER)
-    }
 
     init {
         repositoryWord.words.observeForever(wordsObserver)
@@ -54,11 +45,12 @@ open class ViewModelDictionary : ViewModelBase() {
         repositoryWord.words.removeObserver(wordsObserver)
     }
 
-    val clickListenerFilterTags = View.OnClickListener {
+    fun onClickedFilterTags() {
         navigateEvent.value = Event(NAVIGATION_DIALOG_CHECK_TAGS)
     }
-    val clickListenerSortBy = View.OnClickListener {
-        navigateEvent.value = Event(NAVIGATION_DIALOG_SORT_BY)
+
+    fun onClickedSortedBy() {
+        navigateEvent.value = Event(NAVIGATION_DIALOG_SORTED_BY)
     }
 
     fun playWord(word: Word?) {

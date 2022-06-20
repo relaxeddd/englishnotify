@@ -3,8 +3,10 @@ package relaxeddd.englishnotify.ui.word
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -31,7 +33,6 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
         }
     }
 
-    override fun getLayoutResId() = R.layout.fragment_word
     override fun getToolbarTitleResId() = R.string.add_word
     override fun getMenuResId() = R.menu.menu_accept
     override fun isHomeMenuButtonEnabled() = true
@@ -40,75 +41,9 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
 
     override val viewModel: ViewModelWord by viewModels()
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.item_menu_accept -> {
-                binding?.textInputTranslation?.onEditorAction(EditorInfo.IME_ACTION_DONE)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    override fun subscribeToViewModel() {
-        super.subscribeToViewModel()
-
-        val binding = binding ?: return
-        binding.viewModel = viewModel
-        binding.imageWordMicrophone.setOnClickListener {
-            val selectedLanguage = binding.spinnerWordLanguage.selectedItem as? String ?: ""
-            (activity as? MainActivity)?.requestRecognizeSpeech(selectedLanguage) {
-                if (it == null) {
-                    SharedHelper.setShowVoiceInput(false)
-                    updateVoiceInputVisibility(false)
-                } else {
-                    binding.textInputWord.setText(it)
-                }
-            }
-        }
-        ArrayAdapter.createFromResource(context ?: return, R.array.array_languages, android.R.layout.simple_spinner_item).also { adapter ->
-            adapter.setDropDownViewResource(R.layout.view_item_spinner)
-            binding.spinnerWordLanguage.adapter = adapter
-        }
-        binding.spinnerWordLanguage.setSelection(SharedHelper.getSelectedLocaleWord())
-        binding.spinnerWordLanguage.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                SharedHelper.setSelectedLocaleWord(position)
-            }
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
-
-        binding.imageWordMicrophoneTranslation.setOnClickListener {
-            val selectedLanguage = binding.spinnerWordLanguageTranslation.selectedItem as? String ?: ""
-            (activity as? MainActivity)?.requestRecognizeSpeech(selectedLanguage) {
-                if (it == null) {
-                    SharedHelper.setShowVoiceInput(false)
-                    updateVoiceInputVisibility(false)
-                } else {
-                    binding.textInputTranslation.setText(it)
-                }
-            }
-        }
-        ArrayAdapter.createFromResource(context ?: return, R.array.array_languages, android.R.layout.simple_spinner_item).also { adapter ->
-            adapter.setDropDownViewResource(R.layout.view_item_spinner)
-            binding.spinnerWordLanguageTranslation.adapter = adapter
-        }
-        binding.spinnerWordLanguageTranslation.setSelection(SharedHelper.getSelectedLocaleTranslation())
-        binding.spinnerWordLanguageTranslation.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                SharedHelper.setSelectedLocaleTranslation(position)
-            }
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
-
-        adapter = AdapterCategories(viewModel)
-        binding.recyclerViewWordOwnCategories.itemAnimator = null
-        binding.recyclerViewWordOwnCategories.adapter = adapter
-        viewModel.categories.observe(viewLifecycleOwner, { items ->
-            if (items != null && items.isNotEmpty()) adapter?.submitList(items)
-        })
-
-        updateVoiceInputVisibility(SharedHelper.isShowVoiceInput())
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = FragmentWordBinding.inflate(inflater)
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -169,6 +104,76 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
 
         binding.textInputWord.doOnLayout {
             showKeyboard(it)
+        }
+
+        binding.imageWordMicrophone.setOnClickListener {
+            val selectedLanguage = binding.spinnerWordLanguage.selectedItem as? String ?: ""
+            (activity as? MainActivity)?.requestRecognizeSpeech(selectedLanguage) {
+                if (it == null) {
+                    SharedHelper.setShowVoiceInput(false)
+                    updateVoiceInputVisibility(false)
+                } else {
+                    binding.textInputWord.setText(it)
+                }
+            }
+        }
+        ArrayAdapter.createFromResource(context ?: return, R.array.array_languages, android.R.layout.simple_spinner_item).also { adapter ->
+            adapter.setDropDownViewResource(R.layout.view_item_spinner)
+            binding.spinnerWordLanguage.adapter = adapter
+        }
+        binding.spinnerWordLanguage.setSelection(SharedHelper.getSelectedLocaleWord())
+        binding.spinnerWordLanguage.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                SharedHelper.setSelectedLocaleWord(position)
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
+        binding.imageWordMicrophoneTranslation.setOnClickListener {
+            val selectedLanguage = binding.spinnerWordLanguageTranslation.selectedItem as? String ?: ""
+            (activity as? MainActivity)?.requestRecognizeSpeech(selectedLanguage) {
+                if (it == null) {
+                    SharedHelper.setShowVoiceInput(false)
+                    updateVoiceInputVisibility(false)
+                } else {
+                    binding.textInputTranslation.setText(it)
+                }
+            }
+        }
+        ArrayAdapter.createFromResource(context ?: return, R.array.array_languages, android.R.layout.simple_spinner_item).also { adapter ->
+            adapter.setDropDownViewResource(R.layout.view_item_spinner)
+            binding.spinnerWordLanguageTranslation.adapter = adapter
+        }
+        binding.spinnerWordLanguageTranslation.setSelection(SharedHelper.getSelectedLocaleTranslation())
+        binding.spinnerWordLanguageTranslation.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                SharedHelper.setSelectedLocaleTranslation(position)
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
+        adapter = AdapterCategories(viewModel)
+        binding.recyclerViewWordOwnCategories.itemAnimator = null
+        binding.recyclerViewWordOwnCategories.adapter = adapter
+
+        updateVoiceInputVisibility(SharedHelper.isShowVoiceInput())
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.item_menu_accept -> {
+                binding?.textInputTranslation?.onEditorAction(EditorInfo.IME_ACTION_DONE)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun subscribeToViewModel() {
+        super.subscribeToViewModel()
+
+        viewModel.categories.observe(viewLifecycleOwner) { items ->
+            if (items != null && items.isNotEmpty()) adapter?.submitList(items)
         }
     }
 

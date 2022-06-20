@@ -2,7 +2,9 @@ package relaxeddd.englishnotify.ui.settings
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.updatePaddingRelative
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
@@ -37,28 +39,66 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
         }
     }
 
-    override fun getLayoutResId() = R.layout.fragment_settings
     override fun getToolbarTitleResId() = R.string.common
     override fun isTopLevelFragment() = true
 
     override val viewModel: ViewModelSettings by viewModels()
 
-    override fun subscribeToViewModel() {
-        super.subscribeToViewModel()
-        binding?.viewModel = viewModel
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = FragmentSettingsBinding.inflate(inflater)
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = binding ?: return
-        binding.scrollViewSettings.doOnApplyWindowInsets { v, insets, padding ->
-            v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
+        binding?.apply {
+            scrollViewSettings.doOnApplyWindowInsets { v, insets, padding ->
+                v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
+            }
+            switchSettingsBottomNavigation.setOnCheckedChangeListener(viewModel.checkedChangeListenerNavigationDesign)
+            switchSettingsShowProgressInTraining.setOnCheckedChangeListener(viewModel.checkedChangeListenerProgressInTraining)
+            switchSettingsShowVoiceInput.setOnCheckedChangeListener(viewModel.checkedChangeListenerVoiceInput)
+            switchSettingsSecondaryProgress.setOnCheckedChangeListener(viewModel.checkedChangeListenerEnabledSecondaryProgress)
+
+            containerSettingsStatistic.setOnClickListener(viewModel.clickListenerStatistic)
+            containerSettingsAddMultipleWords.setOnClickListener(viewModel.clickListenerAddMultipleWords)
+            containerSettingsTrueAnswersToLearn.setOnClickListener(viewModel.clickListenerTrueAnswersToLearn)
+            containerSettingsNotificationLearnPoints.setOnClickListener(viewModel.clickListenerNotificationLearnPoints)
+            containerSettingsSecondaryProgressInfo.setOnClickListener(viewModel.clickListenerSecondaryProgressInfo)
+            containerSettingsSwapProgress.setOnClickListener(viewModel.clickListenerSwapProgress)
+            containerSettingsTheme.setOnClickListener(viewModel.clickListenerTheme)
+            containerSettingsRateApp.setOnClickListener(viewModel.clickListenerRateApp)
+            containerSettingsInfoTraining.setOnClickListener(viewModel.clickListenerInfoTraining)
+            containerSettingsAppInfo.setOnClickListener(viewModel.clickListenerAppInfo)
+            containerSettingsUpdatesHistory.setOnClickListener(viewModel.clickListenerUpdatesHistory)
         }
-        binding.switchSettingsDesign.setOnCheckedChangeListener(viewModel.checkedChangeListenerNavigationDesign)
-        binding.switchSettingsProgressInTraining.setOnCheckedChangeListener(viewModel.checkedChangeListenerProgressInTraining)
-        binding.switchSettingsVoiceInput.setOnCheckedChangeListener(viewModel.checkedChangeListenerVoiceInput)
-        binding.switchSettingsSecondaryProgress.setOnCheckedChangeListener(viewModel.checkedChangeListenerEnabledSecondaryProgress)
+    }
+
+    override fun subscribeToViewModel() {
+        super.subscribeToViewModel()
+
+        viewModel.isShowProgressInTraining.observe(viewLifecycleOwner) {
+            binding?.switchSettingsShowProgressInTraining?.isChecked = it
+        }
+        viewModel.isEnableSecondaryProgress.observe(viewLifecycleOwner) {
+            binding?.switchSettingsSecondaryProgress?.isChecked = it
+        }
+        viewModel.isShowVoiceInput.observe(viewLifecycleOwner) {
+            binding?.switchSettingsShowVoiceInput?.isChecked = it
+        }
+        viewModel.isBottomNavigation.observe(viewLifecycleOwner) {
+            binding?.switchSettingsBottomNavigation?.isChecked = it
+        }
+        viewModel.textTrueAnswersToLearn.observe(viewLifecycleOwner) {
+            binding?.textSettingsTrueAnswersToLearnValue?.text = it
+        }
+        viewModel.textNotificationsLearnPoints.observe(viewLifecycleOwner) {
+            binding?.textSettingsNotificationLearnPointsValue?.text = it
+        }
+        viewModel.textTheme.observe(viewLifecycleOwner) {
+            binding?.textSettingsThemeValue?.text = it
+        }
     }
 
     @SuppressLint("BatteryLife")

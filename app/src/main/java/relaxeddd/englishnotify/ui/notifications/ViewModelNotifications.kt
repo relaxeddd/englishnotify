@@ -21,7 +21,7 @@ class ViewModelNotifications : ViewModelBase() {
     val timeStartOff = MutableLiveData("20:00")
     val timeEndOff = MutableLiveData("07:00")
     val selectedTagLiveData = MutableLiveData("")
-    val isVisibleNotificationsView = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
+    val isVisibleNotificationsView = MutableLiveData(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
 
     val textRepeatTime = MutableLiveData(App.context.resources.getStringArray(R.array.array_time_repeat)[
             SharedHelper.getNotificationsRepeatTime(App.context).ordinal
@@ -35,7 +35,7 @@ class ViewModelNotifications : ViewModelBase() {
     val isShowOnlyOneNotification = MutableLiveData(SharedHelper.isShowOnlyOneNotification())
     val isNotDeletable = MutableLiveData(SharedHelper.isOngoing())
 
-    var isNotificationsEnabled = MutableLiveData(SharedHelper.isNotificationsEnabled())
+    val isNotificationsEnabled = MutableLiveData(SharedHelper.isNotificationsEnabled())
     var checkedChangeListenerEnableNotifications = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
         if (isChecked != SharedHelper.isNotificationsEnabled()) {
             if (!isChecked) {

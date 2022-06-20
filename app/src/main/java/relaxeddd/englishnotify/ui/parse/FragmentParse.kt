@@ -1,6 +1,10 @@
 package relaxeddd.englishnotify.ui.parse
 
+import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import relaxeddd.englishnotify.R
@@ -17,7 +21,6 @@ class FragmentParse: BaseFragment<ViewModelParse, FragmentParseBinding>() {
 
     private var adapter: AdapterCategories? = null
 
-    override fun getLayoutResId() = R.layout.fragment_parse
     override fun getToolbarTitleResId() = R.string.add_multiple_words
     override fun getMenuResId() = R.menu.menu_accept
     override fun isHomeMenuButtonEnabled() = true
@@ -25,6 +28,21 @@ class FragmentParse: BaseFragment<ViewModelParse, FragmentParseBinding>() {
     override fun getHomeMenuButtonListener(): () -> Unit = { onNavigationEvent(NAVIGATION_ACTIVITY_BACK) }
 
     override val viewModel: ViewModelParse by viewModels()
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = FragmentParseBinding.inflate(inflater)
+        return binding?.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding?.apply {
+            adapter = AdapterCategories(viewModel)
+            recyclerViewParseOwnCategories.itemAnimator = null
+            recyclerViewParseOwnCategories.adapter = adapter
+        }
+    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId) {
@@ -39,12 +57,6 @@ class FragmentParse: BaseFragment<ViewModelParse, FragmentParseBinding>() {
     override fun subscribeToViewModel() {
         super.subscribeToViewModel()
 
-        val binding = binding ?: return
-        binding.viewModel = viewModel
-
-        adapter = AdapterCategories(viewModel)
-        binding.recyclerViewParseOwnCategories.itemAnimator = null
-        binding.recyclerViewParseOwnCategories.adapter = adapter
         viewModel.categories.observe(viewLifecycleOwner) { items ->
             if (items != null && items.isNotEmpty()) adapter?.submitList(items)
         }

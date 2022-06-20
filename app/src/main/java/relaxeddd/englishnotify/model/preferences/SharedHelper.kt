@@ -351,16 +351,6 @@ object SharedHelper {
         sPref.edit().putBoolean(IS_SHOW_ONLY_ONE_NOTIFICATION, value).apply()
     }
 
-    fun isShowOwnWords(context: Context = App.context) : Boolean {
-        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        return sPref.getBoolean(IS_SHOW_OWN_WORDS, true)
-    }
-
-    fun setShowOwnWords(isConfirmed : Boolean, context: Context = App.context) {
-        val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
-        sPref.edit().putBoolean(IS_SHOW_OWN_WORDS, isConfirmed).apply()
-    }
-
     fun isOngoing(context: Context = App.context) : Boolean {
         val sPref = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
         return sPref.getBoolean(IS_ONGOING, false)

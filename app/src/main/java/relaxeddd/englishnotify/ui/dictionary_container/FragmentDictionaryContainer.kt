@@ -1,6 +1,10 @@
 package relaxeddd.englishnotify.ui.dictionary_container
 
+import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -38,7 +42,6 @@ class FragmentDictionaryContainer : BaseFragment<ViewModelDictionaryContainer, F
         }
     }
 
-    override fun getLayoutResId() = R.layout.fragment_dictionary_container
     override fun getToolbarTitleResId() = R.string.dictionary
     override fun getMenuResId() = R.menu.menu_fragment_dictionary
     override fun getSearchMenuItemId() = R.id.item_menu_search_dictionary
@@ -46,8 +49,14 @@ class FragmentDictionaryContainer : BaseFragment<ViewModelDictionaryContainer, F
 
     override val viewModel: ViewModelDictionaryContainer by viewModels()
 
-    override fun subscribeToViewModel() {
-        super.subscribeToViewModel()
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = FragmentDictionaryContainerBinding.inflate(inflater)
+        return binding?.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         val adapter = DictionaryFragmentsAdapter(this)
 
         binding?.apply {
