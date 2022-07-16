@@ -10,15 +10,13 @@ import relaxeddd.englishnotify.model.preferences.SharedHelper
 class ViewModelMain : ViewModelBase() {
 
     val isShowLoading = MutableLiveData(false)
-    val isOldNavigation = MutableLiveData(SharedHelper.isOldNavigationDesign())
+    val isBottomNavigation = MutableLiveData(SharedHelper.isOldNavigationDesign())
 
     fun onViewCreate() {
         if (!SharedHelper.isPatchNotesViewed(BuildConfig.VERSION_NAME)) {
             navigateEvent.value = Event(NAVIGATION_DIALOG_PATCH_NOTES)
             SharedHelper.setPatchNotesViewed(BuildConfig.VERSION_NAME)
         }
-        isOldNavigation.value = SharedHelper.isOldNavigationDesign()
+        isBottomNavigation.value = SharedHelper.isOldNavigationDesign()
     }
-
-    fun onViewResume() {}
 }

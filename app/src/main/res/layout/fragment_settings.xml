@@ -1,22 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:ignore="UnusedAttribute">
-
-    <data>
-
-        <import type="android.view.View"/>
-        <variable
-            name="viewModel"
-            type="relaxeddd.englishnotify.ui.settings.ViewModelSettings" />
-    </data>
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/info_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+    android:id="@+id/info_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:ignore="ContentDescription,UnusedAttribute">
 
     <include layout="@layout/view_toolbar"/>
 
@@ -34,6 +25,7 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/container_settings_statistic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/size_16"
@@ -42,14 +34,12 @@
                 android:orientation="horizontal"
                 android:background="@color/card_view_color"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:onClick="@{viewModel.clickListenerStatistic}"
                 android:elevation="@dimen/default_elevation">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/ic_progress"
-                    android:contentDescription="@string/ic_learn_stage_settings"
                     android:id="@+id/image_view_settings_statistic"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="@dimen/size_16"/>
@@ -67,6 +57,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/container_settings_add_multiple_words"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/size_16"
@@ -75,14 +66,12 @@
                 android:orientation="horizontal"
                 android:background="@color/card_view_color"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:onClick="@{viewModel.clickListenerAddMultipleWords}"
                 android:elevation="@dimen/default_elevation">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/ic_plus_multiple"
-                    android:contentDescription="@string/ic_learn_stage_settings"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="@dimen/size_16"/>
 
@@ -98,6 +87,7 @@
             </LinearLayout>
 
             <RelativeLayout
+                android:id="@+id/container_settings_true_answers_to_learn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_8"
@@ -105,7 +95,6 @@
                 android:paddingBottom="@dimen/size_16"
                 android:background="@color/card_view_color"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:onClick="@{viewModel.clickListenerTrueAnswersToLearn}"
                 android:elevation="@dimen/default_elevation">
 
                 <TextView
@@ -120,7 +109,6 @@
 
                 <TextView
                     android:id="@+id/text_settings_true_answers_to_learn_value"
-                    android:text="@{viewModel.textTrueAnswersToLearn}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/font_12"
@@ -136,13 +124,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/ic_learn"
-                    android:contentDescription="@string/ic_categories"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/size_16"/>
 
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/container_settings_notification_learn_points"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_8"
@@ -150,7 +138,6 @@
                 android:paddingBottom="@dimen/size_16"
                 android:background="@color/card_view_color"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:onClick="@{viewModel.clickListenerNotificationLearnPoints}"
                 android:elevation="@dimen/default_elevation">
 
                 <TextView
@@ -165,7 +152,6 @@
 
                 <TextView
                     android:id="@+id/text_settings_notification_learn_points_value"
-                    android:text="@{viewModel.textNotificationsLearnPoints}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/font_12"
@@ -181,13 +167,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/ic_progress_2"
-                    android:contentDescription="@string/ic_categories"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/size_16"/>
 
             </RelativeLayout>
 
             <LinearLayout
+                android:id="@+id/container_settings_secondary_progress_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/size_4"
@@ -203,8 +189,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/ic_secondary_progress"
-                    android:onClick="@{viewModel.clickListenerSecondaryProgressInfo}"
-                    android:contentDescription="@string/ic_notifications_show_only_one"
                     android:layout_marginStart="@dimen/size_16"
                     android:layout_gravity="center_vertical"/>
 
@@ -215,7 +199,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textColor="@color/text_color_main"
-                    android:checked="@{safeUnbox(viewModel.isEnableSecondaryProgress())}"
                     android:textSize="@dimen/font_12"
                     android:paddingStart="@dimen/size_16"
                     android:paddingEnd="@dimen/size_32"/>
@@ -223,6 +206,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/container_settings_swap_progress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -231,7 +215,6 @@
                 android:layout_marginTop="@dimen/size_8"
                 android:background="@color/card_view_color"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:onClick="@{viewModel.clickListenerSwapProgress}"
                 android:elevation="@dimen/default_elevation">
 
                 <ImageView
@@ -239,7 +222,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/ic_swap_progress"
-                    android:contentDescription="@string/ic_training_words_information"
                     android:layout_marginStart="@dimen/size_16"
                     android:scaleType="centerInside"
                     android:layout_gravity="center_vertical"/>
@@ -257,6 +239,7 @@
             </LinearLayout>
 
             <RelativeLayout
+                android:id="@+id/container_settings_theme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_8"
@@ -264,7 +247,6 @@
                 android:paddingBottom="@dimen/size_16"
                 android:background="@color/card_view_color"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:onClick="@{viewModel.clickListenerTheme}"
                 android:elevation="@dimen/default_elevation">
 
                 <TextView
@@ -278,10 +260,9 @@
                     android:layout_toEndOf="@+id/image_settings_theme"/>
 
                 <TextView
-                    android:text="@{viewModel.textTheme}"
+                    android:id="@+id/text_settings_theme_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/text_settings_theme_value"
                     android:textSize="@dimen/font_12"
                     android:maxLines="1"
                     android:ellipsize="end"
@@ -294,13 +275,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/ic_theme"
-                    android:contentDescription="@string/ic_theme"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/size_16"/>
 
             </RelativeLayout>
 
             <LinearLayout
+                android:id="@+id/container_settings_progress_in_training"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/size_4"
@@ -316,17 +297,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/ic_progress_3"
-                    android:contentDescription="@string/ic_notifications_show_only_one"
                     android:layout_marginStart="@dimen/size_16"
                     android:layout_gravity="center_vertical"/>
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/switch_settings_progress_in_training"
+                    android:id="@+id/switch_settings_show_progress_in_training"
                     android:text="@string/show_progress_in_training"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/text_color_main"
-                    android:checked="@{safeUnbox(viewModel.isShowProgressInTraining())}"
                     android:textSize="@dimen/font_12"
                     android:paddingStart="@dimen/size_16"
                     android:paddingEnd="@dimen/size_32"/>
@@ -334,6 +313,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/container_settings_voice_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/size_4"
@@ -349,17 +329,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/ic_microphone"
-                    android:contentDescription="@string/ic_notifications_show_only_one"
                     android:layout_marginStart="@dimen/size_16"
                     android:layout_gravity="center_vertical"/>
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/switch_settings_voice_input"
+                    android:id="@+id/switch_settings_show_voice_input"
                     android:text="@string/is_show_voice_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/text_color_main"
-                    android:checked="@{safeUnbox(viewModel.isShowVoiceInput())}"
                     android:textSize="@dimen/font_12"
                     android:paddingStart="@dimen/size_16"
                     android:paddingEnd="@dimen/size_32"/>
@@ -367,6 +345,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/container_settings_bottom_navigation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/size_4"
@@ -382,17 +361,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/ic_navigation_design"
-                    android:contentDescription="@string/ic_notifications_show_only_one"
                     android:layout_marginStart="@dimen/size_16"
                     android:layout_gravity="center_vertical"/>
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/switch_settings_design"
+                    android:id="@+id/switch_settings_bottom_navigation"
                     android:text="@string/is_old_navigation_design"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/text_color_main"
-                    android:checked="@{safeUnbox(viewModel.isOldNavigationDesign())}"
                     android:textSize="@dimen/font_12"
                     android:paddingStart="@dimen/size_16"
                     android:paddingEnd="@dimen/size_32"/>
@@ -400,6 +377,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/container_settings_rate_app"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -408,7 +386,6 @@
                 android:layout_marginTop="@dimen/size_8"
                 android:background="@color/card_view_color"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:onClick="@{viewModel.clickListenerRate}"
                 android:elevation="@dimen/default_elevation">
 
                 <ImageView
@@ -416,7 +393,6 @@
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/ic_star"
                     android:id="@+id/imageView3"
-                    android:contentDescription="@string/ic_rate_application"
                     android:layout_marginStart="@dimen/size_16"
                     android:layout_gravity="center_vertical"/>
 
@@ -434,6 +410,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/container_settings_info_training"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -442,14 +419,12 @@
                 android:layout_marginTop="@dimen/size_8"
                 android:background="@color/card_view_color"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:onClick="@{viewModel.clickListenerInfoTraining}"
                 android:elevation="@dimen/default_elevation">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/ic_info_2"
-                    android:contentDescription="@string/ic_training_words_information"
                     android:id="@+id/image_settings_info_training"
                     android:layout_marginStart="@dimen/size_16"
                     android:scaleType="centerInside"
@@ -468,6 +443,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/container_settings_app_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/size_16"
@@ -476,14 +452,12 @@
                 android:layout_marginTop="@dimen/size_8"
                 android:background="@color/card_view_color"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:onClick="@{viewModel.clickListenerAppInfo}"
                 android:elevation="@dimen/default_elevation">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/ic_info_2"
-                    android:contentDescription="@string/ic_application_info"
                     android:id="@+id/image_settings_app_info"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="@dimen/size_16"
@@ -502,6 +476,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/container_settings_updates_history"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/size_16"
@@ -510,7 +485,6 @@
                 android:layout_marginTop="@dimen/size_8"
                 android:background="@color/card_view_color"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:onClick="@{viewModel.clickListenerUpdatesHistory}"
                 android:elevation="@dimen/default_elevation">
 
                 <ImageView
@@ -518,7 +492,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/ic_info_2"
-                    android:contentDescription="@string/updates_history"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="@dimen/size_16"
                     android:scaleType="centerInside"/>
@@ -544,6 +517,4 @@
 
     </ScrollView>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-</layout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

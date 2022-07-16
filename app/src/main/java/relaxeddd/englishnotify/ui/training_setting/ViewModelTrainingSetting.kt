@@ -3,6 +3,7 @@ package relaxeddd.englishnotify.ui.training_setting
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.google.android.material.radiobutton.MaterialRadioButton
+import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.ALL_APP_WORDS
 import relaxeddd.englishnotify.common.CategoryItem
@@ -12,10 +13,13 @@ import relaxeddd.englishnotify.common.NAVIGATION_FRAGMENT_TRAINING
 import relaxeddd.englishnotify.common.ViewModelBase
 import relaxeddd.englishnotify.common.Word
 import relaxeddd.englishnotify.common.showToast
+import relaxeddd.englishnotify.model.db.AppDatabase
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 
-class ViewModelTrainingSetting(private val repositoryWord: RepositoryWord) : ViewModelBase(), ISelectCategory {
+class ViewModelTrainingSetting : ViewModelBase(), ISelectCategory {
+
+    private val repositoryWord = RepositoryWord.getInstance(AppDatabase.getInstance(App.context.applicationContext).wordDao())
 
     val categories = MutableLiveData<List<CategoryItem>>(ArrayList())
     var checkedItem: CategoryItem? = null

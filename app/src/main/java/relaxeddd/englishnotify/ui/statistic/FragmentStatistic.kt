@@ -1,11 +1,13 @@
 package relaxeddd.englishnotify.ui.statistic
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.BaseFragment
-import relaxeddd.englishnotify.common.InjectorUtils
 import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK
 import relaxeddd.englishnotify.databinding.FragmentStatisticBinding
 
@@ -13,31 +15,35 @@ class FragmentStatistic : BaseFragment<ViewModelStatistic, FragmentStatisticBind
 
     private lateinit var adapter: AdapterStatistic
 
-    override fun getLayoutResId() = R.layout.fragment_statistic
     override fun getToolbarTitleResId() = R.string.own_words_statistic
-    override fun getViewModelFactory() = InjectorUtils.provideStatisticViewModelFactory(requireContext())
-    override fun getViewModelClass() = ViewModelStatistic::class.java
     override fun isHomeMenuButtonEnabled() = true
     override fun getHomeMenuButtonIconResId() = R.drawable.ic_back
     override fun getHomeMenuButtonListener(): () -> Unit = { onNavigationEvent(NAVIGATION_ACTIVITY_BACK) }
 
-    override fun configureBinding() {
-        super.configureBinding()
-        binding?.viewModel = viewModel
+    override val viewModel: ViewModelStatistic by viewModels()
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = FragmentStatisticBinding.inflate(inflater)
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = AdapterStatistic(viewModel)
-        val binding = binding ?: return
-        binding.recyclerViewStatistic.layoutManager = LinearLayoutManager(context)
-        binding.recyclerViewStatistic.adapter = adapter
+        binding?.apply {
+            adapter = AdapterStatistic(viewModel)
+            recyclerViewStatistic.layoutManager = LinearLayoutManager(context)
+            recyclerViewStatistic.adapter = adapter
+        }
+    }
 
-        viewModel.ownWords.observe(viewLifecycleOwner, { words ->
+    override fun subscribeToViewModel() {
+        super.subscribeToViewModel()
+
+        viewModel.ownWords.observe(viewLifecycleOwner) { words ->
             updateTagsInfo()
             adapter.submitList(words)
-        })
+        }
     }
 
     private fun updateTagsInfo() {

@@ -1,38 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:ignore="UnusedAttribute">
+    android:id="@+id/info_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/info_container"
+    <include layout="@layout/view_toolbar"/>
+
+    <LinearLayout
+        android:id="@+id/container_categories"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <include layout="@layout/view_toolbar"/>
-
-        <LinearLayout
-            android:id="@+id/container_categories"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout_categories"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:layout_height="wrap_content"
+            android:elevation="@dimen/size_4"
+            app:tabMode="auto"/>
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tab_layout_categories"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:elevation="@dimen/size_4"
-                app:tabMode="auto"/>
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/view_pager_categories"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/view_pager_categories"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+    </LinearLayout>
 
-        </LinearLayout>
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-</layout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

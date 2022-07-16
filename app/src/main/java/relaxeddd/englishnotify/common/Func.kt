@@ -351,9 +351,7 @@ fun navigationItemBackground(context: Context): Drawable? {
             val tint = AppCompatResources.getColorStateList(context, R.drawable.navigation_item_background_tint)
 
             background = DrawableCompat.wrap(background.mutate())
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                background.setTintList(tint)
-            }
+            background.setTintList(tint)
         } catch (e: Exception) {}
     }
 

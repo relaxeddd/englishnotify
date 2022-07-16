@@ -1,39 +1,51 @@
 package relaxeddd.englishnotify.ui.categories.section
 
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.updatePaddingRelative
-import relaxeddd.englishnotify.R
+import androidx.fragment.app.viewModels
 import relaxeddd.englishnotify.common.BaseFragment
-import relaxeddd.englishnotify.common.InjectorUtils
 import relaxeddd.englishnotify.common.doOnApplyWindowInsets
 import relaxeddd.englishnotify.databinding.FragmentCategorySectionBinding
 import relaxeddd.englishnotify.ui.categories.AdapterCategories
-import relaxeddd.englishnotify.ui.categories.CategorySection
 
 class FragmentCategorySection : BaseFragment<ViewModelCategorySection, FragmentCategorySectionBinding>() {
 
-    private lateinit var adapter: AdapterCategories
+    private var adapter: AdapterCategories? = null
 
-    override fun getLayoutResId() = R.layout.fragment_category_section
-    override fun getViewModelFactory() = InjectorUtils.provideCategorySectionViewModelFactory()
-    override fun getViewModelClass() = ViewModelCategorySection::class.java
+    override val viewModel: ViewModelCategorySection by viewModels()
 
-    override fun configureBinding() {
-        super.configureBinding()
-        adapter = AdapterCategories(viewModel)
-        val binding = binding ?: return
-        binding.recyclerViewCategories.adapter = adapter
-        binding.recyclerViewCategories.setHasFixedSize(true)
-        viewModel.title.observe(viewLifecycleOwner, {
-            updateToolbarTitle(it)
-        })
-        viewModel.categories.observe(viewLifecycleOwner, { items ->
-            if (items != null && items.isNotEmpty()) {
-                adapter.submitList(items)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = FragmentCategorySectionBinding.inflate(inflater)
+        return binding?.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding?.apply {
+            adapter = AdapterCategories(viewModel)
+
+            recyclerViewCategories.adapter = adapter
+            recyclerViewCategories.setHasFixedSize(true)
+            recyclerViewCategories.doOnApplyWindowInsets { v, insets, padding ->
+                v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
             }
-        })
+        }
+    }
 
-        binding.recyclerViewCategories.doOnApplyWindowInsets { v, insets, padding ->
-            v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
+    override fun subscribeToViewModel() {
+        super.subscribeToViewModel()
+
+        viewModel.title.observe(viewLifecycleOwner) {
+            updateToolbarTitle(it)
+        }
+        viewModel.categories.observe(viewLifecycleOwner) { items ->
+            if (items != null && items.isNotEmpty()) {
+                adapter?.submitList(items)
+            }
         }
     }
 

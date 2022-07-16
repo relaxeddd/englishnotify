@@ -4,17 +4,21 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.common.Event
 import relaxeddd.englishnotify.common.NAVIGATION_LOADING_HIDE
 import relaxeddd.englishnotify.common.NAVIGATION_LOADING_SHOW
 import relaxeddd.englishnotify.common.TagInfo
 import relaxeddd.englishnotify.common.ViewModelBase
 import relaxeddd.englishnotify.common.Word
+import relaxeddd.englishnotify.model.db.AppDatabase
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 import kotlin.math.min
 
-class ViewModelStatistic(private val repositoryWord: RepositoryWord) : ViewModelBase() {
+class ViewModelStatistic : ViewModelBase() {
+
+    private val repositoryWord = RepositoryWord.getInstance(AppDatabase.getInstance(App.context.applicationContext).wordDao())
 
     private val learnStageMax = SharedHelper.getTrueAnswersToLearn()
 

@@ -1,24 +1,25 @@
 package relaxeddd.englishnotify.ui.dictionary
 
-import android.view.View
-import android.widget.CompoundButton
 import androidx.annotation.CallSuper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.common.*
+import relaxeddd.englishnotify.model.db.AppDatabase
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 
-open class ViewModelDictionary(private val repositoryWord: RepositoryWord) : ViewModelBase() {
+open class ViewModelDictionary : ViewModelBase() {
+
+    private val repositoryWord = RepositoryWord.getInstance(AppDatabase.getInstance(App.context.applicationContext).wordDao())
 
     open val isShowOwnWordsContainer = true
 
     val sortByType = MutableLiveData(SortByType.getByName(SharedHelper.getSortByType()))
     val filterTags = MutableLiveData<HashSet<String>>(HashSet())
-    val isShowOwnWords = MutableLiveData(SharedHelper.isShowOwnWords())
     val tags = HashSet<String>()
     val wordsFiltered = MutableLiveData<List<Word>>(ArrayList())
     var playWord: Word? = null
@@ -33,12 +34,6 @@ open class ViewModelDictionary(private val repositoryWord: RepositoryWord) : Vie
     private val sortObserver = Observer<SortByType> { sort ->
         SharedHelper.setSortByType(sort.name)
     }
-    val checkedChangeListenerShowOwnWords = CompoundButton.OnCheckedChangeListener { _, isChecked ->
-        SharedHelper.setShowOwnWords(isChecked)
-        isShowOwnWords.value = isChecked
-        updateFilteredWords()
-        navigateEvent.value = Event(NAVIGATION_ACTION_HIDE_FILTER)
-    }
 
     init {
         repositoryWord.words.observeForever(wordsObserver)
@@ -50,11 +45,12 @@ open class ViewModelDictionary(private val repositoryWord: RepositoryWord) : Vie
         repositoryWord.words.removeObserver(wordsObserver)
     }
 
-    val clickListenerFilterTags = View.OnClickListener {
+    fun onClickedFilterTags() {
         navigateEvent.value = Event(NAVIGATION_DIALOG_CHECK_TAGS)
     }
-    val clickListenerSortBy = View.OnClickListener {
-        navigateEvent.value = Event(NAVIGATION_DIALOG_SORT_BY)
+
+    fun onClickedSortedBy() {
+        navigateEvent.value = Event(NAVIGATION_DIALOG_SORTED_BY)
     }
 
     fun playWord(word: Word?) {

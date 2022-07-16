@@ -13,8 +13,8 @@ import relaxeddd.englishnotify.model.repository.RepositoryWord
 
 class ViewModelSettings : ViewModelBase() {
 
-    var textTheme: String = App.context.resources.getStringArray(R.array.array_themes)[SharedHelper.getAppThemeType()]
-    val isOldNavigationDesign = MutableLiveData(SharedHelper.isOldNavigationDesign())
+    var textTheme = MutableLiveData(App.context.resources.getStringArray(R.array.array_themes)[SharedHelper.getAppThemeType()])
+    val isBottomNavigation = MutableLiveData(SharedHelper.isOldNavigationDesign())
     val isShowProgressInTraining = MutableLiveData(SharedHelper.isShowProgressInTraining())
     val isShowVoiceInput = MutableLiveData(SharedHelper.isShowVoiceInput())
     val isEnableSecondaryProgress = MutableLiveData(SharedHelper.isEnabledSecondaryProgress())
@@ -30,7 +30,7 @@ class ViewModelSettings : ViewModelBase() {
     val clickListenerSecondaryProgressInfo = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_SECONDARY_PROGRESS_INFO)
     }
-    val clickListenerRate = View.OnClickListener {
+    val clickListenerRateApp = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_WEB_PLAY_MARKET)
     }
     val clickListenerInfoTraining = View.OnClickListener {
@@ -66,9 +66,9 @@ class ViewModelSettings : ViewModelBase() {
         navigateEvent.value = Event(NAVIGATION_GOOGLE_AUTH)
     }
     var checkedChangeListenerNavigationDesign = CompoundButton.OnCheckedChangeListener { _, isChecked ->
-        if (SharedHelper.isOldNavigationDesign() != isChecked && isOldNavigationDesign.value != isChecked) {
+        if (SharedHelper.isOldNavigationDesign() != isChecked && isBottomNavigation.value != isChecked) {
             SharedHelper.setOldNavigationDesign(isChecked)
-            isOldNavigationDesign.value = isChecked
+            isBottomNavigation.value = isChecked
             navigateEvent.value = Event(NAVIGATION_RECREATE_ACTIVITY)
         }
     }
@@ -101,7 +101,7 @@ class ViewModelSettings : ViewModelBase() {
     }
 
     fun onThemeUpdate(themeIx: Int) {
-        textTheme = App.context.resources.getStringArray(R.array.array_themes)[themeIx]
+        textTheme.value = App.context.resources.getStringArray(R.array.array_themes)[themeIx]
         SharedHelper.setAppThemeType(themeIx)
     }
 

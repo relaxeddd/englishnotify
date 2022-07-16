@@ -1,22 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="UnusedAttribute">
-
-    <data>
-
-        <import type="android.view.View"/>
-        <variable
-            name="viewModel"
-            type="relaxeddd.englishnotify.ui.notifications.ViewModelNotifications" />
-    </data>
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/info_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+    android:id="@+id/info_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <include layout="@layout/view_toolbar"/>
 
@@ -60,13 +49,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/text_color_main"
-                    android:checked="@{viewModel.isNotificationsEnabled}"
                     android:paddingStart="@dimen/size_16"
                     android:paddingEnd="@dimen/size_32"/>
 
             </LinearLayout>
 
             <RelativeLayout
+                android:id="@+id/container_notifications_select_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_8"
@@ -74,8 +63,7 @@
                 android:paddingBottom="@dimen/size_16"
                 android:background="@color/card_view_color"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:elevation="@dimen/default_elevation"
-                android:onClick="@{viewModel.clickListenerSelectCategory}">
+                android:elevation="@dimen/default_elevation">
 
                 <TextView
                     android:id="@+id/text_categories_categories"
@@ -88,14 +76,12 @@
                     android:textSize="@dimen/font_14" />
 
                 <TextView
-                    android:text="@{viewModel.selectedTagLiveData}"
+                    android:id="@+id/text_notifications_categories_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/text_notifications_categories_value"
                     android:textSize="@dimen/font_12"
                     android:maxLines="1"
                     android:ellipsize="end"
-                    android:visibility="@{viewModel.selectedTagLiveData.isEmpty() ? View.GONE : View.VISIBLE}"
                     android:layout_toEndOf="@+id/imageView4"
                     android:layout_below="@+id/text_categories_categories"
                     android:layout_marginStart="@dimen/size_16"
@@ -113,6 +99,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/container_notifications_repeat_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_8"
@@ -120,8 +107,7 @@
                 android:paddingBottom="@dimen/size_16"
                 android:background="@color/card_view_color"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:elevation="@dimen/default_elevation"
-                android:onClick="@{viewModel.clickListenerRepeatTime}">
+                android:elevation="@dimen/default_elevation">
 
                 <TextView
                     android:id="@+id/textView6"
@@ -134,10 +120,8 @@
                     android:textSize="@dimen/font_14" />
 
                 <TextView
-                    android:text="@{viewModel.textRepeatTime}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="@{(viewModel.textRepeatTime.isEmpty()) ? View.GONE : View.VISIBLE}"
                     android:textSize="@dimen/font_12"
                     android:maxLines="1"
                     android:ellipsize="end"
@@ -161,6 +145,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/container_notifications_learn_language"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_8"
@@ -168,8 +153,7 @@
                 android:paddingBottom="@dimen/size_16"
                 android:background="@color/card_view_color"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:elevation="@dimen/default_elevation"
-                android:onClick="@{viewModel.clickListenerLearnLanguage}">
+                android:elevation="@dimen/default_elevation">
 
                 <TextView
                     android:text="@string/notifications_language"
@@ -182,7 +166,6 @@
                     android:layout_marginStart="@dimen/size_16"/>
 
                 <TextView
-                    android:text="@{viewModel.textLearnLanguage}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/font_12"
@@ -205,6 +188,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/container_notifications_view_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/size_16"
@@ -212,8 +196,7 @@
                 android:layout_marginTop="@dimen/size_8"
                 android:background="@color/card_view_color"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:elevation="@dimen/default_elevation"
-                android:onClick="@{viewModel.clickListenerNotificationsView}">
+                android:elevation="@dimen/default_elevation">
 
                 <TextView
                     android:id="@+id/text_notifications_view"
@@ -227,7 +210,6 @@
 
                 <TextView
                     android:id="@+id/text_notifications_view_value"
-                    android:text="@{viewModel.textNotificationsView}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/font_12"
@@ -250,6 +232,7 @@
             </RelativeLayout>
 
             <LinearLayout
+                android:id="@+id/container_notifications_deletable"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/size_4"
@@ -258,8 +241,7 @@
                 android:layout_marginTop="@dimen/size_8"
                 android:background="@color/card_view_color"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:elevation="@dimen/default_elevation"
-                android:visibility="@{viewModel.isVisibleNotificationsView == true ? View.VISIBLE : View.GONE}">
+                android:elevation="@dimen/default_elevation">
 
                 <ImageView
                     android:id="@+id/image_notifications_deletable"
@@ -276,7 +258,6 @@
                     android:textColor="@color/text_color_main"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:checked="@{safeUnbox(viewModel.isNotDeletable)}"
                     android:textSize="@dimen/font_12"
                     android:paddingStart="@dimen/size_16"
                     android:paddingEnd="@dimen/size_32"/>
@@ -309,7 +290,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/text_color_main"
-                    android:checked="@{safeUnbox(viewModel.isShowOnlyOneNotification)}"
                     android:textSize="@dimen/font_12"
                     android:paddingStart="@dimen/size_16"
                     android:paddingEnd="@dimen/size_32"/>
@@ -317,6 +297,7 @@
             </LinearLayout>
 
             <RelativeLayout
+                android:id="@+id/container_notifications_night_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_8"
@@ -324,8 +305,7 @@
                 android:foreground="?android:attr/selectableItemBackground"
                 android:paddingTop="@dimen/size_16"
                 android:paddingBottom="@dimen/size_16"
-                android:elevation="@dimen/default_elevation"
-                android:onClick="@{viewModel.clickListenerNightTime}">
+                android:elevation="@dimen/default_elevation">
 
                 <TextView
                     android:id="@+id/text_notifications_night_time"
@@ -339,27 +319,26 @@
 
                 <TextView
                     android:id="@+id/text_notifications_night_time_value"
-                    android:text="@{@string/night_time_value(viewModel.timeStartOff, viewModel.timeEndOff)}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/font_12"
-                    android:visibility="@{(safeUnbox(viewModel.timeDurationOffValue) > 0) ? View.VISIBLE : View.GONE}"
                     android:layout_marginStart="@dimen/size_16"
                     android:layout_toEndOf="@+id/image_view_notifications_night_time"
                     android:layout_below="@+id/text_notifications_night_time"/>
 
                 <ImageView
+                    android:id="@+id/image_view_notifications_night_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/ic_night_time"
                     android:contentDescription="@string/ic_night_time"
-                    android:id="@+id/image_view_notifications_night_time"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/size_16"/>
 
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/container_notifications_test"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/size_16"
@@ -367,8 +346,7 @@
                 android:layout_marginTop="@dimen/size_8"
                 android:background="@color/card_view_color"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:elevation="@dimen/default_elevation"
-                android:onClick="@{viewModel.clickListenerTestNotifications}">
+                android:elevation="@dimen/default_elevation">
 
                 <TextView
                     android:id="@+id/text_notifications_test"
@@ -381,12 +359,12 @@
                     android:layout_toEndOf="@+id/image_view_notifications_test"/>
 
                 <ImageView
+                    android:id="@+id/image_view_notifications_test"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/ic_test"
                     android:contentDescription="@string/ic_send_test_notification"
                     android:layout_centerVertical="true"
-                    android:id="@+id/image_view_notifications_test"
                     android:layout_marginStart="@dimen/size_16"/>
 
             </RelativeLayout>
@@ -401,6 +379,4 @@
 
     </ScrollView>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-</layout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

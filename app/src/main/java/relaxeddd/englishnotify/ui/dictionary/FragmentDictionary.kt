@@ -5,21 +5,23 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.core.view.updatePaddingRelative
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.dialogs.DialogCheckTags
-import relaxeddd.englishnotify.dialogs.DialogSortBy
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.FragmentDictionaryBinding
+import relaxeddd.englishnotify.dialogs.DialogCheckTags
 import relaxeddd.englishnotify.dialogs.DialogDeleteWords
+import relaxeddd.englishnotify.dialogs.DialogSortBy
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.ui.main.MainActivity
-import java.lang.IllegalStateException
 
 abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>> : BaseFragment<VM, FragmentDictionaryBinding>() {
 
@@ -45,38 +47,57 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
 
     //------------------------------------------------------------------------------------------------------------------
     abstract fun createWordsAdapter() : A
-    override fun getLayoutResId() = R.layout.fragment_dictionary
     override fun hasToolbar() = false
     override fun getFabIconResId() = R.drawable.ic_plus
     override fun getFabListener() = Navigation.createNavigateOnClickListener(R.id.action_fragmentDictionaryContainer_to_fragmentWord)
 
-    override fun configureBinding() {
-        super.configureBinding()
-        binding?.viewModel = viewModel
-        binding?.clickListenerCloseFilter = clickListenerCloseFilter
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = FragmentDictionaryBinding.inflate(inflater)
+        return binding?.root
     }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = createWordsAdapter()
-        val binding = binding ?: return
+        binding?.apply {
+            adapter = createWordsAdapter()
 
-        binding.checkBoxDictionaryShowOwnWords.setOnCheckedChangeListener(viewModel.checkedChangeListenerShowOwnWords)
-        binding.recyclerViewDictionary.adapter = adapter
-        binding.recyclerViewDictionary.setOnTouchListener { _, _ ->
-            animateDropdown(binding.containerDictionaryFilter, false, animBlock)
-            false
+            recyclerViewDictionary.adapter = adapter
+            recyclerViewDictionary.setOnTouchListener { _, _ ->
+                animateDropdown(containerDictionaryFilter, false, animBlock)
+                false
+            }
+            recyclerViewDictionary.doOnApplyWindowInsets { v, insets, padding ->
+                v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
+            }
+            containerDictionaryFilterTags.setOnClickListener {
+                viewModel.onClickedFilterTags()
+            }
+            containerSortedBy.setOnClickListener {
+                viewModel.onClickedSortedBy()
+            }
         }
-        binding.recyclerViewDictionary.doOnApplyWindowInsets { v, insets, padding ->
-            v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
-        }
+    }
+
+    override fun subscribeToViewModel() {
+        super.subscribeToViewModel()
+
         viewModel.applySearch(textSearch)
-        viewModel.wordsFiltered.observe(viewLifecycleOwner, { words ->
-            binding.hasWords = (words != null && words.isNotEmpty())
+        viewModel.wordsFiltered.observe(viewLifecycleOwner) { words ->
+            val hasWords = words.isNotEmpty()
+
+            binding?.recyclerViewDictionary?.isVisible = hasWords
+            binding?.textDictionaryNoWords?.isVisible = !hasWords
             updateAdapter(words)
-        })
+        }
+        viewModel.filterTags.observe(viewLifecycleOwner) {
+            binding?.textDictionaryFilterTagsValues?.isVisible = it.isNotEmpty()
+            binding?.textDictionaryFilterTagsValues?.text = if (it.isEmpty()) "" else it.toString()
+        }
+        viewModel.sortByType.observe(viewLifecycleOwner) {
+            binding?.textDictionarySortByValue?.text = it.getTitle()
+        }
         lifecycleScope.launchWhenCreated {
             SharedHelper.learnLanguageTypeFlow.collect {
                 adapter?.languageType = it
@@ -159,7 +180,7 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
                 dialog.listener = listenerCheckTags
                 dialog.show(this@FragmentDictionary.childFragmentManager, "Check tags Dialog")
             }
-            NAVIGATION_DIALOG_SORT_BY -> {
+            NAVIGATION_DIALOG_SORTED_BY -> {
                 val dialog = DialogSortBy()
                 val args = Bundle()
                 args.putInt(SELECTED_ITEM, viewModel.sortByType.value?.ordinal ?: 0)
@@ -190,9 +211,7 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
     }
 
     override fun onSearchTextChanged(searchText: String) {
-        if (isViewModelInitialized()) {
-            viewModel.applySearch(searchText)
-        }
+        viewModel.applySearch(searchText)
     }
 
     fun onMenuFilterClicked() {

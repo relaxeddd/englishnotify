@@ -1,23 +1,27 @@
 package relaxeddd.englishnotify.common
 
-import android.os.Build
 import android.os.Bundle
-import android.view.*
-import androidx.annotation.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import androidx.annotation.CallSuper
+import androidx.annotation.DrawableRes
+import androidx.annotation.IdRes
+import androidx.annotation.MenuRes
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.forEach
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import androidx.viewbinding.ViewBinding
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.ui.main.MainActivity
-import java.lang.IllegalStateException
 
-abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment() {
+abstract class BaseFragment<VM : ViewModelBase, B : ViewBinding> : Fragment() {
+
+    protected abstract val viewModel: VM
 
     protected var textSearch = ""
         set(value) {
@@ -26,15 +30,10 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
                 onSearchTextChanged(value)
             }
         }
-    protected lateinit var viewModel: VM
     protected var binding: B? = null
     protected var menu: Menu? = null
     protected var searchView: SearchView? = null
 
-    @LayoutRes
-    abstract fun getLayoutResId() : Int
-    abstract fun getViewModelFactory() : ViewModelProvider.NewInstanceFactory
-    abstract fun getViewModelClass(): Class<VM>
     protected open fun getToolbarTitleResId() = EMPTY_RES
     protected open fun getToolbarTitle() = ""
     protected open fun isHomeMenuButtonEnabled() = false
@@ -53,26 +52,15 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
     protected open fun getFabIconResId() = EMPTY_RES
     protected open fun getFabListener(): View.OnClickListener? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, getLayoutResId(), null, false)
-        viewModel = ViewModelProvider(this, getViewModelFactory()).get(getViewModelClass())
-
-        configureBinding()
-        binding?.lifecycleOwner = viewLifecycleOwner
-        binding?.executePendingBindings()
-
-        return binding?.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        subscribeToViewModel()
 
         view.findViewById<Toolbar>(R.id.toolbar)?.apply {
             val isOldNavigationDesign = SharedHelper.isOldNavigationDesign()
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                this.elevation = getToolbarElevation()
-            }
+            this.elevation = getToolbarElevation()
             onCreateOptionsMenu(menu, activity?.menuInflater ?: return)
 
             (activity as? MainActivity)?.registerToolbar(this)
@@ -183,12 +171,12 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
     }
 
     @CallSuper
-    protected open fun configureBinding() {
-        viewModel.navigation.observe(viewLifecycleOwner, {
-            it.getContentIfNotHandled()?.let {eventId ->
+    protected open fun subscribeToViewModel() {
+        viewModel.navigation.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { eventId ->
                 onNavigationEvent(eventId)
             }
-        })
+        }
     }
 
     protected fun navigate(@IdRes actionId: Int, args: Bundle? = null) {
@@ -202,6 +190,4 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewDataBinding> : Fragment(
             setTitle(title)
         }
     }
-
-    protected fun isViewModelInitialized() = this::viewModel.isInitialized
 }

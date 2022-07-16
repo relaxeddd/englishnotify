@@ -8,11 +8,12 @@ import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
+import relaxeddd.englishnotify.model.db.AppDatabase
 import relaxeddd.englishnotify.model.preferences.SharedHelper
 import relaxeddd.englishnotify.model.repository.RepositoryWord
 import kotlin.random.Random
 
-class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelBase() {
+class ViewModelTraining : ViewModelBase() {
 
     companion object {
         private const val STATE_ANSWER = 0
@@ -24,6 +25,8 @@ class ViewModelTraining(private val repositoryWord: RepositoryWord) : ViewModelB
         const val RESULT_LEARNED = 2
         const val RESULT_MEMORIZE = 3
     }
+
+    private val repositoryWord = RepositoryWord.getInstance(AppDatabase.getInstance(App.context.applicationContext).wordDao())
 
     private val learnStageMax = SharedHelper.getTrueAnswersToLearn()
     private val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
