@@ -8,9 +8,10 @@ import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
-import relaxeddd.englishnotify.model.db.AppDatabase
-import relaxeddd.englishnotify.model.preferences.SharedHelper
-import relaxeddd.englishnotify.model.repository.RepositoryWord
+import relaxeddd.englishnotify.domain_words.entity.Word
+import relaxeddd.englishnotify.domain_words.repository.RepositoryWords
+import relaxeddd.englishnotify.preferences.Preferences
+import relaxeddd.englishnotify.preferences.utils.ALL_APP_WORDS
 import kotlin.random.Random
 
 class ViewModelTraining : ViewModelBase() {
@@ -26,14 +27,16 @@ class ViewModelTraining : ViewModelBase() {
         const val RESULT_MEMORIZE = 3
     }
 
-    private val repositoryWord = RepositoryWord.getInstance(AppDatabase.getInstance(App.context.applicationContext).wordDao())
+    private val prefs = Preferences.getInstance()
 
-    private val learnStageMax = SharedHelper.getTrueAnswersToLearn()
-    private val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
-    private val isCheckLearnedWords = SharedHelper.isCheckLearnedWords()
-    private val isListeningTraining = SharedHelper.isListeningTraining()
-    private val isShowProgressInTraining = SharedHelper.isShowProgressInTraining()
-    private val isHearAnswer = SharedHelper.isHearAnswer()
+    private val repositoryWord = RepositoryWords.getInstance(App.context)
+
+    private val learnStageMax = prefs.getTrueAnswersToLearn()
+    private val isEnabledSecondaryProgress = prefs.isEnabledSecondaryProgress()
+    private val isCheckLearnedWords = prefs.isCheckLearnedWords()
+    private val isListeningTraining = prefs.isListeningTraining()
+    private val isShowProgressInTraining = prefs.isShowProgressInTraining()
+    private val isHearAnswer = prefs.isHearAnswer()
 
     var category = ALL_APP_WORDS
     var trainingType = TRAINING_ENG_TO_RUS
@@ -65,8 +68,8 @@ class ViewModelTraining : ViewModelBase() {
     val isVisibleResultText = MutableLiveData(false)
     val isVisibleWordProgress = MutableLiveData(false)
     val isVisibleWordProgressSecondary = MutableLiveData(false)
-    val isVisibleButtonListen = MutableLiveData(SharedHelper.isListeningTraining())
-    val isVisibleTextWord = MutableLiveData(!SharedHelper.isListeningTraining())
+    val isVisibleButtonListen = MutableLiveData(prefs.isListeningTraining())
+    val isVisibleTextWord = MutableLiveData(!prefs.isListeningTraining())
     val wordProgress = MutableLiveData(0)
     val wordProgressSecondary = MutableLiveData(0)
     val resultAnimationType = MutableLiveData(RESULT_RIGHT)

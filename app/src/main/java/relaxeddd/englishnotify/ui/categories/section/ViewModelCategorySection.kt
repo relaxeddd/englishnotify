@@ -4,8 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.android.material.radiobutton.MaterialRadioButton
 import kotlinx.coroutines.launch
+import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.ALL_APP_WORDS
 import relaxeddd.englishnotify.common.CategoryItem
 import relaxeddd.englishnotify.common.Event
 import relaxeddd.englishnotify.common.ISelectCategory
@@ -14,8 +14,9 @@ import relaxeddd.englishnotify.common.OWN_KEY_SYMBOL
 import relaxeddd.englishnotify.common.ViewModelBase
 import relaxeddd.englishnotify.common.getStringByResName
 import relaxeddd.englishnotify.common.showToast
-import relaxeddd.englishnotify.model.preferences.SharedHelper
-import relaxeddd.englishnotify.model.repository.RepositoryWord
+import relaxeddd.englishnotify.domain_words.repository.RepositoryWords
+import relaxeddd.englishnotify.preferences.Preferences
+import relaxeddd.englishnotify.preferences.utils.ALL_APP_WORDS
 
 class ViewModelCategorySection : ViewModelBase(), ISelectCategory {
 
@@ -25,17 +26,19 @@ class ViewModelCategorySection : ViewModelBase(), ISelectCategory {
         val mapCategoryRadioButtons = HashMap<String, ArrayList<MaterialRadioButton>>()
     }
 
+    private val prefs = Preferences.getInstance()
+
     val title = MutableLiveData("")
     val categories = MutableLiveData<List<CategoryItem>>(ArrayList())
 
     init {
         val allTags = arrayListOf(ALL_APP_WORDS)
-        allTags.addAll(RepositoryWord.getInstance().getOwnWordCategories())
+        allTags.addAll(RepositoryWords.getInstance(App.context).getOwnWordCategories())
 
         val list = ArrayList<CategoryItem>()
 
         if (selectedCategory.isEmpty()) {
-            selectedCategory = SharedHelper.getSelectedCategory()
+            selectedCategory = prefs.getSelectedCategory()
         }
         allTags.forEach {
             val categoryItem = CategoryItem(it)
@@ -99,10 +102,10 @@ class ViewModelCategorySection : ViewModelBase(), ISelectCategory {
             return
         }
 
-        if (!category.equals(SharedHelper.getSelectedCategory(), true)) {
+        if (!category.equals(prefs.getSelectedCategory(), true)) {
             viewModelScope.launch {
                 if (category.isNotEmpty()) {
-                    SharedHelper.setSelectedCategory(category)
+                    prefs.setSelectedCategory(category)
                     navigateEvent.value = Event(NAVIGATION_ACTIVITY_BACK)
                 } else {
                     showToast(R.string.tags_should_not_be_empty)

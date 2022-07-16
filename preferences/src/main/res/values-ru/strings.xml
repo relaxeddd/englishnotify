@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="alphabetical_name">Алфавитный</string>
+    <string name="alphabetical_translate">Алфавитный (перевод)</string>
+    <string name="time_new">Сначала новые</string>
+    <string name="time_old">Сначала старые</string>
+</resources>

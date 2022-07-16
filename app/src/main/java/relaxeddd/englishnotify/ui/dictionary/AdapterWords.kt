@@ -17,18 +17,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.checkbox.MaterialCheckBox
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.OWN_KEY_SYMBOL
-import relaxeddd.englishnotify.common.Word
 import relaxeddd.englishnotify.common.animateDropdown
-import relaxeddd.englishnotify.model.preferences.SharedHelper
+import relaxeddd.englishnotify.domain_words.entity.Word
+import relaxeddd.englishnotify.preferences.Preferences
 import java.text.SimpleDateFormat
 import java.util.*
 
 abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewModelDictionary) : ListAdapter<Word, VH>(WordDiffCallback) {
 
     companion object {
-        var learnStageMax = SharedHelper.getTrueAnswersToLearn()
-        var isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
+        var learnStageMax = Preferences.getInstance().getTrueAnswersToLearn()
+        var isEnabledSecondaryProgress = Preferences.getInstance().isEnabledSecondaryProgress()
     }
+
+    private val prefs = Preferences.getInstance()
 
     var languageType = 0
         set(value) {
@@ -86,7 +88,7 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
 
     @SuppressLint("RestrictedApi")
     protected fun showPopupWord(view: View, word: Word) {
-        val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
+        val isEnabledSecondaryProgress = prefs.isEnabledSecondaryProgress()
         val popupMenu = PopupMenu(view.context, view)
 
         popupMenu.inflate(R.menu.menu_popup_word)

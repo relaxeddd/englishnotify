@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.Word
+import relaxeddd.englishnotify.domain_words.entity.Word
 
 class AdapterParsedWords(val viewModel: ViewModelParsedWords): ListAdapter<Word, AdapterParsedWords.ViewHolder>(WordDiffCallback()) {
 

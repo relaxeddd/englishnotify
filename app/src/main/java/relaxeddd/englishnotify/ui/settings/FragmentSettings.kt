@@ -18,15 +18,17 @@ import relaxeddd.englishnotify.dialogs.DialogNotificationLearnPoints
 import relaxeddd.englishnotify.dialogs.DialogSecondaryProgressInfo
 import relaxeddd.englishnotify.dialogs.DialogSwapProgress
 import relaxeddd.englishnotify.dialogs.DialogTrueAnswersToLearn
-import relaxeddd.englishnotify.model.preferences.SharedHelper
+import relaxeddd.englishnotify.preferences.Preferences
 import kotlin.math.max
 import kotlin.math.min
 
 class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding>() {
 
+    private val prefs = Preferences.getInstance()
+
     private val listenerTheme: ListenerResult<Int> = object: ListenerResult<Int> {
         override fun onResult(result: Int) {
-            if (result != SharedHelper.getAppThemeType()) {
+            if (result != prefs.getAppThemeType()) {
                 viewModel.onThemeUpdate(result)
                 activity?.recreate()
             }
@@ -136,7 +138,7 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
                 val dialog = DialogTrueAnswersToLearn()
                 val args = Bundle()
                 val array = resources.getStringArray(R.array.array_true_answers_number_to_learn)
-                val arrayIndex = min(max(SharedHelper.getTrueAnswersToLearn() - 2, 0), array.size)
+                val arrayIndex = min(max(prefs.getTrueAnswersToLearn() - 2, 0), array.size)
                 args.putInt(SELECTED_ITEM, arrayIndex)
                 dialog.arguments = args
                 dialog.listener = object : ListenerResult<Int> {
@@ -150,7 +152,7 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
                 val dialog = DialogNotificationLearnPoints()
                 val args = Bundle()
                 val array = resources.getStringArray(R.array.array_notifications_learn_points)
-                val arrayIndex = min(max(SharedHelper.getNotificationLearnPoints() - 1, 0), array.size)
+                val arrayIndex = min(max(prefs.getNotificationLearnPoints() - 1, 0), array.size)
                 args.putInt(SELECTED_ITEM, arrayIndex)
                 dialog.arguments = args
                 dialog.listener = object : ListenerResult<Int> {
@@ -167,7 +169,7 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
                 if (isResumed) {
                     val dialog = DialogAppTheme()
                     val args = Bundle()
-                    args.putInt(SELECTED_ITEM, SharedHelper.getAppThemeType())
+                    args.putInt(SELECTED_ITEM, prefs.getAppThemeType())
                     dialog.arguments = args
                     dialog.listener = listenerTheme
                     dialog.show(this@FragmentSettings.childFragmentManager, "Theme Dialog")

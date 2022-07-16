@@ -10,17 +10,18 @@ import relaxeddd.englishnotify.common.NAVIGATION_LOADING_HIDE
 import relaxeddd.englishnotify.common.NAVIGATION_LOADING_SHOW
 import relaxeddd.englishnotify.common.TagInfo
 import relaxeddd.englishnotify.common.ViewModelBase
-import relaxeddd.englishnotify.common.Word
-import relaxeddd.englishnotify.model.db.AppDatabase
-import relaxeddd.englishnotify.model.preferences.SharedHelper
-import relaxeddd.englishnotify.model.repository.RepositoryWord
+import relaxeddd.englishnotify.domain_words.entity.Word
+import relaxeddd.englishnotify.domain_words.repository.RepositoryWords
+import relaxeddd.englishnotify.preferences.Preferences
 import kotlin.math.min
 
 class ViewModelStatistic : ViewModelBase() {
 
-    private val repositoryWord = RepositoryWord.getInstance(AppDatabase.getInstance(App.context.applicationContext).wordDao())
+    private val prefs = Preferences.getInstance()
 
-    private val learnStageMax = SharedHelper.getTrueAnswersToLearn()
+    private val repositoryWord = RepositoryWords.getInstance(App.context)
+
+    private val learnStageMax = prefs.getTrueAnswersToLearn()
 
     private val wordsObserver = Observer<List<Word>> {
         updateOwnWords()
@@ -55,8 +56,8 @@ class ViewModelStatistic : ViewModelBase() {
     }
 
     private fun updateWordsTagInfo(words: List<Word>) {
-        val learnStageMax = SharedHelper.getTrueAnswersToLearn()
-        val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
+        val learnStageMax = prefs.getTrueAnswersToLearn()
+        val isEnabledSecondaryProgress = prefs.isEnabledSecondaryProgress()
         val tagInfoOwn = TagInfo()
 
         tagInfoOwn.received = 0
@@ -73,7 +74,7 @@ class ViewModelStatistic : ViewModelBase() {
     }
 
     private fun updateOwnWords() {
-        val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
+        val isEnabledSecondaryProgress = prefs.isEnabledSecondaryProgress()
         val words = ArrayList(repositoryWord.words.value ?: emptyList()).filter { !it.isDeleted }.sortedWith(object: Comparator<Word> {
             override fun compare(o1: Word?, o2: Word?): Int {
                 if (o1 == null) return 1

@@ -9,9 +9,9 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import com.google.android.material.checkbox.MaterialCheckBox
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.TYPE_PUSH_ENGLISH
-import relaxeddd.englishnotify.common.TYPE_PUSH_RUSSIAN
-import relaxeddd.englishnotify.common.Word
+import relaxeddd.englishnotify.domain_words.entity.Word
+import relaxeddd.englishnotify.preferences.utils.TYPE_PUSH_ENGLISH
+import relaxeddd.englishnotify.preferences.utils.TYPE_PUSH_RUSSIAN
 
 class AdapterDictionary(viewModel: ViewModelDictionary) : AdapterWords<AdapterDictionary.ViewHolder>(viewModel) {
 

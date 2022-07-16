@@ -5,25 +5,26 @@ import androidx.lifecycle.Observer
 import com.google.android.material.radiobutton.MaterialRadioButton
 import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.ALL_APP_WORDS
 import relaxeddd.englishnotify.common.CategoryItem
 import relaxeddd.englishnotify.common.Event
 import relaxeddd.englishnotify.common.ISelectCategory
 import relaxeddd.englishnotify.common.NAVIGATION_FRAGMENT_TRAINING
 import relaxeddd.englishnotify.common.ViewModelBase
-import relaxeddd.englishnotify.common.Word
 import relaxeddd.englishnotify.common.showToast
-import relaxeddd.englishnotify.model.db.AppDatabase
-import relaxeddd.englishnotify.model.preferences.SharedHelper
-import relaxeddd.englishnotify.model.repository.RepositoryWord
+import relaxeddd.englishnotify.domain_words.entity.Word
+import relaxeddd.englishnotify.domain_words.repository.RepositoryWords
+import relaxeddd.englishnotify.preferences.Preferences
+import relaxeddd.englishnotify.preferences.utils.ALL_APP_WORDS
 
 class ViewModelTrainingSetting : ViewModelBase(), ISelectCategory {
 
-    private val repositoryWord = RepositoryWord.getInstance(AppDatabase.getInstance(App.context.applicationContext).wordDao())
+    private val prefs = Preferences.getInstance()
+
+    private val repositoryWord = RepositoryWords.getInstance(App.context)
 
     val categories = MutableLiveData<List<CategoryItem>>(ArrayList())
     var checkedItem: CategoryItem? = null
-    var trainingLanguage: Int = SharedHelper.getTrainingLanguage()
+    var trainingLanguage: Int = prefs.getTrainingLanguage()
 
     private val wordsObserver = Observer<List<Word>> {
         updateCategories()
@@ -52,20 +53,20 @@ class ViewModelTrainingSetting : ViewModelBase(), ISelectCategory {
             showToast(R.string.error_category_select)
             return
         }
-        val trainWordsCount = RepositoryWord.getInstance().getTrainingWordsByCategory(category, SharedHelper.isCheckLearnedWords(), trainingLanguage)
+        val trainWordsCount = RepositoryWords.getInstance(App.context).getTrainingWordsByCategory(category, prefs.isCheckLearnedWords(), trainingLanguage)
         if (trainWordsCount.size < 5) {
             showToast(R.string.no_training_category_words)
             return
         }
 
-        SharedHelper.setTrainingCategory(category)
-        SharedHelper.setTrainingLanguage(trainingLanguage)
+        prefs.setTrainingCategory(category)
+        prefs.setTrainingLanguage(trainingLanguage)
         navigateEvent.value = Event(NAVIGATION_FRAGMENT_TRAINING)
     }
 
     private fun updateCategories() {
         val list = ArrayList<CategoryItem>()
-        val selectedTag = SharedHelper.getTrainingCategory()
+        val selectedTag = prefs.getTrainingCategory()
         val allTags = repositoryWord.getWordCategoriesForTraining()
 
         for (tag in allTags) {

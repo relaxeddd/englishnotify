@@ -2,8 +2,7 @@ package relaxeddd.englishnotify.common
 
 import org.json.JSONArray
 import org.json.JSONObject
-import java.lang.ClassCastException
-import java.util.ArrayList
+import relaxeddd.englishnotify.domain_words.entity.Word
 
 fun parseWord(wordJson: JSONObject) : Word {
     var id = if (wordJson.has(ID)) (wordJson[ID] as String) else ""

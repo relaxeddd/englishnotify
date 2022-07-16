@@ -11,9 +11,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.*
-import relaxeddd.englishnotify.model.db.AppDatabase
-import relaxeddd.englishnotify.model.preferences.SharedHelper
+import relaxeddd.englishnotify.common.IS_KNOW
+import relaxeddd.englishnotify.common.NOTIFICATIONS_VIEW_WITH_TRANSLATE
+import relaxeddd.englishnotify.common.NOTIFICATION_ID
+import relaxeddd.englishnotify.common.WORD_ID
+import relaxeddd.englishnotify.common.isCorrectAnswer
+import relaxeddd.englishnotify.common.showToast
+import relaxeddd.englishnotify.domain_words.entity.Word
+import relaxeddd.englishnotify.domain_words.repository.RepositoryWords
+import relaxeddd.englishnotify.preferences.Preferences
+import relaxeddd.englishnotify.preferences.utils.TYPE_PUSH_ENGLISH
+import relaxeddd.englishnotify.preferences.utils.TYPE_PUSH_RUSSIAN
 
 class NotificationAnswerBroadcastReceiver : BroadcastReceiver() {
 
@@ -27,16 +35,18 @@ class NotificationAnswerBroadcastReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         val pendingResult = goAsync()
+        val prefs = Preferences.getInstance()
 
         CoroutineScope(Dispatchers.IO).launch {
-            val wordDao = AppDatabase.getInstance(context).wordDao()
+            val repositoryWords = RepositoryWords.getInstance(context)
+
             val notificationId = intent.getIntExtra(NOTIFICATION_ID, -1)
             val wordId = intent.getStringExtra(WORD_ID) ?: ""
             val isKnow = intent.getIntExtra(IS_KNOW, NOT_KNOW)
-            val word = wordDao.findWordById(wordId) ?: return@launch
-            val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress(context)
-            val languageType = SharedHelper.getLearnLanguageType()
-            val learnStageMax = SharedHelper.getTrueAnswersToLearn()
+            val word = repositoryWords.findWord(wordId) ?: return@launch
+            val isEnabledSecondaryProgress = prefs.isEnabledSecondaryProgress()
+            val languageType = prefs.getLearnLanguageType()
+            val learnStageMax = prefs.getTrueAnswersToLearn()
             val saveWord = Word(word)
             var learnStage = if (languageType == TYPE_PUSH_RUSSIAN && isEnabledSecondaryProgress) saveWord.learnStageSecondary else saveWord.learnStage
             var isRemove = true
@@ -44,7 +54,7 @@ class NotificationAnswerBroadcastReceiver : BroadcastReceiver() {
 
             if (isKnow == KNOW) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    val notificationLearnPoints = SharedHelper.getNotificationLearnPoints(context)
+                    val notificationLearnPoints = prefs.getNotificationLearnPoints()
                     val userText = (RemoteInput.getResultsFromIntent(intent)?.getCharSequence(KEY_TEXT_REPLY) ?: "").toString().lowercase()
                     val answer = if (languageType == TYPE_PUSH_ENGLISH) word.rus else word.eng
                     //val title = if (languageType == TYPE_PUSH_ENGLISH) word.eng else word.rus
@@ -69,7 +79,7 @@ class NotificationAnswerBroadcastReceiver : BroadcastReceiver() {
                     } else {
                         showToast(R.string.answer_incorrect)
                         NotificationHelper.handleWordNotification(context, word, false,
-                            SharedHelper.NOTIFICATIONS_VIEW_WITH_TRANSLATE, withWrongTitle = true,
+                            NOTIFICATIONS_VIEW_WITH_TRANSLATE, withWrongTitle = true,
                             notificationId = notificationId, isShowAnswer = true, userAnswer = userText)
                     }
                 }
@@ -78,11 +88,11 @@ class NotificationAnswerBroadcastReceiver : BroadcastReceiver() {
                 isRemove = false
 
                 NotificationHelper.handleWordNotification(context, word, false,
-                    SharedHelper.NOTIFICATIONS_VIEW_WITH_TRANSLATE, notificationId = notificationId, isShowAnswer = true)
+                    NOTIFICATIONS_VIEW_WITH_TRANSLATE, notificationId = notificationId, isShowAnswer = true)
             }
 
             if (isEnabledSecondaryProgress && languageType == TYPE_PUSH_RUSSIAN) saveWord.learnStageSecondary = learnStage else saveWord.learnStage = learnStage
-            wordDao.insertNow(saveWord)
+            repositoryWords.insertNow(saveWord)
 
             if (isRemove && notificationId != -1) {
                 val notificationCompat = NotificationManagerCompat.from(context.applicationContext)

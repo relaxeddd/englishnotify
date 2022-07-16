@@ -33,25 +33,27 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.model.preferences.SharedHelper
+import relaxeddd.englishnotify.preferences.utils.THEME_BLACK
+import relaxeddd.englishnotify.preferences.utils.THEME_BLUE
+import relaxeddd.englishnotify.preferences.utils.THEME_BLUE_LIGHT
 import java.util.*
 import java.util.regex.Pattern
 
-fun getPrimaryColorResId() = when (SharedHelper.getAppThemeType()) {
+fun getPrimaryColorResId(appThemeType: Int) = when (appThemeType) {
     THEME_BLUE -> R.color.colorPrimary2
     THEME_BLACK -> R.color.colorPrimary3
     THEME_BLUE_LIGHT -> R.color.colorPrimary4
     else -> R.color.colorPrimary
 }
 
-fun getPrimaryDarkColorResId() = when (SharedHelper.getAppThemeType()) {
+fun getPrimaryDarkColorResId(appThemeType: Int) = when (appThemeType) {
     THEME_BLUE -> R.color.colorPrimaryDark2
     THEME_BLACK -> R.color.colorPrimaryDark3
     THEME_BLUE_LIGHT -> R.color.colorPrimaryDark4
     else -> R.color.colorPrimaryDark
 }
 
-fun getAccentColorResId() = when (SharedHelper.getAppThemeType()) {
+fun getAccentColorResId(appThemeType: Int) = when (appThemeType) {
     THEME_BLUE -> R.color.colorAccent2
     THEME_BLACK -> R.color.colorAccent3
     THEME_BLUE_LIGHT -> R.color.colorAccent4
@@ -366,47 +368,11 @@ fun setClickableSubstring(string: String, spannableString: SpannableString, subs
     spannableString.setSpan(UnderlineSpan(), firstIndex, lastIndex, 0)
 }
 
-fun isNightTime(context: Context) : Boolean {
-    val startHour = SharedHelper.getStartHour(context)
-    val durationHours = SharedHelper.getDurationHours(context)
+fun isNightTime(context: Context, startHour: Int, durationHours: Int) : Boolean {
     val endHour = if (startHour + durationHours >= 24) startHour + durationHours - 24 else startHour + durationHours
     val calendar = Calendar.getInstance()
     val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
 
     return durationHours != 0 && ((currentHour in startHour until endHour)
             || (startHour + durationHours >= 24 && currentHour < endHour) )
-}
-
-object Func {
-
-    fun createDefaultWords() = listOf(
-        Word("cause", "cause", "причина, дело, повод, вызывать", "kɔːz",
-            timestamp = System.currentTimeMillis(), isCreatedByUser = false),
-        Word("catch", "catch", "ловить, поймать, улов, выгода, добыча, захват", "kæʧ",
-            listOf("irregular"), v2 = "caught", v3 = "caught", timestamp = System.currentTimeMillis(), isCreatedByUser = false),
-        Word("dream", "dream", "мечтать, сниться, мечта, сон, фантазировать", "driːm",
-            listOf("irregular"), v2 = "dreamt", v3 = "dreamt", timestamp = System.currentTimeMillis(), isCreatedByUser = false),
-        Word("throw", "throw", "бросать, бросок, кидать, метать, метание", "θroʊ",
-            listOf("irregular"), v2 = "threw", v3 = "thrown",
-            timestamp = System.currentTimeMillis(), isCreatedByUser = false),
-        Word("forget", "forget", "забывать, не помнить, забыть", "fəˈɡet",
-            listOf("irregular"), v2 = "forgot", v3 = "forgotten",
-            timestamp = System.currentTimeMillis(), isCreatedByUser = false),
-        Word("bite", "bite", "кусать, укусить, укус, кусок, кусаться", "baɪt",
-            listOf("irregular"), v2 = "bit", v3 = "bitten",
-            timestamp = System.currentTimeMillis(), isCreatedByUser = false),
-        Word("hide", "hide", "скрывать, прятать, прятаться", "haɪd",
-            listOf("irregular"), v2 = "hid", v3 = "hidden",
-            timestamp = System.currentTimeMillis(), isCreatedByUser = false),
-        Word("absent", "absent", "отсутствовать, отсутствующий, отсутствует, в отсутствие", "ˈæbsənt",
-            timestamp = System.currentTimeMillis(), isCreatedByUser = false),
-        Word("beard", "beard", "борода", "bɪrd",
-            timestamp = System.currentTimeMillis(), isCreatedByUser = false),
-        Word("claim", "claim", "запрос, требование, требовать, иск, заявка, претензия", "kleɪm",
-            timestamp = System.currentTimeMillis(), isCreatedByUser = false),
-        Word("desire", "desire", "желание, желать, страсть", "dɪˈzaɪər",
-            timestamp = System.currentTimeMillis(), isCreatedByUser = false),
-        Word("elk", "elk", "лось, сохатый", "elk",
-            timestamp = System.currentTimeMillis(), isCreatedByUser = false)
-    )
 }

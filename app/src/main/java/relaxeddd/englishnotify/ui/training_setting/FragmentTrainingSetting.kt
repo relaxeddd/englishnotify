@@ -8,12 +8,23 @@ import android.view.ViewGroup
 import androidx.core.view.updatePaddingRelative
 import androidx.fragment.app.viewModels
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.*
+import relaxeddd.englishnotify.common.BaseFragment
+import relaxeddd.englishnotify.common.CATEGORY
+import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK
+import relaxeddd.englishnotify.common.NAVIGATION_FRAGMENT_TRAINING
+import relaxeddd.englishnotify.common.TRAINING_ENG_TO_RUS
+import relaxeddd.englishnotify.common.TRAINING_MIXED
+import relaxeddd.englishnotify.common.TRAINING_RUS_TO_ENG
+import relaxeddd.englishnotify.common.TRAINING_TYPE
+import relaxeddd.englishnotify.common.doOnApplyWindowInsets
 import relaxeddd.englishnotify.databinding.FragmentTrainingSettingBinding
-import relaxeddd.englishnotify.model.preferences.SharedHelper
+import relaxeddd.englishnotify.preferences.Preferences
+import relaxeddd.englishnotify.preferences.utils.ALL_APP_WORDS
 import relaxeddd.englishnotify.ui.categories.AdapterCategories
 
 class FragmentTrainingSetting : BaseFragment<ViewModelTrainingSetting, FragmentTrainingSettingBinding>() {
+
+    private val prefs = Preferences.getInstance()
 
     private lateinit var adapter: AdapterCategories
 
@@ -61,17 +72,17 @@ class FragmentTrainingSetting : BaseFragment<ViewModelTrainingSetting, FragmentT
 
             recyclerViewTrainingSettingCategories.itemAnimator = null
             recyclerViewTrainingSettingCategories.adapter = adapter
-            switchTrainingSettingListenTraining.isChecked = SharedHelper.isListeningTraining()
+            switchTrainingSettingListenTraining.isChecked = prefs.isListeningTraining()
             switchTrainingSettingListenTraining.setOnCheckedChangeListener { _, isChecked ->
-                SharedHelper.setListeningTraining(isChecked)
+                prefs.setListeningTraining(isChecked)
             }
-            switchTrainingSettingHearAnswer.isChecked = SharedHelper.isHearAnswer()
+            switchTrainingSettingHearAnswer.isChecked = prefs.isHearAnswer()
             switchTrainingSettingHearAnswer.setOnCheckedChangeListener { _, isChecked ->
-                SharedHelper.setHearAnswer(isChecked)
+                prefs.setHearAnswer(isChecked)
             }
-            switchTrainingSettingCheckLearnedWords.isChecked = SharedHelper.isCheckLearnedWords()
+            switchTrainingSettingCheckLearnedWords.isChecked = prefs.isCheckLearnedWords()
             switchTrainingSettingCheckLearnedWords.setOnCheckedChangeListener { _, isChecked ->
-                SharedHelper.setCheckLearnedWords(isChecked)
+                prefs.setCheckLearnedWords(isChecked)
             }
         }
     }
