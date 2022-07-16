@@ -15,14 +15,16 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.Word
-import relaxeddd.englishnotify.model.preferences.SharedHelper
+import relaxeddd.englishnotify.domain_words.entity.Word
+import relaxeddd.englishnotify.preferences.Preferences
 import kotlin.math.min
 
 class AdapterStatistic(val viewModel: ViewModelStatistic): ListAdapter<Word, AdapterStatistic.ViewHolder>(WordDiffCallback()) {
 
-    private val learnStageMax = SharedHelper.getTrueAnswersToLearn()
-    private val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
+    private val prefs = Preferences.getInstance()
+
+    private val learnStageMax = prefs.getTrueAnswersToLearn()
+    private val isEnabledSecondaryProgress = prefs.isEnabledSecondaryProgress()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_item_statistic_word, parent, false))
@@ -39,7 +41,7 @@ class AdapterStatistic(val viewModel: ViewModelStatistic): ListAdapter<Word, Ada
 
     @SuppressLint("RestrictedApi")
     private fun showPopupWord(view: View, word: Word) {
-        val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
+        val isEnabledSecondaryProgress = prefs.isEnabledSecondaryProgress()
         val popupMenu = PopupMenu(view.context, view)
 
         popupMenu.inflate(R.menu.menu_popup_word)

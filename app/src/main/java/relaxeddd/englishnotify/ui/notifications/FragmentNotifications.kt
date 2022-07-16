@@ -1,5 +1,6 @@
 package relaxeddd.englishnotify.ui.notifications
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,9 +17,13 @@ import relaxeddd.englishnotify.dialogs.DialogLearnLanguage
 import relaxeddd.englishnotify.dialogs.DialogNotificationsView
 import relaxeddd.englishnotify.dialogs.DialogPushOffTime
 import relaxeddd.englishnotify.dialogs.DialogTestNotifications
-import relaxeddd.englishnotify.model.preferences.SharedHelper
+import relaxeddd.englishnotify.preferences.Preferences
+import relaxeddd.englishnotify.preferences.utils.NOTIFICATIONS_VIEW_INPUT
+import relaxeddd.englishnotify.preferences.utils.NOTIFICATIONS_VIEW_STANDARD
 
 class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotificationsBinding>() {
+
+    private val prefs = Preferences.getInstance()
 
     private val listenerLearnEnglish: ListenerResult<Int> = object: ListenerResult<Int> {
         override fun onResult(result: Int) {
@@ -127,7 +132,7 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
             NAVIGATION_DIALOG_LEARN_ENGLISH -> {
                 val dialog = DialogLearnLanguage()
                 val args = Bundle()
-                args.putInt(SELECTED_ITEM, SharedHelper.getLearnLanguageType())
+                args.putInt(SELECTED_ITEM, prefs.getLearnLanguageType())
                 dialog.arguments = args
                 dialog.listener = listenerLearnEnglish
                 dialog.show(this@FragmentNotifications.childFragmentManager, "Learn Language Dialog")
@@ -135,7 +140,12 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
             NAVIGATION_DIALOG_NOTIFICATIONS_VIEW -> {
                 val dialog = DialogNotificationsView()
                 val args = Bundle()
-                args.putInt(SELECTED_ITEM, SharedHelper.getNotificationsView())
+                val defaultNotificationsView = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                    NOTIFICATIONS_VIEW_STANDARD
+                } else {
+                    NOTIFICATIONS_VIEW_INPUT
+                }
+                args.putInt(SELECTED_ITEM, prefs.getNotificationsView() ?: defaultNotificationsView)
                 dialog.arguments = args
                 dialog.listener = listenerNotificationsView
                 dialog.show(this@FragmentNotifications.childFragmentManager, "Learn Language Dialog")
@@ -143,8 +153,8 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
             NAVIGATION_DIALOG_NIGHT_TIME -> {
                 val dialog = DialogPushOffTime()
                 val args = Bundle()
-                args.putInt(START_HOUR, SharedHelper.getStartHour())
-                args.putInt(DURATION_HOURS, SharedHelper.getDurationHours())
+                args.putInt(START_HOUR, prefs.getStartHour())
+                args.putInt(DURATION_HOURS, prefs.getDurationHours())
                 dialog.arguments = args
                 dialog.confirmListener = listenerNightTime
                 dialog.show(this@FragmentNotifications.childFragmentManager, "Night Time Dialog")

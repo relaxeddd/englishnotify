@@ -14,16 +14,20 @@ import androidx.core.view.updatePaddingRelative
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.FragmentDictionaryBinding
 import relaxeddd.englishnotify.dialogs.DialogCheckTags
 import relaxeddd.englishnotify.dialogs.DialogDeleteWords
 import relaxeddd.englishnotify.dialogs.DialogSortBy
-import relaxeddd.englishnotify.model.preferences.SharedHelper
+import relaxeddd.englishnotify.domain_words.entity.Word
+import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.ui.main.MainActivity
 
 abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>> : BaseFragment<VM, FragmentDictionaryBinding>() {
+
+    private val prefs = Preferences.getInstance()
 
     protected var adapter: A? = null
     private var animBlock: AnimBlock = AnimBlock(false)
@@ -96,10 +100,10 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
             binding?.textDictionaryFilterTagsValues?.text = if (it.isEmpty()) "" else it.toString()
         }
         viewModel.sortByType.observe(viewLifecycleOwner) {
-            binding?.textDictionarySortByValue?.text = it.getTitle()
+            binding?.textDictionarySortByValue?.text = it.getTitle(App.context)
         }
         lifecycleScope.launchWhenCreated {
-            SharedHelper.learnLanguageTypeFlow.collect {
+            prefs.learnLanguageTypeFlow.collect {
                 adapter?.languageType = it
             }
         }
@@ -195,7 +199,7 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
     override fun setupThemeColors() {
         super.setupThemeColors()
         val isNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
-        binding?.containerDictionaryFilter?.setBackgroundResource(if (isNightMode) R.color.filter_bg_color else getPrimaryColorResId())
+        binding?.containerDictionaryFilter?.setBackgroundResource(if (isNightMode) R.color.filter_bg_color else getPrimaryColorResId(prefs.getAppThemeType()))
     }
 
     open fun onFragmentSelected() {}
@@ -249,7 +253,7 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
     private fun updateAdapter(words: List<Word>?) {
         if (words != null && words.isNotEmpty()) {
             val isScroll = adapter?.currentList?.size != words.size
-            AdapterWords.isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
+            AdapterWords.isEnabledSecondaryProgress = prefs.isEnabledSecondaryProgress()
             adapter?.submitList(words)
             if (isScroll) {
                 handler.postDelayed({

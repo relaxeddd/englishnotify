@@ -15,9 +15,12 @@ import relaxeddd.englishnotify.common.getPrimaryColorResId
 import relaxeddd.englishnotify.common.hideKeyboard
 import relaxeddd.englishnotify.common.myNavigate
 import relaxeddd.englishnotify.databinding.FragmentParseBinding
+import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.ui.categories.AdapterCategories
 
 class FragmentParse: BaseFragment<ViewModelParse, FragmentParseBinding>() {
+
+    private val prefs = Preferences.getInstance()
 
     private var adapter: AdapterCategories? = null
 
@@ -74,10 +77,10 @@ class FragmentParse: BaseFragment<ViewModelParse, FragmentParseBinding>() {
 
     override fun setupThemeColors() {
         val binding = binding ?: return
-        binding.containerTextParseDelimiterInner.boxStrokeColor = getPrimaryColorResId()
-        binding.containerTextParseDelimiterWords.boxStrokeColor = getPrimaryColorResId()
-        binding.containerTextParse.boxStrokeColor = getPrimaryColorResId()
-        binding.containerTextParseOwnTag.boxStrokeColor = getPrimaryColorResId()
+        binding.containerTextParseDelimiterInner.boxStrokeColor = getPrimaryColorResId(prefs.getAppThemeType())
+        binding.containerTextParseDelimiterWords.boxStrokeColor = getPrimaryColorResId(prefs.getAppThemeType())
+        binding.containerTextParse.boxStrokeColor = getPrimaryColorResId(prefs.getAppThemeType())
+        binding.containerTextParseOwnTag.boxStrokeColor = getPrimaryColorResId(prefs.getAppThemeType())
     }
 
     private fun handleClickedAccept() {

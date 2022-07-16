@@ -17,11 +17,13 @@ import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.FragmentWordBinding
 import relaxeddd.englishnotify.dialogs.DialogRestoreWord
-import relaxeddd.englishnotify.model.preferences.SharedHelper
+import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.ui.categories.AdapterCategories
 import relaxeddd.englishnotify.ui.main.MainActivity
 
 class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
+
+    private val prefs = Preferences.getInstance()
 
     private var adapter: AdapterCategories? = null
 
@@ -110,7 +112,7 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
             val selectedLanguage = binding.spinnerWordLanguage.selectedItem as? String ?: ""
             (activity as? MainActivity)?.requestRecognizeSpeech(selectedLanguage) {
                 if (it == null) {
-                    SharedHelper.setShowVoiceInput(false)
+                    prefs.setShowVoiceInput(false)
                     updateVoiceInputVisibility(false)
                 } else {
                     binding.textInputWord.setText(it)
@@ -121,10 +123,10 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
             adapter.setDropDownViewResource(R.layout.view_item_spinner)
             binding.spinnerWordLanguage.adapter = adapter
         }
-        binding.spinnerWordLanguage.setSelection(SharedHelper.getSelectedLocaleWord())
+        binding.spinnerWordLanguage.setSelection(prefs.getSelectedLocaleWord())
         binding.spinnerWordLanguage.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                SharedHelper.setSelectedLocaleWord(position)
+                prefs.setSelectedLocaleWord(position)
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
@@ -133,7 +135,7 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
             val selectedLanguage = binding.spinnerWordLanguageTranslation.selectedItem as? String ?: ""
             (activity as? MainActivity)?.requestRecognizeSpeech(selectedLanguage) {
                 if (it == null) {
-                    SharedHelper.setShowVoiceInput(false)
+                    prefs.setShowVoiceInput(false)
                     updateVoiceInputVisibility(false)
                 } else {
                     binding.textInputTranslation.setText(it)
@@ -144,10 +146,10 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
             adapter.setDropDownViewResource(R.layout.view_item_spinner)
             binding.spinnerWordLanguageTranslation.adapter = adapter
         }
-        binding.spinnerWordLanguageTranslation.setSelection(SharedHelper.getSelectedLocaleTranslation())
+        binding.spinnerWordLanguageTranslation.setSelection(prefs.getSelectedLocaleTranslation())
         binding.spinnerWordLanguageTranslation.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                SharedHelper.setSelectedLocaleTranslation(position)
+                prefs.setSelectedLocaleTranslation(position)
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
@@ -156,7 +158,7 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
         binding.recyclerViewWordOwnCategories.itemAnimator = null
         binding.recyclerViewWordOwnCategories.adapter = adapter
 
-        updateVoiceInputVisibility(SharedHelper.isShowVoiceInput())
+        updateVoiceInputVisibility(prefs.isShowVoiceInput())
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -179,10 +181,10 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
 
     override fun setupThemeColors() {
         val binding = binding ?: return
-        binding.containerTextWordInputWord.boxStrokeColor = getPrimaryColorResId()
-        binding.containerTextWordInputTranscription.boxStrokeColor = getPrimaryColorResId()
-        binding.containerTextWordInputTranslation.boxStrokeColor = getPrimaryColorResId()
-        binding.containerTextWordOwnTag.boxStrokeColor = getPrimaryColorResId()
+        binding.containerTextWordInputWord.boxStrokeColor = getPrimaryColorResId(prefs.getAppThemeType())
+        binding.containerTextWordInputTranscription.boxStrokeColor = getPrimaryColorResId(prefs.getAppThemeType())
+        binding.containerTextWordInputTranslation.boxStrokeColor = getPrimaryColorResId(prefs.getAppThemeType())
+        binding.containerTextWordOwnTag.boxStrokeColor = getPrimaryColorResId(prefs.getAppThemeType())
     }
 
     override fun onNavigationEvent(eventId: Int) {
@@ -229,7 +231,8 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
             else -> {
                 hideKeyboard()
 
-                if (viewModel.isReadyToRateApp) {
+                // TODO: rate app dialog is disabled
+                if (false) {
                     val manager = ReviewManagerFactory.create(requireContext())
                     val request = manager.requestReviewFlow()
 
@@ -238,7 +241,6 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
                             val reviewInfo = ableToRateAnswer.result
                             val flow = manager.launchReviewFlow(requireActivity(), reviewInfo)
                             flow.addOnCompleteListener {
-                                SharedHelper.setCancelledRateDialog(true)
                                 viewModel.createOwnWord(eng, transcription, rus, ownCategory)
                             }
                         } else {

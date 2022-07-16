@@ -6,7 +6,6 @@ const val URL_LOCAL = "http://192.168.0.1:5000/push-english-79db7/us-central1/"
 
 const val CHECKED_ITEM = "checked_item"
 const val CHECKED_ITEMS = "checked_items"
-const val DATABASE_TEST_APP = "database_test_app"
 const val ITEMS = "items"
 const val SELECTED_ITEM = "selected_item"
 const val WORDS = "words"
@@ -143,21 +142,6 @@ const val NAVIGATION_ACTIVITY_BACK = 790
 const val NAVIGATION_GLOBAL_DICTIONARY = 780
 const val NAVIGATION_ACTIVITY_BACK_TWICE = 770
 
-const val TYPE_PUSH_ENGLISH = 0
-const val TYPE_PUSH_RUSSIAN = 1
-
-const val TRAINING_ENG_TO_RUS = 0
-const val TRAINING_RUS_TO_ENG = 1
-const val TRAINING_MIXED = 2
-
-const val THEME_STANDARD = 0
-const val THEME_BLUE = 1
-const val THEME_BLACK = 2
-const val THEME_BLUE_LIGHT = 3
-
-const val NOTIFICATIONS_VIEW_STANDARD = 0
-const val NOTIFICATIONS_VIEW_INPUT = 1
-
 const val WORDS_SAVE_LIMIT = 10000
 
 const val ENG = "eng"
@@ -194,9 +178,6 @@ const val EXERCISE = "exercise"
 const val START_HOUR = "startHour"
 const val DURATION_HOURS = "durationHours"
 
-const val START_HOUR_OFF = "startHourOff"
-const val DURATION_HOURS_OFF = "durationHoursOff"
-
 const val ERROR_TOKEN_NOT_INIT = "User token not init"
 const val ERROR_NOT_AUTHORIZED = "User not authorized"
 const val ERROR_USER_NOT_FOUND = "User not found"
@@ -205,59 +186,27 @@ const val ERROR_SEND_TEST_NOTIFICATION = "Error send test notification"
 const val ERROR_FIREBASE_NETWORK = "Firebase Network exception"
 
 const val APP = "app"
-const val APP_THEME = "appTheme"
 const val IS_KNOW = "isKnow"
 const val CATEGORY = "category"
-const val CHECK_LEARNED_WORDS = "checkLearnedWords"
 const val CONTENT = "content"
-const val DICTIONARY_TAB_POSITION = "dictionaryTabPosition"
 const val NAME = "name"
 const val VALUE = "value"
 const val TIMESTAMP = "timestamp"
 const val TYPE = "type"
 const val TITLE = "title"
 const val TEXT = "text"
-const val CANCELLED_RATE_DIALOG = "cancelledRateDialog21"
 const val WORD_LEARN_STAGE = "wordLearnStage"
-const val HEAR_ANSWER = "hearAnswer"
 const val HIDE_OFF_NOTIFICATIONS_WARNING = "hideOffNotificationsWarning"
-const val HIDE_SIGN_IN = "hideSignIn"
-const val IS_DEFAULT_WORDS_LOADED = "isDefaultWordsLoaded"
-const val IS_OLD_NAVIGATION_DESIGN = "isOldNavigationDesign"
-const val IS_SHOW_ONLY_ONE_NOTIFICATION = "isShowOnlyOneNotification"
 const val IS_SHOW_OWN_WORDS = "isShowOwnWords"
 const val SYSTEM = "system"
 const val OWN_WORD = "ownWord"
 const val PUSH = "push"
-const val LAST_OWN_CATEGORY = "lastOwnCategory"
-const val LOGIN_DATA = "loginData"
 const val SELECTED_TAGS = "selectedTags"
-const val PRIVACY_POLICY_CONFIRMED = "privacyPolicyConfirmed"
-const val PROGRESS_IN_TRAINING = "progressInTraining"
-const val PUSH_LANGUAGE = "pushLanguage"
-const val LAUNCH_COUNT = "launchCount1"
 const val LEVEL = "level"
-const val LISTENING_TRAINING = "listeningTraining"
-const val TRUE_ANSWERS_TO_LEARN = "trueAnswersToLearn"
-const val LEARN_POINTS_NOTIFICATION = "learnPointsNotifications"
-const val NOTIFICATIONS_ENABLED = "notificationsEnabled"
-const val NOTIFICATIONS_REPEAT_TIME = "notificationsRepeatTime"
-const val NOTIFICATIONS_VIEW = "notificationsView"
-const val SECONDARY_PROGRESS_ENABLED = "secondaryProgressEnabled"
-const val SELECTED_CATEGORY = "selectedCategory"
-const val SELECTED_LOCALE_WORD = "selectedLocaleWord"
-const val SELECTED_LOCALE_TRANSLATION = "selectedLocaleTranslation"
-const val SELECTED_LOCALE_TRAINING = "selectedLocaleTraining"
-const val SORT_BY_TYPE = "sortByType"
-const val START_FRAGMENT_ID = "startFragmentId"
-const val TRAINING_CATEGORY = "trainingCategory"
 const val USER_EMAIL = "userEmail"
-const val TRAINING_LANGUAGE = "trainingLanguage"
 const val COUNT = "count"
 const val TRAINING_TYPE = "trainingType"
-const val VOICE_INPUT = "voiceInput"
 const val VOTE_RECEIVE_NOTIFICATIONS = "voteReceiveNotifications"
-const val IS_ONGOING = "isOngoing"
 
 const val ENGLISH_WORDS_NOTIFICATIONS_CHANNEL = "EnglishWordsNotificationsChannel"
 
@@ -266,7 +215,6 @@ const val OWN_KEY_SYMBOL = "!"
 const val OWN = "own"
 const val IRREGULAR = "irregular"
 const val HARD = "hard"
-const val ALL_APP_WORDS = "all_app_words"
 const val ALL_APP_WORDS_WITHOUT_SIMPLE = "all_app_words_without_simple"
 const val HARD_5 = "hard_5"
 const val PRONOUN = "pronoun"

@@ -13,15 +13,16 @@ import com.google.android.material.tabs.TabLayoutMediator
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.BaseFragment
 import relaxeddd.englishnotify.databinding.FragmentDictionaryContainerBinding
-import relaxeddd.englishnotify.model.preferences.SharedHelper
+import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.ui.dictionary.FragmentDictionary
 import relaxeddd.englishnotify.ui.dictionary_all.FragmentDictionaryAll
 import relaxeddd.englishnotify.ui.dictionary_know.FragmentDictionaryKnow
 
 class FragmentDictionaryContainer : BaseFragment<ViewModelDictionaryContainer, FragmentDictionaryContainerBinding>() {
 
+    private val prefs = Preferences.getInstance()
     private var adapterFragmentsMap = HashMap<Int, FragmentDictionary<*, *>?>()
-    private var currentPosition: Int = SharedHelper.getDictionaryTabPosition()
+    private var currentPosition: Int = prefs.getDictionaryTabPosition()
     private val currentFragment: FragmentDictionary<*, *>?
         get() = adapterFragmentsMap[currentPosition]
 
@@ -38,7 +39,7 @@ class FragmentDictionaryContainer : BaseFragment<ViewModelDictionaryContainer, F
             }
             updateMenuIcons(false)
             currentPosition = position
-            SharedHelper.setDictionaryTabPosition(position)
+            prefs.setDictionaryTabPosition(position)
         }
     }
 
@@ -73,7 +74,7 @@ class FragmentDictionaryContainer : BaseFragment<ViewModelDictionaryContainer, F
 
     override fun onStart() {
         super.onStart()
-        if (binding?.viewPagerDictionaryContainer?.currentItem != SharedHelper.getDictionaryTabPosition()) {
+        if (binding?.viewPagerDictionaryContainer?.currentItem != prefs.getDictionaryTabPosition()) {
             binding?.viewPagerDictionaryContainer?.setCurrentItem(currentPosition, false)
         }
     }

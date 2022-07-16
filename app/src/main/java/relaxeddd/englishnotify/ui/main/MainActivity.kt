@@ -33,7 +33,12 @@ import relaxeddd.englishnotify.databinding.NavigationHeaderBinding
 import relaxeddd.englishnotify.dialogs.DialogPatchNotes
 import relaxeddd.englishnotify.dialogs.DialogRateApp
 import relaxeddd.englishnotify.dialogs.DialogVoiceInput
-import relaxeddd.englishnotify.model.preferences.SharedHelper
+import relaxeddd.englishnotify.domain_words.entity.Word
+import relaxeddd.englishnotify.preferences.Preferences
+import relaxeddd.englishnotify.preferences.utils.THEME_BLACK
+import relaxeddd.englishnotify.preferences.utils.THEME_BLUE
+import relaxeddd.englishnotify.preferences.utils.THEME_BLUE_LIGHT
+import relaxeddd.englishnotify.preferences.utils.THEME_STANDARD
 import java.util.*
 import kotlin.system.exitProcess
 
@@ -51,6 +56,8 @@ class MainActivity : AppCompatActivity(), NavigationHost, FloatingActionButtonHo
             R.id.fragmentSettings
         )
     }
+
+    private val prefs = Preferences.getInstance()
 
     private lateinit var binding: MainActivityBinding
 
@@ -80,8 +87,8 @@ class MainActivity : AppCompatActivity(), NavigationHost, FloatingActionButtonHo
 
         volumeControlStream = AudioManager.STREAM_MUSIC
 
-        val isBottomNavigation = SharedHelper.isOldNavigationDesign()
-        val initialNavigationId = SharedHelper.getStartFragmentId()
+        val isBottomNavigation = prefs.isBottomNavigation()
+        val initialNavigationId = prefs.getStartFragmentId() ?: R.id.fragmentDictionaryContainer
         initInsets(binding, isBottomNavigation)
         initNavigation(binding, isBottomNavigation, initialNavigationId)
 
@@ -122,7 +129,7 @@ class MainActivity : AppCompatActivity(), NavigationHost, FloatingActionButtonHo
     }
 
     override fun registerToolbar(toolbar: Toolbar) {
-        if (!SharedHelper.isOldNavigationDesign()) {
+        if (!prefs.isBottomNavigation()) {
             val appBarConfiguration = AppBarConfiguration.Builder(TOP_LEVEL_DESTINATIONS).setOpenableLayout(binding.drawer).build()
             toolbar.setupWithNavController(navController, appBarConfiguration)
         }
@@ -306,7 +313,7 @@ class MainActivity : AppCompatActivity(), NavigationHost, FloatingActionButtonHo
     }
 
     private fun setupTheme(binding: MainActivityBinding) {
-        when (SharedHelper.getAppThemeType(this)) {
+        when (prefs.getAppThemeType()) {
             THEME_STANDARD -> setTheme(R.style.AppTheme)
             THEME_BLUE -> setTheme(R.style.AppTheme2)
             THEME_BLACK -> setTheme(R.style.AppTheme3)
@@ -314,10 +321,11 @@ class MainActivity : AppCompatActivity(), NavigationHost, FloatingActionButtonHo
             else -> setTheme(R.style.AppTheme)
         }
 
+        val appThemeType = prefs.getAppThemeType()
         val isNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
-        binding.bottomNavigationViewMain.setBackgroundColor(ContextCompat.getColor(this, if (isNightMode) R.color.bottom_navigation_color else getPrimaryColorResId()))
-        binding.bottomNavigationViewMain.itemBackgroundResource = if (isNightMode) R.color.bottom_navigation_color else getPrimaryColorResId()
-        binding.buttonMainFab.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, if (isNightMode) R.color.floating_button_color else getPrimaryColorResId()))
+        binding.bottomNavigationViewMain.setBackgroundColor(ContextCompat.getColor(this, if (isNightMode) R.color.bottom_navigation_color else getPrimaryColorResId(appThemeType)))
+        binding.bottomNavigationViewMain.itemBackgroundResource = if (isNightMode) R.color.bottom_navigation_color else getPrimaryColorResId(appThemeType)
+        binding.buttonMainFab.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, if (isNightMode) R.color.floating_button_color else getPrimaryColorResId(appThemeType)))
     }
 
     private fun initInsets(binding: MainActivityBinding, isBottomNavigation: Boolean) {
@@ -382,7 +390,7 @@ class MainActivity : AppCompatActivity(), NavigationHost, FloatingActionButtonHo
 
             currentFragmentId = destination.id
             if (isTopLevelTab) {
-                SharedHelper.setStartFragmentId(destination.id)
+                prefs.setStartFragmentId(destination.id)
             }
             if (!isBottomNavigation) {
                 val lockMode = if (isTopLevelTab) {

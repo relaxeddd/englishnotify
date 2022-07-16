@@ -1,8 +1,8 @@
-package relaxeddd.englishnotify.model.db
+package relaxeddd.englishnotify.domain_words.db
 
 import androidx.room.TypeConverter
 
-class ConverterListStr {
+internal class ConverterListStr {
 
     @TypeConverter
     fun fromString(content: String?): List<String> {

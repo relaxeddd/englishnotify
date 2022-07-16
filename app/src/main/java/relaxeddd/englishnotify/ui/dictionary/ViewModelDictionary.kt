@@ -7,18 +7,27 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.App
-import relaxeddd.englishnotify.common.*
-import relaxeddd.englishnotify.model.db.AppDatabase
-import relaxeddd.englishnotify.model.preferences.SharedHelper
-import relaxeddd.englishnotify.model.repository.RepositoryWord
+import relaxeddd.englishnotify.common.Event
+import relaxeddd.englishnotify.common.NAVIGATION_DIALOG_CHECK_TAGS
+import relaxeddd.englishnotify.common.NAVIGATION_DIALOG_SORTED_BY
+import relaxeddd.englishnotify.common.NAVIGATION_FRAGMENT_WORD
+import relaxeddd.englishnotify.common.NAVIGATION_LOADING_HIDE
+import relaxeddd.englishnotify.common.NAVIGATION_LOADING_SHOW
+import relaxeddd.englishnotify.common.NAVIGATION_PLAY_WORD
+import relaxeddd.englishnotify.common.ViewModelBase
+import relaxeddd.englishnotify.domain_words.entity.Word
+import relaxeddd.englishnotify.domain_words.repository.RepositoryWords
+import relaxeddd.englishnotify.preferences.Preferences
+import relaxeddd.englishnotify.preferences.models.SortByType
 
 open class ViewModelDictionary : ViewModelBase() {
 
-    private val repositoryWord = RepositoryWord.getInstance(AppDatabase.getInstance(App.context.applicationContext).wordDao())
+    private val prefs = Preferences.getInstance()
+    private val repositoryWord = RepositoryWords.getInstance(App.context)
 
     open val isShowOwnWordsContainer = true
 
-    val sortByType = MutableLiveData(SortByType.getByName(SharedHelper.getSortByType()))
+    val sortByType = MutableLiveData(SortByType.getByName(prefs.getSortByType()))
     val filterTags = MutableLiveData<HashSet<String>>(HashSet())
     val tags = HashSet<String>()
     val wordsFiltered = MutableLiveData<List<Word>>(ArrayList())
@@ -32,7 +41,7 @@ open class ViewModelDictionary : ViewModelBase() {
         updateFilteredWords()
     }
     private val sortObserver = Observer<SortByType> { sort ->
-        SharedHelper.setSortByType(sort.name)
+        prefs.setSortByType(sort.name)
     }
 
     init {

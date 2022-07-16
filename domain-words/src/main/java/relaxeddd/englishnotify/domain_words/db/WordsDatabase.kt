@@ -1,4 +1,4 @@
-package relaxeddd.englishnotify.model.db
+package relaxeddd.englishnotify.domain_words.db
 
 import android.content.Context
 import androidx.room.Database
@@ -7,35 +7,36 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import relaxeddd.englishnotify.common.Word
-import relaxeddd.englishnotify.common.DATABASE_TEST_APP
-import relaxeddd.englishnotify.common.WORDS
+import relaxeddd.englishnotify.domain_words.entity.Word
+import relaxeddd.englishnotify.domain_words.utils.DATABASE_TEST_APP
+import relaxeddd.englishnotify.domain_words.utils.WORDS_TABLE
 
 @Database(entities = [Word::class], version = 15, exportSchema = false)
 @TypeConverters(ConverterListStr::class)
-abstract class AppDatabase : RoomDatabase() {
-
-    abstract fun wordDao(): WordDao
+internal abstract class WordsDatabase : RoomDatabase() {
 
     companion object {
-        @Volatile private var instance: AppDatabase? = null
 
-        fun getInstance(context: Context): AppDatabase {
+        @Volatile private var instance: WordsDatabase? = null
+
+        fun getInstance(context: Context): WordsDatabase {
             return instance ?: synchronized(this) {
                 instance ?: buildDatabase(context).also { instance = it }
             }
         }
 
-        fun buildDatabase(context: Context): AppDatabase {
-            return Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_TEST_APP)
+        private fun buildDatabase(context: Context): WordsDatabase {
+            return Room.databaseBuilder(context, WordsDatabase::class.java, DATABASE_TEST_APP)
                 .addMigrations(MIGRATION_14_15)
                 .build()
         }
     }
+
+    abstract fun wordDao(): WordDao
 }
 
 val MIGRATION_14_15 = object : Migration(14, 15) {
     override fun migrate(database: SupportSQLiteDatabase) {
-        database.execSQL("ALTER TABLE $WORDS ADD COLUMN learnStageSecondary INTEGER DEFAULT 0 NOT NULL")
+        database.execSQL("ALTER TABLE $WORDS_TABLE ADD COLUMN learnStageSecondary INTEGER DEFAULT 0 NOT NULL")
     }
 }

@@ -13,15 +13,19 @@ import androidx.core.app.RemoteInput
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.EXERCISE
 import relaxeddd.englishnotify.common.IS_KNOW
+import relaxeddd.englishnotify.common.NOTIFICATIONS_VIEW_WITH_QUESTION
+import relaxeddd.englishnotify.common.NOTIFICATIONS_VIEW_WITH_TRANSLATE
 import relaxeddd.englishnotify.common.NOTIFICATION_ID
-import relaxeddd.englishnotify.common.TYPE_PUSH_ENGLISH
-import relaxeddd.englishnotify.common.TYPE_PUSH_RUSSIAN
 import relaxeddd.englishnotify.common.WORD_ID
-import relaxeddd.englishnotify.common.Word
 import relaxeddd.englishnotify.common.getAppString
 import relaxeddd.englishnotify.common.isNightTime
-import relaxeddd.englishnotify.model.db.AppDatabase
-import relaxeddd.englishnotify.model.preferences.SharedHelper
+import relaxeddd.englishnotify.domain_words.entity.Word
+import relaxeddd.englishnotify.domain_words.repository.RepositoryWords
+import relaxeddd.englishnotify.preferences.Preferences
+import relaxeddd.englishnotify.preferences.utils.NOTIFICATIONS_VIEW_INPUT
+import relaxeddd.englishnotify.preferences.utils.NOTIFICATIONS_VIEW_STANDARD
+import relaxeddd.englishnotify.preferences.utils.TYPE_PUSH_ENGLISH
+import relaxeddd.englishnotify.preferences.utils.TYPE_PUSH_RUSSIAN
 import relaxeddd.englishnotify.ui.main.MainActivity
 import kotlin.random.Random
 
@@ -31,7 +35,9 @@ class NotificationHelper {
 
         @WorkerThread
         fun generateNotification(context: Context) {
-            if (isNightTime(context = context) || !SharedHelper.isNotificationsEnabled()) {
+            val prefs = Preferences.getInstance()
+
+            if (isNightTime(context = context, prefs.getStartHour(), prefs.getDurationHours()) || !prefs.isNotificationsEnabled()) {
                 return
             }
 
@@ -48,12 +54,12 @@ class NotificationHelper {
                 }
             }
 
-            val tag = SharedHelper.getSelectedCategory(context)
-            val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress(context)
-            val languageType = SharedHelper.getLearnLanguageType(context)
+            val tag = prefs.getSelectedCategory()
+            val isEnabledSecondaryProgress = prefs.isEnabledSecondaryProgress()
+            val languageType = prefs.getLearnLanguageType()
 
-            val wordDao = AppDatabase.getInstance(context).wordDao()
-            val allWords = wordDao.getAllItemsNow()
+            val repositoryWords = RepositoryWords.getInstance(context)
+            val allWords = repositoryWords.getWordsNow()
             val sortByLearnStage = HashMap<Int, ArrayList<Word>>()
 
             var words = allWords.filter { !it.isDeleted && (it.isOwnCategory || tag.isEmpty() || it.tags.contains(tag)) }
@@ -84,14 +90,15 @@ class NotificationHelper {
                 val wordIx = (words.indices).random()
 
                 if (wordIx >= 0 && wordIx < words.size) {
-                    if (SharedHelper.isShowOnlyOneNotification(context)) {
+                    if (prefs.isShowOnlyOneNotification()) {
                         notificationManager.cancelAll()
                     }
+                    val defaultNotificationView = if (VERSION.SDK_INT < VERSION_CODES.N) NOTIFICATIONS_VIEW_STANDARD else NOTIFICATIONS_VIEW_INPUT
                     handleWordNotification(
                         context,
                         words[wordIx],
                         isSave = false,
-                        viewType = SharedHelper.getNotificationsView(context),
+                        viewType = prefs.getNotificationsView() ?: defaultNotificationView,
                     )
                 }
             }
@@ -100,7 +107,8 @@ class NotificationHelper {
         @WorkerThread
         fun handleWordNotification(context: Context, word: Word, isSave: Boolean = true, viewType: Int,
                                    withWrongTitle: Boolean = false, notificationId: Int = -1, isShowAnswer: Boolean = false, userAnswer: String = "") {
-            val languageType = SharedHelper.getLearnLanguageType(context)
+            val prefs = Preferences.getInstance()
+            val languageType = prefs.getLearnLanguageType()
             val isShowTranslation = (languageType == TYPE_PUSH_RUSSIAN && !isShowAnswer || (languageType == TYPE_PUSH_ENGLISH && isShowAnswer))
                     && word.type != EXERCISE
 
@@ -109,16 +117,16 @@ class NotificationHelper {
             val title = if (isLongWord) "" else wordTitle
 
             val notificationText = if (VERSION.SDK_INT < VERSION_CODES.N
-                    || viewType == SharedHelper.NOTIFICATIONS_VIEW_WITH_TRANSLATE || withWrongTitle) {
+                    || viewType == NOTIFICATIONS_VIEW_WITH_TRANSLATE || withWrongTitle) {
                 getFullNotificationText(context, word, isShowTranslation, !isLongWord, withWrongTitle, userAnswer)
             } else if (isLongWord) wordTitle else ""
 
             val isShowButtons = VERSION.SDK_INT >= VERSION_CODES.N
-                    && viewType == SharedHelper.NOTIFICATIONS_VIEW_WITH_QUESTION && !withWrongTitle
+                    && viewType == NOTIFICATIONS_VIEW_WITH_QUESTION && !withWrongTitle
 
             if (isSave) {
-                val wordDao = AppDatabase.buildDatabase(context).wordDao()
-                val existsWord = wordDao.findWordByIdNow(word.id)
+                val repositoryWords = RepositoryWords.getInstance(context)
+                val existsWord = repositoryWords.findWordNow(word.id)
 
                 if (existsWord != null) {
                     existsWord.eng = word.eng
@@ -133,11 +141,11 @@ class NotificationHelper {
                 }
 
                 if (existsWord != null) {
-                    wordDao.insertNow(existsWord)
+                    repositoryWords.insertNow(existsWord)
                 } else {
                     word.timestamp = System.currentTimeMillis()
                     word.isCreatedByUser = false
-                    wordDao.insertNow(word)
+                    repositoryWords.insertNow(word)
                 }
             }
 
@@ -147,6 +155,7 @@ class NotificationHelper {
         @SuppressLint("InlinedApi")
         fun showNotificationWord(ctx: Context, wordId: String, text: String, title: String,
                                  withButtons : Boolean, existsNotificationId: Int = -1) {
+            val prefs = Preferences.getInstance()
             val notificationId = if (existsNotificationId != -1) existsNotificationId else Random.nextInt(10000)
             val channelId = getAppString(R.string.default_notification_channel_id)
             val notificationBuilder = NotificationCompat.Builder(ctx, channelId)
@@ -178,7 +187,7 @@ class NotificationHelper {
                     .setAllowGeneratedReplies(false)
                     .build()
                 notificationBuilder.addAction(action)
-                notificationBuilder.setOngoing(SharedHelper.isOngoing())
+                notificationBuilder.setOngoing(prefs.isOngoingNotification())
 
                 val notKnowPendingIntent: PendingIntent =
                     PendingIntent.getBroadcast(

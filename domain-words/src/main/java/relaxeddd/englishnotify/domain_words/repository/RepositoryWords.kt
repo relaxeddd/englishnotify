@@ -1,46 +1,49 @@
-package relaxeddd.englishnotify.model.repository
+package relaxeddd.englishnotify.domain_words.repository
 
+import android.content.Context
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import relaxeddd.englishnotify.App
-import relaxeddd.englishnotify.common.ALL_APP_WORDS
-import relaxeddd.englishnotify.common.Func
 import relaxeddd.englishnotify.common.TRAINING_ENG_TO_RUS
 import relaxeddd.englishnotify.common.TRAINING_RUS_TO_ENG
 import relaxeddd.englishnotify.common.TagInfo
-import relaxeddd.englishnotify.common.Word
-import relaxeddd.englishnotify.model.db.AppDatabase
-import relaxeddd.englishnotify.model.db.WordDao
-import relaxeddd.englishnotify.model.preferences.SharedHelper
-import java.util.*
+import relaxeddd.englishnotify.domain_words.db.WordDao
+import relaxeddd.englishnotify.domain_words.db.WordsDatabase
+import relaxeddd.englishnotify.domain_words.entity.Word
+import relaxeddd.englishnotify.domain_words.utils.createDefaultWords
+import relaxeddd.englishnotify.preferences.Preferences
+import relaxeddd.englishnotify.preferences.utils.ALL_APP_WORDS
 
-class RepositoryWord private constructor(private val wordDao: WordDao) {
+class RepositoryWords private constructor(private val wordDao: WordDao) {
 
     companion object {
-        @Volatile private var instance: RepositoryWord? = null
-        fun getInstance(wordDao: WordDao = AppDatabase.getInstance(App.context).wordDao()) = instance ?: synchronized(this) {
-            instance ?: RepositoryWord(wordDao).also { instance = it }
+
+        @Volatile private var instance: RepositoryWords? = null
+
+        fun getInstance(context: Context) = instance ?: synchronized(this) {
+            instance ?: RepositoryWords(WordsDatabase.getInstance(context).wordDao()).also { instance = it }
         }
     }
 
+    private val prefs = Preferences.getInstance()
+
     val words = wordDao.getAll()
-    private var tagsInfo: List<TagInfo> = ArrayList()
-    val tempParsedWords = ArrayList<Word>()
+    private var tagsInfo: List<TagInfo> = emptyList()
+    val tempParsedWords = arrayListOf<Word>()
 
     init {
         val mainScope = CoroutineScope(Dispatchers.Main)
 
         mainScope.launch {
             words.observeForever {
-                if (it.isEmpty() && !SharedHelper.isDefaultWordsLoaded()) {
+                if (it.isEmpty() && !prefs.isDefaultWordsLoaded()) {
                     mainScope.launch {
-                        val defaultWords = Func.createDefaultWords()
+                        val defaultWords = createDefaultWords()
                         insertWords(defaultWords)
-                        SharedHelper.setDefaultWordsLoaded(true)
+                        prefs.setDefaultWordsLoaded(true)
                     }
                 } else {
-                    SharedHelper.setDefaultWordsLoaded(true)
+                    prefs.setDefaultWordsLoaded(true)
                 }
             }
         }
@@ -77,14 +80,14 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
     }
 
     fun isEnoughLearnedWordsToRate() : Boolean {
-        val learnStageMax = SharedHelper.getTrueAnswersToLearn()
-        val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
-        return ArrayList(words.value?: ArrayList()).filter { it.isLearned(isEnabledSecondaryProgress, learnStageMax) }.size >= 5
+        val learnStageMax = prefs.getTrueAnswersToLearn()
+        val isEnabledSecondaryProgress = prefs.isEnabledSecondaryProgress()
+        return ArrayList(words.value ?: emptyList()).filter { it.isLearned(isEnabledSecondaryProgress, learnStageMax) }.size >= 5
     }
 
     fun getOwnWordCategories() : HashSet<String> {
         val categories = HashSet<String>()
-        val words = ArrayList(words.value ?: ArrayList())
+        val words = ArrayList(words.value ?: emptyList())
 
         words.forEach {
             if (!it.isDeleted) {
@@ -95,8 +98,8 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
     }
 
     fun getTrainingWordsByCategory(category: String, isTrainLearned: Boolean = false, trainingLanguage: Int) : ArrayList<Word> {
-        val learnStageMax = SharedHelper.getTrueAnswersToLearn()
-        val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
+        val learnStageMax = prefs.getTrueAnswersToLearn()
+        val isEnabledSecondaryProgress = prefs.isEnabledSecondaryProgress()
         val trainingWords = ArrayList<Word>()
         val words = ArrayList(words.value ?: ArrayList())
 
@@ -104,7 +107,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
             val isWordAlreadyLearned = word.isLearnedForTraining(isEnabledSecondaryProgress, trainingLanguage, learnStageMax)
 
             if ((word.tags.contains(category) || category == ALL_APP_WORDS)
-                    && (!isWordAlreadyLearned && !isTrainLearned || isTrainLearned && isWordAlreadyLearned) && !word.isDeleted) {
+                && (!isWordAlreadyLearned && !isTrainLearned || isTrainLearned && isWordAlreadyLearned) && !word.isDeleted) {
                 trainingWords.add(word)
             }
         }
@@ -170,6 +173,17 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
         }
     }
 
+    // TODO: switch required coroutine context here
+    fun insertNow(word: Word) {
+        wordDao.insertNow(word)
+    }
+
+    suspend fun findWord(id : String) = wordDao.findWordById(id)
+
+    fun findWordNow(id : String) = wordDao.findWordByIdNow(id)
+
+    fun getWordsNow() = wordDao.getAllItemsNow()
+
     suspend fun updateWord(word : Word) {
         wordDao.insert(word)
     }
@@ -199,7 +213,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
     }
 
     suspend fun deleteWord(wordId: String) : Boolean {
-        return deleteWords(Collections.singletonList(wordId))
+        return deleteWords(listOf(wordId))
     }
 
     suspend fun deleteWords(wordIds: List<String>) : Boolean {
@@ -209,7 +223,7 @@ class RepositoryWord private constructor(private val wordDao: WordDao) {
             if (word != null) {
                 val saveWord = Word(word)
                 saveWord.isDeleted = true
-                getInstance(wordDao).updateWord(saveWord)
+                updateWord(saveWord)
             }
         }
 

@@ -20,11 +20,14 @@ import androidx.fragment.app.viewModels
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.FragmentTrainingBinding
-import relaxeddd.englishnotify.model.preferences.SharedHelper
+import relaxeddd.englishnotify.preferences.Preferences
+import relaxeddd.englishnotify.preferences.utils.ALL_APP_WORDS
 import relaxeddd.englishnotify.ui.main.MainActivity
 import kotlin.random.Random
 
 class FragmentTraining: BaseFragment<ViewModelTraining, FragmentTrainingBinding>() {
+
+    private val prefs = Preferences.getInstance()
 
     private var toolbarTitleTraining: String = "Training"
 
@@ -71,7 +74,7 @@ class FragmentTraining: BaseFragment<ViewModelTraining, FragmentTrainingBinding>
                 val selectedLanguage = spinnerTrainingLanguage.selectedItem as? String ?: ""
                 (activity as? MainActivity)?.requestRecognizeSpeech(selectedLanguage) {
                     if (it == null) {
-                        SharedHelper.setShowVoiceInput(false)
+                        prefs.setShowVoiceInput(false)
                         imageTrainingMicrophone.visibility = View.GONE
                         spinnerTrainingLanguage.visibility = View.GONE
                     } else {
@@ -87,16 +90,16 @@ class FragmentTraining: BaseFragment<ViewModelTraining, FragmentTrainingBinding>
                 adapter.setDropDownViewResource(R.layout.view_item_spinner)
                 spinnerTrainingLanguage.adapter = adapter
             }
-            spinnerTrainingLanguage.setSelection(SharedHelper.getSelectedLocaleTraining())
+            spinnerTrainingLanguage.setSelection(prefs.getSelectedLocaleTraining())
             spinnerTrainingLanguage.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    SharedHelper.setSelectedLocaleTraining(position)
+                    prefs.setSelectedLocaleTraining(position)
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
 
-            val isShowVoiceInput = SharedHelper.isShowVoiceInput()
+            val isShowVoiceInput = prefs.isShowVoiceInput()
             imageTrainingMicrophone.isVisible = isShowVoiceInput
             spinnerTrainingLanguage.isVisible = isShowVoiceInput
 
@@ -128,7 +131,7 @@ class FragmentTraining: BaseFragment<ViewModelTraining, FragmentTrainingBinding>
 
         viewModel.onBind()
 
-        val isListeningTraining = SharedHelper.isListeningTraining()
+        val isListeningTraining = prefs.isListeningTraining()
 
         if (isListeningTraining) {
             onNavigationEvent(NAVIGATION_PLAY_WORD_DEPENDS_ON_TRANSLATION)

@@ -16,10 +16,12 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.viewbinding.ViewBinding
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.model.preferences.SharedHelper
+import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.ui.main.MainActivity
 
 abstract class BaseFragment<VM : ViewModelBase, B : ViewBinding> : Fragment() {
+
+    private val prefs = Preferences.getInstance()
 
     protected abstract val viewModel: VM
 
@@ -58,7 +60,7 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewBinding> : Fragment() {
         subscribeToViewModel()
 
         view.findViewById<Toolbar>(R.id.toolbar)?.apply {
-            val isOldNavigationDesign = SharedHelper.isOldNavigationDesign()
+            val isOldNavigationDesign = prefs.isBottomNavigation()
 
             this.elevation = getToolbarElevation()
             onCreateOptionsMenu(menu, activity?.menuInflater ?: return)

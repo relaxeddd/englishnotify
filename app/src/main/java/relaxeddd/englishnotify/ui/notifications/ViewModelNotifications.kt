@@ -10,34 +10,43 @@ import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
-import relaxeddd.englishnotify.model.preferences.SharedHelper
-import relaxeddd.englishnotify.model.repository.RepositoryWord
+import relaxeddd.englishnotify.domain_words.repository.RepositoryWords
+import relaxeddd.englishnotify.preferences.Preferences
+import relaxeddd.englishnotify.preferences.utils.NOTIFICATIONS_VIEW_INPUT
+import relaxeddd.englishnotify.preferences.utils.NOTIFICATIONS_VIEW_STANDARD
 import relaxeddd.englishnotify.push.NotificationHelper
 import relaxeddd.englishnotify.push.NotificationsWorkManagerHelper
 
-class ViewModelNotifications : ViewModelBase() {
+class ViewModelNotifications: ViewModelBase() {
 
-    val timeDurationOffValue = MutableLiveData(SharedHelper.getDurationHours())
+    private val prefs = Preferences.getInstance()
+
+    val timeDurationOffValue = MutableLiveData(prefs.getDurationHours())
     val timeStartOff = MutableLiveData("20:00")
     val timeEndOff = MutableLiveData("07:00")
     val selectedTagLiveData = MutableLiveData("")
     val isVisibleNotificationsView = MutableLiveData(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
 
-    val textRepeatTime = MutableLiveData(App.context.resources.getStringArray(R.array.array_time_repeat)[
-            SharedHelper.getNotificationsRepeatTime(App.context).ordinal
-    ])
+    val textRepeatTime = MutableLiveData(
+        App.context.resources.getStringArray(R.array.array_time_repeat)[
+                prefs.getNotificationsRepeatTime().ordinal
+        ]
+    )
     val textLearnLanguage = MutableLiveData("")
-    val textNotificationsView = MutableLiveData(App.context.resources.getStringArray(R.array.array_notifications_view)[SharedHelper.getNotificationsView()])
+    val textNotificationsView = MutableLiveData(
+        App.context.resources.getStringArray(R.array.array_notifications_view)[prefs.getNotificationsView()
+            ?: if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) NOTIFICATIONS_VIEW_STANDARD else NOTIFICATIONS_VIEW_INPUT]
+    )
 
     val checkedChangeListenerShowOnlyOneNotification = CompoundButton.OnCheckedChangeListener { _, isChecked ->
-        SharedHelper.setShowOnlyOneNotification(isChecked)
+        prefs.setShowOnlyOneNotification(isChecked)
     }
-    val isShowOnlyOneNotification = MutableLiveData(SharedHelper.isShowOnlyOneNotification())
-    val isNotDeletable = MutableLiveData(SharedHelper.isOngoing())
+    val isShowOnlyOneNotification = MutableLiveData(prefs.isShowOnlyOneNotification())
+    val isNotDeletable = MutableLiveData(prefs.isOngoingNotification())
 
-    val isNotificationsEnabled = MutableLiveData(SharedHelper.isNotificationsEnabled())
+    val isNotificationsEnabled = MutableLiveData(prefs.isNotificationsEnabled())
     var checkedChangeListenerEnableNotifications = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
-        if (isChecked != SharedHelper.isNotificationsEnabled()) {
+        if (isChecked != prefs.isNotificationsEnabled()) {
             if (!isChecked) {
                 buttonView.isChecked = true
                 navigateEvent.value = Event(NAVIGATION_DIALOG_CONFIRM_DISABLE_NOTIFICATIONS)
@@ -48,11 +57,11 @@ class ViewModelNotifications : ViewModelBase() {
     }
 
     var checkedChangeListenerDeletable = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
-        if (isChecked && SharedHelper.getNotificationsView() == NOTIFICATIONS_VIEW_STANDARD) {
+        if (isChecked && prefs.getNotificationsView() == NOTIFICATIONS_VIEW_STANDARD) {
             buttonView.isChecked = false
             showToast(R.string.enable_notification_translation_input)
         } else {
-            SharedHelper.setOngoing(isChecked)
+            prefs.setOngoingNotification(isChecked)
         }
     }
 
@@ -81,25 +90,25 @@ class ViewModelNotifications : ViewModelBase() {
     //------------------------------------------------------------------------------------------------------------------
     init {
         viewModelScope.launch {
-            SharedHelper.selectedCategoryFlow.collect {
+            prefs.selectedCategoryFlow.collect {
                 selectedTagLiveData.value = getStringByResName(it).replaceFirst(OWN_KEY_SYMBOL, "")
             }
         }
         viewModelScope.launch {
-            SharedHelper.notificationsRepeatTimeFlow.collect {
+            prefs.notificationsRepeatTimeFlow.collect {
                 textRepeatTime.value = App.context.resources.getStringArray(R.array.array_time_repeat)[
-                        SharedHelper.getNotificationsRepeatTime(App.context).ordinal
+                        prefs.getNotificationsRepeatTime().ordinal
                 ]
             }
         }
         viewModelScope.launch {
-            SharedHelper.learnLanguageTypeFlow.collect {
+            prefs.learnLanguageTypeFlow.collect {
                 textLearnLanguage.value = App.context.resources.getStringArray(R.array.array_learn_language)[it]
             }
         }
 
-        val startHour = SharedHelper.getStartHour()
-        val duration = SharedHelper.getDurationHours()
+        val startHour = prefs.getStartHour()
+        val duration = prefs.getDurationHours()
         val startHourStr = (if (startHour < 10) "0" else "") + startHour.toString() + ":00"
         val endHour = startHour + duration - (if (startHour + duration >= 24) 24 else 0)
         val endHourStr = (if (endHour < 10) "0" else "") + endHour.toString() + ":00"
@@ -109,8 +118,8 @@ class ViewModelNotifications : ViewModelBase() {
     }
 
     fun onDialogLearnLanguageResult(learnEnglishType: Int) {
-        if (learnEnglishType != SharedHelper.getLearnLanguageType()) {
-            SharedHelper.setLearnLanguageType(learnEnglishType)
+        if (learnEnglishType != prefs.getLearnLanguageType()) {
+            prefs.setLearnLanguageType(learnEnglishType)
         }
     }
 
@@ -119,8 +128,8 @@ class ViewModelNotifications : ViewModelBase() {
         val endHour = result.first + result.second - (if (result.first + result.second >= 24) 24 else 0)
         val endHourStr = (if (endHour < 10) "0" else "") + endHour.toString() + ":00"
 
-        SharedHelper.setStartHour(result.first)
-        SharedHelper.setDurationHours(result.second)
+        prefs.setStartHour(result.first)
+        prefs.setDurationHours(result.second)
         timeDurationOffValue.value = result.second
         timeStartOff.value = startHourStr
         timeEndOff.value = endHourStr
@@ -128,12 +137,12 @@ class ViewModelNotifications : ViewModelBase() {
 
     fun onDialogNotificationsViewResult(result: Int) {
         textNotificationsView.value = App.context.resources.getStringArray(R.array.array_notifications_view)[result]
-        SharedHelper.setNotificationsView(result)
+        prefs.setNotificationsView(result)
     }
 
     fun onDialogTestNotificationsResult(result: Boolean) {
         if (result) {
-            if (RepositoryWord.getInstance().words.value?.isNullOrEmpty() == true) {
+            if (RepositoryWords.getInstance(App.context).words.value?.isNullOrEmpty() == true) {
                 showToast(R.string.category_own_not_selected)
                 return
             }
@@ -150,11 +159,16 @@ class ViewModelNotifications : ViewModelBase() {
     }
 
     private fun setNotificationsEnable(isEnabled: Boolean) {
-        SharedHelper.setNotificationsEnabled(isEnabled)
+        val prefs = Preferences.getInstance()
+        prefs.setNotificationsEnabled(isEnabled)
         isNotificationsEnabled.value = isEnabled
 
         if (isEnabled) {
-            NotificationsWorkManagerHelper.launchWork(App.context, isForceUpdate = false)
+            NotificationsWorkManagerHelper.launchWork(
+                context = App.context,
+                repeatTimeInMinutes = prefs.getNotificationsRepeatTime().valueInMinutes,
+                isForceUpdate = false
+            )
         } else {
             NotificationsWorkManagerHelper.cancelWork(App.context)
         }

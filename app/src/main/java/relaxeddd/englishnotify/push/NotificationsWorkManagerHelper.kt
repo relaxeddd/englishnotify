@@ -6,7 +6,7 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.OneTimeWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
-import relaxeddd.englishnotify.model.preferences.SharedHelper
+import relaxeddd.englishnotify.preferences.Preferences
 import java.util.concurrent.TimeUnit
 
 class NotificationsWorkManagerHelper {
@@ -15,11 +15,14 @@ class NotificationsWorkManagerHelper {
 
         private const val WORK_NAME_NOTIFICATIONS = "workNameNotifications"
 
-        fun launchWork(context: Context,
-                       repeatTimeInMinutes: Long = SharedHelper.getNotificationsRepeatTime(context).valueInMinutes,
-                       isForceUpdate: Boolean,
+        fun launchWork(
+            context: Context,
+            repeatTimeInMinutes: Long,
+            isForceUpdate: Boolean,
         ) {
-            if (!SharedHelper.isNotificationsEnabled()) {
+            val prefs = Preferences.getInstance()
+
+            if (!prefs.isNotificationsEnabled()) {
                 cancelWork(context)
                 return
             }
