@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.ListenerResult
+import relaxeddd.englishnotify.view_base.interfaces.ListenerResult
 
 class DialogTestNotifications : DialogFragment() {
 

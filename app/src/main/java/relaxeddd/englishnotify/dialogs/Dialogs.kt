@@ -1,14 +1,10 @@
 package relaxeddd.englishnotify.dialogs
 
-import android.app.Dialog
-import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.DialogFragment
 import relaxeddd.englishnotify.BuildConfig
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.EMPTY_RES
-import relaxeddd.englishnotify.common.ListenerResult
-import relaxeddd.englishnotify.common.SELECTED_ITEM
+import relaxeddd.englishnotify.view_base.dialog.DialogSimpleChoice
+import relaxeddd.englishnotify.view_base.dialog.DialogSimpleInfo
+import relaxeddd.englishnotify.view_base.dialog.DialogSingleChoice
 
 class DialogSecondaryProgressInfo : DialogSimpleInfo() {
 
@@ -39,30 +35,6 @@ class DialogPatchNotes : DialogSimpleInfo() {
 
     override val titleResId: Int = R.string.new_version
     override val textResId: Int = R.string.patch_notes
-}
-
-abstract class DialogSimpleInfo : DialogFragment() {
-
-    abstract val titleResId: Int
-    open val textResId: Int = EMPTY_RES
-    open val positiveButtonTextResId: Int = android.R.string.ok
-    open val arg: String = ""
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val builder = AlertDialog.Builder(requireContext())
-
-        builder.setTitle(titleResId)
-            .setPositiveButton(positiveButtonTextResId) { _, _ -> }
-        if (textResId != EMPTY_RES) {
-            if (arg.isEmpty()) {
-                builder.setMessage(textResId)
-            } else {
-                builder.setMessage(getString(textResId, arg))
-            }
-        }
-
-        return builder.create()
-    }
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -119,43 +91,6 @@ class DialogRestoreWord : DialogSimpleChoice() {
     override val positiveButtonTextResId: Int = R.string.reset_progress
 }
 
-abstract class DialogSimpleChoice : DialogFragment() {
-
-    open val titleResId: Int = EMPTY_RES
-    open val textResId: Int = EMPTY_RES
-    open val positiveButtonTextResId: Int = android.R.string.ok
-    open val negativeButtonTextResId: Int = R.string.cancel
-    open val isCanBeCancelled: Boolean = true
-
-    var confirmListener: ListenerResult<Boolean>? = null
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        isCancelable = isCanBeCancelled
-
-        val builder = AlertDialog.Builder(requireContext())
-
-        builder.setPositiveButton(positiveButtonTextResId) { _, _ ->
-                confirmListener?.onResult(true)
-            }
-        if (negativeButtonTextResId != EMPTY_RES) {
-            builder.setNegativeButton(negativeButtonTextResId) { _, _ ->
-                confirmListener?.onResult(false)
-            }
-        }
-        if (titleResId != EMPTY_RES) {
-            builder.setTitle(titleResId)
-        }
-        if (textResId != EMPTY_RES) {
-            builder.setMessage(getString(textResId))
-        }
-        if (titleResId == EMPTY_RES && textResId == EMPTY_RES) {
-            builder.setTitle("")
-        }
-
-        return builder.create()
-    }
-}
-
 //----------------------------------------------------------------------------------------------------------------------
 class DialogNotificationLearnPoints : DialogSingleChoice() {
 
@@ -185,29 +120,4 @@ class DialogNotificationsView : DialogSingleChoice() {
 
     override val arrayResId: Int = R.array.array_notifications_view
     override val titleResId: Int = R.string.notifications_view
-}
-
-abstract class DialogSingleChoice : DialogFragment() {
-
-    abstract val arrayResId: Int
-    abstract val titleResId: Int
-    open val positiveButtonTextResId: Int = android.R.string.ok
-    open val negativeButtonTextResId: Int = R.string.cancel
-
-    private var selectedItemIx: Int = 0
-    var listener: ListenerResult<Int>? = null
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val builder = AlertDialog.Builder(requireContext())
-        selectedItemIx = arguments?.getInt(SELECTED_ITEM, 0) ?: 0
-
-        builder.setTitle(titleResId)
-            .setSingleChoiceItems(arrayResId, selectedItemIx) { _, which ->
-                selectedItemIx = which
-            }.setPositiveButton(positiveButtonTextResId) { _, _ ->
-                listener?.onResult(selectedItemIx)
-            }.setNegativeButton(negativeButtonTextResId, null)
-
-        return builder.create()
-    }
 }

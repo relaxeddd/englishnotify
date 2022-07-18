@@ -39,10 +39,15 @@ import relaxeddd.englishnotify.preferences.utils.THEME_BLACK
 import relaxeddd.englishnotify.preferences.utils.THEME_BLUE
 import relaxeddd.englishnotify.preferences.utils.THEME_BLUE_LIGHT
 import relaxeddd.englishnotify.preferences.utils.THEME_STANDARD
+import relaxeddd.englishnotify.view_base.interfaces.IFabOwner
+import relaxeddd.englishnotify.view_base.interfaces.INavControllerOwner
+import relaxeddd.englishnotify.view_base.interfaces.INavigationOwner
+import relaxeddd.englishnotify.view_base.interfaces.IToolbarOwner
+import relaxeddd.englishnotify.view_base.interfaces.ListenerResult
 import java.util.*
 import kotlin.system.exitProcess
 
-class MainActivity : AppCompatActivity(), NavigationHost, FloatingActionButtonHost {
+class MainActivity : AppCompatActivity(), INavigationOwner, IToolbarOwner, IFabOwner, INavControllerOwner {
 
     companion object {
         const val REQUEST_RECOGNIZE_SPEECH = 5242
@@ -128,23 +133,6 @@ class MainActivity : AppCompatActivity(), NavigationHost, FloatingActionButtonHo
         currentFragmentId = binding.drawerNavigation.checkedItem?.itemId ?: NAV_ID_NONE
     }
 
-    override fun registerToolbar(toolbar: Toolbar) {
-        if (!prefs.isBottomNavigation()) {
-            val appBarConfiguration = AppBarConfiguration.Builder(TOP_LEVEL_DESTINATIONS).setOpenableLayout(binding.drawer).build()
-            toolbar.setupWithNavController(navController, appBarConfiguration)
-        }
-    }
-
-    override fun configureFab(iconResId: Int?, listener: (View.OnClickListener)?) {
-        if (iconResId != null && iconResId != EMPTY_RES) {
-            binding.buttonMainFab.visibility = View.VISIBLE
-            binding.buttonMainFab.setImageResource(iconResId)
-        } else {
-            binding.buttonMainFab.visibility = View.GONE
-        }
-        binding.buttonMainFab.setOnClickListener(listener)
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when(requestCode) {
             REQUEST_RECOGNIZE_SPEECH -> {
@@ -162,8 +150,24 @@ class MainActivity : AppCompatActivity(), NavigationHost, FloatingActionButtonHo
         }
     }
 
-    //------------------------------------------------------------------------------------------------------------------
-    fun onNavigationEvent(eventId: Int) {
+    override fun registerToolbar(toolbar: Toolbar) {
+        if (!prefs.isBottomNavigation()) {
+            val appBarConfiguration = AppBarConfiguration.Builder(TOP_LEVEL_DESTINATIONS).setOpenableLayout(binding.drawer).build()
+            toolbar.setupWithNavController(navController, appBarConfiguration)
+        }
+    }
+
+    override fun configureFab(iconResId: Int?, listener: (View.OnClickListener)?) {
+        if (iconResId != null && iconResId != EMPTY_RES) {
+            binding.buttonMainFab.visibility = View.VISIBLE
+            binding.buttonMainFab.setImageResource(iconResId)
+        } else {
+            binding.buttonMainFab.visibility = View.GONE
+        }
+        binding.buttonMainFab.setOnClickListener(listener)
+    }
+
+    override fun onNavigationEvent(eventId: Int) {
         when (eventId) {
             NAVIGATION_ACTIVITY_BACK -> {
                 onBackPressed()
@@ -210,6 +214,9 @@ class MainActivity : AppCompatActivity(), NavigationHost, FloatingActionButtonHo
         }
     }
 
+    override fun getNavController() = Navigation.findNavController(this, R.id.fragment_navigation_host)
+
+    //------------------------------------------------------------------------------------------------------------------
     fun setLoadingVisible(isVisible: Boolean) {
         viewModel.isShowLoading.value = isVisible
     }

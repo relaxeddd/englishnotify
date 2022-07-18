@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.BaseFragment
 import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK
 import relaxeddd.englishnotify.databinding.FragmentStatisticBinding
+import relaxeddd.englishnotify.view_base.BaseFragment
 
 class FragmentStatistic : BaseFragment<ViewModelStatistic, FragmentStatisticBinding>() {
 

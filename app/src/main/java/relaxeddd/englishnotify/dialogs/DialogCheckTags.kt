@@ -5,7 +5,11 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.*
+import relaxeddd.englishnotify.common.CHECKED_ITEMS
+import relaxeddd.englishnotify.common.ITEMS
+import relaxeddd.englishnotify.common.OWN_KEY_SYMBOL
+import relaxeddd.englishnotify.common.getStringByResName
+import relaxeddd.englishnotify.view_base.interfaces.ListenerResult
 
 class DialogCheckTags : DialogFragment() {
 

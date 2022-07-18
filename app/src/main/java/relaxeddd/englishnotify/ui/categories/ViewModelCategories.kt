@@ -1,5 +1,5 @@
 package relaxeddd.englishnotify.ui.categories
 
-import relaxeddd.englishnotify.common.ViewModelBase
+import relaxeddd.englishnotify.view_base.ViewModelBase
 
 class ViewModelCategories : ViewModelBase()

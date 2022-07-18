@@ -7,18 +7,18 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.App
-import relaxeddd.englishnotify.common.Event
 import relaxeddd.englishnotify.common.NAVIGATION_DIALOG_CHECK_TAGS
 import relaxeddd.englishnotify.common.NAVIGATION_DIALOG_SORTED_BY
 import relaxeddd.englishnotify.common.NAVIGATION_FRAGMENT_WORD
 import relaxeddd.englishnotify.common.NAVIGATION_LOADING_HIDE
 import relaxeddd.englishnotify.common.NAVIGATION_LOADING_SHOW
 import relaxeddd.englishnotify.common.NAVIGATION_PLAY_WORD
-import relaxeddd.englishnotify.common.ViewModelBase
 import relaxeddd.englishnotify.domain_words.entity.Word
 import relaxeddd.englishnotify.domain_words.repository.RepositoryWords
 import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.preferences.models.SortByType
+import relaxeddd.englishnotify.view_base.ViewModelBase
+import relaxeddd.englishnotify.view_base.models.Event
 
 open class ViewModelDictionary : ViewModelBase() {
 

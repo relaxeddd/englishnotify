@@ -12,6 +12,8 @@ import relaxeddd.englishnotify.domain_words.entity.Word
 import relaxeddd.englishnotify.domain_words.repository.RepositoryWords
 import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.preferences.utils.ALL_APP_WORDS
+import relaxeddd.englishnotify.view_base.ViewModelBase
+import relaxeddd.englishnotify.view_base.models.Event
 import kotlin.random.Random
 
 class ViewModelTraining : ViewModelBase() {

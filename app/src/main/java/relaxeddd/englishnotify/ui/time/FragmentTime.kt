@@ -7,9 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.BaseFragment
 import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK
 import relaxeddd.englishnotify.databinding.FragmentTimeBinding
+import relaxeddd.englishnotify.view_base.BaseFragment
 
 class FragmentTime : BaseFragment<ViewModelTime, FragmentTimeBinding>() {
 

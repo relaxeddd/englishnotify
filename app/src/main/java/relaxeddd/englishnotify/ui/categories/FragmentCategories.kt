@@ -10,11 +10,11 @@ import androidx.fragment.app.viewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.BaseFragment
 import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK
 import relaxeddd.englishnotify.common.getAppString
 import relaxeddd.englishnotify.databinding.FragmentCategoriesBinding
 import relaxeddd.englishnotify.ui.categories.section.FragmentCategorySection
+import relaxeddd.englishnotify.view_base.BaseFragment
 
 class FragmentCategories : BaseFragment<ViewModelCategories, FragmentCategoriesBinding>() {
 

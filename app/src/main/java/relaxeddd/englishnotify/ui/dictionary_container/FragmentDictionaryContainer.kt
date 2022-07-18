@@ -11,12 +11,12 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.BaseFragment
 import relaxeddd.englishnotify.databinding.FragmentDictionaryContainerBinding
 import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.ui.dictionary.FragmentDictionary
 import relaxeddd.englishnotify.ui.dictionary_all.FragmentDictionaryAll
 import relaxeddd.englishnotify.ui.dictionary_know.FragmentDictionaryKnow
+import relaxeddd.englishnotify.view_base.BaseFragment
 
 class FragmentDictionaryContainer : BaseFragment<ViewModelDictionaryContainer, FragmentDictionaryContainerBinding>() {
 

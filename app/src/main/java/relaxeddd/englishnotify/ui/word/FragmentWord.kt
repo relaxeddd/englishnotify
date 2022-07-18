@@ -20,6 +20,8 @@ import relaxeddd.englishnotify.dialogs.DialogRestoreWord
 import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.ui.categories.AdapterCategories
 import relaxeddd.englishnotify.ui.main.MainActivity
+import relaxeddd.englishnotify.view_base.BaseFragment
+import relaxeddd.englishnotify.view_base.interfaces.ListenerResult
 
 class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
 

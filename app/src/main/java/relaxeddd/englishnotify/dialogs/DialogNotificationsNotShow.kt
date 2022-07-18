@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.ListenerResult
+import relaxeddd.englishnotify.view_base.interfaces.ListenerResult
 
 class DialogNotificationsNotShow : DialogFragment() {
 

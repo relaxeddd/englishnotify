@@ -23,6 +23,7 @@ import relaxeddd.englishnotify.databinding.FragmentTrainingBinding
 import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.preferences.utils.ALL_APP_WORDS
 import relaxeddd.englishnotify.ui.main.MainActivity
+import relaxeddd.englishnotify.view_base.BaseFragment
 import kotlin.random.Random
 
 class FragmentTraining: BaseFragment<ViewModelTraining, FragmentTrainingBinding>() {

@@ -6,15 +6,15 @@ import com.google.android.material.radiobutton.MaterialRadioButton
 import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.CategoryItem
-import relaxeddd.englishnotify.common.Event
 import relaxeddd.englishnotify.common.ISelectCategory
 import relaxeddd.englishnotify.common.NAVIGATION_FRAGMENT_TRAINING
-import relaxeddd.englishnotify.common.ViewModelBase
 import relaxeddd.englishnotify.common.showToast
 import relaxeddd.englishnotify.domain_words.entity.Word
 import relaxeddd.englishnotify.domain_words.repository.RepositoryWords
 import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.preferences.utils.ALL_APP_WORDS
+import relaxeddd.englishnotify.view_base.ViewModelBase
+import relaxeddd.englishnotify.view_base.models.Event
 
 class ViewModelTrainingSetting : ViewModelBase(), ISelectCategory {
 
