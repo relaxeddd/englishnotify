@@ -5,14 +5,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.App
-import relaxeddd.englishnotify.common.Event
 import relaxeddd.englishnotify.common.NAVIGATION_LOADING_HIDE
 import relaxeddd.englishnotify.common.NAVIGATION_LOADING_SHOW
 import relaxeddd.englishnotify.common.TagInfo
-import relaxeddd.englishnotify.common.ViewModelBase
 import relaxeddd.englishnotify.domain_words.entity.Word
 import relaxeddd.englishnotify.domain_words.repository.RepositoryWords
 import relaxeddd.englishnotify.preferences.Preferences
+import relaxeddd.englishnotify.view_base.ViewModelBase
+import relaxeddd.englishnotify.view_base.models.Event
 import kotlin.math.min
 
 class ViewModelStatistic : ViewModelBase() {

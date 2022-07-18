@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.BaseFragment
 import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK
 import relaxeddd.englishnotify.common.NAVIGATION_FRAGMENT_PARSED_WORDS
 import relaxeddd.englishnotify.common.getPrimaryColorResId
@@ -17,6 +16,7 @@ import relaxeddd.englishnotify.common.myNavigate
 import relaxeddd.englishnotify.databinding.FragmentParseBinding
 import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.ui.categories.AdapterCategories
+import relaxeddd.englishnotify.view_base.BaseFragment
 
 class FragmentParse: BaseFragment<ViewModelParse, FragmentParseBinding>() {
 

@@ -5,9 +5,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.ListenerResult
 import relaxeddd.englishnotify.common.SELECTED_ITEM
 import relaxeddd.englishnotify.preferences.models.SortByType
+import relaxeddd.englishnotify.view_base.interfaces.ListenerResult
 
 class DialogSortBy : DialogFragment() {
 

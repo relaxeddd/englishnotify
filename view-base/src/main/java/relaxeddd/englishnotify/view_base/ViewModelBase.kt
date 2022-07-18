@@ -1,8 +1,9 @@
-package relaxeddd.englishnotify.common
+package relaxeddd.englishnotify.view_base
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import relaxeddd.englishnotify.view_base.models.Event
 
 abstract class ViewModelBase : ViewModel() {
 

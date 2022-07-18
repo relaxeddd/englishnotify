@@ -6,10 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.updatePaddingRelative
 import androidx.fragment.app.viewModels
-import relaxeddd.englishnotify.common.BaseFragment
 import relaxeddd.englishnotify.common.doOnApplyWindowInsets
 import relaxeddd.englishnotify.databinding.FragmentCategorySectionBinding
 import relaxeddd.englishnotify.ui.categories.AdapterCategories
+import relaxeddd.englishnotify.view_base.BaseFragment
 
 class FragmentCategorySection : BaseFragment<ViewModelCategorySection, FragmentCategorySectionBinding>() {
 

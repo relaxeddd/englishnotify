@@ -3,12 +3,12 @@ package relaxeddd.englishnotify.ui.time
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import relaxeddd.englishnotify.App
-import relaxeddd.englishnotify.common.Event
 import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK
-import relaxeddd.englishnotify.common.ViewModelBase
 import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.preferences.models.NotificationRepeatTime
 import relaxeddd.englishnotify.push.NotificationsWorkManagerHelper
+import relaxeddd.englishnotify.view_base.ViewModelBase
+import relaxeddd.englishnotify.view_base.models.Event
 
 class ViewModelTime : ViewModelBase() {
 

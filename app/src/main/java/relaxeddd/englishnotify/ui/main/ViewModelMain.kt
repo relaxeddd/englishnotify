@@ -2,10 +2,10 @@ package relaxeddd.englishnotify.ui.main
 
 import androidx.lifecycle.MutableLiveData
 import relaxeddd.englishnotify.BuildConfig
-import relaxeddd.englishnotify.common.Event
 import relaxeddd.englishnotify.common.NAVIGATION_DIALOG_PATCH_NOTES
-import relaxeddd.englishnotify.common.ViewModelBase
 import relaxeddd.englishnotify.preferences.Preferences
+import relaxeddd.englishnotify.view_base.ViewModelBase
+import relaxeddd.englishnotify.view_base.models.Event
 
 class ViewModelMain : ViewModelBase() {
 

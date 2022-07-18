@@ -19,6 +19,8 @@ import relaxeddd.englishnotify.dialogs.DialogSecondaryProgressInfo
 import relaxeddd.englishnotify.dialogs.DialogSwapProgress
 import relaxeddd.englishnotify.dialogs.DialogTrueAnswersToLearn
 import relaxeddd.englishnotify.preferences.Preferences
+import relaxeddd.englishnotify.view_base.BaseFragment
+import relaxeddd.englishnotify.view_base.interfaces.ListenerResult
 import kotlin.math.max
 import kotlin.math.min
 

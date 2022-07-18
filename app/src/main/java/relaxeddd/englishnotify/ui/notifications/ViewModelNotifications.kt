@@ -16,6 +16,8 @@ import relaxeddd.englishnotify.preferences.utils.NOTIFICATIONS_VIEW_INPUT
 import relaxeddd.englishnotify.preferences.utils.NOTIFICATIONS_VIEW_STANDARD
 import relaxeddd.englishnotify.push.NotificationHelper
 import relaxeddd.englishnotify.push.NotificationsWorkManagerHelper
+import relaxeddd.englishnotify.view_base.ViewModelBase
+import relaxeddd.englishnotify.view_base.models.Event
 
 class ViewModelNotifications: ViewModelBase() {
 

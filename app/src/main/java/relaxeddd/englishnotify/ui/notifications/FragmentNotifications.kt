@@ -20,6 +20,8 @@ import relaxeddd.englishnotify.dialogs.DialogTestNotifications
 import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.preferences.utils.NOTIFICATIONS_VIEW_INPUT
 import relaxeddd.englishnotify.preferences.utils.NOTIFICATIONS_VIEW_STANDARD
+import relaxeddd.englishnotify.view_base.BaseFragment
+import relaxeddd.englishnotify.view_base.interfaces.ListenerResult
 
 class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotificationsBinding>() {
 

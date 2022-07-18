@@ -10,6 +10,8 @@ import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.domain_words.repository.RepositoryWords
 import relaxeddd.englishnotify.preferences.Preferences
+import relaxeddd.englishnotify.view_base.ViewModelBase
+import relaxeddd.englishnotify.view_base.models.Event
 
 class ViewModelSettings : ViewModelBase() {
 

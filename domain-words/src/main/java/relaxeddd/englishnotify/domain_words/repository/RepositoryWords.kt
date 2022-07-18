@@ -6,7 +6,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.common.TRAINING_ENG_TO_RUS
 import relaxeddd.englishnotify.common.TRAINING_RUS_TO_ENG
-import relaxeddd.englishnotify.common.TagInfo
 import relaxeddd.englishnotify.domain_words.db.WordDao
 import relaxeddd.englishnotify.domain_words.db.WordsDatabase
 import relaxeddd.englishnotify.domain_words.entity.Word
@@ -28,7 +27,6 @@ class RepositoryWords private constructor(private val wordDao: WordDao) {
     private val prefs = Preferences.getInstance()
 
     val words = wordDao.getAll()
-    private var tagsInfo: List<TagInfo> = emptyList()
     val tempParsedWords = arrayListOf<Word>()
 
     init {

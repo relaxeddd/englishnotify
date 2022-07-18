@@ -7,16 +7,16 @@ import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.CategoryItem
-import relaxeddd.englishnotify.common.Event
 import relaxeddd.englishnotify.common.ISelectCategory
 import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK
 import relaxeddd.englishnotify.common.NAVIGATION_WORD_EXISTS_DIALOG
 import relaxeddd.englishnotify.common.NAVIGATION_WORD_EXISTS_ERROR
-import relaxeddd.englishnotify.common.ViewModelBase
 import relaxeddd.englishnotify.common.showToast
 import relaxeddd.englishnotify.domain_words.entity.Word
 import relaxeddd.englishnotify.domain_words.repository.RepositoryWords
 import relaxeddd.englishnotify.preferences.Preferences
+import relaxeddd.englishnotify.view_base.ViewModelBase
+import relaxeddd.englishnotify.view_base.models.Event
 
 class ViewModelWord : ViewModelBase(), ISelectCategory {
 

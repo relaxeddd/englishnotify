@@ -1,4 +1,4 @@
-package relaxeddd.englishnotify.common
+package relaxeddd.englishnotify.view_base
 
 import android.os.Bundle
 import android.view.Menu
@@ -13,11 +13,15 @@ import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
 import androidx.viewbinding.ViewBinding
-import relaxeddd.englishnotify.R
+import relaxeddd.englishnotify.common.EMPTY_RES
+import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK
+import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK_TWICE
 import relaxeddd.englishnotify.preferences.Preferences
-import relaxeddd.englishnotify.ui.main.MainActivity
+import relaxeddd.englishnotify.view_base.interfaces.IFabOwner
+import relaxeddd.englishnotify.view_base.interfaces.INavControllerOwner
+import relaxeddd.englishnotify.view_base.interfaces.INavigationOwner
+import relaxeddd.englishnotify.view_base.interfaces.IToolbarOwner
 
 abstract class BaseFragment<VM : ViewModelBase, B : ViewBinding> : Fragment() {
 
@@ -65,7 +69,7 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewBinding> : Fragment() {
             this.elevation = getToolbarElevation()
             onCreateOptionsMenu(menu, activity?.menuInflater ?: return)
 
-            (activity as? MainActivity)?.registerToolbar(this)
+            (activity as? IToolbarOwner)?.registerToolbar(this)
             val title = if (getToolbarTitleResId() != EMPTY_RES) getString(getToolbarTitleResId()) else getToolbarTitle()
             setTitle(title)
             updateToolbarTitle(title)
@@ -81,7 +85,7 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewBinding> : Fragment() {
                 navigationIcon = null
             }
         }
-        (activity as? MainActivity)?.configureFab(getFabIconResId(), getFabListener())
+        (activity as? IFabOwner)?.configureFab(getFabIconResId(), getFabListener())
         setupThemeColors()
     }
 
@@ -147,28 +151,14 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewBinding> : Fragment() {
 
     protected open fun onNavigationEvent(eventId: Int) {
         when (eventId) {
-            NAVIGATION_LOADING_SHOW -> {
-                if (activity is MainActivity) {
-                    (activity as MainActivity).setLoadingVisible(true)
-                }
-            }
-            NAVIGATION_LOADING_HIDE -> {
-                if (activity is MainActivity) {
-                    (activity as MainActivity).setLoadingVisible(false)
-                }
-            }
             NAVIGATION_ACTIVITY_BACK_TWICE -> {
                 try {
-                    val navController = Navigation.findNavController(activity ?: return, R.id.fragment_navigation_host)
-                    navController.popBackStack()
+                    val navController = (activity as? INavControllerOwner)?.getNavController()
+                    navController?.popBackStack()
                     onNavigationEvent(NAVIGATION_ACTIVITY_BACK)
                 } catch (e: IllegalStateException) {}
             }
-            else -> {
-                if (activity is MainActivity) {
-                    (activity as MainActivity).onNavigationEvent(eventId)
-                }
-            }
+            else -> (activity as? INavigationOwner)?.onNavigationEvent(eventId)
         }
     }
 
@@ -183,7 +173,7 @@ abstract class BaseFragment<VM : ViewModelBase, B : ViewBinding> : Fragment() {
 
     protected fun navigate(@IdRes actionId: Int, args: Bundle? = null) {
         try {
-            Navigation.findNavController(activity ?: return, R.id.fragment_navigation_host).navigate(actionId, args)
+            (activity as? INavControllerOwner)?.getNavController()?.navigate(actionId, args)
         } catch (e: IllegalStateException) {}
     }
 

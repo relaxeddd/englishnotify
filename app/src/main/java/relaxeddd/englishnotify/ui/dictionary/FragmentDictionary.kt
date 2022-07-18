@@ -24,6 +24,8 @@ import relaxeddd.englishnotify.dialogs.DialogSortBy
 import relaxeddd.englishnotify.domain_words.entity.Word
 import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.ui.main.MainActivity
+import relaxeddd.englishnotify.view_base.BaseFragment
+import relaxeddd.englishnotify.view_base.interfaces.ListenerResult
 
 abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>> : BaseFragment<VM, FragmentDictionaryBinding>() {
 

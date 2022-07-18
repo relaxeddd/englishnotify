@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.core.view.updatePaddingRelative
 import androidx.fragment.app.viewModels
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.BaseFragment
 import relaxeddd.englishnotify.common.CATEGORY
 import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK
 import relaxeddd.englishnotify.common.NAVIGATION_FRAGMENT_TRAINING
@@ -21,6 +20,7 @@ import relaxeddd.englishnotify.databinding.FragmentTrainingSettingBinding
 import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.preferences.utils.ALL_APP_WORDS
 import relaxeddd.englishnotify.ui.categories.AdapterCategories
+import relaxeddd.englishnotify.view_base.BaseFragment
 
 class FragmentTrainingSetting : BaseFragment<ViewModelTrainingSetting, FragmentTrainingSettingBinding>() {
 

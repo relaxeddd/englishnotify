@@ -50,6 +50,7 @@ android {
 dependencies {
     implementation project(':common')
     implementation project(':preferences')
+    implementation project(':view-base')
     implementation project(':domain-words')
 
     implementation 'androidx.appcompat:appcompat:1.4.2'

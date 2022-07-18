@@ -4,11 +4,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.App
-import relaxeddd.englishnotify.common.Event
 import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK_TWICE
-import relaxeddd.englishnotify.common.ViewModelBase
 import relaxeddd.englishnotify.domain_words.entity.Word
 import relaxeddd.englishnotify.domain_words.repository.RepositoryWords
+import relaxeddd.englishnotify.view_base.ViewModelBase
+import relaxeddd.englishnotify.view_base.models.Event
 
 class ViewModelParsedWords : ViewModelBase() {
 
