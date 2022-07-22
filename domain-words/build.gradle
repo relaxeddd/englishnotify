@@ -30,10 +30,10 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.appcompat:appcompat:1.4.2'
+
     implementation project(':common')
     implementation project(':preferences')
-
-    implementation 'androidx.appcompat:appcompat:1.4.2'
 
     def room_version = "2.4.2" // TODO: try to use room without android dependencies
     implementation "androidx.room:room-runtime:$room_version"
