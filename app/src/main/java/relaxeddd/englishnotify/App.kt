@@ -4,9 +4,9 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import relaxeddd.englishnotify.domain_words.repository.RepositoryWords
+import relaxeddd.englishnotify.notifications.NotificationsWorkManagerHelper
+import relaxeddd.englishnotify.notifications.PushTokenHelper
 import relaxeddd.englishnotify.preferences.Preferences
-import relaxeddd.englishnotify.push.NotificationsWorkManagerHelper
-import relaxeddd.englishnotify.push.PushTokenHelper
 
 class App : Application() {
 

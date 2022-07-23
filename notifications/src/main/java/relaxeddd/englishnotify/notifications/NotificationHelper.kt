@@ -1,4 +1,4 @@
-package relaxeddd.englishnotify.push
+package relaxeddd.englishnotify.notifications
 
 import android.annotation.SuppressLint
 import android.app.PendingIntent
@@ -10,15 +10,8 @@ import androidx.annotation.WorkerThread
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.RemoteInput
-import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.EXERCISE
-import relaxeddd.englishnotify.common.IS_KNOW
 import relaxeddd.englishnotify.common.NOTIFICATIONS_VIEW_WITH_QUESTION
 import relaxeddd.englishnotify.common.NOTIFICATIONS_VIEW_WITH_TRANSLATE
-import relaxeddd.englishnotify.common.NOTIFICATION_ID
-import relaxeddd.englishnotify.common.WORD_ID
-import relaxeddd.englishnotify.common.getAppString
-import relaxeddd.englishnotify.common.isNightTime
 import relaxeddd.englishnotify.domain_words.entity.Word
 import relaxeddd.englishnotify.domain_words.repository.RepositoryWords
 import relaxeddd.englishnotify.preferences.Preferences
@@ -26,7 +19,6 @@ import relaxeddd.englishnotify.preferences.utils.NOTIFICATIONS_VIEW_INPUT
 import relaxeddd.englishnotify.preferences.utils.NOTIFICATIONS_VIEW_STANDARD
 import relaxeddd.englishnotify.preferences.utils.TYPE_PUSH_ENGLISH
 import relaxeddd.englishnotify.preferences.utils.TYPE_PUSH_RUSSIAN
-import relaxeddd.englishnotify.ui.main.MainActivity
 import kotlin.random.Random
 
 class NotificationHelper {
@@ -34,10 +26,10 @@ class NotificationHelper {
     companion object {
 
         @WorkerThread
-        fun generateNotification(context: Context) {
+        fun generateNotification(context: Context, launchActivityClass: Class<*>) {
             val prefs = Preferences.getInstance()
 
-            if (isNightTime(context = context, prefs.getStartHour(), prefs.getDurationHours()) || !prefs.isNotificationsEnabled()) {
+            if (isNightTime(prefs.getStartHour(), prefs.getDurationHours()) || !prefs.isNotificationsEnabled()) {
                 return
             }
 
@@ -46,7 +38,7 @@ class NotificationHelper {
                 return
             }
             if (VERSION.SDK_INT >= VERSION_CODES.O) {
-                val channelId = getAppString(R.string.default_notification_channel_id)
+                val channelId = context.getString(R.string.default_notification_channel_id)
                 val channel = notificationManager.getNotificationChannel(channelId)
 
                 if (channel?.importance == NotificationManagerCompat.IMPORTANCE_NONE) {
@@ -96,6 +88,7 @@ class NotificationHelper {
                     val defaultNotificationView = if (VERSION.SDK_INT < VERSION_CODES.N) NOTIFICATIONS_VIEW_STANDARD else NOTIFICATIONS_VIEW_INPUT
                     handleWordNotification(
                         context,
+                        launchActivityClass,
                         words[wordIx],
                         isSave = false,
                         viewType = prefs.getNotificationsView() ?: defaultNotificationView,
@@ -105,12 +98,12 @@ class NotificationHelper {
         }
 
         @WorkerThread
-        fun handleWordNotification(context: Context, word: Word, isSave: Boolean = true, viewType: Int,
-                                   withWrongTitle: Boolean = false, notificationId: Int = -1, isShowAnswer: Boolean = false, userAnswer: String = "") {
+        fun handleWordNotification(context: Context, launchActivityClass: Class<*>, word: Word, isSave: Boolean = true,
+                                   viewType: Int, withWrongTitle: Boolean = false, notificationId: Int = -1,
+                                   isShowAnswer: Boolean = false, userAnswer: String = "") {
             val prefs = Preferences.getInstance()
             val languageType = prefs.getLearnLanguageType()
             val isShowTranslation = (languageType == TYPE_PUSH_RUSSIAN && !isShowAnswer || (languageType == TYPE_PUSH_ENGLISH && isShowAnswer))
-                    && word.type != EXERCISE
 
             val wordTitle = getWordTitle(word, isShowTranslation)
             val isLongWord = wordTitle.length > 16
@@ -149,15 +142,15 @@ class NotificationHelper {
                 }
             }
 
-            showNotificationWord(context, word.id, notificationText, title, isShowButtons, notificationId)
+            showNotificationWord(context, launchActivityClass, word.id, notificationText, title, isShowButtons, notificationId)
         }
 
         @SuppressLint("InlinedApi")
-        fun showNotificationWord(ctx: Context, wordId: String, text: String, title: String,
-                                 withButtons : Boolean, existsNotificationId: Int = -1) {
+        fun showNotificationWord(ctx: Context, launchActivityClass: Class<*>, wordId: String, text: String,
+                                 title: String, withButtons : Boolean, existsNotificationId: Int = -1) {
             val prefs = Preferences.getInstance()
             val notificationId = if (existsNotificationId != -1) existsNotificationId else Random.nextInt(10000)
-            val channelId = getAppString(R.string.default_notification_channel_id)
+            val channelId = ctx.getString(R.string.default_notification_channel_id)
             val notificationBuilder = NotificationCompat.Builder(ctx, channelId)
 
             if (withButtons && VERSION.SDK_INT >= VERSION_CODES.N) {
@@ -174,7 +167,7 @@ class NotificationHelper {
                     putExtra(NOTIFICATION_ID, notificationId)
                 }
 
-                val replyLabel: String = getAppString(R.string.enter_translation)
+                val replyLabel: String = ctx.getString(R.string.enter_translation)
                 val remoteInput: RemoteInput = RemoteInput.Builder(NotificationAnswerBroadcastReceiver.KEY_TEXT_REPLY).run {
                     setLabel(replyLabel)
                     build()
@@ -182,7 +175,7 @@ class NotificationHelper {
                 val replyPendingIntent: PendingIntent = PendingIntent.getBroadcast(ctx, Random.nextInt(10000),
                     knowIntent, PendingIntent.FLAG_UPDATE_CURRENT + PendingIntent.FLAG_MUTABLE)
                 val action: NotificationCompat.Action = NotificationCompat.Action.Builder(R.drawable.ic_dictionary,
-                    getAppString(R.string.i_know_it), replyPendingIntent)
+                    ctx.getString(R.string.i_know_it), replyPendingIntent)
                     .addRemoteInput(remoteInput)
                     .setAllowGeneratedReplies(false)
                     .build()
@@ -196,13 +189,13 @@ class NotificationHelper {
                         notKnowIntent,
                         PendingIntent.FLAG_UPDATE_CURRENT + PendingIntent.FLAG_MUTABLE
                     )
-                notificationBuilder.addAction(R.drawable.ic_close, getAppString(R.string.show_translation), notKnowPendingIntent)
+                notificationBuilder.addAction(R.drawable.ic_close, ctx.getString(R.string.i_not_know_it), notKnowPendingIntent)
             }
 
-            showNotification(ctx, notificationBuilder, title, text, notificationId, tag = wordId)
+            showNotification(ctx, launchActivityClass, notificationBuilder, title, text, notificationId, tag = wordId)
         }
 
-        fun showNotification(ctx: Context, notificationBuilder: NotificationCompat.Builder?,
+        fun showNotification(ctx: Context, launchActivityClass: Class<*>, notificationBuilder: NotificationCompat.Builder?,
                              title: String, text: String, existsNotificationId: Int = -1, isCancelAfterTimeout: Boolean = false, tag: String? = null) {
             val builder = if (notificationBuilder != null) notificationBuilder else {
                 val channelId = ctx.getString(R.string.default_notification_channel_id)
@@ -224,7 +217,7 @@ class NotificationHelper {
                 setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 setAllowSystemGeneratedContextualActions(false)
                 //setDefaults(NotificationCompat.DEFAULT_ALL)
-                setContentIntent(createPendingIntent(ctx))
+                setContentIntent(createPendingIntent(ctx, launchActivityClass))
                 setAutoCancel(true)
                 setSmallIcon(R.drawable.ic_stat_onesignal_default)
 
@@ -262,7 +255,7 @@ class NotificationHelper {
 
             if (word.transcription.isNotEmpty()) {
                 if (notificationText.isNotEmpty()) notificationText += "\n"
-                notificationText += if (word.type != EXERCISE) "[" + word.transcription + "]" else word.transcription
+                notificationText += "[" + word.transcription + "]"
             }
 
             if (word.v2.isNotEmpty() && word.v3.isNotEmpty()) {
@@ -301,8 +294,8 @@ class NotificationHelper {
         }
 
         @SuppressLint("UnspecifiedImmutableFlag")
-        private fun createPendingIntent(ctx: Context) : PendingIntent {
-            val intent = Intent(ctx, MainActivity::class.java)
+        private fun createPendingIntent(ctx: Context, launchActivityClass: Class<*>) : PendingIntent {
+            val intent = Intent(ctx, launchActivityClass)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
             return if (VERSION.SDK_INT >= VERSION_CODES.M) {

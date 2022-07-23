@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="default_notification_channel_id" translatable="false">channel_id_relaxeddd_pushenglish</string>
+
+    <string name="answer_correct">Correct answer</string>
+    <string name="answer_incorrect">Incorrect answer</string>
+    <string name="enter_translation">Enter translation</string>
+    <string name="i_not_know_it">I don`t know</string>
+    <string name="i_know_it">I know it</string>
+    <string name="learned">Learned!</string>
+    <string name="your_answer">Your answer: %s</string>
+
+</resources>

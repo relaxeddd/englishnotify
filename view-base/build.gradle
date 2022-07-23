@@ -32,11 +32,11 @@ android {
 }
 
 dependencies {
-    implementation project(':common')
-    implementation project(':preferences')
-
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'com.google.android.material:material:1.6.1'
+
+    implementation project(':common')
+    implementation project(':preferences')
 
     def navigation_version = "2.3.5" // write ui test with 2.4.2 version to catch the bug with dictionary navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"

@@ -11,11 +11,12 @@ import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.domain_words.repository.RepositoryWords
+import relaxeddd.englishnotify.notifications.NotificationHelper
+import relaxeddd.englishnotify.notifications.NotificationsWorkManagerHelper
 import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.preferences.utils.NOTIFICATIONS_VIEW_INPUT
 import relaxeddd.englishnotify.preferences.utils.NOTIFICATIONS_VIEW_STANDARD
-import relaxeddd.englishnotify.push.NotificationHelper
-import relaxeddd.englishnotify.push.NotificationsWorkManagerHelper
+import relaxeddd.englishnotify.ui.main.MainActivity
 import relaxeddd.englishnotify.view_base.ViewModelBase
 import relaxeddd.englishnotify.view_base.models.Event
 
@@ -149,7 +150,7 @@ class ViewModelNotifications: ViewModelBase() {
                 return
             }
             viewModelScope.launch(Dispatchers.Default) {
-                NotificationHelper.generateNotification(App.context)
+                NotificationHelper.generateNotification(App.context, MainActivity.javaClass)
             }
         }
     }
