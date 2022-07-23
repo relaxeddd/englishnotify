@@ -107,8 +107,6 @@ const val NOTIFICATIONS_TIME_TYPE = "notificationsTimeType"
 const val TAGS_AVAILABLE = "tagsAvailable"
 const val TAGS_SELECTED = "tagsSelected"
 const val LEARN_LANGUAGE_TYPE = "learnLanguageType"
-const val WORD_ID = "wordId"
-const val NOTIFICATION_ID = "notificationId"
 
 const val EXERCISE = "exercise"
 
@@ -123,7 +121,6 @@ const val ERROR_SEND_TEST_NOTIFICATION = "Error send test notification"
 const val ERROR_FIREBASE_NETWORK = "Firebase Network exception"
 
 const val APP = "app"
-const val IS_KNOW = "isKnow"
 const val CATEGORY = "category"
 const val CONTENT = "content"
 const val NAME = "name"
@@ -144,8 +141,6 @@ const val USER_EMAIL = "userEmail"
 const val COUNT = "count"
 const val TRAINING_TYPE = "trainingType"
 const val VOTE_RECEIVE_NOTIFICATIONS = "voteReceiveNotifications"
-
-const val ENGLISH_WORDS_NOTIFICATIONS_CHANNEL = "EnglishWordsNotificationsChannel"
 
 const val OWN_KEY_SYMBOL = "!"
 

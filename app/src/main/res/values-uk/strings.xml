@@ -20,8 +20,6 @@
     <string name="app_language">Язык приложения</string>
     <string name="app_theme">Тема приложения</string>
     <string name="apply">Применить</string>
-    <string name="answer_correct">Правильный ответ</string>
-    <string name="answer_incorrect">Неправильный ответ</string>
     <string name="background_start">Запуск в фоновом режиме</string>
     <string name="cancel_check">Отменить выбранное</string>
     <string name="category_own_not_selected">Категоря не выбрана. Сначала добавьте слова в "Свою категорию"</string>

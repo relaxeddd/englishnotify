@@ -1,4 +1,4 @@
-package relaxeddd.englishnotify.push
+package relaxeddd.englishnotify.notifications
 
 import android.content.Context
 import androidx.work.BackoffPolicy
@@ -27,7 +27,7 @@ class NotificationsWorkManagerHelper {
                 return
             }
 
-            val notificationsWork = PeriodicWorkRequestBuilder<SendNotificationWorker>(
+            val notificationsWork = PeriodicWorkRequestBuilder<relaxeddd.englishnotify.notifications.SendNotificationWorker>(
                 repeatInterval = repeatTimeInMinutes,
                 TimeUnit.MINUTES,
             ).setBackoffCriteria(

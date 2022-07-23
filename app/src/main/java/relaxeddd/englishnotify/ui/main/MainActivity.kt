@@ -47,6 +47,7 @@ import relaxeddd.englishnotify.view_base.interfaces.ListenerResult
 import java.util.*
 import kotlin.system.exitProcess
 
+@MainActivityBeforeRefactoringWarning
 class MainActivity : AppCompatActivity(), INavigationOwner, IToolbarOwner, IFabOwner, INavControllerOwner {
 
     companion object {

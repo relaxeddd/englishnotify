@@ -36,7 +36,6 @@ import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.preferences.utils.THEME_BLACK
 import relaxeddd.englishnotify.preferences.utils.THEME_BLUE
 import relaxeddd.englishnotify.preferences.utils.THEME_BLUE_LIGHT
-import java.util.*
 import java.util.regex.Pattern
 
 fun getPrimaryColorResId(appThemeType: Int) = when (appThemeType) {
@@ -227,50 +226,6 @@ fun getErrorString(result: Result?) : String {
     }
 }
 
-fun isCorrectAnswer(userAnswer: String, trueAnswer: String) : Boolean {
-    val answerWords = trueAnswer.split(",")
-
-    for (answerWord in answerWords) {
-        if (getDefaultWord(answerWord) == getDefaultWord(userAnswer)) {
-            return true
-        }
-    }
-
-    return false
-}
-
-private fun getDefaultWord(word: String) = word
-    .lowercase()
-    .replace(".", "")
-    .replace("-", "")
-    .replace("?", "")
-    .replace("!", "")
-    .replace(",", "")
-    .replace("`", "")
-    .replace("'", "")
-    .replace("\"", "")
-    .replace("’", "")
-    .replace("«", "")
-    .replace("»", "")
-    .replace("“", "")
-    .replace("”", "")
-    .replace(" ", "")
-    .replace("ь", "")
-    .replace("ъ", "")
-    .replace("сс", "с")
-    .replace("пп", "п")
-    .replace("и", "е")
-    .replace("й", "е")
-    .replace("э", "е")
-    .replace("а", "о")
-    .replace("ю", "у")
-    .replace("ё", "е")
-    .replace("д", "т")
-    .replace("г", "к")
-    .replace("б", "п")
-    .replace("з", "с")
-    .trim()
-
 fun isValidNickname(nickname: String) : Boolean {
     val pattern = Pattern.compile("^[a-zA-Zа-яА-Я][a-zA-Zа-яА-Я0-9_]{3,16}$")
     val matcher = pattern.matcher(nickname)
@@ -366,13 +321,4 @@ fun setClickableSubstring(string: String, spannableString: SpannableString, subs
 
     spannableString.setSpan(clickableSpan, firstIndex, lastIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
     spannableString.setSpan(UnderlineSpan(), firstIndex, lastIndex, 0)
-}
-
-fun isNightTime(context: Context, startHour: Int, durationHours: Int) : Boolean {
-    val endHour = if (startHour + durationHours >= 24) startHour + durationHours - 24 else startHour + durationHours
-    val calendar = Calendar.getInstance()
-    val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
-
-    return durationHours != 0 && ((currentHour in startHour until endHour)
-            || (startHour + durationHours >= 24 && currentHour < endHour) )
 }

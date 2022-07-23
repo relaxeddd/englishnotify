@@ -20,8 +20,6 @@
     <string name="app_language">App language</string>
     <string name="app_theme">App theme</string>
     <string name="apply">Apply</string>
-    <string name="answer_correct">Correct answer</string>
-    <string name="answer_incorrect">Incorrect answer</string>
     <string name="background_start">Background starting</string>
     <string name="cancel_check">Cancel check</string>
     <string name="category_own_not_selected">Category not selected. Firstly, add words to "Own category"</string>
@@ -77,8 +75,6 @@
     <string name="hide">Hide</string>
     <string name="hide_off_notifications_warning">Hide off notifications warning</string>
     <string name="hours_off_time">Hours (0–23)</string>
-    <string name="i_not_know_it">I don`t know</string>
-    <string name="i_know_it">I know it</string>
     <string name="if_notifications_not_receive">If you do not receive notifications</string>
     <string name="is_old_navigation_design">Bottom navigation</string>
     <string name="is_show_voice_input">Show voice input</string>
@@ -163,7 +159,6 @@
     <string name="show_only_one_last_notification">Show only one last notification</string>
     <string name="show_own_words">Show own words</string>
     <string name="show_progress_in_training">Show progress in training</string>
-    <string name="show_translation">I don`t know</string>
     <string name="show_word_progress">Is show word progress</string>
     <string name="search_words">Search words</string>
     <string name="secondary_word_progress">Secondary word progress</string>
@@ -415,12 +410,6 @@
     <string name="exercises_place_pretexts_1">ex. Place pretexts (1)</string>
 
     <string name="privacy_policy_text">Clicked authorize, you agree to our Privacy Policy</string>
-
-    <!--
-        This is the name that users will see when interacting with this channel.
-        It should describe the category of notifications that will be sent through this channel
-     -->
-    <string name="default_notification_channel_id" translatable="false">channel_id_relaxeddd_pushenglish</string>
 
     <!--Content descriptions-->
     <string name="ic_notifications_enable" translatable="false">Enable notifications option</string>

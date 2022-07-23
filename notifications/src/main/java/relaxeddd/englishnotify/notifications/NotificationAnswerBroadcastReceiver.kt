@@ -1,24 +1,22 @@
-package relaxeddd.englishnotify.push
+package relaxeddd.englishnotify.notifications
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.widget.Toast
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.RemoteInput
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.IS_KNOW
+import relaxeddd.englishnotify.common.MainActivityUsed
 import relaxeddd.englishnotify.common.NOTIFICATIONS_VIEW_WITH_TRANSLATE
-import relaxeddd.englishnotify.common.NOTIFICATION_ID
-import relaxeddd.englishnotify.common.WORD_ID
 import relaxeddd.englishnotify.common.isCorrectAnswer
-import relaxeddd.englishnotify.common.showToast
 import relaxeddd.englishnotify.domain_words.entity.Word
 import relaxeddd.englishnotify.domain_words.repository.RepositoryWords
+import relaxeddd.englishnotify.notifications.R.string
 import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.preferences.utils.TYPE_PUSH_ENGLISH
 import relaxeddd.englishnotify.preferences.utils.TYPE_PUSH_RUSSIAN
@@ -33,6 +31,7 @@ class NotificationAnswerBroadcastReceiver : BroadcastReceiver() {
         const val KNOW = 1
     }
 
+    @MainActivityUsed
     override fun onReceive(context: Context, intent: Intent) {
         val pendingResult = goAsync()
         val prefs = Preferences.getInstance()
@@ -51,6 +50,7 @@ class NotificationAnswerBroadcastReceiver : BroadcastReceiver() {
             var learnStage = if (languageType == TYPE_PUSH_RUSSIAN && isEnabledSecondaryProgress) saveWord.learnStageSecondary else saveWord.learnStage
             var isRemove = true
             val isRemovableViaDelay = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
+            val mainActivityClass = Class.forName("relaxeddd.englishnotify.ui.main.MainActivity")
 
             if (isKnow == KNOW) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -68,27 +68,35 @@ class NotificationAnswerBroadcastReceiver : BroadcastReceiver() {
 
                     if (!isCorrectAnswer) isRemove = false
                     if (isCorrectAnswer) {
-                        val text = context.getString(if (learnStage < learnStageMax) R.string.answer_correct else R.string.learned)
+                        val text = context.getString(if (learnStage < learnStageMax) string.answer_correct else string.learned)
 
                         if (isRemovableViaDelay) {
                             //Update notification to cancel it it after that
-                            NotificationHelper.showNotification(context, null, text, "", notificationId, true, wordId)
+                            NotificationHelper.showNotification(context, mainActivityClass, null, text, "", notificationId, true, wordId)
                         } else {
-                            showToast(text)
+                            CoroutineScope(Dispatchers.Main).launch {
+                                Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
+                            }
                         }
                     } else {
-                        showToast(R.string.answer_incorrect)
-                        NotificationHelper.handleWordNotification(context, word, false,
+                        CoroutineScope(Dispatchers.Main).launch {
+                            Toast.makeText(context, string.answer_incorrect, Toast.LENGTH_SHORT).show()
+                        }
+                        NotificationHelper.handleWordNotification(
+                            context, mainActivityClass, word, false,
                             NOTIFICATIONS_VIEW_WITH_TRANSLATE, withWrongTitle = true,
-                            notificationId = notificationId, isShowAnswer = true, userAnswer = userText)
+                            notificationId = notificationId, isShowAnswer = true, userAnswer = userText
+                        )
                     }
                 }
             } else {
                 learnStage = 0
                 isRemove = false
 
-                NotificationHelper.handleWordNotification(context, word, false,
-                    NOTIFICATIONS_VIEW_WITH_TRANSLATE, notificationId = notificationId, isShowAnswer = true)
+                NotificationHelper.handleWordNotification(
+                    context, mainActivityClass, word, false,
+                    NOTIFICATIONS_VIEW_WITH_TRANSLATE, notificationId = notificationId, isShowAnswer = true
+                )
             }
 
             if (isEnabledSecondaryProgress && languageType == TYPE_PUSH_RUSSIAN) saveWord.learnStageSecondary = learnStage else saveWord.learnStage = learnStage

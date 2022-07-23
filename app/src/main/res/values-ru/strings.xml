@@ -20,8 +20,6 @@
     <string name="app_language">Язык приложения</string>
     <string name="app_theme">Тема приложения</string>
     <string name="apply">Применить</string>
-    <string name="answer_correct">Правильный ответ</string>
-    <string name="answer_incorrect">Неправильный ответ</string>
     <string name="background_start">Запуск в фоновом режиме</string>
     <string name="cancel_check">Отменить выбранное</string>
     <string name="category_own_not_selected">Категоря не выбрана. Сначала добавьте слова в "Свою категорию"</string>
@@ -78,8 +76,6 @@
     <string name="hide_off_notifications_warning">Скрыть предупреждение об отключенных уведомлениях</string>
     <string name="hours_off_time">Часов (0–23)</string>
     <string name="incorrect">Не то</string>
-    <string name="i_not_know_it">Я не знаю</string>
-    <string name="i_know_it">Я знаю это</string>
     <string name="if_notifications_not_receive">Если не ходят уведомления</string>
     <string name="is_old_navigation_design">Навигация внизу</string>
     <string name="is_show_voice_input">Показывать голосовой ввод</string>
@@ -163,7 +159,6 @@
     <string name="show_only_one_last_notification">Показывать только одно последнее уведомление</string>
     <string name="show_own_words">Показывать свои слова</string>
     <string name="show_progress_in_training">Показывать прогресс при тренировке</string>
-    <string name="show_translation">Я не знаю</string>
     <string name="show_word_progress">Показывать прогресс слов</string>
     <string name="search_words">Искать слова</string>
     <string name="secondary_word_progress">Вторичный прогресс изучения слов</string>
