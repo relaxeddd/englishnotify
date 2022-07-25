@@ -62,13 +62,6 @@ class ViewModelSettings : ViewModelBase() {
     val clickListenerNotificationLearnPoints = View.OnClickListener {
         navigateEvent.value = Event(NAVIGATION_DIALOG_NOTIFICATION_LEARN_POINTS)
     }
-    val clickListenerGoogleAuth = View.OnClickListener {
-        if (!isNetworkAvailable()) {
-            showToast(getAppString(R.string.network_not_available))
-            return@OnClickListener
-        }
-        navigateEvent.value = Event(NAVIGATION_GOOGLE_AUTH)
-    }
     var checkedChangeListenerNavigationDesign = CompoundButton.OnCheckedChangeListener { _, isChecked ->
         if (prefs.isBottomNavigation() != isChecked && isBottomNavigation.value != isChecked) {
             prefs.setBottomNavigation(isChecked)
