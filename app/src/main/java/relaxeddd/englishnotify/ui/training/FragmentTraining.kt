@@ -28,7 +28,7 @@ import kotlin.random.Random
 
 class FragmentTraining: BaseFragment<ViewModelTraining, FragmentTrainingBinding>() {
 
-    private val prefs = Preferences.getInstance()
+    private val prefs get() = Preferences.getInstance()
 
     private var toolbarTitleTraining: String = "Training"
 

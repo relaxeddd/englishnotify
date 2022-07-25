@@ -6,7 +6,7 @@ import relaxeddd.englishnotify.ui.dictionary.ViewModelDictionary
 
 class ViewModelDictionaryAll : ViewModelDictionary() {
 
-    private val prefs = Preferences.getInstance()
+    private val prefs get() = Preferences.getInstance()
 
     override fun filterWords(items: HashSet<Word>) : HashSet<Word> {
         val learnStageMax = prefs.getTrueAnswersToLearn()

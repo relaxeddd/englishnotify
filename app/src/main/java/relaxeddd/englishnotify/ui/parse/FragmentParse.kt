@@ -20,7 +20,7 @@ import relaxeddd.englishnotify.view_base.BaseFragment
 
 class FragmentParse: BaseFragment<ViewModelParse, FragmentParseBinding>() {
 
-    private val prefs = Preferences.getInstance()
+    private val prefs get() = Preferences.getInstance()
 
     private var adapter: AdapterCategories? = null
 

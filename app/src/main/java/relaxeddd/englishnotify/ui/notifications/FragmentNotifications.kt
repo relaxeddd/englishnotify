@@ -25,7 +25,7 @@ import relaxeddd.englishnotify.view_base.interfaces.ListenerResult
 
 class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotificationsBinding>() {
 
-    private val prefs = Preferences.getInstance()
+    private val prefs get() = Preferences.getInstance()
 
     private val listenerLearnEnglish: ListenerResult<Int> = object: ListenerResult<Int> {
         override fun onResult(result: Int) {

@@ -30,7 +30,7 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
         var isEnabledSecondaryProgress = Preferences.getInstance().isEnabledSecondaryProgress()
     }
 
-    private val prefs = Preferences.getInstance()
+    private val prefs get() = Preferences.getInstance()
 
     var languageType = 0
         set(value) {

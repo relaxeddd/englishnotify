@@ -22,7 +22,7 @@ import relaxeddd.englishnotify.view_base.models.Event
 
 class ViewModelNotifications: ViewModelBase() {
 
-    private val prefs = Preferences.getInstance()
+    private val prefs get() = Preferences.getInstance()
 
     val timeDurationOffValue = MutableLiveData(prefs.getDurationHours())
     val timeStartOff = MutableLiveData("20:00")
@@ -162,7 +162,6 @@ class ViewModelNotifications: ViewModelBase() {
     }
 
     private fun setNotificationsEnable(isEnabled: Boolean) {
-        val prefs = Preferences.getInstance()
         prefs.setNotificationsEnabled(isEnabled)
         isNotificationsEnabled.value = isEnabled
 

@@ -17,7 +17,7 @@ import kotlin.math.min
 
 class ViewModelStatistic : ViewModelBase() {
 
-    private val prefs = Preferences.getInstance()
+    private val prefs get() = Preferences.getInstance()
 
     private val repositoryWord = RepositoryWords.getInstance(App.context)
 

@@ -29,7 +29,7 @@ import relaxeddd.englishnotify.view_base.interfaces.ListenerResult
 
 abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>> : BaseFragment<VM, FragmentDictionaryBinding>() {
 
-    private val prefs = Preferences.getInstance()
+    private val prefs get() = Preferences.getInstance()
 
     protected var adapter: A? = null
     private var animBlock: AnimBlock = AnimBlock(false)

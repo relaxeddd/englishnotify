@@ -20,7 +20,7 @@ import relaxeddd.englishnotify.view_base.BaseFragment
 
 class FragmentDictionaryContainer : BaseFragment<ViewModelDictionaryContainer, FragmentDictionaryContainerBinding>() {
 
-    private val prefs = Preferences.getInstance()
+    private val prefs get() = Preferences.getInstance()
     private var adapterFragmentsMap = HashMap<Int, FragmentDictionary<*, *>?>()
     private var currentPosition: Int = prefs.getDictionaryTabPosition()
     private val currentFragment: FragmentDictionary<*, *>?
