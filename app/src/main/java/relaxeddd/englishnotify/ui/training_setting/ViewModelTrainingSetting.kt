@@ -18,7 +18,7 @@ import relaxeddd.englishnotify.view_base.models.Event
 
 class ViewModelTrainingSetting : ViewModelBase(), ISelectCategory {
 
-    private val prefs = Preferences.getInstance()
+    private val prefs get() = Preferences.getInstance()
 
     private val repositoryWord = RepositoryWords.getInstance(App.context)
 

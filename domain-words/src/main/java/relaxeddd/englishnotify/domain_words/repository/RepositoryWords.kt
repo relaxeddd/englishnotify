@@ -24,7 +24,7 @@ class RepositoryWords private constructor(private val wordDao: WordDao) {
         }
     }
 
-    private val prefs = Preferences.getInstance()
+    private val prefs get() = Preferences.getInstance()
 
     val words = wordDao.getAll()
     val tempParsedWords = arrayListOf<Word>()

@@ -17,7 +17,7 @@ class NavigationBarContentFrameLayout @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
-    private val prefs = Preferences.getInstance()
+    private val prefs get() = Preferences.getInstance()
 
     private var navigationBarDividerColor: Int = 0
         set(value) {

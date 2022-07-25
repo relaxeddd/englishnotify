@@ -9,7 +9,7 @@ import relaxeddd.englishnotify.view_base.models.Event
 
 class ViewModelMain : ViewModelBase() {
 
-    private val prefs = Preferences.getInstance()
+    private val prefs get() = Preferences.getInstance()
 
     val isShowLoading = MutableLiveData(false)
     val isBottomNavigation = MutableLiveData(prefs.isBottomNavigation())

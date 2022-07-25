@@ -20,7 +20,7 @@ import relaxeddd.englishnotify.view_base.models.Event
 
 class ViewModelWord : ViewModelBase(), ISelectCategory {
 
-    private val prefs = Preferences.getInstance()
+    private val prefs get() = Preferences.getInstance()
 
     val categories = MutableLiveData<List<CategoryItem>>(ArrayList())
     private var checkedItem: CategoryItem? = null

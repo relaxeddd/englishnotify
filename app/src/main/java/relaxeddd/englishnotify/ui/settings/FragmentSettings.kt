@@ -26,7 +26,7 @@ import kotlin.math.min
 
 class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding>() {
 
-    private val prefs = Preferences.getInstance()
+    private val prefs get() = Preferences.getInstance()
 
     private val listenerTheme: ListenerResult<Int> = object: ListenerResult<Int> {
         override fun onResult(result: Int) {

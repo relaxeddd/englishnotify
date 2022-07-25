@@ -15,7 +15,7 @@ import relaxeddd.englishnotify.view_base.models.Event
 
 class ViewModelSettings : ViewModelBase() {
 
-    private val prefs = Preferences.getInstance()
+    private val prefs get() = Preferences.getInstance()
 
     var textTheme = MutableLiveData(App.context.resources.getStringArray(R.array.array_themes)[prefs.getAppThemeType()])
     val isBottomNavigation = MutableLiveData(prefs.isBottomNavigation())

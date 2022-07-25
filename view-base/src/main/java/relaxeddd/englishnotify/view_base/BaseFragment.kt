@@ -25,7 +25,7 @@ import relaxeddd.englishnotify.view_base.interfaces.IToolbarOwner
 
 abstract class BaseFragment<VM : ViewModelBase, B : ViewBinding> : Fragment() {
 
-    private val prefs = Preferences.getInstance()
+    private val prefs get() = Preferences.getInstance()
 
     protected abstract val viewModel: VM
 

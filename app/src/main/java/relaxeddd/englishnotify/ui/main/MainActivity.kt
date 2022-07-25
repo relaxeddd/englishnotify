@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity(), INavigationOwner, IToolbarOwner, IFabO
         )
     }
 
-    private val prefs = Preferences.getInstance()
+    private val prefs get() = Preferences.getInstance()
 
     private lateinit var binding: MainActivityBinding
 

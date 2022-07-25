@@ -12,7 +12,7 @@ import relaxeddd.englishnotify.view_base.models.Event
 
 class ViewModelTime : ViewModelBase() {
 
-    private val prefs = Preferences.getInstance()
+    private val prefs get() = Preferences.getInstance()
 
     var receiveNotificationsTime: Int = prefs.getNotificationsRepeatTime().ordinal
 

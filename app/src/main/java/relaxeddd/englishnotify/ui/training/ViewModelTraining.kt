@@ -29,7 +29,7 @@ class ViewModelTraining : ViewModelBase() {
         const val RESULT_MEMORIZE = 3
     }
 
-    private val prefs = Preferences.getInstance()
+    private val prefs get() = Preferences.getInstance()
 
     private val repositoryWord = RepositoryWords.getInstance(App.context)
 

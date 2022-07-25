@@ -25,7 +25,7 @@ import relaxeddd.englishnotify.view_base.interfaces.ListenerResult
 
 class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
 
-    private val prefs = Preferences.getInstance()
+    private val prefs get() = Preferences.getInstance()
 
     private var adapter: AdapterCategories? = null
 

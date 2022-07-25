@@ -21,7 +21,7 @@ import kotlin.math.min
 
 class AdapterStatistic(val viewModel: ViewModelStatistic): ListAdapter<Word, AdapterStatistic.ViewHolder>(WordDiffCallback()) {
 
-    private val prefs = Preferences.getInstance()
+    private val prefs get() = Preferences.getInstance()
 
     private val learnStageMax = prefs.getTrueAnswersToLearn()
     private val isEnabledSecondaryProgress = prefs.isEnabledSecondaryProgress()

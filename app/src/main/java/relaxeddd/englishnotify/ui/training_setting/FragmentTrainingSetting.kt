@@ -24,7 +24,7 @@ import relaxeddd.englishnotify.view_base.BaseFragment
 
 class FragmentTrainingSetting : BaseFragment<ViewModelTrainingSetting, FragmentTrainingSettingBinding>() {
 
-    private val prefs = Preferences.getInstance()
+    private val prefs get() = Preferences.getInstance()
 
     private lateinit var adapter: AdapterCategories
 

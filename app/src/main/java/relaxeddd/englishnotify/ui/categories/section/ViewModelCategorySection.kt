@@ -26,7 +26,7 @@ class ViewModelCategorySection : ViewModelBase(), ISelectCategory {
         val mapCategoryRadioButtons = HashMap<String, ArrayList<MaterialRadioButton>>()
     }
 
-    private val prefs = Preferences.getInstance()
+    private val prefs get() = Preferences.getInstance()
 
     val title = MutableLiveData("")
     val categories = MutableLiveData<List<CategoryItem>>(ArrayList())
