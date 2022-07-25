@@ -6,7 +6,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
-import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Build
 import android.text.SpannableString
@@ -155,13 +154,6 @@ internal fun <T> Collection<T>.print() : String {
     return string
 }
 
-@Suppress("DEPRECATION")
-fun isNetworkAvailable(): Boolean {
-    val connectivityManager = App.context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
-    val activeNetworkInfo = connectivityManager!!.activeNetworkInfo
-    return activeNetworkInfo != null && activeNetworkInfo.isConnected
-}
-
 fun getAppString(@StringRes resId: Int) : String = App.context.getString(resId)
 
 fun getAppString(@StringRes resId: Int, arg: String) : String = App.context.getString(resId, arg)
@@ -182,48 +174,6 @@ fun openWebApplication(activity: FragmentActivity?) {
     val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=relaxeddd.englishnotify"))
     browserIntent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
     activity?.startActivity(browserIntent)
-}
-
-fun getErrorString(code: Int) = getErrorString(Result(code, getAppString(R.string.undefined_error)))
-
-fun getErrorString(result: Result?) : String {
-    if (result == null) {
-        return getAppString(R.string.undefined_error)
-    }
-
-    return when (result.code) {
-        RESULT_UNDEFINED -> getAppString(R.string.undefined_error)
-        RESULT_ERROR_SEND_FEEDBACK -> getAppString(R.string.feedback_send_error)
-        RESULT_ERROR_FEEDBACK_TOO_SHORT -> getAppString(R.string.feedback_too_short)
-        RESULT_ERROR_NETWORK -> getAppString(R.string.network_not_available)
-        RESULT_LOCAL_ERROR -> getAppString(R.string.undefined_error)
-        RESULT_ERROR_UNAUTHORIZED -> getAppString(R.string.unauthorized_error)
-        RESULT_ERROR_USER_NOT_FOUND -> getAppString(R.string.user_not_found)
-        RESULT_ERROR_APP_INIT -> getAppString(R.string.error_initialization)
-        RESULT_ERROR_ADD_PUSH_TOKEN -> getAppString(R.string.error_push_token)
-        RESULT_ERROR_UPDATE_USER -> getAppString(R.string.error_update)
-        RESULT_PURCHASE_NOT_VERIFIED -> getAppString(R.string.error_purchase)
-        RESULT_PURCHASE_VERIFIED_ERROR -> getAppString(R.string.error_purchase)
-        RESULT_PURCHASE_ALREADY_RECEIVED -> getAppString(R.string.error_purchase)
-        RESULT_ERROR_TEST_NOTIFICATION -> getAppString(R.string.error_test_notification)
-        RESULT_ERROR_OWN_WORD -> getAppString(R.string.error_own_word_add)
-        RESULT_ERROR_OWN_WORD_EXISTS -> getAppString(R.string.error_own_word_exists)
-        RESULT_ERROR_OWN_WORD_LIMIT -> getAppString(R.string.error_own_word_limit)
-        RESULT_ERROR_OWN_WORD_TYPE -> getAppString(R.string.error_own_word_incorrect)
-        RESULT_ERROR_OWN_DELETE_NO_IDS -> getAppString(R.string.error_own_word_delete)
-        RESULT_ERROR_OWN_DELETE_NO_WORDS -> getAppString(R.string.error_own_word_delete)
-        RESULT_ERROR_OWN_DELETE -> getAppString(R.string.error_own_word_delete)
-        RESULT_ERROR_INTERNET -> getAppString(R.string.network_not_available)
-        RESULT_ERROR_UPDATE_WORD_LEARN_STAGE -> "Error learn stage update: " + result.message
-        RESULT_ERROR_SET_NICKNAME -> "Error set name: " + result.message
-        RESULT_ERROR_SET_NICKNAME_EXISTS -> "Error set name: " + result.message
-        RESULT_ERROR_SET_NICKNAME_INVALID -> "Error set name: " + result.message
-        RESULT_ERROR_SET_NICKNAME_NOT_AVAILABLE -> "Error set name: " + result.message
-        RESULT_ERROR_SAVE_WORDS_EMPTY -> getAppString(R.string.no_words_for_save)
-        RESULT_ERROR_LOAD_WORDS_EMPTY -> getAppString(R.string.no_words_for_load)
-        RESULT_ERROR_SAVE_WORDS_TOO_MANY -> getAppString(R.string.too_many_words_to_save)
-        else -> result.message
-    }
 }
 
 fun isValidNickname(nickname: String) : Boolean {
