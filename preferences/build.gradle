@@ -1,14 +1,15 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
 }
 
 android {
-    compileSdk 31
+    compileSdk rootProject.compileSdkVersion
 
     defaultConfig {
-        minSdk 21
-        targetSdk 31
+        minSdk rootProject.minSdkVersion
+        targetSdk rootProject.targetSdkVersion
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -30,7 +31,11 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation "androidx.appcompat:appcompat:$appcompat"
 
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines"
+
+    implementation "com.google.dagger:dagger-android:$dagger"
+    kapt "com.google.dagger:dagger-android-processor:$dagger"
+    kapt "com.google.dagger:dagger-compiler:$dagger"
 }
