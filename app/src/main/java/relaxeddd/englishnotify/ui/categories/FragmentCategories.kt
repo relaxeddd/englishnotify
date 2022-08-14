@@ -7,16 +7,27 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK
 import relaxeddd.englishnotify.common.getAppString
 import relaxeddd.englishnotify.databinding.FragmentCategoriesBinding
+import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.ui.categories.section.FragmentCategorySection
 import relaxeddd.englishnotify.view_base.BaseFragment
+import javax.inject.Inject
 
 class FragmentCategories : BaseFragment<ViewModelCategories, FragmentCategoriesBinding>() {
+
+    @Inject
+    override lateinit var prefs: Preferences
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    override val viewModel by viewModels<ViewModelCategories> { viewModelFactory }
 
     private var fragmentsMap = HashMap<Int, FragmentCategorySection?>()
     private val currentFragment: FragmentCategorySection?
@@ -28,8 +39,6 @@ class FragmentCategories : BaseFragment<ViewModelCategories, FragmentCategoriesB
     override fun isHomeMenuButtonEnabled() = true
     override fun getHomeMenuButtonIconResId() = R.drawable.ic_back
     override fun getHomeMenuButtonListener(): () -> Unit = { onNavigationEvent(NAVIGATION_ACTIVITY_BACK) }
-
-    override val viewModel: ViewModelCategories by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCategoriesBinding.inflate(inflater)
@@ -44,7 +53,7 @@ class FragmentCategories : BaseFragment<ViewModelCategories, FragmentCategoriesB
 
             viewPagerCategories.adapter = adapter
             TabLayoutMediator(tabLayoutCategories, viewPagerCategories) { tab, position ->
-                tab.text = getAppString(CategorySection.OWN_CATEGORIES.titleResId)
+                tab.text = getAppString(requireContext(), CategorySection.OWN_CATEGORIES.titleResId)
             }.attach()
         }
     }

@@ -15,3 +15,22 @@ buildscript {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+ext {
+    minSdkVersion = 21
+    targetSdkVersion = 31
+    compileSdkVersion = 31
+
+    appcompat = '1.4.2'
+    constraintlayout = '2.1.4'
+    material = '1.6.1'
+
+    lifecycle = '2.4.1'
+    navigation = '2.3.5' // write ui test with 2.4.2 version to catch the bug with dictionary navigation
+    coroutines = '1.6.2'
+    room = '2.4.2'
+    workmanager = '2.7.1'
+    dagger = '2.40'
+
+    playCore = '1.10.3'
+}

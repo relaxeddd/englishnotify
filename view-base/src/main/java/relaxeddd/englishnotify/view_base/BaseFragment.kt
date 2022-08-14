@@ -12,8 +12,8 @@ import androidx.annotation.MenuRes
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.forEach
-import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import dagger.android.support.DaggerFragment
 import relaxeddd.englishnotify.common.EMPTY_RES
 import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK
 import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK_TWICE
@@ -23,9 +23,9 @@ import relaxeddd.englishnotify.view_base.interfaces.INavControllerOwner
 import relaxeddd.englishnotify.view_base.interfaces.INavigationOwner
 import relaxeddd.englishnotify.view_base.interfaces.IToolbarOwner
 
-abstract class BaseFragment<VM : ViewModelBase, B : ViewBinding> : Fragment() {
+abstract class BaseFragment<VM : ViewModelBase, B : ViewBinding> : DaggerFragment() {
 
-    private val prefs get() = Preferences.getInstance()
+    abstract var prefs: Preferences
 
     protected abstract val viewModel: VM
 

@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.common.NAVIGATION_DIALOG_CHECK_TAGS
 import relaxeddd.englishnotify.common.NAVIGATION_DIALOG_SORTED_BY
 import relaxeddd.englishnotify.common.NAVIGATION_FRAGMENT_WORD
@@ -20,10 +19,10 @@ import relaxeddd.englishnotify.preferences.models.SortByType
 import relaxeddd.englishnotify.view_base.ViewModelBase
 import relaxeddd.englishnotify.view_base.models.Event
 
-open class ViewModelDictionary : ViewModelBase() {
-
-    private val prefs get() = Preferences.getInstance()
-    private val repositoryWord = RepositoryWords.getInstance(App.context)
+abstract class ViewModelDictionary(
+    private val prefs: Preferences,
+    private val repositoryWords: RepositoryWords,
+) : ViewModelBase() {
 
     open val isShowOwnWordsContainer = true
 
@@ -34,7 +33,7 @@ open class ViewModelDictionary : ViewModelBase() {
     var playWord: Word? = null
     var editWord: Word? = null
 
-    private val words: LiveData<List<Word>> = repositoryWord.words
+    private val words: LiveData<List<Word>> = repositoryWords.words
     private val wordsObserver = Observer<List<Word>> { words ->
         tags.clear()
         words?.forEach { it.tags.forEach { tag -> if (tag.isNotEmpty()) tags.add(tag) } }
@@ -45,13 +44,13 @@ open class ViewModelDictionary : ViewModelBase() {
     }
 
     init {
-        repositoryWord.words.observeForever(wordsObserver)
+        repositoryWords.words.observeForever(wordsObserver)
         sortByType.observeForever(sortObserver)
     }
 
     override fun onCleared() {
         super.onCleared()
-        repositoryWord.words.removeObserver(wordsObserver)
+        repositoryWords.words.removeObserver(wordsObserver)
     }
 
     fun onClickedFilterTags() {
@@ -88,8 +87,8 @@ open class ViewModelDictionary : ViewModelBase() {
 
     fun resetProgress(word: Word) {
         viewModelScope.launch {
-            repositoryWord.setWordLearnStage(word, 0, false)
-            repositoryWord.setWordLearnStage(word, 0, true)
+            repositoryWords.setWordLearnStage(word, 0, false)
+            repositoryWords.setWordLearnStage(word, 0, true)
         }
     }
 
@@ -101,7 +100,7 @@ open class ViewModelDictionary : ViewModelBase() {
     fun deleteWord(word: Word) {
         navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
         viewModelScope.launch {
-            repositoryWord.deleteWord(word.id)
+            repositoryWords.deleteWord(word.id)
             navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
         }
     }
@@ -113,7 +112,7 @@ open class ViewModelDictionary : ViewModelBase() {
 
             words.forEach { listIds.add(it.id) }
             if (listIds.isNotEmpty()) {
-                repositoryWord.deleteWords(listIds.toList())
+                repositoryWords.deleteWords(listIds.toList())
             }
             navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
         }
@@ -121,7 +120,7 @@ open class ViewModelDictionary : ViewModelBase() {
 
     //------------------------------------------------------------------------------------------------------------------
     @CallSuper
-    protected open fun filterWords(items: HashSet<Word>) : HashSet<Word> {
+    protected open fun filterWords(prefs: Preferences, items: HashSet<Word>) : HashSet<Word> {
         return items.filter { !it.isDeleted }.toHashSet()
     }
 
@@ -141,7 +140,7 @@ open class ViewModelDictionary : ViewModelBase() {
                     || it.transcription.lowercase().contains(searchText) }.toHashSet()
         }
 
-        filteredItems = filterWords(filteredItems)
+        filteredItems = filterWords(prefs, filteredItems)
 
         val sortList = when (sortByType.value) {
             SortByType.ALPHABETICAL_NAME -> filteredItems.sortedBy{ it.eng.lowercase() }

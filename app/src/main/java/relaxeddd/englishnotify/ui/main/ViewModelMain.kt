@@ -6,10 +6,9 @@ import relaxeddd.englishnotify.common.NAVIGATION_DIALOG_PATCH_NOTES
 import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.view_base.ViewModelBase
 import relaxeddd.englishnotify.view_base.models.Event
+import javax.inject.Inject
 
-class ViewModelMain : ViewModelBase() {
-
-    private val prefs get() = Preferences.getInstance()
+class ViewModelMain @Inject constructor(private val prefs: Preferences) : ViewModelBase() {
 
     val isShowLoading = MutableLiveData(false)
     val isBottomNavigation = MutableLiveData(prefs.isBottomNavigation())

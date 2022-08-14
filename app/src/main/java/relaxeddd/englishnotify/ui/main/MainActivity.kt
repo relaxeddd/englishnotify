@@ -13,12 +13,12 @@ import android.speech.tts.TextToSpeech
 import android.view.View
 import android.view.WindowInsets
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
@@ -26,6 +26,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.RecyclerView
+import dagger.android.support.DaggerAppCompatActivity
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.MainActivityBinding
@@ -45,10 +46,11 @@ import relaxeddd.englishnotify.view_base.interfaces.INavigationOwner
 import relaxeddd.englishnotify.view_base.interfaces.IToolbarOwner
 import relaxeddd.englishnotify.view_base.interfaces.ListenerResult
 import java.util.*
+import javax.inject.Inject
 import kotlin.system.exitProcess
 
 @MainActivityBeforeRefactoringWarning
-class MainActivity : AppCompatActivity(), INavigationOwner, IToolbarOwner, IFabOwner, INavControllerOwner {
+class MainActivity : DaggerAppCompatActivity(), INavigationOwner, IToolbarOwner, IFabOwner, INavControllerOwner {
 
     companion object {
         const val REQUEST_RECOGNIZE_SPEECH = 5242
@@ -63,7 +65,13 @@ class MainActivity : AppCompatActivity(), INavigationOwner, IToolbarOwner, IFabO
         )
     }
 
-    private val prefs get() = Preferences.getInstance()
+    @Inject
+    lateinit var prefs: Preferences
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    val viewModel by viewModels<ViewModelMain> { viewModelFactory }
 
     private lateinit var binding: MainActivityBinding
 
@@ -80,7 +88,6 @@ class MainActivity : AppCompatActivity(), INavigationOwner, IToolbarOwner, IFabO
     private var recognizeSpeechCallback: ((String?) -> Unit)? = null
 
     var isMyResumed = false
-    private val viewModel: ViewModelMain by viewModels()
 
     //------------------------------------------------------------------------------------------------------------------
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -249,7 +256,7 @@ class MainActivity : AppCompatActivity(), INavigationOwner, IToolbarOwner, IFabO
                 } else {
                     isPlaying = false
                     isTtsInitFailed = true
-                    showToast(getString(R.string.error_word_voice, it.toString()))
+                    showToast(this, getString(R.string.error_word_voice, it.toString()))
                 }
             }
         } else {

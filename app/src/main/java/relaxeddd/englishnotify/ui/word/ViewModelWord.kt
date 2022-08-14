@@ -1,10 +1,10 @@
 package relaxeddd.englishnotify.ui.word
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.android.material.radiobutton.MaterialRadioButton
 import kotlinx.coroutines.launch
-import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.CategoryItem
 import relaxeddd.englishnotify.common.ISelectCategory
@@ -17,10 +17,13 @@ import relaxeddd.englishnotify.domain_words.repository.RepositoryWords
 import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.view_base.ViewModelBase
 import relaxeddd.englishnotify.view_base.models.Event
+import javax.inject.Inject
 
-class ViewModelWord : ViewModelBase(), ISelectCategory {
-
-    private val prefs get() = Preferences.getInstance()
+class ViewModelWord @Inject constructor(
+    private val context: Context,
+    private val prefs: Preferences,
+    private val repositoryWords: RepositoryWords,
+) : ViewModelBase(), ISelectCategory {
 
     val categories = MutableLiveData<List<CategoryItem>>(ArrayList())
     private var checkedItem: CategoryItem? = null
@@ -54,19 +57,19 @@ class ViewModelWord : ViewModelBase(), ISelectCategory {
         }
 
         viewModelScope.launch {
-            var existsWord = RepositoryWords.getInstance(App.context).getWord(eng)
+            var existsWord = repositoryWords.getWord(eng)
 
             if (existsWordId.isNotEmpty()) {
-                existsWord = RepositoryWords.getInstance(App.context).getWord(existsWordId)
+                existsWord = repositoryWords.getWord(existsWordId)
                 val updateIsRequired = existsWord == null || existsWord.eng != eng || existsWord.rus != rus
                         || existsWord.transcription != transcription
                         || tags.size != existsWord.tags.size || tags.firstOrNull() != existsWord.tags.firstOrNull()
 
                 if (updateIsRequired) {
-                    RepositoryWords.getInstance(App.context).insertOwnCategoryWord(eng, eng, rus, transcription, tags)
+                    repositoryWords.insertOwnCategoryWord(eng, eng, rus, transcription, tags)
 
                     if (eng != this@ViewModelWord.existsWordId) {
-                        RepositoryWords.getInstance(App.context).removeWordFromDb(this@ViewModelWord.existsWordId)
+                        repositoryWords.removeWordFromDb(this@ViewModelWord.existsWordId)
                     }
                 }
             } else {
@@ -84,7 +87,7 @@ class ViewModelWord : ViewModelBase(), ISelectCategory {
                     }
                     return@launch
                 } else {
-                    RepositoryWords.getInstance(App.context).insertOwnCategoryWord(eng, eng, rus, transcription, tags)
+                    repositoryWords.insertOwnCategoryWord(eng, eng, rus, transcription, tags)
                 }
             }
 
@@ -96,15 +99,15 @@ class ViewModelWord : ViewModelBase(), ISelectCategory {
         viewModelScope.launch {
             val findWord = this@ViewModelWord.findWord
             val oldWordId = if (findWord != null) findWord.id else {
-                showToast(R.string.error_update)
+                showToast(context, R.string.error_update)
                 return@launch
             }
             val eng = if (updateEng.isNotEmpty()) updateEng else {
-                showToast(R.string.error_update)
+                showToast(context, R.string.error_update)
                 return@launch
             }
             val rus = if (updateEng.isNotEmpty()) updateRus else {
-                showToast(R.string.error_update)
+                showToast(context, R.string.error_update)
                 return@launch
             }
             val transcription = if (updateTranscription.isNotEmpty()) updateTranscription else findWord.transcription
@@ -115,9 +118,9 @@ class ViewModelWord : ViewModelBase(), ISelectCategory {
                 findWord.v2, findWord.v3, findWord.timestamp, false, 0, findWord.type, findWord.isCreatedByUser,
                 true, findWord.level, 0)
 
-            RepositoryWords.getInstance(App.context).updateWord(updateWord)
+            repositoryWords.updateWord(updateWord)
             if (updateEng != oldWordId) {
-                RepositoryWords.getInstance(App.context).removeWordFromDb(oldWordId)
+                repositoryWords.removeWordFromDb(oldWordId)
             }
 
             navigateEvent.value = Event(NAVIGATION_ACTIVITY_BACK)
@@ -127,7 +130,7 @@ class ViewModelWord : ViewModelBase(), ISelectCategory {
     private fun updateCategories() {
         viewModelScope.launch {
             val list = ArrayList<CategoryItem>()
-            val allTags = RepositoryWords.getInstance(App.context).getOwnWordCategories()
+            val allTags = repositoryWords.getOwnWordCategories()
 
             for (tag in allTags) {
                 list.add(CategoryItem(tag))
@@ -136,7 +139,7 @@ class ViewModelWord : ViewModelBase(), ISelectCategory {
             val lastCategory = CategoryItem(prefs.getLastOwnCategory())
 
             if (existsWordId.isNotEmpty()) {
-                val existsWord = RepositoryWords.getInstance(App.context).getWord(existsWordId)
+                val existsWord = repositoryWords.getWord(existsWordId)
                 val existsWordCategoryKey = existsWord?.tags?.firstOrNull()
 
                 if (existsWordCategoryKey != null && list.contains(CategoryItem(existsWordCategoryKey))) {

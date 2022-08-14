@@ -1,10 +1,10 @@
 package relaxeddd.englishnotify.ui.categories.section
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.android.material.radiobutton.MaterialRadioButton
 import kotlinx.coroutines.launch
-import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.CategoryItem
 import relaxeddd.englishnotify.common.ISelectCategory
@@ -17,8 +17,13 @@ import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.preferences.utils.ALL_APP_WORDS
 import relaxeddd.englishnotify.view_base.ViewModelBase
 import relaxeddd.englishnotify.view_base.models.Event
+import javax.inject.Inject
 
-class ViewModelCategorySection : ViewModelBase(), ISelectCategory {
+class ViewModelCategorySection @Inject constructor(
+    private val context: Context,
+    private val prefs: Preferences,
+    repositoryWords: RepositoryWords,
+) : ViewModelBase(), ISelectCategory {
 
     companion object {
 
@@ -26,14 +31,12 @@ class ViewModelCategorySection : ViewModelBase(), ISelectCategory {
         val mapCategoryRadioButtons = HashMap<String, ArrayList<MaterialRadioButton>>()
     }
 
-    private val prefs get() = Preferences.getInstance()
-
     val title = MutableLiveData("")
     val categories = MutableLiveData<List<CategoryItem>>(ArrayList())
 
     init {
         val allTags = arrayListOf(ALL_APP_WORDS)
-        allTags.addAll(RepositoryWords.getInstance(App.context).getOwnWordCategories())
+        allTags.addAll(repositoryWords.getOwnWordCategories())
 
         val list = ArrayList<CategoryItem>()
 
@@ -46,7 +49,7 @@ class ViewModelCategorySection : ViewModelBase(), ISelectCategory {
         }
 
         categories.value = list
-        title.value = getStringByResName(selectedCategory).replaceFirst(OWN_KEY_SYMBOL, "")
+        title.value = getStringByResName(context, selectedCategory).replaceFirst(OWN_KEY_SYMBOL, "")
     }
 
     override fun getSelectedCategory() = selectedCategory
@@ -67,12 +70,12 @@ class ViewModelCategorySection : ViewModelBase(), ISelectCategory {
             }
         }
 
-        title.value = getStringByResName(selectedCategory).replaceFirst(OWN_KEY_SYMBOL, "")
+        title.value = getStringByResName(context, selectedCategory).replaceFirst(OWN_KEY_SYMBOL, "")
     }
 
     override fun onFragmentResume() {
         super.onFragmentResume()
-        title.value = getStringByResName(selectedCategory).replaceFirst(OWN_KEY_SYMBOL, "")
+        title.value = getStringByResName(context, selectedCategory).replaceFirst(OWN_KEY_SYMBOL, "")
     }
 
     override fun onRadioButtonInit(category: String, radioButton: MaterialRadioButton) {
@@ -98,7 +101,7 @@ class ViewModelCategorySection : ViewModelBase(), ISelectCategory {
         val category = selectedCategory
 
         if (category.isEmpty()) {
-            showToast(R.string.error_update)
+            showToast(context, R.string.error_update)
             return
         }
 
@@ -108,7 +111,7 @@ class ViewModelCategorySection : ViewModelBase(), ISelectCategory {
                     prefs.setSelectedCategory(category)
                     navigateEvent.value = Event(NAVIGATION_ACTIVITY_BACK)
                 } else {
-                    showToast(R.string.tags_should_not_be_empty)
+                    showToast(context, R.string.tags_should_not_be_empty)
                 }
             }
         } else {

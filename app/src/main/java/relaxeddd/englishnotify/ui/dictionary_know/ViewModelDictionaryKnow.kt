@@ -1,16 +1,21 @@
 package relaxeddd.englishnotify.ui.dictionary_know
 
 import relaxeddd.englishnotify.domain_words.entity.Word
+import relaxeddd.englishnotify.domain_words.repository.RepositoryWords
 import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.ui.dictionary.ViewModelDictionary
+import javax.inject.Inject
 
-class ViewModelDictionaryKnow : ViewModelDictionary() {
+class ViewModelDictionaryKnow @Inject constructor(
+    prefs: Preferences,
+    repositoryWords: RepositoryWords,
+) : ViewModelDictionary(prefs, repositoryWords) {
 
-    private val prefs get() = Preferences.getInstance()
-
-    override fun filterWords(items: HashSet<Word>) : HashSet<Word> {
+    override fun filterWords(prefs: Preferences, items: HashSet<Word>) : HashSet<Word> {
         val learnStageMax = prefs.getTrueAnswersToLearn()
         val isEnabledSecondaryProgress = prefs.isEnabledSecondaryProgress()
-        return super.filterWords(items).filter { it.isLearned(isEnabledSecondaryProgress, learnStageMax) }.toHashSet()
+        return super.filterWords(prefs, items).filter {
+            it.isLearned(isEnabledSecondaryProgress, learnStageMax)
+        }.toHashSet()
     }
 }

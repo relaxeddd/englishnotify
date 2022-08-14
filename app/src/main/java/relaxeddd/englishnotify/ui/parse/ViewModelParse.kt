@@ -1,8 +1,8 @@
 package relaxeddd.englishnotify.ui.parse
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.google.android.material.radiobutton.MaterialRadioButton
-import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.CategoryItem
 import relaxeddd.englishnotify.common.ISelectCategory
@@ -12,8 +12,12 @@ import relaxeddd.englishnotify.domain_words.entity.Word
 import relaxeddd.englishnotify.domain_words.repository.RepositoryWords
 import relaxeddd.englishnotify.view_base.ViewModelBase
 import relaxeddd.englishnotify.view_base.models.Event
+import javax.inject.Inject
 
-class ViewModelParse : ViewModelBase(), ISelectCategory {
+class ViewModelParse @Inject constructor(
+    private val context: Context,
+    private val repositoryWords: RepositoryWords,
+) : ViewModelBase(), ISelectCategory {
 
     val categories = MutableLiveData<List<CategoryItem>>(ArrayList())
     private var checkedItem: CategoryItem? = null
@@ -55,17 +59,17 @@ class ViewModelParse : ViewModelBase(), ISelectCategory {
         }
 
         if (parsedWords.isEmpty()) {
-            showToast(R.string.no_words_recognized)
+            showToast(context, R.string.no_words_recognized)
         } else {
-            RepositoryWords.getInstance(App.context).tempParsedWords.clear()
-            RepositoryWords.getInstance(App.context).tempParsedWords.addAll(parsedWords)
+            repositoryWords.tempParsedWords.clear()
+            repositoryWords.tempParsedWords.addAll(parsedWords)
             navigateEvent.value = Event(NAVIGATION_FRAGMENT_PARSED_WORDS)
         }
     }
 
     private fun updateCategories() {
         val list = ArrayList<CategoryItem>()
-        val allTags = RepositoryWords.getInstance(App.context).getOwnWordCategories()
+        val allTags = repositoryWords.getOwnWordCategories()
 
         for (tag in allTags) {
             list.add(CategoryItem(tag))

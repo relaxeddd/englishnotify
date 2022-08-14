@@ -14,7 +14,6 @@ import androidx.core.view.updatePaddingRelative
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.FragmentDictionaryBinding
@@ -22,14 +21,11 @@ import relaxeddd.englishnotify.dialogs.DialogCheckTags
 import relaxeddd.englishnotify.dialogs.DialogDeleteWords
 import relaxeddd.englishnotify.dialogs.DialogSortBy
 import relaxeddd.englishnotify.domain_words.entity.Word
-import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.ui.main.MainActivity
 import relaxeddd.englishnotify.view_base.BaseFragment
 import relaxeddd.englishnotify.view_base.interfaces.ListenerResult
 
 abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>> : BaseFragment<VM, FragmentDictionaryBinding>() {
-
-    private val prefs get() = Preferences.getInstance()
 
     protected var adapter: A? = null
     private var animBlock: AnimBlock = AnimBlock(false)
@@ -102,7 +98,7 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
             binding?.textDictionaryFilterTagsValues?.text = if (it.isEmpty()) "" else it.toString()
         }
         viewModel.sortByType.observe(viewLifecycleOwner) {
-            binding?.textDictionarySortByValue?.text = it.getTitle(App.context)
+            binding?.textDictionarySortByValue?.text = it.getTitle(requireContext())
         }
         lifecycleScope.launchWhenCreated {
             prefs.learnLanguageTypeFlow.collect {
@@ -147,7 +143,7 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
                     }
                     dialog.show(this@FragmentDictionary.childFragmentManager, "Confirm delete Dialog")
                 } else {
-                    showToast(R.string.words_not_selected)
+                    showToast(requireContext(), R.string.words_not_selected)
                 }
                 return true
             }
@@ -244,7 +240,7 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
             }
             dialog.show(this@FragmentDictionary.childFragmentManager, "Confirm delete Dialog")
         } else {
-            showToast(R.string.words_not_selected)
+            showToast(requireContext(), R.string.words_not_selected)
         }
     }
 
@@ -255,7 +251,6 @@ abstract class FragmentDictionary<VM : ViewModelDictionary, A : AdapterWords<*>>
     private fun updateAdapter(words: List<Word>?) {
         if (words != null && words.isNotEmpty()) {
             val isScroll = adapter?.currentList?.size != words.size
-            AdapterWords.isEnabledSecondaryProgress = prefs.isEnabledSecondaryProgress()
             adapter?.submitList(words)
             if (isScroll) {
                 handler.postDelayed({

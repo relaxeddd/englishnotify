@@ -12,6 +12,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.view.doOnLayout
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.play.core.review.ReviewManagerFactory
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
@@ -22,10 +23,17 @@ import relaxeddd.englishnotify.ui.categories.AdapterCategories
 import relaxeddd.englishnotify.ui.main.MainActivity
 import relaxeddd.englishnotify.view_base.BaseFragment
 import relaxeddd.englishnotify.view_base.interfaces.ListenerResult
+import javax.inject.Inject
 
 class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
 
-    private val prefs get() = Preferences.getInstance()
+    @Inject
+    override lateinit var prefs: Preferences
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    override val viewModel by viewModels<ViewModelWord> { viewModelFactory }
 
     private var adapter: AdapterCategories? = null
 
@@ -42,8 +50,6 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
     override fun isHomeMenuButtonEnabled() = true
     override fun getHomeMenuButtonIconResId() = R.drawable.ic_back
     override fun getHomeMenuButtonListener(): () -> Unit = { onNavigationEvent(NAVIGATION_ACTIVITY_BACK) }
-
-    override val viewModel: ViewModelWord by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentWordBinding.inflate(inflater)

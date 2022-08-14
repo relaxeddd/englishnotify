@@ -19,9 +19,10 @@ import relaxeddd.englishnotify.domain_words.entity.Word
 import relaxeddd.englishnotify.preferences.Preferences
 import kotlin.math.min
 
-class AdapterStatistic(val viewModel: ViewModelStatistic): ListAdapter<Word, AdapterStatistic.ViewHolder>(WordDiffCallback()) {
-
-    private val prefs get() = Preferences.getInstance()
+class AdapterStatistic(
+    private val prefs: Preferences, // TODO: refactor without using prefs, viewModel
+    private val viewModel: ViewModelStatistic,
+): ListAdapter<Word, AdapterStatistic.ViewHolder>(WordDiffCallback()) {
 
     private val learnStageMax = prefs.getTrueAnswersToLearn()
     private val isEnabledSecondaryProgress = prefs.isEnabledSecondaryProgress()

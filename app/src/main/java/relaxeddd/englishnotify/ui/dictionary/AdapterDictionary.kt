@@ -10,10 +10,14 @@ import android.widget.TextView
 import com.google.android.material.checkbox.MaterialCheckBox
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.domain_words.entity.Word
+import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.preferences.utils.TYPE_PUSH_ENGLISH
 import relaxeddd.englishnotify.preferences.utils.TYPE_PUSH_RUSSIAN
 
-class AdapterDictionary(viewModel: ViewModelDictionary) : AdapterWords<AdapterDictionary.ViewHolder>(viewModel) {
+class AdapterDictionary(
+    private val prefs: Preferences,
+    viewModel: ViewModelDictionary,
+) : AdapterWords<AdapterDictionary.ViewHolder>(prefs, viewModel) {
 
     companion object {
         const val MAX_TRANSLATIONS_COUNT = 4
@@ -26,7 +30,7 @@ class AdapterDictionary(viewModel: ViewModelDictionary) : AdapterWords<AdapterDi
     override fun bind(holder: ViewHolder, item: Word, clickListener: View.OnClickListener,
                       longListener: View.OnLongClickListener, clickListenerPlay: View.OnClickListener,
                       checkListener: CompoundButton.OnCheckedChangeListener) {
-        holder.bind(item, languageType, isSelectState, checkList, clickListener, longListener, clickListenerPlay, checkListener)
+        holder.bind(prefs, item, languageType, isSelectState, checkList, clickListener, longListener, clickListenerPlay, checkListener)
     }
 
     class ViewHolder(view: View) : AdapterWords.ViewHolder(view) {
@@ -50,10 +54,10 @@ class AdapterDictionary(viewModel: ViewModelDictionary) : AdapterWords<AdapterDi
         private val textWordSampleEng: TextView? = itemView.findViewById(R.id.text_word_sample_eng)
         private val textWordSampleRus: TextView? = itemView.findViewById(R.id.text_word_sample_rus)
 
-        fun bind(word: Word, languageType: Int, isSelectState: Boolean, checkList: HashSet<Word>,
+        fun bind(prefs: Preferences, word: Word, languageType: Int, isSelectState: Boolean, checkList: HashSet<Word>,
                  clickListener: View.OnClickListener, longClickListener: View.OnLongClickListener,
                  clickListenerPlay: View.OnClickListener, checkedChangeListener: CompoundButton.OnCheckedChangeListener) {
-            super.bind(word, isSelectState, checkList, clickListener, longClickListener, clickListenerPlay, checkedChangeListener)
+            super.bind(prefs, word, isSelectState, checkList, clickListener, longClickListener, clickListenerPlay, checkedChangeListener)
 
             val transcription = if (word.transcription.isNotEmpty()) "[" + word.transcription + "]" else ""
             val textV2 = if (word.v2.isNotEmpty()) "v2: " + word.v2 else ""

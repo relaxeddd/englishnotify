@@ -30,7 +30,6 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.preferences.utils.THEME_BLACK
 import relaxeddd.englishnotify.preferences.utils.THEME_BLUE
@@ -58,16 +57,16 @@ fun getAccentColorResId(appThemeType: Int) = when (appThemeType) {
     else -> R.color.colorAccent
 }
 
-fun showToast(string: String) {
-    CoroutineScope(Dispatchers.Main).launch { Toast.makeText(App.context, string, Toast.LENGTH_SHORT).show() }
+fun showToast(context: Context, string: String) {
+    CoroutineScope(Dispatchers.Main).launch { Toast.makeText(context, string, Toast.LENGTH_SHORT).show() }
 }
 
-fun showToast(@StringRes resId: Int) {
-    CoroutineScope(Dispatchers.Main).launch { Toast.makeText(App.context, resId, Toast.LENGTH_SHORT).show() }
+fun showToast(context: Context, @StringRes resId: Int) {
+    CoroutineScope(Dispatchers.Main).launch { Toast.makeText(context, resId, Toast.LENGTH_SHORT).show() }
 }
 
-fun showToastLong(@StringRes resId: Int) {
-    CoroutineScope(Dispatchers.Main).launch { Toast.makeText(App.context, resId, Toast.LENGTH_LONG).show() }
+fun showToastLong(context: Context, @StringRes resId: Int) {
+    CoroutineScope(Dispatchers.Main).launch { Toast.makeText(context, resId, Toast.LENGTH_LONG).show() }
 }
 
 fun showKeyboard(view: View?) {
@@ -102,19 +101,20 @@ fun hideKeyboard(view: View?) {
     view.clearFocus()
 }
 
-fun convertDpToPixel(dp: Float): Float {
-    return dp * (App.context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+fun convertDpToPixel(context: Context, dp: Float): Float {
+    return dp * (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
 }
 
 fun animateDropdown(view: ViewGroup, isOpen: Boolean, animBlock: AnimBlock = AnimBlock(false),
                     paddingDp: Float = 0f) {
     if (animBlock.isAnimating || view.visibility == View.GONE && !isOpen || view.visibility == View.VISIBLE && isOpen) return
 
-    val widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(App.context.resources.displayMetrics.widthPixels, View.MeasureSpec.AT_MOST)
+    val widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(view.context.resources.displayMetrics.widthPixels,
+        View.MeasureSpec.AT_MOST)
     val heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
 
     view.measure(widthMeasureSpec, heightMeasureSpec)
-    val maxHeight = view.measuredHeight + convertDpToPixel(paddingDp).toInt()
+    val maxHeight = view.measuredHeight + convertDpToPixel(view.context, paddingDp).toInt()
     val animator: ValueAnimator
 
     animBlock.isAnimating = true
@@ -154,14 +154,14 @@ internal fun <T> Collection<T>.print() : String {
     return string
 }
 
-fun getAppString(@StringRes resId: Int) : String = App.context.getString(resId)
+fun getAppString(context: Context, @StringRes resId: Int) : String = context.getString(resId)
 
-fun getAppString(@StringRes resId: Int, arg: String) : String = App.context.getString(resId, arg)
+fun getAppString(context: Context, @StringRes resId: Int, arg: String) : String = context.getString(resId, arg)
 
-fun getStringByResName(resName: String): String {
-    val packageName = App.context.packageName
-    val resId = App.context.resources.getIdentifier(resName, "string", packageName)
-    return if (resId != 0) getAppString(resId) else resName
+fun getStringByResName(context: Context, resName: String): String {
+    val packageName = context.packageName
+    val resId = context.resources.getIdentifier(resName, "string", packageName)
+    return if (resId != 0) getAppString(context, resId) else resName
 }
 
 fun openWebPrivacyPolicy(activity: FragmentActivity?) {

@@ -6,13 +6,24 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK
 import relaxeddd.englishnotify.databinding.FragmentParsedWordsBinding
+import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.view_base.BaseFragment
+import javax.inject.Inject
 
 class FragmentParsedWords : BaseFragment<ViewModelParsedWords, FragmentParsedWordsBinding>() {
+
+    @Inject
+    override lateinit var prefs: Preferences
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    override val viewModel by viewModels<ViewModelParsedWords> { viewModelFactory }
 
     private var adapter: AdapterParsedWords? = null
 
@@ -21,8 +32,6 @@ class FragmentParsedWords : BaseFragment<ViewModelParsedWords, FragmentParsedWor
     override fun isHomeMenuButtonEnabled() = true
     override fun getHomeMenuButtonIconResId() = R.drawable.ic_back
     override fun getHomeMenuButtonListener(): () -> Unit = { onNavigationEvent(NAVIGATION_ACTIVITY_BACK) }
-
-    override val viewModel: ViewModelParsedWords by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentParsedWordsBinding.inflate(inflater)

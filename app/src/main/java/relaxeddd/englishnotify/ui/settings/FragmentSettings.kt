@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.updatePaddingRelative
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
@@ -21,12 +22,19 @@ import relaxeddd.englishnotify.dialogs.DialogTrueAnswersToLearn
 import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.view_base.BaseFragment
 import relaxeddd.englishnotify.view_base.interfaces.ListenerResult
+import javax.inject.Inject
 import kotlin.math.max
 import kotlin.math.min
 
 class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding>() {
 
-    private val prefs get() = Preferences.getInstance()
+    @Inject
+    override lateinit var prefs: Preferences
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    override val viewModel by viewModels<ViewModelSettings> { viewModelFactory }
 
     private val listenerTheme: ListenerResult<Int> = object: ListenerResult<Int> {
         override fun onResult(result: Int) {
@@ -45,8 +53,6 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
 
     override fun getToolbarTitleResId() = R.string.common
     override fun isTopLevelFragment() = true
-
-    override val viewModel: ViewModelSettings by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentSettingsBinding.inflate(inflater)

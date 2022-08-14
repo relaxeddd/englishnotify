@@ -8,20 +8,11 @@ import relaxeddd.englishnotify.preferences.models.NotificationRepeatTime
 import relaxeddd.englishnotify.preferences.models.NotificationRepeatTime.MINUTES_60
 import relaxeddd.englishnotify.preferences.models.SortByType
 import relaxeddd.englishnotify.preferences.utils.*
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class Preferences(context: Context) {
-
-    companion object {
-        private var instance: Preferences? = null
-
-        fun getInstance(): Preferences {
-            return instance ?: throw IllegalStateException("Preferences is not initialized")
-        }
-
-        fun init(applicationContext: Context) {
-            instance = Preferences(applicationContext)
-        }
-    }
+@Singleton
+class Preferences @Inject constructor(context: Context) {
 
     private val prefs = context.getSharedPreferences(LOGIN_DATA, Context.MODE_PRIVATE)
 

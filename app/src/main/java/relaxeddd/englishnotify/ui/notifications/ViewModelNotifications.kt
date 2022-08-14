@@ -1,5 +1,6 @@
 package relaxeddd.englishnotify.ui.notifications
 
+import android.content.Context
 import android.os.Build
 import android.view.View
 import android.widget.CompoundButton
@@ -7,7 +8,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.domain_words.repository.RepositoryWords
@@ -19,10 +19,13 @@ import relaxeddd.englishnotify.preferences.utils.NOTIFICATIONS_VIEW_STANDARD
 import relaxeddd.englishnotify.ui.main.MainActivity
 import relaxeddd.englishnotify.view_base.ViewModelBase
 import relaxeddd.englishnotify.view_base.models.Event
+import javax.inject.Inject
 
-class ViewModelNotifications: ViewModelBase() {
-
-    private val prefs get() = Preferences.getInstance()
+class ViewModelNotifications @Inject constructor(
+    private val context: Context,
+    private val prefs: Preferences,
+    private val repositoryWords: RepositoryWords,
+) : ViewModelBase() {
 
     val timeDurationOffValue = MutableLiveData(prefs.getDurationHours())
     val timeStartOff = MutableLiveData("20:00")
@@ -31,13 +34,13 @@ class ViewModelNotifications: ViewModelBase() {
     val isVisibleNotificationsView = MutableLiveData(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
 
     val textRepeatTime = MutableLiveData(
-        App.context.resources.getStringArray(R.array.array_time_repeat)[
+        context.resources.getStringArray(R.array.array_time_repeat)[
                 prefs.getNotificationsRepeatTime().ordinal
         ]
     )
     val textLearnLanguage = MutableLiveData("")
     val textNotificationsView = MutableLiveData(
-        App.context.resources.getStringArray(R.array.array_notifications_view)[prefs.getNotificationsView()
+        context.resources.getStringArray(R.array.array_notifications_view)[prefs.getNotificationsView()
             ?: if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) NOTIFICATIONS_VIEW_STANDARD else NOTIFICATIONS_VIEW_INPUT]
     )
 
@@ -62,7 +65,7 @@ class ViewModelNotifications: ViewModelBase() {
     var checkedChangeListenerDeletable = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
         if (isChecked && prefs.getNotificationsView() == NOTIFICATIONS_VIEW_STANDARD) {
             buttonView.isChecked = false
-            showToast(R.string.enable_notification_translation_input)
+            showToast(context, R.string.enable_notification_translation_input)
         } else {
             prefs.setOngoingNotification(isChecked)
         }
@@ -79,7 +82,7 @@ class ViewModelNotifications: ViewModelBase() {
     }
     val clickListenerNotificationsView = View.OnClickListener {
         when {
-            Build.VERSION.SDK_INT < Build.VERSION_CODES.N -> showToast(R.string.android_version_7_required)
+            Build.VERSION.SDK_INT < Build.VERSION_CODES.N -> showToast(context, R.string.android_version_7_required)
             else -> navigateEvent.value = Event(NAVIGATION_DIALOG_NOTIFICATIONS_VIEW)
         }
     }
@@ -94,19 +97,19 @@ class ViewModelNotifications: ViewModelBase() {
     init {
         viewModelScope.launch {
             prefs.selectedCategoryFlow.collect {
-                selectedTagLiveData.value = getStringByResName(it).replaceFirst(OWN_KEY_SYMBOL, "")
+                selectedTagLiveData.value = getStringByResName(context, it).replaceFirst(OWN_KEY_SYMBOL, "")
             }
         }
         viewModelScope.launch {
             prefs.notificationsRepeatTimeFlow.collect {
-                textRepeatTime.value = App.context.resources.getStringArray(R.array.array_time_repeat)[
+                textRepeatTime.value = context.resources.getStringArray(R.array.array_time_repeat)[
                         prefs.getNotificationsRepeatTime().ordinal
                 ]
             }
         }
         viewModelScope.launch {
             prefs.learnLanguageTypeFlow.collect {
-                textLearnLanguage.value = App.context.resources.getStringArray(R.array.array_learn_language)[it]
+                textLearnLanguage.value = context.resources.getStringArray(R.array.array_learn_language)[it]
             }
         }
 
@@ -139,18 +142,18 @@ class ViewModelNotifications: ViewModelBase() {
     }
 
     fun onDialogNotificationsViewResult(result: Int) {
-        textNotificationsView.value = App.context.resources.getStringArray(R.array.array_notifications_view)[result]
+        textNotificationsView.value = context.resources.getStringArray(R.array.array_notifications_view)[result]
         prefs.setNotificationsView(result)
     }
 
     fun onDialogTestNotificationsResult(result: Boolean) {
         if (result) {
-            if (RepositoryWords.getInstance(App.context).words.value?.isNullOrEmpty() == true) {
-                showToast(R.string.category_own_not_selected)
+            if (repositoryWords.words.value?.isNullOrEmpty() == true) {
+                showToast(context, R.string.category_own_not_selected)
                 return
             }
             viewModelScope.launch(Dispatchers.Default) {
-                NotificationHelper.generateNotification(App.context, MainActivity.javaClass)
+                NotificationHelper.generateNotification(context, MainActivity.javaClass, prefs, repositoryWords)
             }
         }
     }
@@ -167,12 +170,13 @@ class ViewModelNotifications: ViewModelBase() {
 
         if (isEnabled) {
             NotificationsWorkManagerHelper.launchWork(
-                context = App.context,
+                context = context,
+                prefs = prefs,
                 repeatTimeInMinutes = prefs.getNotificationsRepeatTime().valueInMinutes,
                 isForceUpdate = false
             )
         } else {
-            NotificationsWorkManagerHelper.cancelWork(App.context)
+            NotificationsWorkManagerHelper.cancelWork(context)
         }
     }
 }

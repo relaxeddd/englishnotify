@@ -3,21 +3,21 @@ package relaxeddd.englishnotify.ui.parsed_words
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK_TWICE
 import relaxeddd.englishnotify.domain_words.entity.Word
 import relaxeddd.englishnotify.domain_words.repository.RepositoryWords
 import relaxeddd.englishnotify.view_base.ViewModelBase
 import relaxeddd.englishnotify.view_base.models.Event
+import javax.inject.Inject
 
-class ViewModelParsedWords : ViewModelBase() {
+class ViewModelParsedWords @Inject constructor(private val repositoryWords: RepositoryWords) : ViewModelBase() {
 
-    val parsedWords = MutableLiveData<ArrayList<Word>>(ArrayList(RepositoryWords.getInstance(App.context).tempParsedWords))
+    val parsedWords = MutableLiveData<ArrayList<Word>>(ArrayList(repositoryWords.tempParsedWords))
 
     fun onClickedAccept() {
         viewModelScope.launch {
-            RepositoryWords.getInstance(App.context).insertWords(parsedWords.value ?: ArrayList())
-            RepositoryWords.getInstance(App.context).tempParsedWords.clear()
+            repositoryWords.insertWords(parsedWords.value ?: ArrayList())
+            repositoryWords.tempParsedWords.clear()
             navigateEvent.value = Event(NAVIGATION_ACTIVITY_BACK_TWICE)
         }
     }

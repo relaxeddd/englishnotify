@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
@@ -17,12 +18,21 @@ import relaxeddd.englishnotify.ui.dictionary.FragmentDictionary
 import relaxeddd.englishnotify.ui.dictionary_all.FragmentDictionaryAll
 import relaxeddd.englishnotify.ui.dictionary_know.FragmentDictionaryKnow
 import relaxeddd.englishnotify.view_base.BaseFragment
+import javax.inject.Inject
 
 class FragmentDictionaryContainer : BaseFragment<ViewModelDictionaryContainer, FragmentDictionaryContainerBinding>() {
 
-    private val prefs get() = Preferences.getInstance()
+    @Inject
+    override lateinit var prefs: Preferences
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    override val viewModel by viewModels<ViewModelDictionaryContainer> { viewModelFactory }
+
     private var adapterFragmentsMap = HashMap<Int, FragmentDictionary<*, *>?>()
-    private var currentPosition: Int = prefs.getDictionaryTabPosition()
+    private val currentPosition: Int get() = prefs.getDictionaryTabPosition()
+
     private val currentFragment: FragmentDictionary<*, *>?
         get() = adapterFragmentsMap[currentPosition]
 
@@ -38,7 +48,6 @@ class FragmentDictionaryContainer : BaseFragment<ViewModelDictionaryContainer, F
                 }
             }
             updateMenuIcons(false)
-            currentPosition = position
             prefs.setDictionaryTabPosition(position)
         }
     }
@@ -47,8 +56,6 @@ class FragmentDictionaryContainer : BaseFragment<ViewModelDictionaryContainer, F
     override fun getMenuResId() = R.menu.menu_fragment_dictionary
     override fun getSearchMenuItemId() = R.id.item_menu_search_dictionary
     override fun isTopLevelFragment() = true
-
-    override val viewModel: ViewModelDictionaryContainer by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentDictionaryContainerBinding.inflate(inflater)
