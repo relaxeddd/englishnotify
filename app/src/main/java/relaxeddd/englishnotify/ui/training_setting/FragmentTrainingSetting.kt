@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.updatePaddingRelative
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.CATEGORY
 import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK
@@ -21,10 +22,17 @@ import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.preferences.utils.ALL_APP_WORDS
 import relaxeddd.englishnotify.ui.categories.AdapterCategories
 import relaxeddd.englishnotify.view_base.BaseFragment
+import javax.inject.Inject
 
 class FragmentTrainingSetting : BaseFragment<ViewModelTrainingSetting, FragmentTrainingSettingBinding>() {
 
-    private val prefs get() = Preferences.getInstance()
+    @Inject
+    override lateinit var prefs: Preferences
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    override val viewModel by viewModels<ViewModelTrainingSetting> { viewModelFactory }
 
     private lateinit var adapter: AdapterCategories
 
@@ -38,8 +46,6 @@ class FragmentTrainingSetting : BaseFragment<ViewModelTrainingSetting, FragmentT
     override fun isTopLevelFragment() = true
     override fun getFabIconResId() = R.drawable.ic_accept
     override fun getFabListener() = View.OnClickListener { viewModel.onClickAccept() }
-
-    override val viewModel: ViewModelTrainingSetting by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentTrainingSettingBinding.inflate(inflater)

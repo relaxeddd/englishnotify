@@ -6,16 +6,25 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.updatePaddingRelative
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import relaxeddd.englishnotify.common.doOnApplyWindowInsets
 import relaxeddd.englishnotify.databinding.FragmentCategorySectionBinding
+import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.ui.categories.AdapterCategories
 import relaxeddd.englishnotify.view_base.BaseFragment
+import javax.inject.Inject
 
 class FragmentCategorySection : BaseFragment<ViewModelCategorySection, FragmentCategorySectionBinding>() {
 
-    private var adapter: AdapterCategories? = null
+    @Inject
+    override lateinit var prefs: Preferences
 
-    override val viewModel: ViewModelCategorySection by viewModels()
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    override val viewModel by viewModels<ViewModelCategorySection> { viewModelFactory }
+
+    private var adapter: AdapterCategories? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCategorySectionBinding.inflate(inflater)

@@ -10,7 +10,7 @@ import relaxeddd.englishnotify.domain_words.entity.Word
 import relaxeddd.englishnotify.domain_words.utils.WORDS_TABLE
 
 @Dao
-internal interface WordDao {
+interface WordDao {
 
     @Query("SELECT * FROM $WORDS_TABLE")
     fun getAll(): LiveData<List<Word>>

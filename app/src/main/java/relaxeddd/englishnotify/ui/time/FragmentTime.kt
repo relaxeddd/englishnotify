@@ -6,12 +6,23 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK
 import relaxeddd.englishnotify.databinding.FragmentTimeBinding
+import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.view_base.BaseFragment
+import javax.inject.Inject
 
 class FragmentTime : BaseFragment<ViewModelTime, FragmentTimeBinding>() {
+
+    @Inject
+    override lateinit var prefs: Preferences
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    override val viewModel by viewModels<ViewModelTime> { viewModelFactory }
 
     override fun getToolbarTitleResId() = R.string.receive_notifications_time
     override fun getMenuResId() = R.menu.menu_accept
@@ -20,8 +31,6 @@ class FragmentTime : BaseFragment<ViewModelTime, FragmentTimeBinding>() {
     override fun getHomeMenuButtonListener(): () -> Unit = {
         onNavigationEvent(NAVIGATION_ACTIVITY_BACK)
     }
-
-    override val viewModel: ViewModelTime by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentTimeBinding.inflate(inflater)

@@ -1,23 +1,26 @@
 package relaxeddd.englishnotify.ui.settings
 
+import android.content.Context
 import android.view.View
 import android.widget.CompoundButton
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.domain_words.repository.RepositoryWords
 import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.view_base.ViewModelBase
 import relaxeddd.englishnotify.view_base.models.Event
+import javax.inject.Inject
 
-class ViewModelSettings : ViewModelBase() {
+class ViewModelSettings @Inject constructor(
+    private val context: Context,
+    private val prefs: Preferences,
+    private val repositoryWords: RepositoryWords,
+) : ViewModelBase() {
 
-    private val prefs get() = Preferences.getInstance()
-
-    var textTheme = MutableLiveData(App.context.resources.getStringArray(R.array.array_themes)[prefs.getAppThemeType()])
+    var textTheme = MutableLiveData(context.resources.getStringArray(R.array.array_themes)[prefs.getAppThemeType()])
     val isBottomNavigation = MutableLiveData(prefs.isBottomNavigation())
     val isShowProgressInTraining = MutableLiveData(prefs.isShowProgressInTraining())
     val isShowVoiceInput = MutableLiveData(prefs.isShowVoiceInput())
@@ -44,7 +47,7 @@ class ViewModelSettings : ViewModelBase() {
         if (prefs.isEnabledSecondaryProgress()) {
             navigateEvent.value = Event(NAVIGATION_DIALOG_SWAP_PROGRESS)
         } else {
-            showToast(R.string.need_enable_secondary_progress)
+            showToast(context, R.string.need_enable_secondary_progress)
         }
     }
     val clickListenerStatistic = View.OnClickListener {
@@ -91,25 +94,25 @@ class ViewModelSettings : ViewModelBase() {
     fun onSwapProgressResult(isConfirmed: Boolean) {
         if (isConfirmed) {
             viewModelScope.launch {
-                RepositoryWords.getInstance(App.context).swapProgress()
-                showToast(R.string.progress_swapped)
+                repositoryWords.swapProgress()
+                showToast(context, R.string.progress_swapped)
             }
         }
     }
 
     fun onThemeUpdate(themeIx: Int) {
-        textTheme.value = App.context.resources.getStringArray(R.array.array_themes)[themeIx]
+        textTheme.value = context.resources.getStringArray(R.array.array_themes)[themeIx]
         prefs.setAppThemeType(themeIx)
     }
 
     fun onDialogTrueAnswersToLearnResult(result: Int) {
-        val value = App.context.resources.getStringArray(R.array.array_true_answers_number_to_learn)[result]
+        val value = context.resources.getStringArray(R.array.array_true_answers_number_to_learn)[result]
         textTrueAnswersToLearn.value = value
         prefs.setTrueAnswersToLearn(value.toInt())
     }
 
     fun onDialogNotificationLearnPointsResult(result: Int) {
-        val value = App.context.resources.getStringArray(R.array.array_notifications_learn_points)[result]
+        val value = context.resources.getStringArray(R.array.array_notifications_learn_points)[result]
         textNotificationsLearnPoints.value = value
         prefs.setNotificationLearnPoints(value.toInt())
     }

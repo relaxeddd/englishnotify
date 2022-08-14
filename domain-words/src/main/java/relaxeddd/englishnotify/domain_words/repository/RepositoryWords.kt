@@ -1,30 +1,20 @@
 package relaxeddd.englishnotify.domain_words.repository
 
-import android.content.Context
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.common.TRAINING_ENG_TO_RUS
 import relaxeddd.englishnotify.common.TRAINING_RUS_TO_ENG
 import relaxeddd.englishnotify.domain_words.db.WordDao
-import relaxeddd.englishnotify.domain_words.db.WordsDatabase
 import relaxeddd.englishnotify.domain_words.entity.Word
 import relaxeddd.englishnotify.domain_words.utils.createDefaultWords
 import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.preferences.utils.ALL_APP_WORDS
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class RepositoryWords private constructor(private val wordDao: WordDao) {
-
-    companion object {
-
-        @Volatile private var instance: RepositoryWords? = null
-
-        fun getInstance(context: Context) = instance ?: synchronized(this) {
-            instance ?: RepositoryWords(WordsDatabase.getInstance(context).wordDao()).also { instance = it }
-        }
-    }
-
-    private val prefs get() = Preferences.getInstance()
+@Singleton
+class RepositoryWords @Inject constructor(private val wordDao: WordDao, private val prefs: Preferences) {
 
     val words = wordDao.getAll()
     val tempParsedWords = arrayListOf<Word>()

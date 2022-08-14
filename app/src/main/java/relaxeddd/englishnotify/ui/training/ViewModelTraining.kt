@@ -1,11 +1,11 @@
 package relaxeddd.englishnotify.ui.training
 
+import android.content.Context
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.domain_words.entity.Word
@@ -14,9 +14,14 @@ import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.preferences.utils.ALL_APP_WORDS
 import relaxeddd.englishnotify.view_base.ViewModelBase
 import relaxeddd.englishnotify.view_base.models.Event
+import javax.inject.Inject
 import kotlin.random.Random
 
-class ViewModelTraining : ViewModelBase() {
+class ViewModelTraining @Inject constructor(
+    private val context: Context,
+    prefs: Preferences,
+    private val repositoryWords: RepositoryWords,
+) : ViewModelBase() {
 
     companion object {
         private const val STATE_ANSWER = 0
@@ -28,10 +33,6 @@ class ViewModelTraining : ViewModelBase() {
         const val RESULT_LEARNED = 2
         const val RESULT_MEMORIZE = 3
     }
-
-    private val prefs get() = Preferences.getInstance()
-
-    private val repositoryWord = RepositoryWords.getInstance(App.context)
 
     private val learnStageMax = prefs.getTrueAnswersToLearn()
     private val isEnabledSecondaryProgress = prefs.isEnabledSecondaryProgress()
@@ -58,8 +59,8 @@ class ViewModelTraining : ViewModelBase() {
     val wordText = MutableLiveData("")
     val transcription = MutableLiveData("")
     val translation = MutableLiveData("")
-    val textButtonOk = MutableLiveData(App.context.getString(R.string.confirm))
-    val textButtonOneMore = MutableLiveData(App.context.getString(R.string.one_more))
+    val textButtonOk = MutableLiveData(context.getString(R.string.confirm))
+    val textButtonOneMore = MutableLiveData(context.getString(R.string.one_more))
     val textStatistic = MutableLiveData("$learned/$total")
     val isVisibleTranscription = MutableLiveData(false)
     val isVisibleTranslation = MutableLiveData(false)
@@ -129,13 +130,17 @@ class ViewModelTraining : ViewModelBase() {
         transcription.value = transcriptionValue
         wordProgress.value = word.getLearnProgress(learnStageMax)
         wordProgressSecondary.value = word.getLearnProgressSecondary(learnStageMax)
-        resultText.value = if (currentResult == STATE_SUCCESS) getAppString(R.string.correct_answer) else getAppString(R.string.incorrect_answer)
+        resultText.value = if (currentResult == STATE_SUCCESS) {
+            getAppString(context, R.string.correct_answer)
+        } else {
+            getAppString(context, R.string.incorrect_answer)
+        }
         if (answers.size > currentIx) {
             var savedAnswer = answers[currentIx]
             if (savedAnswer.isEmpty()) savedAnswer = "-"
-            answer.value = getAppString(R.string.your_answer, savedAnswer)
+            answer.value = getAppString(context, R.string.your_answer, savedAnswer)
         } else {
-            answer.value = getAppString(R.string.your_answer, "-")
+            answer.value = getAppString(context, R.string.your_answer, "-")
         }
 
         isVisibleTranslation.value = currentResult != STATE_ANSWER
@@ -165,10 +170,10 @@ class ViewModelTraining : ViewModelBase() {
     }
 
     fun onBind() {
-        val allWords = ArrayList(repositoryWord.words.value ?: ArrayList()).filter { !it.isDeleted }
+        val allWords = ArrayList(repositoryWords.words.value ?: ArrayList()).filter { !it.isDeleted }
         total = allWords.size
         learned = allWords.filter { it.isLearned(isEnabledSecondaryProgress, learnStageMax) }.size
-        val words = repositoryWord.getTrainingWordsByCategory(category, isCheckLearnedWords, trainingType)
+        val words = repositoryWords.getTrainingWordsByCategory(category, isCheckLearnedWords, trainingType)
 
         trainingWords = words
         wordsSize.value = words.size
@@ -224,7 +229,7 @@ class ViewModelTraining : ViewModelBase() {
                 (word.learnStage + 1) >= learnStageMax
             }
 
-            repositoryWord.setWordLearnStage(word, resultLearnStage, isSecondaryProgress)
+            repositoryWords.setWordLearnStage(word, resultLearnStage, isSecondaryProgress)
             if (currentIx >= trainingWords.size - 1) {
                 current.value = currentIx
             } else {
@@ -243,7 +248,7 @@ class ViewModelTraining : ViewModelBase() {
                 navigateEvent.value = Event(NAVIGATION_PLAY_WORD)
             }
 
-            repositoryWord.setWordLearnStage(word, 0, isSecondaryProgress)
+            repositoryWords.setWordLearnStage(word, 0, isSecondaryProgress)
             if (isCheckLearnedWords) {
                 learned--
                 textStatistic.value = "$learned/$total"
@@ -263,9 +268,9 @@ class ViewModelTraining : ViewModelBase() {
         val currentResult = getResultLiveDataByIx(currentIx).value ?: 0
 
         when {
-            currentResult == STATE_ANSWER -> textButtonOk.value = getAppString(R.string.answer)
-            currentIx == (size - 1) -> textButtonOk.value = getAppString(R.string.end)
-            else -> textButtonOk.value = getAppString(R.string.next)
+            currentResult == STATE_ANSWER -> textButtonOk.value = getAppString(context, R.string.answer)
+            currentIx == (size - 1) -> textButtonOk.value = getAppString(context, R.string.end)
+            else -> textButtonOk.value = getAppString(context, R.string.next)
         }
         isVisibleButtonOk.value = (currentIx == size - 1) || (currentResult == STATE_ANSWER) || getResultLiveDataByIx(currentIx + 1).value == 0
     }

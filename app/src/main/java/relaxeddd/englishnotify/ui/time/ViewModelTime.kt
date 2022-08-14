@@ -1,18 +1,20 @@
 package relaxeddd.englishnotify.ui.time
 
+import android.content.Context
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK
 import relaxeddd.englishnotify.notifications.NotificationsWorkManagerHelper
 import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.preferences.models.NotificationRepeatTime
 import relaxeddd.englishnotify.view_base.ViewModelBase
 import relaxeddd.englishnotify.view_base.models.Event
+import javax.inject.Inject
 
-class ViewModelTime : ViewModelBase() {
-
-    private val prefs get() = Preferences.getInstance()
+class ViewModelTime @Inject constructor(
+    private val context: Context,
+    private val prefs: Preferences,
+) : ViewModelBase() {
 
     var receiveNotificationsTime: Int = prefs.getNotificationsRepeatTime().ordinal
 
@@ -27,7 +29,8 @@ class ViewModelTime : ViewModelBase() {
         if (receiveNotificationsTime != currentRepeatTime.ordinal) {
             prefs.setNotificationsRepeatTime(receiveNotificationsTime)
             NotificationsWorkManagerHelper.launchWork(
-                context = App.context,
+                context = context,
+                prefs = prefs,
                 repeatTimeInMinutes = NotificationRepeatTime.valueOf(receiveNotificationsTime).valueInMinutes,
                 isForceUpdate = true,
             )

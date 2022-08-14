@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.core.view.updatePaddingRelative
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
@@ -22,10 +23,17 @@ import relaxeddd.englishnotify.preferences.utils.NOTIFICATIONS_VIEW_INPUT
 import relaxeddd.englishnotify.preferences.utils.NOTIFICATIONS_VIEW_STANDARD
 import relaxeddd.englishnotify.view_base.BaseFragment
 import relaxeddd.englishnotify.view_base.interfaces.ListenerResult
+import javax.inject.Inject
 
 class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotificationsBinding>() {
 
-    private val prefs get() = Preferences.getInstance()
+    @Inject
+    override lateinit var prefs: Preferences
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    override val viewModel by viewModels<ViewModelNotifications> { viewModelFactory }
 
     private val listenerLearnEnglish: ListenerResult<Int> = object: ListenerResult<Int> {
         override fun onResult(result: Int) {
@@ -55,8 +63,6 @@ class FragmentNotifications : BaseFragment<ViewModelNotifications, FragmentNotif
 
     override fun getToolbarTitleResId() = R.string.notifications
     override fun isTopLevelFragment() = true
-
-    override val viewModel: ViewModelNotifications by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentNotificationsBinding.inflate(inflater)

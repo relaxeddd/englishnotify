@@ -23,14 +23,10 @@ import relaxeddd.englishnotify.preferences.Preferences
 import java.text.SimpleDateFormat
 import java.util.*
 
-abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewModelDictionary) : ListAdapter<Word, VH>(WordDiffCallback) {
-
-    companion object {
-        var learnStageMax = Preferences.getInstance().getTrueAnswersToLearn()
-        var isEnabledSecondaryProgress = Preferences.getInstance().isEnabledSecondaryProgress()
-    }
-
-    private val prefs get() = Preferences.getInstance()
+abstract class AdapterWords<VH : AdapterWords.ViewHolder>(
+    private val prefs: Preferences, // TODO: refactor without using prefs, viewModel
+    private val viewModel: ViewModelDictionary,
+) : ListAdapter<Word, VH>(WordDiffCallback) {
 
     var languageType = 0
         set(value) {
@@ -74,7 +70,7 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
 
     open fun bind(holder: VH, item: Word, clickListener: View.OnClickListener, longListener: View.OnLongClickListener,
                   clickListenerPlay: View.OnClickListener, checkListener: CompoundButton.OnCheckedChangeListener) {
-        holder.bind(item, isSelectState, checkList, clickListener, longListener, clickListenerPlay, checkListener)
+        holder.bind(prefs, item, isSelectState, checkList, clickListener, longListener, clickListenerPlay, checkListener)
     }
 
     fun checkAll() {
@@ -138,7 +134,7 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
         abstract fun getProgressLearnSecondary() : ProgressBar?
 
         @CallSuper
-        open fun bind(word: Word, isSelectState: Boolean, checkList: java.util.HashSet<Word>,
+        open fun bind(prefs: Preferences, word: Word, isSelectState: Boolean, checkList: HashSet<Word>,
                       clickListener: View.OnClickListener, longClickListener: View.OnLongClickListener,
                       clickListenerPlay: View.OnClickListener, checkedChangeListener: CompoundButton.OnCheckedChangeListener) {
             hideDropDawnContainer()
@@ -167,10 +163,10 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
                 getCheckBoxSelect().isChecked = false
             }
 
-            getProgressLearn().progress = word.getLearnProgress(learnStageMax)
-            if (isEnabledSecondaryProgress) {
+            getProgressLearn().progress = word.getLearnProgress(prefs.getTrueAnswersToLearn())
+            if (prefs.isEnabledSecondaryProgress()) {
                 getProgressLearnSecondary()?.visibility = View.VISIBLE
-                getProgressLearnSecondary()?.progress = word.getLearnProgressSecondary(learnStageMax)
+                getProgressLearnSecondary()?.progress = word.getLearnProgressSecondary(prefs.getTrueAnswersToLearn())
             } else {
                 getProgressLearnSecondary()?.visibility = View.GONE
             }

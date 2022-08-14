@@ -26,9 +26,8 @@ class NotificationHelper {
     companion object {
 
         @WorkerThread
-        fun generateNotification(context: Context, launchActivityClass: Class<*>) {
-            val prefs = Preferences.getInstance()
-
+        fun generateNotification(context: Context, launchActivityClass: Class<*>, prefs: Preferences,
+                                 repositoryWords: RepositoryWords) {
             if (isNightTime(prefs.getStartHour(), prefs.getDurationHours()) || !prefs.isNotificationsEnabled()) {
                 return
             }
@@ -50,7 +49,6 @@ class NotificationHelper {
             val isEnabledSecondaryProgress = prefs.isEnabledSecondaryProgress()
             val languageType = prefs.getLearnLanguageType()
 
-            val repositoryWords = RepositoryWords.getInstance(context)
             val allWords = repositoryWords.getWordsNow()
             val sortByLearnStage = HashMap<Int, ArrayList<Word>>()
 
@@ -89,6 +87,8 @@ class NotificationHelper {
                     handleWordNotification(
                         context,
                         launchActivityClass,
+                        prefs,
+                        repositoryWords,
                         words[wordIx],
                         isSave = false,
                         viewType = prefs.getNotificationsView() ?: defaultNotificationView,
@@ -98,10 +98,10 @@ class NotificationHelper {
         }
 
         @WorkerThread
-        fun handleWordNotification(context: Context, launchActivityClass: Class<*>, word: Word, isSave: Boolean = true,
+        fun handleWordNotification(context: Context, launchActivityClass: Class<*>, prefs: Preferences,
+                                   repositoryWords: RepositoryWords, word: Word, isSave: Boolean = true,
                                    viewType: Int, withWrongTitle: Boolean = false, notificationId: Int = -1,
                                    isShowAnswer: Boolean = false, userAnswer: String = "") {
-            val prefs = Preferences.getInstance()
             val languageType = prefs.getLearnLanguageType()
             val isShowTranslation = (languageType == TYPE_PUSH_RUSSIAN && !isShowAnswer || (languageType == TYPE_PUSH_ENGLISH && isShowAnswer))
 
@@ -118,7 +118,6 @@ class NotificationHelper {
                     && viewType == NOTIFICATIONS_VIEW_WITH_QUESTION && !withWrongTitle
 
             if (isSave) {
-                val repositoryWords = RepositoryWords.getInstance(context)
                 val existsWord = repositoryWords.findWordNow(word.id)
 
                 if (existsWord != null) {
@@ -142,13 +141,13 @@ class NotificationHelper {
                 }
             }
 
-            showNotificationWord(context, launchActivityClass, word.id, notificationText, title, isShowButtons, notificationId)
+            showNotificationWord(context, launchActivityClass, prefs, word.id, notificationText, title, isShowButtons,
+                notificationId)
         }
 
         @SuppressLint("InlinedApi")
-        fun showNotificationWord(ctx: Context, launchActivityClass: Class<*>, wordId: String, text: String,
-                                 title: String, withButtons : Boolean, existsNotificationId: Int = -1) {
-            val prefs = Preferences.getInstance()
+        fun showNotificationWord(ctx: Context, launchActivityClass: Class<*>, prefs: Preferences, wordId: String,
+                                 text: String, title: String, withButtons : Boolean, existsNotificationId: Int = -1) {
             val notificationId = if (existsNotificationId != -1) existsNotificationId else Random.nextInt(10000)
             val channelId = ctx.getString(R.string.default_notification_channel_id)
             val notificationBuilder = NotificationCompat.Builder(ctx, channelId)

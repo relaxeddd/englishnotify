@@ -17,6 +17,7 @@ import androidx.core.view.doOnLayout
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.FragmentTrainingBinding
@@ -24,11 +25,18 @@ import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.preferences.utils.ALL_APP_WORDS
 import relaxeddd.englishnotify.ui.main.MainActivity
 import relaxeddd.englishnotify.view_base.BaseFragment
+import javax.inject.Inject
 import kotlin.random.Random
 
 class FragmentTraining: BaseFragment<ViewModelTraining, FragmentTrainingBinding>() {
 
-    private val prefs get() = Preferences.getInstance()
+    @Inject
+    override lateinit var prefs: Preferences
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    override val viewModel by viewModels<ViewModelTraining> { viewModelFactory }
 
     private var toolbarTitleTraining: String = "Training"
 
@@ -48,8 +56,6 @@ class FragmentTraining: BaseFragment<ViewModelTraining, FragmentTrainingBinding>
     override fun getHomeMenuButtonListener(): () -> Unit = {
         onNavigationEvent(NAVIGATION_ACTIVITY_BACK)
     }
-
-    override val viewModel: ViewModelTraining by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentTrainingBinding.inflate(inflater)
@@ -126,7 +132,7 @@ class FragmentTraining: BaseFragment<ViewModelTraining, FragmentTrainingBinding>
         }
 
         val category = arguments?.getString(CATEGORY) ?: ALL_APP_WORDS
-        toolbarTitleTraining = getStringByResName(category).replaceFirst(OWN_KEY_SYMBOL, "")
+        toolbarTitleTraining = getStringByResName(requireContext(), category).replaceFirst(OWN_KEY_SYMBOL, "")
         viewModel.category = category
         viewModel.trainingType = arguments?.getInt(TRAINING_TYPE) ?: TRAINING_ENG_TO_RUS
 

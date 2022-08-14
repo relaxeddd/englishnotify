@@ -17,17 +17,16 @@ class NotificationsWorkManagerHelper {
 
         fun launchWork(
             context: Context,
+            prefs: Preferences,
             repeatTimeInMinutes: Long,
             isForceUpdate: Boolean,
         ) {
-            val prefs = Preferences.getInstance()
-
             if (!prefs.isNotificationsEnabled()) {
                 cancelWork(context)
                 return
             }
 
-            val notificationsWork = PeriodicWorkRequestBuilder<relaxeddd.englishnotify.notifications.SendNotificationWorker>(
+            val notificationsWork = PeriodicWorkRequestBuilder<SendNotificationWorker>(
                 repeatInterval = repeatTimeInMinutes,
                 TimeUnit.MINUTES,
             ).setBackoffCriteria(

@@ -32,7 +32,7 @@ class DialogCheckTags : DialogFragment() {
                 }
             }
             for ((ix, item) in items.withIndex()) {
-                itemsTitles[ix] = getStringByResName(item).replaceFirst(OWN_KEY_SYMBOL, "")
+                itemsTitles[ix] = getStringByResName(requireContext(), item).replaceFirst(OWN_KEY_SYMBOL, "")
             }
 
             builder.setTitle(R.string.notification_categories)

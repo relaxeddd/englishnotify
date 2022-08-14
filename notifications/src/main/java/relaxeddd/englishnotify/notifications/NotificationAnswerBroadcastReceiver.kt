@@ -1,12 +1,12 @@
 package relaxeddd.englishnotify.notifications
 
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.widget.Toast
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.RemoteInput
+import dagger.android.DaggerBroadcastReceiver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -20,8 +20,9 @@ import relaxeddd.englishnotify.notifications.R.string
 import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.preferences.utils.TYPE_PUSH_ENGLISH
 import relaxeddd.englishnotify.preferences.utils.TYPE_PUSH_RUSSIAN
+import javax.inject.Inject
 
-class NotificationAnswerBroadcastReceiver : BroadcastReceiver() {
+class NotificationAnswerBroadcastReceiver : DaggerBroadcastReceiver() {
 
     companion object {
         const val ACTION_KNOW = "relaxeddd.englishnotify.KNOW"
@@ -31,14 +32,19 @@ class NotificationAnswerBroadcastReceiver : BroadcastReceiver() {
         const val KNOW = 1
     }
 
+    @Inject
+    lateinit var prefs: Preferences
+
+    @Inject
+    lateinit var repositoryWords: RepositoryWords
+
     @MainActivityUsed
     override fun onReceive(context: Context, intent: Intent) {
+        super.onReceive(context, intent)
+
         val pendingResult = goAsync()
-        val prefs = Preferences.getInstance()
 
         CoroutineScope(Dispatchers.IO).launch {
-            val repositoryWords = RepositoryWords.getInstance(context)
-
             val notificationId = intent.getIntExtra(NOTIFICATION_ID, -1)
             val wordId = intent.getStringExtra(WORD_ID) ?: ""
             val isKnow = intent.getIntExtra(IS_KNOW, NOT_KNOW)
@@ -83,7 +89,7 @@ class NotificationAnswerBroadcastReceiver : BroadcastReceiver() {
                             Toast.makeText(context, string.answer_incorrect, Toast.LENGTH_SHORT).show()
                         }
                         NotificationHelper.handleWordNotification(
-                            context, mainActivityClass, word, false,
+                            context, mainActivityClass, prefs, repositoryWords, word, false,
                             NOTIFICATIONS_VIEW_WITH_TRANSLATE, withWrongTitle = true,
                             notificationId = notificationId, isShowAnswer = true, userAnswer = userText
                         )
@@ -94,7 +100,7 @@ class NotificationAnswerBroadcastReceiver : BroadcastReceiver() {
                 isRemove = false
 
                 NotificationHelper.handleWordNotification(
-                    context, mainActivityClass, word, false,
+                    context, mainActivityClass, prefs, repositoryWords, word, false,
                     NOTIFICATIONS_VIEW_WITH_TRANSLATE, notificationId = notificationId, isShowAnswer = true
                 )
             }

@@ -5,13 +5,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK
 import relaxeddd.englishnotify.databinding.FragmentStatisticBinding
+import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.view_base.BaseFragment
+import javax.inject.Inject
 
 class FragmentStatistic : BaseFragment<ViewModelStatistic, FragmentStatisticBinding>() {
+
+    @Inject
+    override lateinit var prefs: Preferences
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    override val viewModel by viewModels<ViewModelStatistic> { viewModelFactory }
 
     private lateinit var adapter: AdapterStatistic
 
@@ -19,8 +30,6 @@ class FragmentStatistic : BaseFragment<ViewModelStatistic, FragmentStatisticBind
     override fun isHomeMenuButtonEnabled() = true
     override fun getHomeMenuButtonIconResId() = R.drawable.ic_back
     override fun getHomeMenuButtonListener(): () -> Unit = { onNavigationEvent(NAVIGATION_ACTIVITY_BACK) }
-
-    override val viewModel: ViewModelStatistic by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentStatisticBinding.inflate(inflater)
@@ -31,7 +40,7 @@ class FragmentStatistic : BaseFragment<ViewModelStatistic, FragmentStatisticBind
         super.onViewCreated(view, savedInstanceState)
 
         binding?.apply {
-            adapter = AdapterStatistic(viewModel)
+            adapter = AdapterStatistic(prefs, viewModel)
             recyclerViewStatistic.layoutManager = LinearLayoutManager(context)
             recyclerViewStatistic.adapter = adapter
         }

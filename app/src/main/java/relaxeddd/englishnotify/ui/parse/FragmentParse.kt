@@ -6,6 +6,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK
@@ -17,10 +18,17 @@ import relaxeddd.englishnotify.databinding.FragmentParseBinding
 import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.ui.categories.AdapterCategories
 import relaxeddd.englishnotify.view_base.BaseFragment
+import javax.inject.Inject
 
 class FragmentParse: BaseFragment<ViewModelParse, FragmentParseBinding>() {
 
-    private val prefs get() = Preferences.getInstance()
+    @Inject
+    override lateinit var prefs: Preferences
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    override val viewModel by viewModels<ViewModelParse> { viewModelFactory }
 
     private var adapter: AdapterCategories? = null
 
@@ -29,8 +37,6 @@ class FragmentParse: BaseFragment<ViewModelParse, FragmentParseBinding>() {
     override fun isHomeMenuButtonEnabled() = true
     override fun getHomeMenuButtonIconResId() = R.drawable.ic_back
     override fun getHomeMenuButtonListener(): () -> Unit = { onNavigationEvent(NAVIGATION_ACTIVITY_BACK) }
-
-    override val viewModel: ViewModelParse by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentParseBinding.inflate(inflater)

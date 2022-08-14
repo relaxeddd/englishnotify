@@ -1,30 +1,37 @@
 package relaxeddd.englishnotify
 
-import android.annotation.SuppressLint
-import android.app.Application
-import android.content.Context
-import relaxeddd.englishnotify.domain_words.repository.RepositoryWords
+import androidx.work.Configuration
+import androidx.work.WorkManager
+import dagger.android.AndroidInjector
+import dagger.android.DaggerApplication
+import relaxeddd.englishnotify.common.AppWorkerFactory
+import relaxeddd.englishnotify.di.DaggerApplicationComponent
 import relaxeddd.englishnotify.notifications.NotificationsWorkManagerHelper
 import relaxeddd.englishnotify.notifications.PushTokenHelper
 import relaxeddd.englishnotify.preferences.Preferences
+import javax.inject.Inject
 
-class App : Application() {
+class App : DaggerApplication() {
 
-    companion object {
-        @SuppressLint("StaticFieldLeak")
-        lateinit var context: Context
+    @Inject
+    lateinit var prefs: Preferences
+
+    @Inject
+    lateinit var workerFactory: AppWorkerFactory
+
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
+        return DaggerApplicationComponent.factory().create(applicationContext)
     }
 
     override fun onCreate() {
         super.onCreate()
-        context = this
-        Preferences.init(this)
-        RepositoryWords.getInstance(this) //TODO: Initialization workaround
 
+        WorkManager.initialize(this, Configuration.Builder().setWorkerFactory(workerFactory).build())
         PushTokenHelper.initNotificationsChannel(this)
         NotificationsWorkManagerHelper.launchWork(
             context = this,
-            repeatTimeInMinutes = Preferences.getInstance().getNotificationsRepeatTime().valueInMinutes,
+            prefs = prefs,
+            repeatTimeInMinutes = prefs.getNotificationsRepeatTime().valueInMinutes,
             isForceUpdate = false,
         )
     }
