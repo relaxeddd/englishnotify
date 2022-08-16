@@ -31,13 +31,6 @@
         <item>Перевод-слово</item>
     </string-array>
 
-    <string-array name="array_themes">
-        <item>Стандартная</item>
-        <item>Темно-синяя</item>
-        <item>Темная</item>
-        <item>Светло-синяя</item>
-    </string-array>
-
     <string-array name="array_notifications_view">
         <item>Сразу перевод в уведомлении</item>
         <item>Ввод перевода в ответ на уведомление</item>

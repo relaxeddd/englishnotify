@@ -11,12 +11,15 @@ android {
         minSdk rootProject.minSdkVersion
         targetSdk rootProject.targetSdkVersion
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField 'String', 'VERSION_NAME', '\"' + rootProject.versionName + '\"'
+
+                testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
     buildFeatures {
         viewBinding true
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -33,17 +36,9 @@ android {
 }
 
 dependencies {
-    api "androidx.appcompat:appcompat:$appcompat"
-    api "com.google.android.material:material:$material"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout"
 
-    api project(':common')
-    api project(':preferences')
-
-    api "androidx.navigation:navigation-fragment-ktx:$navigation"
-    api "androidx.navigation:navigation-ui-ktx:$navigation"
-
-    api "com.google.dagger:dagger-android:$dagger"
-    api "com.google.dagger:dagger-android-support:$dagger"
-    kapt "com.google.dagger:dagger-android-processor:$dagger"
-    kapt "com.google.dagger:dagger-compiler:$dagger"
+    implementation project(':view-base')
+    implementation project(':common-ui-func')
+    implementation project(':domain-words')
 }

@@ -1,4 +1,4 @@
-package relaxeddd.englishnotify.ui.settings
+package relaxeddd.englishnotify.screen_settings.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -9,17 +9,12 @@ import androidx.core.view.updatePaddingRelative
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
-import relaxeddd.englishnotify.databinding.FragmentSettingsBinding
-import relaxeddd.englishnotify.dialogs.DialogAppAbout
-import relaxeddd.englishnotify.dialogs.DialogAppTheme
-import relaxeddd.englishnotify.dialogs.DialogInfoTraining
-import relaxeddd.englishnotify.dialogs.DialogNotificationLearnPoints
-import relaxeddd.englishnotify.dialogs.DialogSecondaryProgressInfo
-import relaxeddd.englishnotify.dialogs.DialogSwapProgress
-import relaxeddd.englishnotify.dialogs.DialogTrueAnswersToLearn
+import relaxeddd.englishnotify.common_ui_func.doOnApplyWindowInsets
+import relaxeddd.englishnotify.common_ui_func.openWebApplication
 import relaxeddd.englishnotify.preferences.Preferences
+import relaxeddd.englishnotify.screen_settings.R
+import relaxeddd.englishnotify.screen_settings.databinding.FragmentSettingsBinding
 import relaxeddd.englishnotify.view_base.BaseFragment
 import relaxeddd.englishnotify.view_base.interfaces.ListenerResult
 import javax.inject.Inject
@@ -115,10 +110,14 @@ class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding
     override fun onNavigationEvent(eventId: Int) {
         when (eventId) {
             NAVIGATION_FRAGMENT_PARSE -> {
-                Navigation.findNavController(view ?: return).myNavigate(R.id.action_fragmentSettings_to_fragmentParse)
+                Navigation.findNavController(view ?: return).navigate(
+                    relaxeddd.englishnotify.view_base.R.id.action_fragmentSettings_to_fragmentParse
+                )
             }
             NAVIGATION_FRAGMENT_STATISTIC -> {
-                Navigation.findNavController(view ?: return).myNavigate(R.id.action_fragmentSettings_to_fragmentStatistic)
+                Navigation.findNavController(view ?: return).navigate(
+                    relaxeddd.englishnotify.view_base.R.id.action_fragmentSettings_to_fragmentStatistic
+                )
             }
             NAVIGATION_DIALOG_APP_ABOUT -> {
                 if (isResumed) {

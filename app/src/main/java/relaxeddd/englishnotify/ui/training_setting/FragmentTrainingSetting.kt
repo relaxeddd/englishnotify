@@ -16,7 +16,7 @@ import relaxeddd.englishnotify.common.TRAINING_ENG_TO_RUS
 import relaxeddd.englishnotify.common.TRAINING_MIXED
 import relaxeddd.englishnotify.common.TRAINING_RUS_TO_ENG
 import relaxeddd.englishnotify.common.TRAINING_TYPE
-import relaxeddd.englishnotify.common.doOnApplyWindowInsets
+import relaxeddd.englishnotify.common_ui_func.doOnApplyWindowInsets
 import relaxeddd.englishnotify.databinding.FragmentTrainingSettingBinding
 import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.preferences.utils.ALL_APP_WORDS

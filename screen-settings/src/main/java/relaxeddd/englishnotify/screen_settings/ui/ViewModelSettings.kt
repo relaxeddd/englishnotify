@@ -1,15 +1,16 @@
-package relaxeddd.englishnotify.ui.settings
+package relaxeddd.englishnotify.screen_settings.ui
 
 import android.content.Context
 import android.view.View
 import android.widget.CompoundButton
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.domain_words.repository.RepositoryWords
 import relaxeddd.englishnotify.preferences.Preferences
+import relaxeddd.englishnotify.screen_settings.R
 import relaxeddd.englishnotify.view_base.ViewModelBase
 import relaxeddd.englishnotify.view_base.models.Event
 import javax.inject.Inject
@@ -47,7 +48,7 @@ class ViewModelSettings @Inject constructor(
         if (prefs.isEnabledSecondaryProgress()) {
             navigateEvent.value = Event(NAVIGATION_DIALOG_SWAP_PROGRESS)
         } else {
-            showToast(context, R.string.need_enable_secondary_progress)
+            Toast.makeText(context, R.string.need_enable_secondary_progress, Toast.LENGTH_SHORT).show()
         }
     }
     val clickListenerStatistic = View.OnClickListener {
@@ -95,7 +96,7 @@ class ViewModelSettings @Inject constructor(
         if (isConfirmed) {
             viewModelScope.launch {
                 repositoryWords.swapProgress()
-                showToast(context, R.string.progress_swapped)
+                Toast.makeText(context, R.string.progress_swapped, Toast.LENGTH_SHORT).show()
             }
         }
     }

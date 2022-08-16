@@ -29,6 +29,8 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.android.support.DaggerAppCompatActivity
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
+import relaxeddd.englishnotify.common_ui_func.doOnApplyWindowInsets
+import relaxeddd.englishnotify.common_ui_func.openWebApplication
 import relaxeddd.englishnotify.databinding.MainActivityBinding
 import relaxeddd.englishnotify.databinding.NavigationHeaderBinding
 import relaxeddd.englishnotify.dialogs.DialogPatchNotes

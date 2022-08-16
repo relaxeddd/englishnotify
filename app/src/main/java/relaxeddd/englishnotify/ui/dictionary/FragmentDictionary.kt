@@ -16,6 +16,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
+import relaxeddd.englishnotify.common_ui_func.doOnApplyWindowInsets
 import relaxeddd.englishnotify.databinding.FragmentDictionaryBinding
 import relaxeddd.englishnotify.dialogs.DialogCheckTags
 import relaxeddd.englishnotify.dialogs.DialogDeleteWords

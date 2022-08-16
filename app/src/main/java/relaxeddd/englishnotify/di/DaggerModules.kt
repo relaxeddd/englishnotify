@@ -6,6 +6,8 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
 import relaxeddd.englishnotify.notifications.NotificationAnswerBroadcastReceiver
+import relaxeddd.englishnotify.screen_settings.ui.FragmentSettings
+import relaxeddd.englishnotify.screen_settings.ui.ViewModelSettings
 import relaxeddd.englishnotify.ui.categories.FragmentCategories
 import relaxeddd.englishnotify.ui.categories.ViewModelCategories
 import relaxeddd.englishnotify.ui.categories.section.FragmentCategorySection
@@ -24,8 +26,6 @@ import relaxeddd.englishnotify.ui.parse.FragmentParse
 import relaxeddd.englishnotify.ui.parse.ViewModelParse
 import relaxeddd.englishnotify.ui.parsed_words.FragmentParsedWords
 import relaxeddd.englishnotify.ui.parsed_words.ViewModelParsedWords
-import relaxeddd.englishnotify.ui.settings.FragmentSettings
-import relaxeddd.englishnotify.ui.settings.ViewModelSettings
 import relaxeddd.englishnotify.ui.statistic.FragmentStatistic
 import relaxeddd.englishnotify.ui.statistic.ViewModelStatistic
 import relaxeddd.englishnotify.ui.time.FragmentTime
