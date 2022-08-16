@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
+import relaxeddd.englishnotify.common_ui_func.doOnApplyWindowInsets
 import relaxeddd.englishnotify.databinding.FragmentNotificationsBinding
 import relaxeddd.englishnotify.dialogs.DialogConfirmDisableNotifications
 import relaxeddd.englishnotify.dialogs.DialogLearnLanguage

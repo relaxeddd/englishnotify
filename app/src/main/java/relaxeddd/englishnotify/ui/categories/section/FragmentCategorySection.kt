@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.core.view.updatePaddingRelative
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import relaxeddd.englishnotify.common.doOnApplyWindowInsets
+import relaxeddd.englishnotify.common_ui_func.doOnApplyWindowInsets
 import relaxeddd.englishnotify.databinding.FragmentCategorySectionBinding
 import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.ui.categories.AdapterCategories

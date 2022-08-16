@@ -1,7 +1,6 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
-    id 'kotlin-kapt'
 }
 
 android {
@@ -14,9 +13,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
-    buildFeatures {
-        viewBinding true
-    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -33,17 +30,5 @@ android {
 }
 
 dependencies {
-    api "androidx.appcompat:appcompat:$appcompat"
-    api "com.google.android.material:material:$material"
-
-    api project(':common')
-    api project(':preferences')
-
-    api "androidx.navigation:navigation-fragment-ktx:$navigation"
-    api "androidx.navigation:navigation-ui-ktx:$navigation"
-
-    api "com.google.dagger:dagger-android:$dagger"
-    api "com.google.dagger:dagger-android-support:$dagger"
-    kapt "com.google.dagger:dagger-android-processor:$dagger"
-    kapt "com.google.dagger:dagger-compiler:$dagger"
+    implementation "androidx.appcompat:appcompat:$appcompat"
 }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="about_app">About app</string>
+    <string name="app_theme">App theme</string>
+    <string name="background_start">Background starting</string>
+    <string name="need_enable_secondary_progress">Need to enable word secondary progress</string>
+    <string name="notification_learn_points_desc">Increasing progress by:</string>
+    <string name="progress_swapped">Words progress swapped</string>
+    <string name="secondary_word_progress">Secondary word progress</string>
+    <string name="secondary_word_progress_info">Secondary progress depends on translation to word training. To increase main progress you have to write translation in trainings or notifications. Secondary progress is increasing when you have translation and input the word of this translation. Also you can swap progress values between themselves to get needed setting.</string>
+    <string name="swap_main_and_secondary_progress_text">Swap main and secondary word progress. It is applying to all words</string>
+    <string name="true_answers_number_to_learn_desc">True answers to learn:</string>
+    <string name="words_training">Words training</string>
+
+    <string name="text_app_about">
+        Select categories of words which you want to learn and you will receive English words in push notifications. Categories of words adding without app update.
+        \n\nApp version: %s
+        \n\nFill free to message me: for.gamer.develop@gmail.com
+    </string>
+    <string name="text_dialog_receive_help">You have turned on background starting option. It may fix receive notifications bug. You can disable it in Android Settings -> Applications or reinstall app. If it does not help see https://dontkillmyapp.com (Solution for users)</string>
+    <string name="text_info_words_training">
+        Click at the book icon in dictionary tab to train words.
+        \n\nThe words training increase word learn progress. If answer is wrong in training - word progress sets to 0.
+        \n\nTraining word matches if word has not max learn progress
+    </string>
+
+</resources>

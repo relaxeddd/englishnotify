@@ -20,8 +20,8 @@ android {
         applicationId 'relaxeddd.englishnotify'
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode 90
-        versionName "4.0.2"
+        versionCode rootProject.versionCode
+        versionName rootProject.versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
@@ -55,8 +55,10 @@ dependencies {
     implementation project(':common')
     implementation project(':preferences')
     implementation project(':view-base')
+    implementation project(':common-ui-func')
     implementation project(':notifications')
     implementation project(':domain-words')
+    implementation project(':screen-settings')
 
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle"
 

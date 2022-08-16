@@ -2,5 +2,9 @@
 <resources>
 
     <string name="cancel">Cancel</string>
+    <string name="common">Common</string>
+    <string name="close">Close</string>
+    <string name="confirm">Confirm</string>
+    <string name="confirm_and_continue">Confirm and continue</string>
 
 </resources>

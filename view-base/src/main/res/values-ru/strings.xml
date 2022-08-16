@@ -2,5 +2,9 @@
 <resources>
 
     <string name="cancel">Отмена</string>
+    <string name="common">Общее</string>
+    <string name="close">Закрыть</string>
+    <string name="confirm">Подтвердить</string>
+    <string name="confirm_and_continue">Подтвердить и продолжить</string>
 
 </resources>

@@ -23,8 +23,6 @@ import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.DrawableCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import kotlinx.coroutines.CoroutineScope
@@ -170,12 +168,6 @@ fun openWebPrivacyPolicy(activity: FragmentActivity?) {
     activity?.startActivity(browserIntent)
 }
 
-fun openWebApplication(activity: FragmentActivity?) {
-    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=relaxeddd.englishnotify"))
-    browserIntent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-    activity?.startActivity(browserIntent)
-}
-
 fun isValidNickname(nickname: String) : Boolean {
     val pattern = Pattern.compile("^[a-zA-Zа-яА-Я][a-zA-Zа-яА-Я0-9_]{3,16}$")
     val matcher = pattern.matcher(nickname)
@@ -212,42 +204,6 @@ object HeightTopWindowInsetsListener : View.OnApplyWindowInsetsListener {
         return insets
     }
 }
-
-data class ViewPaddingState(
-    val left: Int,
-    val top: Int,
-    val right: Int,
-    val bottom: Int,
-    val start: Int,
-    val end: Int
-)
-
-fun View.doOnApplyWindowInsets(f: (View, WindowInsetsCompat, ViewPaddingState) -> Unit) {
-    val paddingState = createStateForView(this)
-    ViewCompat.setOnApplyWindowInsetsListener(this) { v, insets ->
-        f(v, insets, paddingState)
-        insets
-    }
-    requestApplyInsetsWhenAttached()
-}
-
-@RequiresApi(Build.VERSION_CODES.KITKAT_WATCH)
-fun View.requestApplyInsetsWhenAttached() {
-    if (isAttachedToWindow) {
-        requestApplyInsets()
-    } else {
-        addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
-            override fun onViewAttachedToWindow(v: View) {
-                v.requestApplyInsets()
-            }
-
-            override fun onViewDetachedFromWindow(v: View) = Unit
-        })
-    }
-}
-
-private fun createStateForView(view: View) = ViewPaddingState(view.paddingLeft,
-    view.paddingTop, view.paddingRight, view.paddingBottom, view.paddingStart, view.paddingEnd)
 
 @SuppressLint("ResourceType")
 fun navigationItemBackground(context: Context): Drawable? {

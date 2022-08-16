@@ -24,16 +24,16 @@
 
     <fragment
         android:id="@id/fragmentSettings"
-        android:name="relaxeddd.englishnotify.ui.settings.FragmentSettings"
+        android:name="relaxeddd.englishnotify.screen_settings.ui.FragmentSettings"
         android:label="@string/settings"
         tools:layout="@layout/fragment_settings">
 
         <action
-            android:id="@+id/action_fragmentSettings_to_fragmentStatistic"
+            android:id="@id/action_fragmentSettings_to_fragmentStatistic"
             app:destination="@id/fragmentStatistic"/>
 
         <action
-            android:id="@+id/action_fragmentSettings_to_fragmentParse"
+            android:id="@id/action_fragmentSettings_to_fragmentParse"
             app:destination="@id/fragmentParse"/>
 
     </fragment>
@@ -77,18 +77,6 @@
         android:id="@+id/fragmentDictionaryAll"
         android:name="relaxeddd.englishnotify.ui.dictionary_all.FragmentDictionaryAll"
         android:label="@string/label_fragment_dictionary_all"
-        tools:layout="@layout/fragment_dictionary"/>
-
-    <fragment
-        android:id="@+id/fragmentDictionaryOwn"
-        android:name="relaxeddd.englishnotify.ui.dictionary_own.FragmentDictionaryOwn"
-        android:label="@string/label_fragment_dictionary_own"
-        tools:layout="@layout/fragment_dictionary"/>
-
-    <fragment
-        android:id="@+id/fragmentDictionaryExercises"
-        android:name="relaxeddd.englishnotify.ui.dictionary_exercises.FragmentDictionaryExercises"
-        android:label="@string/label_fragment_dictionary_exercises"
         tools:layout="@layout/fragment_dictionary"/>
 
     <fragment

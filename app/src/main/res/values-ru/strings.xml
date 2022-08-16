@@ -3,7 +3,6 @@
 
     <string name="app_name">Английские слова уведомления</string>
 
-    <string name="about_app">О приложении</string>
     <string name="accept">Принять</string>
     <string name="add_multiple_words">Множественное добавление</string>
     <string name="add_to_own_category">Добавить в свою категорию</string>
@@ -18,18 +17,12 @@
     <string name="answer_exercise">Ответ: %s</string>
     <string name="app_info">О приложении</string>
     <string name="app_language">Язык приложения</string>
-    <string name="app_theme">Тема приложения</string>
     <string name="apply">Применить</string>
-    <string name="background_start">Запуск в фоновом режиме</string>
     <string name="cancel_check">Отменить выбранное</string>
     <string name="category_own_not_selected">Категоря не выбрана. Сначала добавьте слова в "Свою категорию"</string>
     <string name="change_account_text">Вы заходите под другим аккаунтом. Словарь будет очищен.</string>
     <string name="check_all">Выбрать все</string>
     <string name="check_learned_words">Проверка выученных слов</string>
-    <string name="close">Закрыть</string>
-    <string name="common">Общее</string>
-    <string name="confirm">Подтвердить</string>
-    <string name="confirm_and_continue">Подтвердить и продолжить</string>
     <string name="correct">Правильно!</string>
     <string name="correct_answer">Правильный ответ</string>
     <string name="delete">Удалить</string>
@@ -96,7 +89,6 @@
     <string name="main">Основные</string>
     <string name="memorize">Запоминай</string>
     <string name="mixed">Смешанная</string>
-    <string name="need_enable_secondary_progress">Необходимо включить второстепенный прогресс у слов</string>
     <string name="new_categories">Новые</string>
     <string name="new_version">Новая версия</string>
     <string name="network_not_available">Ошибка интернет соединения</string>
@@ -120,7 +112,6 @@
     <string name="not_show_notifications">Не показывать уведомления начиная с (24-часовой формат, число от 0 до 23)</string>
     <string name="notification_categories">Выбор категорий слов</string>
     <string name="notification_learn_points">Прогресс за правильный ответ в уведомлении</string>
-    <string name="notification_learn_points_desc">Увеличение прогресса на:</string>
     <string name="notifications_language">Язык уведомлений</string>
     <string name="notifications_not_receiving_enable">Уведомления не приходят, их нужно включить</string>
     <string name="notifications_not_receiving_authorize">Уведомления не приходят, авторизируйтесь</string>
@@ -142,7 +133,6 @@
     <string name="please_wait">Пожалуйста, подождите</string>
     <string name="privacy_policy">Политика конфиденциальности</string>
     <string name="privacy_policy_in_sentence">Политикой конфиденциальности</string>
-    <string name="progress_swapped">Прогрессы поменялись местами</string>
     <string name="purchase_consumed">Покупка совершена, спасибо!</string>
     <string name="rate">Оценить</string>
     <string name="rate_app">Оценить приложение</string>
@@ -161,8 +151,6 @@
     <string name="show_progress_in_training">Показывать прогресс при тренировке</string>
     <string name="show_word_progress">Показывать прогресс слов</string>
     <string name="search_words">Искать слова</string>
-    <string name="secondary_word_progress">Вторичный прогресс изучения слов</string>
-    <string name="secondary_word_progress_info">Вторичный прогресс изучения слов зависит от ввода слова по его переводу (тренировка типа перевод-слово), в то время как основной прогресс изменяется во время ввода перевода слова при тренировке или в уведомлении. Также можно поменять местами прогрессы слов для необходимой настройки.</string>
     <string name="send_feedback">Отправить отзыв</string>
     <string name="send_test_notification">Отправить тестовое уведомление?</string>
     <string name="select">Выбрать</string>
@@ -171,7 +159,6 @@
     <string name="sort_by">Сортировать по</string>
     <string name="statistic">Статистика</string>
     <string name="swap_main_and_secondary_progress">Поменять местами значение основного и второстепенного прогрессов слова</string>
-    <string name="swap_main_and_secondary_progress_text">Основной прогресс будет равен второстепенному, а второстепенный - основному. Применяется для всех слов</string>
     <string name="swipe_delete_disable">Нельзя удалять уведомления свайпом</string>
     <string name="thank_you">Спасибо!</string>
     <string name="tags_should_not_be_empty">Вы должны выбрать как минимум 1 категорию</string>
@@ -188,7 +175,6 @@
     <string name="translation_transcription_delimiter">Разделитель перевода, транскрипции</string>
     <string name="true_answer">Правильный ответ!</string>
     <string name="true_answers_number_to_learn">Количество правильных ответов чтобы изучить слово</string>
-    <string name="true_answers_number_to_learn_desc">Правильных ответов для изучения:</string>
     <string name="undefined_error">Неизвестная ошибка</string>
     <string name="unauthorized_error">Ошибка авторизации</string>
     <string name="update">Обновление</string>
@@ -211,7 +197,6 @@
     <string name="words_saved">Слов сохранено: %s</string>
     <string name="words_saved_success">Слова сохранены</string>
     <string name="words_should_not_be_empty">Текст слов не должен быть пустым</string>
-    <string name="words_training">Тренировка слов</string>
     <string name="wrong">Неверно</string>
     <string name="yes">Да</string>
     <string name="you_like_app">Вам нравится приложение?</string>
@@ -221,30 +206,15 @@
     <string name="your_name">Ваше имя: %s</string>
     <string name="your_name_in_rating">%s (Вы)</string>
 
-    <string name="text_dialog_receive_help">Вы включили опцию запуска в фоновом режиме. Включение опции вероятно исправляет проблему получения уведомлений. Ее можно отключить в Android Настройки -> Приложения, либо путем переустановки приложения. Если это не помогло https://dontkillmyapp.com (Solution for users)</string>
-
     <string name="text_dialog_check_save_words">Вы действительно хотите сохранить свой словарь? Все ранее соханенные слова будут перезаписаны.</string>
 
     <string name="text_dialog_check_load_words">Вы действительно хотите загрузить словарь? Все ваши слова в словаре будут заменены на сохраненные.</string>
 
     <string name="text_rate_app">В комментариях пишите, что можно улучшить, какие новые категории слов нужно добавить</string>
 
-    <string name="text_app_about">
-        Выберите категории английских слов, которые хотите изучить, установите период получения уведомлений и вам будут приходить английские слова в виде пуш-уведомлений.
-        \n\nСписок категорий постоянно растет и обновляется без необходимости обновления приложения.
-        \n\nВерсия приложения: %s
-        \n\nПишите мне на почту: for.gamer.develop@gmail.com
-    </string>
-
     <string name="text_own_category">
         Слова отсюда будут Вам приходить, если в настройках уведомлений выбрать "Своя категория".
         \n\nСюда можно добавить слова долгим нажатием на слово из словаря или нажатием на плюсик в правом нижнем углу экрана.
-    </string>
-
-    <string name="text_info_words_training">
-        Для тренировки перейдите в раздел словаря и выберите в верхнем меню иконку книжки.
-        \n\nТренировка слов увеличивает прогресс изучения слова. Если ответить неправльно - прогресс сбросится до 0.
-        \n\nДля тренировки подбираются слова, которые не имеют максимального прогресса изучения.
     </string>
 
     <string name="text_enter_name">
