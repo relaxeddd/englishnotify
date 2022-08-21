@@ -6,30 +6,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.updatePaddingRelative
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import relaxeddd.englishnotify.common.*
+import relaxeddd.englishnotify.common_di.Injector
 import relaxeddd.englishnotify.common_ui_func.doOnApplyWindowInsets
 import relaxeddd.englishnotify.common_ui_func.openWebApplication
-import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.screen_settings.R
 import relaxeddd.englishnotify.screen_settings.databinding.FragmentSettingsBinding
-import relaxeddd.englishnotify.view_base.BaseFragment
+import relaxeddd.englishnotify.screen_settings.ui.di.SettingsComponent
+import relaxeddd.englishnotify.view_base.BaseDaggerlessFragment
 import relaxeddd.englishnotify.view_base.interfaces.ListenerResult
-import javax.inject.Inject
+import relaxeddd.englishnotify.view_base.propertyViaViewModel
 import kotlin.math.max
 import kotlin.math.min
 
-class FragmentSettings : BaseFragment<ViewModelSettings, FragmentSettingsBinding>() {
+class FragmentSettings : BaseDaggerlessFragment<ViewModelSettings, FragmentSettingsBinding>() {
 
-    @Inject
-    override lateinit var prefs: Preferences
+    private val component by propertyViaViewModel { Injector.getComponent(this, SettingsComponent::class.java) }
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    override val viewModel by viewModels<ViewModelSettings> { viewModelFactory }
+    override val prefs by lazy(LazyThreadSafetyMode.NONE) { component.prefs }
+    override val viewModel by lazy(LazyThreadSafetyMode.NONE) { component.viewModel }
 
     private val listenerTheme: ListenerResult<Int> = object: ListenerResult<Int> {
         override fun onResult(result: Int) {
