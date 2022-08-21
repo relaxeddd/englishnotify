@@ -6,8 +6,6 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
 import relaxeddd.englishnotify.notifications.NotificationAnswerBroadcastReceiver
-import relaxeddd.englishnotify.screen_settings.ui.FragmentSettings
-import relaxeddd.englishnotify.screen_settings.ui.ViewModelSettings
 import relaxeddd.englishnotify.ui.categories.FragmentCategories
 import relaxeddd.englishnotify.ui.categories.ViewModelCategories
 import relaxeddd.englishnotify.ui.categories.section.FragmentCategorySection
@@ -143,18 +141,6 @@ abstract class ParsedWordsModule {
     @IntoMap
     @ViewModelKey(ViewModelParsedWords::class)
     abstract fun bindViewModel(viewModel: ViewModelParsedWords): ViewModel
-}
-
-@Module
-abstract class SettingsModule {
-
-    @ContributesAndroidInjector
-    internal abstract fun fragment(): FragmentSettings
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(ViewModelSettings::class)
-    abstract fun bindViewModel(viewModel: ViewModelSettings): ViewModel
 }
 
 @Module

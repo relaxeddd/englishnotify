@@ -53,6 +53,7 @@ dependencies {
     implementation "com.google.android.material:material:$material"
 
     implementation project(':common')
+    implementation project(':common-di')
     implementation project(':preferences')
     implementation project(':view-base')
     implementation project(':common-ui-func')

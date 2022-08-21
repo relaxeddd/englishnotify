@@ -7,6 +7,7 @@ import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.domain_words.di.DomainWordsModule
+import relaxeddd.englishnotify.screen_settings.ui.di.SettingsDependencies
 import javax.inject.Singleton
 
 @Singleton
@@ -24,7 +25,6 @@ import javax.inject.Singleton
         NotificationsModule::class,
         ParseModule::class,
         ParsedWordsModule::class,
-        SettingsModule::class,
         StatisticModule::class,
         TimeModule::class,
         TrainingModule::class,
@@ -32,7 +32,7 @@ import javax.inject.Singleton
         WordModule::class,
         NotificationAnswerModule::class,
     ])
-interface ApplicationComponent : AndroidInjector<App> {
+interface ApplicationComponent : AndroidInjector<App>, SettingsDependencies {
 
     @Component.Factory
     interface Factory {
