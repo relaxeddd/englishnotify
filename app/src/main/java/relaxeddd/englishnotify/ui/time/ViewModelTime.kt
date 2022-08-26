@@ -1,8 +1,5 @@
 package relaxeddd.englishnotify.ui.time
 
-import android.content.Context
-import android.widget.RadioButton
-import android.widget.RadioGroup
 import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK
 import relaxeddd.englishnotify.notifications.NotificationsWorkManagerHelper
 import relaxeddd.englishnotify.preferences.Preferences
@@ -12,15 +9,14 @@ import relaxeddd.englishnotify.view_base.models.Event
 import javax.inject.Inject
 
 class ViewModelTime @Inject constructor(
-    private val context: Context,
     private val prefs: Preferences,
+    private val notificationsWorkManagerHelper: NotificationsWorkManagerHelper,
 ) : ViewModelBase() {
 
     var receiveNotificationsTime: Int = prefs.getNotificationsRepeatTime().ordinal
 
-    val checkedChangeListenerTime = RadioGroup.OnCheckedChangeListener { view, _ ->
-        val radioButton = view.findViewById<RadioButton>(view?.checkedRadioButtonId ?: 0)
-        receiveNotificationsTime = (radioButton?.tag as String).toInt()
+    fun onNotificationTimeChanged(notificationTime: Int) {
+        receiveNotificationsTime = notificationTime
     }
 
     fun onClickAccept() {
@@ -28,11 +24,10 @@ class ViewModelTime @Inject constructor(
 
         if (receiveNotificationsTime != currentRepeatTime.ordinal) {
             prefs.setNotificationsRepeatTime(receiveNotificationsTime)
-            NotificationsWorkManagerHelper.launchWork(
-                context = context,
-                prefs = prefs,
+            notificationsWorkManagerHelper.launchWork(
                 repeatTimeInMinutes = NotificationRepeatTime.valueOf(receiveNotificationsTime).valueInMinutes,
                 isForceUpdate = true,
+                isNotificationsEnabled = prefs.isNotificationsEnabled(),
             )
         }
 

@@ -35,4 +35,8 @@ ext {
     dagger = '2.40'
 
     playCore = '1.10.3'
+
+    junit = '4.13.2'
+    mokk = '1.12.7'
+    archCore = '2.1.0'
 }

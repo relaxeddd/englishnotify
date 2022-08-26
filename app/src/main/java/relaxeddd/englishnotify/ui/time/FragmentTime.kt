@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import relaxeddd.englishnotify.R
@@ -43,7 +44,10 @@ class FragmentTime : BaseFragment<ViewModelTime, FragmentTimeBinding>() {
         binding?.apply {
             val checkedRadioButton = radioGroupTime.getChildAt(viewModel.receiveNotificationsTime)
 
-            radioGroupTime.setOnCheckedChangeListener(viewModel.checkedChangeListenerTime)
+            radioGroupTime.setOnCheckedChangeListener { view, _ ->
+                val radioButton = view.findViewById<RadioButton>(view?.checkedRadioButtonId ?: 0)
+                viewModel.onNotificationTimeChanged((radioButton?.tag as String).toInt())
+            }
             if (checkedRadioButton != null) {
                 radioGroupTime.check(checkedRadioButton.id)
             }
