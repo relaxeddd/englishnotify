@@ -25,6 +25,7 @@ class ViewModelNotifications @Inject constructor(
     private val context: Context,
     private val prefs: Preferences,
     private val repositoryWords: RepositoryWords,
+    private val notificationsWorkManagerHelper: NotificationsWorkManagerHelper,
 ) : ViewModelBase() {
 
     val timeDurationOffValue = MutableLiveData(prefs.getDurationHours())
@@ -169,14 +170,13 @@ class ViewModelNotifications @Inject constructor(
         isNotificationsEnabled.value = isEnabled
 
         if (isEnabled) {
-            NotificationsWorkManagerHelper.launchWork(
-                context = context,
-                prefs = prefs,
+            notificationsWorkManagerHelper.launchWork(
                 repeatTimeInMinutes = prefs.getNotificationsRepeatTime().valueInMinutes,
-                isForceUpdate = false
+                isForceUpdate = false,
+                isNotificationsEnabled = prefs.isNotificationsEnabled(),
             )
         } else {
-            NotificationsWorkManagerHelper.cancelWork(context)
+            notificationsWorkManagerHelper.cancelWork()
         }
     }
 }

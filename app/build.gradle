@@ -84,4 +84,8 @@ dependencies {
 
     //In-app rate
     implementation "com.google.android.play:core:$playCore"
+
+    testImplementation "junit:junit:$junit"
+    testImplementation "io.mockk:mockk:$mokk"
+    testImplementation "androidx.arch.core:core-testing:$archCore"
 }

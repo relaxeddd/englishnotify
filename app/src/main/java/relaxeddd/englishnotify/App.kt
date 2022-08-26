@@ -21,6 +21,9 @@ class App : DaggerApplication() {
     @Inject
     lateinit var workerFactory: AppWorkerFactory
 
+    @Inject
+    lateinit var notificationsWorkManagerHelper: NotificationsWorkManagerHelper
+
     private lateinit var applicationComponent: ApplicationComponent
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
@@ -34,11 +37,10 @@ class App : DaggerApplication() {
         InjectorInitializer.init(this, applicationComponent)
         WorkManager.initialize(this, Configuration.Builder().setWorkerFactory(workerFactory).build())
         PushTokenHelper.initNotificationsChannel(this)
-        NotificationsWorkManagerHelper.launchWork(
-            context = this,
-            prefs = prefs,
+        notificationsWorkManagerHelper.launchWork(
             repeatTimeInMinutes = prefs.getNotificationsRepeatTime().valueInMinutes,
             isForceUpdate = false,
+            isNotificationsEnabled = prefs.isNotificationsEnabled(),
         )
     }
 }
