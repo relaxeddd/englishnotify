@@ -7,6 +7,7 @@ import android.widget.CompoundButton
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.annotation.VisibleForTesting
 import com.google.android.material.checkbox.MaterialCheckBox
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.domain_words.entity.Word
@@ -44,7 +45,8 @@ class AdapterDictionary(
         override fun getProgressLearn(): ProgressBar = itemView.findViewById(R.id.progress_bar_word_learn_stage)
         override fun getProgressLearnSecondary(): ProgressBar = itemView.findViewById(R.id.progress_bar_word_learn_stage_secondary)
 
-        private val textWord: TextView? = itemView.findViewById(R.id.text_word)
+        @VisibleForTesting
+        val textWord: TextView? = itemView.findViewById(R.id.text_word)
         private val textWordTranslation: TextView? = itemView.findViewById(R.id.text_word_translation)
         private val textWordTranscription: TextView? = itemView.findViewById(R.id.text_word_transcription)
         private val textWordTranscriptionTranslation: TextView? = itemView.findViewById(R.id.text_word_transcription_translation)
