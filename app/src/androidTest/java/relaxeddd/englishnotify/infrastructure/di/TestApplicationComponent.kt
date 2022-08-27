@@ -1,22 +1,20 @@
-package relaxeddd.englishnotify.di
+package relaxeddd.englishnotify.infrastructure.di
 
 import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
-import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
-import relaxeddd.englishnotify.App
 import relaxeddd.englishnotify.common.AppWorkerFactory
+import relaxeddd.englishnotify.di.*
 import relaxeddd.englishnotify.domain_words.di.DomainWordsModule
 import relaxeddd.englishnotify.notifications.NotificationsWorkManagerHelper
-import relaxeddd.englishnotify.screen_settings.ui.di.SettingsDependencies
 import javax.inject.Singleton
 
 @Singleton
 @Component(
     modules = [
         AndroidSupportInjectionModule::class,
-        ApplicationModule::class,
+        TestApplicationModule::class,
         DomainWordsModule::class,
         MainActivityModule::class,
         CategorySectionModule::class,
@@ -34,13 +32,16 @@ import javax.inject.Singleton
         WordModule::class,
         NotificationAnswerModule::class,
     ])
-interface ApplicationComponent : AndroidInjector<App>, SettingsDependencies {
+interface TestApplicationComponent : ApplicationComponent {
 
-    val notificationsWorkManagerHelper: NotificationsWorkManagerHelper
-    val workerFactory: AppWorkerFactory
+    @Singleton
+    override val notificationsWorkManagerHelper: NotificationsWorkManagerHelper
+
+    @Singleton
+    override val workerFactory: AppWorkerFactory
 
     @Component.Factory
     interface Factory {
-        fun create(@BindsInstance applicationContext: Context): ApplicationComponent
+        fun create(@BindsInstance applicationContext: Context): TestApplicationComponent
     }
 }

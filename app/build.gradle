@@ -22,7 +22,7 @@ android {
         targetSdkVersion rootProject.targetSdkVersion
         versionCode rootProject.versionCode
         versionName rootProject.versionName
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "relaxeddd.englishnotify.infrastructure.AppTestRunner"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
     }
@@ -74,6 +74,7 @@ dependencies {
     implementation "com.google.dagger:dagger-android-support:$dagger"
     kapt "com.google.dagger:dagger-android-processor:$dagger"
     kapt "com.google.dagger:dagger-compiler:$dagger"
+    kaptAndroidTest "com.google.dagger:dagger-compiler:$dagger"
 
     // TODO: try to use room without android dependencies
     implementation "androidx.room:room-runtime:$room"
