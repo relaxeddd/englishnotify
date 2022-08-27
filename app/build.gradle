@@ -88,4 +88,8 @@ dependencies {
     testImplementation "junit:junit:$junit"
     testImplementation "io.mockk:mockk:$mokk"
     testImplementation "androidx.arch.core:core-testing:$archCore"
+
+    androidTestImplementation "androidx.test.ext:junit:$androidJunit"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espresso"
 }

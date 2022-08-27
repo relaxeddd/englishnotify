@@ -209,9 +209,7 @@ class RepositoryWords @Inject constructor(private val wordDao: WordDao, private 
             val word = wordDao.findWordById(wordId)
 
             if (word != null) {
-                val saveWord = Word(word)
-                saveWord.isDeleted = true
-                updateWord(saveWord)
+                wordDao.delete(word)
             }
         }
 
