@@ -1,21 +1,29 @@
 package relaxeddd.englishnotify.ui.parse
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.google.android.material.radiobutton.MaterialRadioButton
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.*
-import relaxeddd.englishnotify.model.repository.RepositoryUser
-import relaxeddd.englishnotify.model.repository.RepositoryWord
+import relaxeddd.englishnotify.common.CategoryItem
+import relaxeddd.englishnotify.common.ISelectCategory
+import relaxeddd.englishnotify.common.NAVIGATION_FRAGMENT_PARSED_WORDS
+import relaxeddd.englishnotify.common.showToast
+import relaxeddd.englishnotify.domain_words.entity.Word
+import relaxeddd.englishnotify.domain_words.repository.RepositoryWords
+import relaxeddd.englishnotify.view_base.ViewModelBase
+import relaxeddd.englishnotify.view_base.models.Event
+import javax.inject.Inject
 
-class ViewModelParse : ViewModelBase(), ISelectCategory {
+class ViewModelParse @Inject constructor(
+    private val context: Context,
+    private val repositoryWords: RepositoryWords,
+) : ViewModelBase(), ISelectCategory {
 
-    val isEnabledOwnCategories = MutableLiveData(true)
     val categories = MutableLiveData<List<CategoryItem>>(ArrayList())
     private var checkedItem: CategoryItem? = null
 
     init {
         updateCategories()
-        updateOwnCategoriesAvailability()
     }
 
     override fun getSelectedCategory() = checkedItem?.key
@@ -51,36 +59,21 @@ class ViewModelParse : ViewModelBase(), ISelectCategory {
         }
 
         if (parsedWords.isEmpty()) {
-            showToast(R.string.no_words_recognized)
+            showToast(context, R.string.no_words_recognized)
         } else {
-            RepositoryWord.getInstance().tempParsedWords.clear()
-            RepositoryWord.getInstance().tempParsedWords.addAll(parsedWords)
+            repositoryWords.tempParsedWords.clear()
+            repositoryWords.tempParsedWords.addAll(parsedWords)
             navigateEvent.value = Event(NAVIGATION_FRAGMENT_PARSED_WORDS)
-        }
-    }
-
-    fun onClickOwnCategoryContent() {
-        val user = RepositoryUser.getInstance().liveDataUser.value
-
-        if (user == null) {
-            showToast(R.string.please_authorize)
-        } else if (isEnabledOwnCategories.value == false) {
-            navigateEvent.value = Event(NAVIGATION_DIALOG_SUBSCRIPTION_REQUIRED)
         }
     }
 
     private fun updateCategories() {
         val list = ArrayList<CategoryItem>()
-        val allTags = RepositoryWord.getInstance().getOwnWordCategories()
+        val allTags = repositoryWords.getOwnWordCategories()
 
         for (tag in allTags) {
             list.add(CategoryItem(tag))
         }
         categories.postValue(list)
-    }
-
-    private fun updateOwnCategoriesAvailability() {
-        val user = RepositoryUser.getInstance().liveDataUser.value
-        isEnabledOwnCategories.value = user != null && user.isSubscribed()
     }
 }

@@ -5,9 +5,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.ListenerResult
 import relaxeddd.englishnotify.common.SELECTED_ITEM
-import relaxeddd.englishnotify.common.SortByType
+import relaxeddd.englishnotify.preferences.models.SortByType
+import relaxeddd.englishnotify.view_base.interfaces.ListenerResult
 
 class DialogSortBy : DialogFragment() {
 
@@ -20,7 +20,7 @@ class DialogSortBy : DialogFragment() {
             selectedItemIx = arguments?.getInt(SELECTED_ITEM, 0) ?: 0
 
             builder.setTitle(R.string.sort_by)
-                .setSingleChoiceItems(SortByType.getNamesArray(), selectedItemIx) { _, which ->
+                .setSingleChoiceItems(SortByType.getNamesArray(requireContext()), selectedItemIx) { _, which ->
                     selectedItemIx = which
                 }.setPositiveButton(android.R.string.ok) { _, _ ->
                     listener?.onResult(selectedItemIx)

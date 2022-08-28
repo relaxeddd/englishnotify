@@ -15,14 +15,17 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.model.preferences.SharedHelper
-import relaxeddd.englishnotify.common.Word
+import relaxeddd.englishnotify.domain_words.entity.Word
+import relaxeddd.englishnotify.preferences.Preferences
 import kotlin.math.min
 
-class AdapterStatistic(val viewModel: ViewModelStatistic): ListAdapter<Word, AdapterStatistic.ViewHolder>(WordDiffCallback()) {
+class AdapterStatistic(
+    private val prefs: Preferences, // TODO: refactor without using prefs, viewModel
+    private val viewModel: ViewModelStatistic,
+): ListAdapter<Word, AdapterStatistic.ViewHolder>(WordDiffCallback()) {
 
-    private val learnStageMax = SharedHelper.getTrueAnswersToLearn()
-    private val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
+    private val learnStageMax = prefs.getTrueAnswersToLearn()
+    private val isEnabledSecondaryProgress = prefs.isEnabledSecondaryProgress()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_item_statistic_word, parent, false))
@@ -39,7 +42,7 @@ class AdapterStatistic(val viewModel: ViewModelStatistic): ListAdapter<Word, Ada
 
     @SuppressLint("RestrictedApi")
     private fun showPopupWord(view: View, word: Word) {
-        val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
+        val isEnabledSecondaryProgress = prefs.isEnabledSecondaryProgress()
         val popupMenu = PopupMenu(view.context, view)
 
         popupMenu.inflate(R.menu.menu_popup_word)
@@ -53,8 +56,6 @@ class AdapterStatistic(val viewModel: ViewModelStatistic): ListAdapter<Word, Ada
 
         popupMenu.menu.findItem(R.id.item_menu_edit)?.isVisible = false
         popupMenu.menu.findItem(R.id.item_menu_reset_progress)?.isVisible = word.learnStage > 0 || (isEnabledSecondaryProgress && word.learnStageSecondary > 0)
-        popupMenu.menu.findItem(R.id.item_menu_add_own)?.isVisible = false
-        popupMenu.menu.findItem(R.id.item_menu_delete_own)?.isVisible = false
         val menuHelper = MenuPopupHelper(view.context, popupMenu.menu as MenuBuilder, view)
         menuHelper.setForceShowIcon(true)
         menuHelper.show()

@@ -8,8 +8,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.textfield.TextInputEditText
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.*
-import java.lang.NumberFormatException
+import relaxeddd.englishnotify.common.DURATION_HOURS
+import relaxeddd.englishnotify.common.START_HOUR
+import relaxeddd.englishnotify.view_base.interfaces.ListenerResult
 
 class DialogPushOffTime : DialogFragment() {
 

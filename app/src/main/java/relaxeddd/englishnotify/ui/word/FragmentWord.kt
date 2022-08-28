@@ -3,23 +3,37 @@ package relaxeddd.englishnotify.ui.word
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.doOnLayout
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.play.core.review.ReviewManagerFactory
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.FragmentWordBinding
 import relaxeddd.englishnotify.dialogs.DialogRestoreWord
-import relaxeddd.englishnotify.model.preferences.SharedHelper
+import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.ui.categories.AdapterCategories
 import relaxeddd.englishnotify.ui.main.MainActivity
+import relaxeddd.englishnotify.view_base.BaseFragment
+import relaxeddd.englishnotify.view_base.interfaces.ListenerResult
+import javax.inject.Inject
 
 class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
+
+    @Inject
+    override lateinit var prefs: Preferences
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    override val viewModel by viewModels<ViewModelWord> { viewModelFactory }
 
     private var adapter: AdapterCategories? = null
 
@@ -31,166 +45,15 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
         }
     }
 
-    override fun getLayoutResId() = R.layout.fragment_word
     override fun getToolbarTitleResId() = R.string.add_word
-    override fun getViewModelFactory() = InjectorUtils.provideWordViewModelFactory()
-    override fun getViewModelClass() = ViewModelWord::class.java
     override fun getMenuResId() = R.menu.menu_accept
     override fun isHomeMenuButtonEnabled() = true
     override fun getHomeMenuButtonIconResId() = R.drawable.ic_back
     override fun getHomeMenuButtonListener(): () -> Unit = { onNavigationEvent(NAVIGATION_ACTIVITY_BACK) }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.item_menu_accept -> {
-                binding?.textInputTranslation?.onEditorAction(EditorInfo.IME_ACTION_DONE)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    override fun configureBinding() {
-        super.configureBinding()
-
-        val binding = binding ?: return
-        binding.viewModel = viewModel
-        binding.imageWordMicrophone.setOnClickListener {
-            val selectedLanguage = binding.spinnerWordLanguage.selectedItem as? String ?: ""
-            (activity as? MainActivity)?.requestRecognizeSpeech(selectedLanguage) {
-                if (it == null) {
-                    SharedHelper.setShowVoiceInput(false)
-                    updateVoiceInputVisibility(false)
-                } else {
-                    binding.textInputWord.setText(it)
-                }
-            }
-        }
-        ArrayAdapter.createFromResource(context ?: return, R.array.array_languages, android.R.layout.simple_spinner_item).also { adapter ->
-            adapter.setDropDownViewResource(R.layout.view_item_spinner)
-            binding.spinnerWordLanguage.adapter = adapter
-        }
-        binding.spinnerWordLanguage.setSelection(SharedHelper.getSelectedLocaleWord())
-        binding.spinnerWordLanguage.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                SharedHelper.setSelectedLocaleWord(position)
-            }
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
-
-        binding.imageWordMicrophoneTranslation.setOnClickListener {
-            val selectedLanguage = binding.spinnerWordLanguageTranslation.selectedItem as? String ?: ""
-            (activity as? MainActivity)?.requestRecognizeSpeech(selectedLanguage) {
-                if (it == null) {
-                    SharedHelper.setShowVoiceInput(false)
-                    updateVoiceInputVisibility(false)
-                } else {
-                    binding.textInputTranslation.setText(it)
-                }
-            }
-        }
-        ArrayAdapter.createFromResource(context ?: return, R.array.array_languages, android.R.layout.simple_spinner_item).also { adapter ->
-            adapter.setDropDownViewResource(R.layout.view_item_spinner)
-            binding.spinnerWordLanguageTranslation.adapter = adapter
-        }
-        binding.spinnerWordLanguageTranslation.setSelection(SharedHelper.getSelectedLocaleTranslation())
-        binding.spinnerWordLanguageTranslation.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                SharedHelper.setSelectedLocaleTranslation(position)
-            }
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
-        binding.imageWordTranslate.setOnClickListener {
-            val text = binding.textInputWord.text.toString()
-            val fromLanguage = binding.spinnerWordLanguage.selectedItem as? String ?: ""
-            val toLanguage = binding.spinnerWordLanguageTranslation.selectedItem as? String ?: ""
-
-            hideKeyboard()
-            if (text.isNotBlank()) {
-                binding.imageWordTranslate.visibility = View.INVISIBLE
-                binding.progressBarWordTranslate.visibility = View.VISIBLE
-                viewModel.onClickTranslate(text, fromLanguage, toLanguage) { translated ->
-                    binding.imageWordTranslate.visibility = View.VISIBLE
-                    binding.progressBarWordTranslate.visibility = View.INVISIBLE
-
-                    if (translated != null) {
-                        if (translated.isEmpty()) {
-                            showToast(R.string.no_translation)
-                        } else {
-                            showPopupTranslation(binding.imageWordTranslate, translated) {
-                                val existsTranslation = binding.textInputTranslation.text.toString()
-
-                                if (existsTranslation.isEmpty()) {
-                                    binding.textInputTranslation.setText(translated)
-                                } else {
-                                    val result = "$existsTranslation, $translated"
-                                    binding.textInputTranslation.setText(result)
-                                }
-                            }
-                        }
-                    }
-                }
-            } else {
-                showToast(R.string.word_should_not_be_empty)
-            }
-        }
-        //TODO refactor
-        binding.imageWordTranslateTranslation.setOnClickListener {
-            val text = binding.textInputTranslation.text.toString()
-            val fromLanguage = binding.spinnerWordLanguageTranslation.selectedItem as? String ?: ""
-            val toLanguage = binding.spinnerWordLanguage.selectedItem as? String ?: ""
-
-            hideKeyboard()
-            if (text.isNotBlank()) {
-                binding.imageWordTranslateTranslation.visibility = View.INVISIBLE
-                binding.progressBarWordTranslateTranslation.visibility = View.VISIBLE
-                viewModel.onClickTranslate(text, fromLanguage, toLanguage) { translated ->
-                    binding.imageWordTranslateTranslation.visibility = View.VISIBLE
-                    binding.progressBarWordTranslateTranslation.visibility = View.INVISIBLE
-
-                    if (translated != null) {
-                        if (translated.isEmpty()) {
-                            showToast(R.string.no_translation)
-                        } else {
-                            showPopupTranslation(binding.imageWordTranslateTranslation, translated) {
-                                val existsTranslation = binding.textInputWord.text.toString()
-
-                                if (existsTranslation.isEmpty()) {
-                                    binding.textInputWord.setText(translated)
-                                } else {
-                                    val result = "$existsTranslation, $translated"
-                                    binding.textInputWord.setText(result)
-                                }
-                            }
-                        }
-                    }
-                }
-            } else {
-                showToast(R.string.word_should_not_be_empty)
-            }
-        }
-
-        adapter = AdapterCategories(viewModel)
-        binding.recyclerViewWordOwnCategories.itemAnimator = null
-        binding.recyclerViewWordOwnCategories.adapter = adapter
-        viewModel.categories.observe(viewLifecycleOwner, { items ->
-            if (items != null && items.isNotEmpty()) adapter?.submitList(items)
-        })
-
-        viewModel.isEnabledOwnCategories.observe(viewLifecycleOwner, { isEnabled ->
-            binding.containerTextWordOwnTag.setOnClickListener {
-                viewModel.onClickOwnCategoryContent()
-            }
-            binding.textInputOwnTag.setOnClickListener {
-                viewModel.onClickOwnCategoryContent()
-            }
-            adapter?.isClickableItems = isEnabled
-            adapter?.additionalItemClickListener = {
-                viewModel.onClickOwnCategoryContent()
-            }
-        })
-
-        updateVoiceInputVisibility(SharedHelper.isShowVoiceInput())
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = FragmentWordBinding.inflate(inflater)
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -252,14 +115,84 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
         binding.textInputWord.doOnLayout {
             showKeyboard(it)
         }
+
+        binding.imageWordMicrophone.setOnClickListener {
+            val selectedLanguage = binding.spinnerWordLanguage.selectedItem as? String ?: ""
+            (activity as? MainActivity)?.requestRecognizeSpeech(selectedLanguage) {
+                if (it == null) {
+                    prefs.setShowVoiceInput(false)
+                    updateVoiceInputVisibility(false)
+                } else {
+                    binding.textInputWord.setText(it)
+                }
+            }
+        }
+        ArrayAdapter.createFromResource(context ?: return, R.array.array_languages, android.R.layout.simple_spinner_item).also { adapter ->
+            adapter.setDropDownViewResource(R.layout.view_item_spinner)
+            binding.spinnerWordLanguage.adapter = adapter
+        }
+        binding.spinnerWordLanguage.setSelection(prefs.getSelectedLocaleWord())
+        binding.spinnerWordLanguage.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                prefs.setSelectedLocaleWord(position)
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
+        binding.imageWordMicrophoneTranslation.setOnClickListener {
+            val selectedLanguage = binding.spinnerWordLanguageTranslation.selectedItem as? String ?: ""
+            (activity as? MainActivity)?.requestRecognizeSpeech(selectedLanguage) {
+                if (it == null) {
+                    prefs.setShowVoiceInput(false)
+                    updateVoiceInputVisibility(false)
+                } else {
+                    binding.textInputTranslation.setText(it)
+                }
+            }
+        }
+        ArrayAdapter.createFromResource(context ?: return, R.array.array_languages, android.R.layout.simple_spinner_item).also { adapter ->
+            adapter.setDropDownViewResource(R.layout.view_item_spinner)
+            binding.spinnerWordLanguageTranslation.adapter = adapter
+        }
+        binding.spinnerWordLanguageTranslation.setSelection(prefs.getSelectedLocaleTranslation())
+        binding.spinnerWordLanguageTranslation.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                prefs.setSelectedLocaleTranslation(position)
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
+        adapter = AdapterCategories(viewModel)
+        binding.recyclerViewWordOwnCategories.itemAnimator = null
+        binding.recyclerViewWordOwnCategories.adapter = adapter
+
+        updateVoiceInputVisibility(prefs.isShowVoiceInput())
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.item_menu_accept -> {
+                binding?.textInputTranslation?.onEditorAction(EditorInfo.IME_ACTION_DONE)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun subscribeToViewModel() {
+        super.subscribeToViewModel()
+
+        viewModel.categories.observe(viewLifecycleOwner) { items ->
+            if (items != null && items.isNotEmpty()) adapter?.submitList(items)
+        }
     }
 
     override fun setupThemeColors() {
         val binding = binding ?: return
-        binding.containerTextWordInputWord.boxStrokeColor = getPrimaryColorResId()
-        binding.containerTextWordInputTranscription.boxStrokeColor = getPrimaryColorResId()
-        binding.containerTextWordInputTranslation.boxStrokeColor = getPrimaryColorResId()
-        binding.containerTextWordOwnTag.boxStrokeColor = getPrimaryColorResId()
+        binding.containerTextWordInputWord.boxStrokeColor = getPrimaryColorResId(prefs.getAppThemeType())
+        binding.containerTextWordInputTranscription.boxStrokeColor = getPrimaryColorResId(prefs.getAppThemeType())
+        binding.containerTextWordInputTranslation.boxStrokeColor = getPrimaryColorResId(prefs.getAppThemeType())
+        binding.containerTextWordOwnTag.boxStrokeColor = getPrimaryColorResId(prefs.getAppThemeType())
     }
 
     override fun onNavigationEvent(eventId: Int) {
@@ -306,7 +239,8 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
             else -> {
                 hideKeyboard()
 
-                if (viewModel.isReadyToRateApp) {
+                // TODO: rate app dialog is disabled
+                if (false) {
                     val manager = ReviewManagerFactory.create(requireContext())
                     val request = manager.requestReviewFlow()
 
@@ -315,7 +249,6 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
                             val reviewInfo = ableToRateAnswer.result
                             val flow = manager.launchReviewFlow(requireActivity(), reviewInfo)
                             flow.addOnCompleteListener {
-                                SharedHelper.setCancelledRateDialog(true)
                                 viewModel.createOwnWord(eng, transcription, rus, ownCategory)
                             }
                         } else {
@@ -335,22 +268,5 @@ class FragmentWord : BaseFragment<ViewModelWord, FragmentWordBinding>() {
         binding.spinnerWordLanguage.visibility = if (isShow) View.VISIBLE else View.GONE
         binding.imageWordMicrophoneTranslation.visibility = if (isShow) View.VISIBLE else View.GONE
         binding.spinnerWordLanguageTranslation.visibility = if (isShow) View.VISIBLE else View.GONE
-    }
-
-    private fun showPopupTranslation(view: View, translationText: String, callback: () -> Unit) {
-        val popupMenu = PopupMenu(view.context, view)
-
-        popupMenu.inflate(R.menu.menu_popup_translation)
-        popupMenu.menu.findItem(R.id.item_menu_translation)?.title = translationText
-        popupMenu.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.item_menu_translation -> {
-                    callback()
-                }
-            }
-            true
-        }
-
-        popupMenu.show()
     }
 }

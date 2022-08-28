@@ -1,62 +1,64 @@
 package relaxeddd.englishnotify.ui.dictionary
 
-import android.view.View
-import android.widget.CompoundButton
 import androidx.annotation.CallSuper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import relaxeddd.englishnotify.common.*
-import relaxeddd.englishnotify.model.preferences.SharedHelper
-import relaxeddd.englishnotify.model.repository.RepositoryUser
-import relaxeddd.englishnotify.model.repository.RepositoryWord
+import relaxeddd.englishnotify.common.NAVIGATION_DIALOG_CHECK_TAGS
+import relaxeddd.englishnotify.common.NAVIGATION_DIALOG_SORTED_BY
+import relaxeddd.englishnotify.common.NAVIGATION_FRAGMENT_WORD
+import relaxeddd.englishnotify.common.NAVIGATION_LOADING_HIDE
+import relaxeddd.englishnotify.common.NAVIGATION_LOADING_SHOW
+import relaxeddd.englishnotify.common.NAVIGATION_PLAY_WORD
+import relaxeddd.englishnotify.domain_words.entity.Word
+import relaxeddd.englishnotify.domain_words.repository.RepositoryWords
+import relaxeddd.englishnotify.preferences.Preferences
+import relaxeddd.englishnotify.preferences.models.SortByType
+import relaxeddd.englishnotify.view_base.ViewModelBase
+import relaxeddd.englishnotify.view_base.models.Event
 
-open class ViewModelDictionary(private val repositoryWord: RepositoryWord, protected val repositoryUser: RepositoryUser) : ViewModelBase() {
+abstract class ViewModelDictionary(
+    private val prefs: Preferences,
+    private val repositoryWords: RepositoryWords,
+) : ViewModelBase() {
 
     open val isShowOwnWordsContainer = true
 
-    val user: LiveData<User?> = repositoryUser.liveDataUser
-    val sortByType = MutableLiveData(SortByType.getByName(SharedHelper.getSortByType()))
+    val sortByType = MutableLiveData(SortByType.getByName(prefs.getSortByType()))
     val filterTags = MutableLiveData<HashSet<String>>(HashSet())
-    val isShowOwnWords = MutableLiveData(SharedHelper.isShowOwnWords())
     val tags = HashSet<String>()
     val wordsFiltered = MutableLiveData<List<Word>>(ArrayList())
     var playWord: Word? = null
     var editWord: Word? = null
 
-    private val words: LiveData<List<Word>> = repositoryWord.words
+    private val words: LiveData<List<Word>> = repositoryWords.words
     private val wordsObserver = Observer<List<Word>> { words ->
         tags.clear()
         words?.forEach { it.tags.forEach { tag -> if (tag.isNotEmpty()) tags.add(tag) } }
         updateFilteredWords()
     }
     private val sortObserver = Observer<SortByType> { sort ->
-        SharedHelper.setSortByType(sort.name)
-    }
-    val checkedChangeListenerShowOwnWords = CompoundButton.OnCheckedChangeListener { _, isChecked ->
-        SharedHelper.setShowOwnWords(isChecked)
-        isShowOwnWords.value = isChecked
-        updateFilteredWords()
-        navigateEvent.value = Event(NAVIGATION_ACTION_HIDE_FILTER)
+        prefs.setSortByType(sort.name)
     }
 
     init {
-        repositoryWord.words.observeForever(wordsObserver)
+        repositoryWords.words.observeForever(wordsObserver)
         sortByType.observeForever(sortObserver)
     }
 
     override fun onCleared() {
         super.onCleared()
-        repositoryWord.words.removeObserver(wordsObserver)
+        repositoryWords.words.removeObserver(wordsObserver)
     }
 
-    val clickListenerFilterTags = View.OnClickListener {
+    fun onClickedFilterTags() {
         navigateEvent.value = Event(NAVIGATION_DIALOG_CHECK_TAGS)
     }
-    val clickListenerSortBy = View.OnClickListener {
-        navigateEvent.value = Event(NAVIGATION_DIALOG_SORT_BY)
+
+    fun onClickedSortedBy() {
+        navigateEvent.value = Event(NAVIGATION_DIALOG_SORTED_BY)
     }
 
     fun playWord(word: Word?) {
@@ -85,8 +87,8 @@ open class ViewModelDictionary(private val repositoryWord: RepositoryWord, prote
 
     fun resetProgress(word: Word) {
         viewModelScope.launch {
-            repositoryWord.setWordLearnStage(word, 0, false)
-            repositoryWord.setWordLearnStage(word, 0, true)
+            repositoryWords.setWordLearnStage(word, 0, false)
+            repositoryWords.setWordLearnStage(word, 0, true)
         }
     }
 
@@ -95,26 +97,10 @@ open class ViewModelDictionary(private val repositoryWord: RepositoryWord, prote
         navigateEvent.value = Event(NAVIGATION_FRAGMENT_WORD)
     }
 
-    fun addToOwn(word: Word) {
-        navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
-        viewModelScope.launch {
-            repositoryWord.addToOwn(word.id)
-            navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
-        }
-    }
-
-    fun removeFromOwnDict(word: Word) {
-        navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
-        viewModelScope.launch {
-            repositoryWord.removeFromOwn(word.id)
-            navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
-        }
-    }
-
     fun deleteWord(word: Word) {
         navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
         viewModelScope.launch {
-            repositoryWord.deleteWord(word.id)
+            repositoryWords.deleteWord(word.id)
             navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
         }
     }
@@ -126,7 +112,7 @@ open class ViewModelDictionary(private val repositoryWord: RepositoryWord, prote
 
             words.forEach { listIds.add(it.id) }
             if (listIds.isNotEmpty()) {
-                repositoryWord.deleteWords(listIds.toList())
+                repositoryWords.deleteWords(listIds.toList())
             }
             navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
         }
@@ -134,7 +120,7 @@ open class ViewModelDictionary(private val repositoryWord: RepositoryWord, prote
 
     //------------------------------------------------------------------------------------------------------------------
     @CallSuper
-    protected open fun filterWords(items: HashSet<Word>) : HashSet<Word> {
+    protected open fun filterWords(prefs: Preferences, items: HashSet<Word>) : HashSet<Word> {
         return items.filter { !it.isDeleted }.toHashSet()
     }
 
@@ -154,7 +140,7 @@ open class ViewModelDictionary(private val repositoryWord: RepositoryWord, prote
                     || it.transcription.lowercase().contains(searchText) }.toHashSet()
         }
 
-        filteredItems = filterWords(filteredItems)
+        filteredItems = filterWords(prefs, filteredItems)
 
         val sortList = when (sortByType.value) {
             SortByType.ALPHABETICAL_NAME -> filteredItems.sortedBy{ it.eng.lowercase() }

@@ -9,12 +9,12 @@ import android.view.WindowInsets
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.model.preferences.SharedHelper
 import kotlin.math.roundToInt
 
-class NavigationBarContentFrameLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null,
-                                                                defStyleAttr: Int = 0)
-        : FrameLayout(context, attrs, defStyleAttr) {
+class NavigationBarContentFrameLayout @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : FrameLayout(context, attrs, defStyleAttr) {
 
     private var navigationBarDividerColor: Int = 0
         set(value) {
@@ -38,9 +38,8 @@ class NavigationBarContentFrameLayout @JvmOverloads constructor(context: Context
     }
 
     init {
-        val dividerSizeResId = if (SharedHelper.isOldNavigationDesign()) R.dimen.size_0 else R.dimen.size_1
         navigationBarDividerColor = ContextCompat.getColor(context, R.color.transparent)
-        navigationBarDividerSize = resources.getDimension(dividerSizeResId).roundToInt()
+        navigationBarDividerSize = resources.getDimension(R.dimen.size_1).roundToInt()
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {

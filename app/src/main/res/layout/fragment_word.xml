@@ -1,25 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <data>
-
-        <import type="android.view.View"/>
-        <variable
-            name="viewModel"
-            type="relaxeddd.englishnotify.ui.word.ViewModelWord" />
-    </data>
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/info_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/info_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <include layout="@layout/view_toolbar"/>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_view_word"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -47,28 +38,6 @@
                 android:layout_marginStart="@dimen/size_12"
                 android:layout_marginTop="@dimen/size_16">
 
-                <FrameLayout
-                    android:layout_width="@dimen/size_42"
-                    android:layout_height="@dimen/size_42"
-                    android:layout_gravity="center_vertical">
-
-                    <ImageView
-                        android:id="@+id/image_word_translate"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="@dimen/size_8"
-                        app:srcCompat="@drawable/ic_translate"
-                        android:background="?android:attr/selectableItemBackground"/>
-
-                    <ProgressBar
-                        android:id="@+id/progress_bar_word_translate"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="@dimen/size_8"
-                        android:visibility="invisible"/>
-
-                </FrameLayout>
-
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/container_text_word_input_word"
                     android:layout_width="0dp"
@@ -76,7 +45,6 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     app:boxStrokeColor="@color/colorPrimary"
                     android:layout_marginEnd="@dimen/size_12"
-                    android:layout_marginStart="@dimen/size_4"
                     android:layout_weight="1">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -137,28 +105,6 @@
                 android:layout_marginStart="@dimen/size_12"
                 android:layout_marginTop="@dimen/size_16">
 
-                <FrameLayout
-                    android:layout_width="@dimen/size_42"
-                    android:layout_height="@dimen/size_42"
-                    android:layout_gravity="center_vertical">
-
-                    <ImageView
-                        android:id="@+id/image_word_translate_translation"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="@dimen/size_8"
-                        app:srcCompat="@drawable/ic_translate"
-                        android:background="?android:attr/selectableItemBackground"/>
-
-                    <ProgressBar
-                        android:id="@+id/progress_bar_word_translate_translation"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="@dimen/size_8"
-                        android:visibility="invisible"/>
-
-                </FrameLayout>
-
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/container_text_word_input_translation"
                     android:layout_width="0dp"
@@ -166,7 +112,6 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     app:boxStrokeColor="@color/colorPrimary"
                     android:layout_marginEnd="@dimen/size_12"
-                    android:layout_marginStart="@dimen/size_4"
                     android:layout_weight="1">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -205,7 +150,6 @@
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:boxStrokeColor="@color/colorPrimary"
-                android:alpha="@{viewModel.isEnabledOwnCategories ? 1f : 0.5f}"
                 android:layout_marginHorizontal="@dimen/size_12"
                 android:layout_marginTop="@dimen/size_16">
 
@@ -216,7 +160,6 @@
                     android:textColor="@color/text_color_main"
                     android:singleLine="true"
                     android:maxLength="200"
-                    android:focusable="@{viewModel.isEnabledOwnCategories}"
                     android:hint="@string/own_category"/>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -234,19 +177,16 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_word_own_categories"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/size_42"
                 android:layout_marginTop="@dimen/size_12"
                 android:clipToPadding="false"
                 android:nestedScrollingEnabled="false"
-                android:alpha="@{viewModel.isEnabledOwnCategories ? 1f : 0.5f}"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/view_item_category"/>
 
         </LinearLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-</layout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

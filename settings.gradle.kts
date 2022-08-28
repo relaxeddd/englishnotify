@@ -1,9 +1,16 @@
-include(":app")
-
 dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        jcenter()
     }
 }
+
+include(":app")
+include(":domain-words")
+include(":common")
+include(":preferences")
+include(":view-base")
+include(":notifications")
+include(":screen-settings")
+include(":common-ui-func")
+include(":common-di")

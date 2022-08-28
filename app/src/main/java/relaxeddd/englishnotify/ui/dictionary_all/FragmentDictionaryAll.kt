@@ -1,12 +1,21 @@
 package relaxeddd.englishnotify.ui.dictionary_all
 
-import relaxeddd.englishnotify.common.InjectorUtils
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.ui.dictionary.AdapterDictionary
 import relaxeddd.englishnotify.ui.dictionary.FragmentDictionary
+import javax.inject.Inject
 
 class FragmentDictionaryAll : FragmentDictionary<ViewModelDictionaryAll, AdapterDictionary>() {
 
-    override fun getViewModelFactory() = InjectorUtils.provideDictionaryAllViewModelFactory(requireContext())
-    override fun getViewModelClass() = ViewModelDictionaryAll::class.java
-    override fun createWordsAdapter() = AdapterDictionary(viewModel)
+    @Inject
+    override lateinit var prefs: Preferences
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    override val viewModel by viewModels<ViewModelDictionaryAll> { viewModelFactory }
+
+    override fun createWordsAdapter() = AdapterDictionary(prefs, viewModel)
 }

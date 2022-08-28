@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:ignore="UnusedAttribute">
+    android:id="@+id/info_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/info_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
-
-        <include layout="@layout/view_toolbar"/>
+    <include layout="@layout/view_toolbar"/>
 
     <LinearLayout
         android:id="@+id/container_dictionary_container"
@@ -34,6 +31,4 @@
 
     </LinearLayout>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-</layout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

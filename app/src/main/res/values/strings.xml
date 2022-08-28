@@ -3,12 +3,11 @@
 
     <string name="app_name">English Words Notifications</string>
 
-    <string name="about_app">About app</string>
     <string name="accept">Accept</string>
     <string name="add_multiple_words">Add multiple words</string>
     <string name="add_to_own_category">Add to own category</string>
     <string name="add_word">Add word</string>
-    <string name="all_words">All words</string>
+    <string name="all_words">My words</string>
     <string name="alphabetical_name">Alphabetical name</string>
     <string name="alphabetical_translate">Alphabetical translate</string>
     <string name="already_know">Already know</string>
@@ -18,21 +17,12 @@
     <string name="answer_exercise">Answer: %s</string>
     <string name="app_info">App info</string>
     <string name="app_language">App language</string>
-    <string name="app_theme">App theme</string>
     <string name="apply">Apply</string>
-    <string name="answer_correct">Correct answer</string>
-    <string name="answer_incorrect">Incorrect answer</string>
-    <string name="background_start">Background starting</string>
-    <string name="cancel">Cancel</string>
     <string name="cancel_check">Cancel check</string>
     <string name="category_own_not_selected">Category not selected. Firstly, add words to "Own category"</string>
     <string name="change_account_text">You login with another account. The dictionary will be cleared.</string>
     <string name="check_all">Check all</string>
     <string name="check_learned_words">Check learned words</string>
-    <string name="close">Close</string>
-    <string name="common">Common</string>
-    <string name="confirm">Confirm</string>
-    <string name="confirm_and_continue">Confirm and continue</string>
     <string name="correct">Correct!</string>
     <string name="correct_answer">Correct answer</string>
     <string name="delete">Delete</string>
@@ -78,10 +68,8 @@
     <string name="hide">Hide</string>
     <string name="hide_off_notifications_warning">Hide off notifications warning</string>
     <string name="hours_off_time">Hours (0–23)</string>
-    <string name="i_not_know_it">I don`t know</string>
-    <string name="i_know_it">I know it</string>
     <string name="if_notifications_not_receive">If you do not receive notifications</string>
-    <string name="is_old_navigation_design">Old navigation design</string>
+    <string name="is_old_navigation_design">Bottom navigation</string>
     <string name="is_show_voice_input">Show voice input</string>
     <string name="incorrect">Incorrect</string>
     <string name="incorrect_answer">Incorrect answer</string>
@@ -101,8 +89,6 @@
     <string name="main">Main</string>
     <string name="memorize">Memorize</string>
     <string name="mixed">Mixed</string>
-    <string name="need_enable_secondary_progress">Need to enable word secondary progress</string>
-    <string name="need_subscription_desc">Sorry, you need to have premium account</string>
     <string name="new_categories">New</string>
     <string name="new_version">New version</string>
     <string name="network_not_available">Network error</string>
@@ -126,7 +112,6 @@
     <string name="not_show_notifications">Don`t show notifications beginning with (24-hour clock, the number from 0 to 23)</string>
     <string name="notification_categories">Notification categories</string>
     <string name="notification_learn_points">Notification learn points</string>
-    <string name="notification_learn_points_desc">Increasing progress by:</string>
     <string name="notifications_language">Notifications language</string>
     <string name="notifications_not_receiving_enable">Notifications is not receiving, please enable it</string>
     <string name="notifications_not_receiving_authorize">Notifications is not receiving, please sign in</string>
@@ -148,7 +133,6 @@
     <string name="please_wait">Please, wait</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="privacy_policy_in_sentence">Privacy Policy</string>
-    <string name="progress_swapped">Words progress swapped</string>
     <string name="purchase_consumed">Success purchase, thank you!</string>
     <string name="rate_app">Rate app</string>
     <string name="rate_app_pls">Rate app, please</string>
@@ -158,7 +142,6 @@
     <string name="receive_notifications_time">Receive notifications time</string>
     <string name="receive_only_exist_words">Receive only exist words</string>
     <string name="remove_from_own_category">Remove from own category</string>
-    <string name="renew_subscription">Get premium account</string>
     <string name="reset_progress">Reset progress</string>
     <string name="right">Right!</string>
     <string name="russian_at_english">Translation-word</string>
@@ -166,30 +149,16 @@
     <string name="show_only_one_last_notification">Show only one last notification</string>
     <string name="show_own_words">Show own words</string>
     <string name="show_progress_in_training">Show progress in training</string>
-    <string name="show_translation">I don`t know</string>
     <string name="show_word_progress">Is show word progress</string>
     <string name="search_words">Search words</string>
-    <string name="secondary_word_progress">Secondary word progress</string>
-    <string name="secondary_word_progress_info">Secondary progress depends on translation to word training. To increase main progress you have to write translation in trainings or notifications. Secondary progress is increasing when you have translation and input the word of this translation. Also you can swap progress values between themselves to get needed setting.</string>
     <string name="send_feedback">Send feedback</string>
-    <string name="send_test_notification">Send test notification? (%s notifications left)</string>
+    <string name="send_test_notification">Send test notification?</string>
     <string name="select">Select</string>
     <string name="settings">Settings</string>
     <string name="settings_not_found">Settings not found</string>
     <string name="sort_by">Sort by</string>
     <string name="statistic">Statistic</string>
-    <string name="sub_advantages">Premium account advantages</string>
-    <string name="sub_advantages_info">Renewing premium account is one-time purchase. No automatic renewing after getting premium account.
-        \n\n- Receive notifications more than once per 4 hours
-        \n\n- Saving and loading saved dictionary option
-        \n\n- Creating your own categories
-        \n\n- Words translation on adding words screen
-        \n\n- Extra test notifications</string>
-    <string name="subscription_days">Premium account days: %s</string>
-    <string name="subscription_time_error">Expired premium account, you can renew it to get advantages</string>
-    <string name="subscription_need">Premium account required</string>
     <string name="swap_main_and_secondary_progress">Swap main and secondary word progress</string>
-    <string name="swap_main_and_secondary_progress_text">Swap main and secondary word progress. It is applying to all words</string>
     <string name="swipe_delete_disable">Notifications swipe delete disable</string>
     <string name="thank_you">Thank you!</string>
     <string name="tags_should_not_be_empty">Tags should not be empty</string>
@@ -206,7 +175,6 @@
     <string name="translation_transcription_delimiter">Translation, transcription delimiter</string>
     <string name="true_answer">True!</string>
     <string name="true_answers_number_to_learn">True answers number to learn</string>
-    <string name="true_answers_number_to_learn_desc">True answers to learn:</string>
     <string name="undefined_error">Undefined error</string>
     <string name="unauthorized_error">Unauthorized error</string>
     <string name="update">Update</string>
@@ -229,7 +197,6 @@
     <string name="words_saved">Words saved: %s</string>
     <string name="words_saved_success">Words have been saved</string>
     <string name="words_should_not_be_empty">Words should not be empty</string>
-    <string name="words_training">Words training</string>
     <string name="wrong">Wrong</string>
     <string name="yes">Yes</string>
     <string name="you_like_app">Do you like this app?</string>
@@ -258,25 +225,15 @@
 
     <string name="service_notifications_count_listener" translatable="false">NotificationsListenerService</string>
 
-    <string name="text_dialog_receive_help">You have turned on background starting option. It may fix receive notifications bug. You can disable it in Android Settings -> Applications or reinstall app. If it does not help see https://dontkillmyapp.com (Solution for users)</string>
-
     <string name="text_dialog_check_save_words">Do you really want to save words? All previously saved words would be rewritten.</string>
 
     <string name="text_dialog_check_load_words">Do you really want to load words? All your current words in dictionary would be rewritten.</string>
 
     <string name="text_rate_app">Write comments and suggestions. What you want to see in the app</string>
 
-    <string name="text_app_about">
-        Select categories of words which you want to learn and you will receive English words in push notifications. Categories of words adding without app update.
-        \n\nВерсия приложения: %s</string>
     <string name="text_own_category">
         You will receive words from here if select "Own category" in notification settings
         \n\nYou can add words here from dictionary (long tap on word) or input via plus button
-    </string>
-    <string name="text_info_words_training">
-        Click at the book icon in dictionary tab to train words.
-        \n\nThe words training increase word learn progress. If answer is wrong in training - word progress sets to 0.
-        \n\nTraining word matches if word has not max learn progress
     </string>
 
     <string name="text_enter_name">
@@ -297,12 +254,15 @@
     </string>
 
     <string name="patch_notes">
-        - Fixed logout bug when notifications can be received after logout
+        - The application doesn`t use Internet at all. Now it is offline app
+        \n- It is no way to receive words from the backend, so you need to fill the dictionary by your own words
+        \n- Words translation feature while adding words was removed
+        \n- Now you can choose to receive notification every 30 minutes without subscription, but this is new way to send notifications and it is not 100% will work on all Android devices :(
+        \n\n- Fixed bug when notifications can be received after logout
         \n- Display keyboard fixes on Add word screen and Training screen
-        \n- Added Updates History menu item in Common tab
-        \n- Fixed resetting learn progress bug while adding exists word
-        \n- Fixed search bug when you got to Add work screen and the go back
-        \n- Feel free to message for.gamer.develop@gmail.com to ask for fixes, new features
+        \n- Added Updates History menu item at Common tab
+        \n- Fixed reset learn progress bug while adding exists word
+        \n- Fixed search bug when you go to Add word screen and then go back
         \n\n- Possible authorization fix
         \n- New option of receiving only exists words from your dictionary in Notifications tab
         \n- Notifications fixes
@@ -338,13 +298,13 @@
     </string>
 
     <!-- =========================================================================================================== -->
-    <string name="every_30_min">Every 30 min (premium account required)</string>
-    <string name="every_1_hour">Every hour (premium account required)</string>
-    <string name="every_1_5_hours">Every 1,5 hours (premium account required)</string>
-    <string name="every_2_hours">Every 2 hours (premium account required)</string>
-    <string name="every_2_5_hours">Every 2,5 hours (premium account required)</string>
-    <string name="every_3_hours">Every 3 hours (premium account required)</string>
-    <string name="every_3_5_hours">Every 3,5 hours (premium account required)</string>
+    <string name="every_30_min">Every 30 min</string>
+    <string name="every_1_hour">Every hour</string>
+    <string name="every_1_5_hours">Every 1,5 hours</string>
+    <string name="every_2_hours">Every 2 hours</string>
+    <string name="every_2_5_hours">Every 2,5 hours</string>
+    <string name="every_3_hours">Every 3 hours</string>
+    <string name="every_3_5_hours">Every 3,5 hours</string>
     <string name="every_4_hours">Every 4 hours</string>
     <string name="every_4_5_hours">Every 4,5 hours</string>
     <string name="every_5_hours">Every 5 hours</string>
@@ -355,80 +315,7 @@
     <string name="every_7_5_hours">Every 7,5 hours</string>
     <string name="every_8_hours">Every 8 hours</string>
 
-    <string name="own">All own words</string>
-    <string name="irregular">Irregular verbs</string>
-    <string name="hard">Hard</string>
-    <string name="all_app_words">All app words</string>
-    <string name="all_app_words_without_simple">All app words (level 2)</string>
-    <string name="hard_5">Hard (level 2)</string>
-    <string name="pronoun">Pronouns</string>
-    <string name="proverb">Proverbs</string>
-    <string name="tourists">For tourists</string>
-    <string name="tourists_5">For tourists (level 2)</string>
-
-    <string name="human_body">Human body</string>
-    <string name="human_body_5">Human body (level 2)</string>
-    <string name="clothes">Clothes</string>
-    <string name="colors">Colors</string>
-    <string name="colors_5">Colors (level 2)</string>
-    <string name="time">Time</string>
-    <string name="time_5">Time (level 2)</string>
-    <string name="phrases">Phrases</string>
-    <string name="phrases_5">Phrases (level 2)</string>
-    <string name="animals">Animals</string>
-    <string name="animals_5">Animals (level 2)</string>
-    <string name="family">Family</string>
-    <string name="family_5">Family (level 2)</string>
-    <string name="human_qualities">Human qualities</string>
-    <string name="human_qualities_5">Human qualities (level 2)</string>
-    <string name="feelings">Feelings</string>
-    <string name="feelings_5">Feelings (level 2)</string>
-    <string name="emotions">Emotions</string>
-    <string name="emotions_5">Emotions (level 2)</string>
-    <string name="work">Work</string>
-    <string name="work_5">Work (level 2)</string>
-    <string name="movement">Movements and actions</string>
-    <string name="movement_5">Movements and actions (level 2)</string>
-    <string name="professions">Professions</string>
-    <string name="professions_5">Professions (level 2)</string>
-    <string name="frequent">Frequent</string>
-    <string name="frequent_5">Frequent (level 2)</string>
-    <string name="education">Education</string>
-    <string name="education_5">Education (level 2)</string>
-    <string name="food">Food</string>
-    <string name="food_5">Food (level 2)</string>
-    <string name="weather">Weather</string>
-    <string name="weather_5">Weather (level 2)</string>
-    <string name="house">House</string>
-    <string name="house_5">House (level 2)</string>
-    <string name="geography">Geography</string>
-    <string name="geography_5">Geography (level 2)</string>
-    <string name="entertainment">Entertainment</string>
-    <string name="entertainment_5">Entertainment (level 2)</string>
-    <string name="sport">Sport</string>
-    <string name="sport_5">Sport (level 2)</string>
-    <string name="auto">Auto</string>
-    <string name="auto_5">Auto (level 2)</string>
-    <string name="frequent_verbs">Frequent verbs</string>
-    <string name="frequent_verbs_5">Frequent verbs (level 2)</string>
-    <string name="exercises_verbs_first">ex. Verb form (1)</string>
-    <string name="exercises_conditional_sentences_1">ex. Conditional sentences (1)</string>
-    <string name="exercises_comparison_adjectives_1">ex. Comparison adjectives (1)</string>
-    <string name="exercises_passive_voice_1">ex. Passive voice (1)</string>
-    <string name="exercises_articles_1">ex. Articles (1)</string>
-    <string name="exercises_modal_verbs_1">ex. Modal verbs (1)</string>
-    <string name="exercises_indirect_speech_1">ex. Indirect speech (1)</string>
-    <string name="exercises_reflexive_1">ex. Reflexive (1)</string>
-    <string name="exercises_verbs_2">ex. Verbs (2)</string>
-    <string name="exercises_place_pretexts_1">ex. Place pretexts (1)</string>
-
     <string name="privacy_policy_text">Clicked authorize, you agree to our Privacy Policy</string>
-
-    <!--
-        This is the name that users will see when interacting with this channel.
-        It should describe the category of notifications that will be sent through this channel
-     -->
-    <string name="default_notification_channel_id" translatable="false">channel_id_relaxeddd_pushenglish</string>
 
     <!--Content descriptions-->
     <string name="ic_notifications_enable" translatable="false">Enable notifications option</string>
@@ -440,7 +327,6 @@
     <string name="ic_night_time" translatable="false">Notifications night time option</string>
     <string name="ic_send_test_notification" translatable="false">Send test notification</string>
     <string name="ic_application_info" translatable="false">Application info</string>
-    <string name="ic_subscription_settings" translatable="false">Premium account settings</string>
     <string name="ic_send_feedback" translatable="false">Send feedback</string>
     <string name="ic_training_words_information" translatable="false">Training words information</string>
     <string name="ic_own_words_information" translatable="false">Own words information</string>
@@ -448,7 +334,6 @@
     <string name="ic_learn_stage_settings" translatable="false">Is show learn stage option</string>
     <string name="ic_logout" translatable="false">Logout</string>
     <string name="ic_main_warning_notifications" translatable="false">Warning notifications</string>
-    <string name="ic_main_warning_subscription" translatable="false">Warning premium account</string>
     <string name="ic_own" translatable="false">Word in own category</string>
     <string name="ic_own_created" translatable="false">Word in own category which created by you</string>
     <string name="ic_rating" translatable="false">Users rating by learned words</string>

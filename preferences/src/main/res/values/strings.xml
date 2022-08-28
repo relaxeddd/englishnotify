@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="alphabetical_name">Alphabetical name</string>
+    <string name="alphabetical_translate">Alphabetical translate</string>
+    <string name="time_new">Time new</string>
+    <string name="time_old">Time old</string>
+</resources>

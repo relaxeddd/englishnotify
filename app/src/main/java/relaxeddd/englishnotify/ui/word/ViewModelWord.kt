@@ -1,20 +1,30 @@
 package relaxeddd.englishnotify.ui.word
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.android.material.radiobutton.MaterialRadioButton
 import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.*
-import relaxeddd.englishnotify.model.preferences.SharedHelper
-import relaxeddd.englishnotify.model.repository.RepositoryCommon
-import relaxeddd.englishnotify.model.repository.RepositoryUser
-import relaxeddd.englishnotify.model.repository.RepositoryWord
+import relaxeddd.englishnotify.common.CategoryItem
+import relaxeddd.englishnotify.common.ISelectCategory
+import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK
+import relaxeddd.englishnotify.common.NAVIGATION_WORD_EXISTS_DIALOG
+import relaxeddd.englishnotify.common.NAVIGATION_WORD_EXISTS_ERROR
+import relaxeddd.englishnotify.common.showToast
+import relaxeddd.englishnotify.domain_words.entity.Word
+import relaxeddd.englishnotify.domain_words.repository.RepositoryWords
+import relaxeddd.englishnotify.preferences.Preferences
+import relaxeddd.englishnotify.view_base.ViewModelBase
+import relaxeddd.englishnotify.view_base.models.Event
+import javax.inject.Inject
 
-class ViewModelWord : ViewModelBase(), ISelectCategory {
+class ViewModelWord @Inject constructor(
+    private val context: Context,
+    private val prefs: Preferences,
+    private val repositoryWords: RepositoryWords,
+) : ViewModelBase(), ISelectCategory {
 
-    val isReadyToRateApp: Boolean
-    val isEnabledOwnCategories = MutableLiveData(true)
     val categories = MutableLiveData<List<CategoryItem>>(ArrayList())
     private var checkedItem: CategoryItem? = null
     var existsWordId = ""
@@ -29,20 +39,6 @@ class ViewModelWord : ViewModelBase(), ISelectCategory {
     private var updateRus: String = ""
     private var updateOwnTag: String? = ""
 
-    private var isTranslating = false
-    private var lastTranslationText = ""
-    private var lastTranslationResult = ""
-    private var lastTranslationLanguage = ""
-
-    init {
-        val user = RepositoryUser.getInstance().liveDataUser.value
-        val isEnabledOwnCategoriesValue = user != null && user.isSubscribed()
-        isEnabledOwnCategories.value = isEnabledOwnCategoriesValue
-
-        val isRated = SharedHelper.isCancelledRateDialog()
-        isReadyToRateApp = !isRated && RepositoryWord.getInstance().isEnoughLearnedWordsToRate()
-    }
-
     override fun getSelectedCategory() = checkedItem?.key
     override fun setSelectedCategory(item: CategoryItem?) {
         checkedItem = item
@@ -50,31 +46,30 @@ class ViewModelWord : ViewModelBase(), ISelectCategory {
     override fun onRadioButtonInit(category: String, radioButton: MaterialRadioButton) {}
 
     fun createOwnWord(eng: String, transcription: String, rus: String, ownTag: String) {
-        val finalOwnTag = if (isEnabledOwnCategories.value == true) {
-            if (ownTag.isBlank()) checkedItem?.key ?: "" else "!$ownTag"
-        } else {
-            null
+        val finalOwnTag = ownTag.ifBlank { checkedItem?.key ?: "" }
+
+        if (finalOwnTag.isNotBlank()) {
+            prefs.setLastOwnCategory(finalOwnTag)
         }
-        if (finalOwnTag != null) {
-            SharedHelper.setLastOwnCategory(finalOwnTag)
+        val tags = when {
+            finalOwnTag.isNotEmpty() -> listOf(finalOwnTag)
+            else -> emptyList()
         }
 
         viewModelScope.launch {
-            var existsWord = RepositoryWord.getInstance().getWord(eng)
+            var existsWord = repositoryWords.getWord(eng)
 
             if (existsWordId.isNotEmpty()) {
-                existsWord = RepositoryWord.getInstance().getWord(existsWordId)
-                val tags = when {
-                    finalOwnTag == null -> null
-                    finalOwnTag.isNotEmpty() -> listOf(finalOwnTag)
-                    else -> emptyList()
-                }
+                existsWord = repositoryWords.getWord(existsWordId)
+                val updateIsRequired = existsWord == null || existsWord.eng != eng || existsWord.rus != rus
+                        || existsWord.transcription != transcription
+                        || tags.size != existsWord.tags.size || tags.firstOrNull() != existsWord.tags.firstOrNull()
 
-                if (existsWord == null || existsWord.eng != eng || existsWord.rus != rus || existsWord.transcription != transcription
-                        || (tags != null && (tags.size != existsWord.tags.size || !tags.containsAll(existsWord.tags)))) {
-                    RepositoryWord.getInstance().insertOwnCategoryWord(eng, eng, rus, transcription, tags ?: existsWord?.tags ?: emptyList())
+                if (updateIsRequired) {
+                    repositoryWords.insertOwnCategoryWord(eng, eng, rus, transcription, tags)
+
                     if (eng != this@ViewModelWord.existsWordId) {
-                        RepositoryWord.getInstance().removeWordFromDb(this@ViewModelWord.existsWordId)
+                        repositoryWords.removeWordFromDb(this@ViewModelWord.existsWordId)
                     }
                 }
             } else {
@@ -92,8 +87,7 @@ class ViewModelWord : ViewModelBase(), ISelectCategory {
                     }
                     return@launch
                 } else {
-                    val tags = if (finalOwnTag?.isNotEmpty() == true) listOf(finalOwnTag) else emptyList()
-                    RepositoryWord.getInstance().insertOwnCategoryWord(eng, eng, rus, transcription, tags)
+                    repositoryWords.insertOwnCategoryWord(eng, eng, rus, transcription, tags)
                 }
             }
 
@@ -105,15 +99,15 @@ class ViewModelWord : ViewModelBase(), ISelectCategory {
         viewModelScope.launch {
             val findWord = this@ViewModelWord.findWord
             val oldWordId = if (findWord != null) findWord.id else {
-                showToast(R.string.error_update)
+                showToast(context, R.string.error_update)
                 return@launch
             }
             val eng = if (updateEng.isNotEmpty()) updateEng else {
-                showToast(R.string.error_update)
+                showToast(context, R.string.error_update)
                 return@launch
             }
             val rus = if (updateEng.isNotEmpty()) updateRus else {
-                showToast(R.string.error_update)
+                showToast(context, R.string.error_update)
                 return@launch
             }
             val transcription = if (updateTranscription.isNotEmpty()) updateTranscription else findWord.transcription
@@ -124,84 +118,36 @@ class ViewModelWord : ViewModelBase(), ISelectCategory {
                 findWord.v2, findWord.v3, findWord.timestamp, false, 0, findWord.type, findWord.isCreatedByUser,
                 true, findWord.level, 0)
 
-            RepositoryWord.getInstance().updateWord(updateWord)
+            repositoryWords.updateWord(updateWord)
             if (updateEng != oldWordId) {
-                RepositoryWord.getInstance().removeWordFromDb(oldWordId)
+                repositoryWords.removeWordFromDb(oldWordId)
             }
 
             navigateEvent.value = Event(NAVIGATION_ACTIVITY_BACK)
         }
     }
 
-    fun onClickTranslate(text: String, fromLanguage: String, toLanguage: String, callback: (String?) -> Unit) {
-        val user = RepositoryUser.getInstance().liveDataUser.value
-
-        if (user == null) {
-            showToast(R.string.please_authorize)
-            callback(null)
-            return
-        }
-        if (!user.isSubscribed()) {
-            navigateEvent.value = Event(NAVIGATION_DIALOG_SUBSCRIPTION_REQUIRED)
-            callback(null)
-            return
-        }
-        if (text.trim().isEmpty() || isTranslating) {
-            callback(null)
-            return
-        }
-        if (text == lastTranslationText && toLanguage == lastTranslationLanguage) {
-            callback(lastTranslationResult)
-            return
-        }
-
-        isTranslating = true
-        viewModelScope.launch {
-            isTranslating = false
-
-            val translation = RepositoryCommon.getInstance().requestTranslation(text, fromLanguage, toLanguage)
-
-            lastTranslationText = text
-            lastTranslationResult = translation
-            lastTranslationLanguage = toLanguage
-
-            callback(translation)
-        }
-    }
-
-    fun onClickOwnCategoryContent() {
-        val user = RepositoryUser.getInstance().liveDataUser.value
-
-        if (user == null) {
-            showToast(R.string.please_authorize)
-        } else if (isEnabledOwnCategories.value == false) {
-            navigateEvent.value = Event(NAVIGATION_DIALOG_SUBSCRIPTION_REQUIRED)
-        }
-    }
-
     private fun updateCategories() {
         viewModelScope.launch {
             val list = ArrayList<CategoryItem>()
-            val allTags = RepositoryWord.getInstance().getOwnWordCategories()
+            val allTags = repositoryWords.getOwnWordCategories()
 
             for (tag in allTags) {
                 list.add(CategoryItem(tag))
             }
 
-            if (isEnabledOwnCategories.value == true) {
-                val lastOwnCategory = CategoryItem(SharedHelper.getLastOwnCategory())
+            val lastCategory = CategoryItem(prefs.getLastOwnCategory())
 
-                if (existsWordId.isNotEmpty()) {
-                    val existsWord = RepositoryWord.getInstance().getWord(existsWordId)
-                    val existsWordOwnCategoryKey = existsWord?.tags?.find { isOwnCategory(it) }
+            if (existsWordId.isNotEmpty()) {
+                val existsWord = repositoryWords.getWord(existsWordId)
+                val existsWordCategoryKey = existsWord?.tags?.firstOrNull()
 
-                    if (existsWordOwnCategoryKey != null && list.contains(CategoryItem(existsWordOwnCategoryKey))) {
-                        checkedItem = CategoryItem(existsWordOwnCategoryKey)
-                    }
-                } else if (lastOwnCategory.key.isNotEmpty()) {
-                    if (list.contains(lastOwnCategory)) {
-                        checkedItem = lastOwnCategory
-                    }
+                if (existsWordCategoryKey != null && list.contains(CategoryItem(existsWordCategoryKey))) {
+                    checkedItem = CategoryItem(existsWordCategoryKey)
+                }
+            } else if (lastCategory.key.isNotEmpty()) {
+                if (list.contains(lastCategory)) {
+                    checkedItem = lastCategory
                 }
             }
 

@@ -61,7 +61,7 @@ class AdapterCategories(val viewModel: ISelectCategory) : ListAdapter<CategoryIt
             radioButtonCategory?.let { radioButtonCategory ->
                 val isChecked = item.key == selectedCategory
                 radioButtonCategory.tag = item
-                radioButtonCategory.text = getStringByResName(item.key).replaceFirst(OWN_KEY_SYMBOL, "")
+                radioButtonCategory.text = getStringByResName(itemView.context, item.key).replaceFirst(OWN_KEY_SYMBOL, "")
                 radioButtonCategory.setOnClickListener(listener)
                 radioButtonCategory.isChecked = isChecked
                 iSelectCategory.onRadioButtonInit(item.key, radioButtonCategory)

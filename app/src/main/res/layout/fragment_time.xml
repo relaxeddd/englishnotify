@@ -1,21 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <data>
-
-        <import type="android.view.View"/>
-        <variable
-            name="viewModel"
-            type="relaxeddd.englishnotify.ui.time.ViewModelTime"/>
-
-    </data>
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/info_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/info_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <include layout="@layout/view_toolbar"/>
 
@@ -35,7 +25,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/every_30_min"
                 android:tag="0"
-                android:enabled="@{safeUnbox(!viewModel.isDisableSubTime)}"
                 android:textSize="@dimen/font_18"/>
 
             <com.google.android.material.radiobutton.MaterialRadioButton
@@ -43,7 +32,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/every_1_hour"
                 android:tag="1"
-                android:enabled="@{safeUnbox(!viewModel.isDisableSubTime)}"
                 android:textSize="@dimen/font_18"
                 android:layout_marginTop="@dimen/size_4"/>
 
@@ -52,7 +40,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/every_1_5_hours"
                 android:tag="2"
-                android:enabled="@{safeUnbox(!viewModel.isDisableSubTime)}"
                 android:textSize="@dimen/font_18"
                 android:layout_marginTop="@dimen/size_4"/>
 
@@ -62,7 +49,6 @@
                 android:text="@string/every_2_hours"
                 android:tag="3"
                 android:textSize="@dimen/font_18"
-                android:enabled="@{safeUnbox(!viewModel.isDisableSubTime)}"
                 android:layout_marginTop="@dimen/size_4"/>
 
             <com.google.android.material.radiobutton.MaterialRadioButton
@@ -70,7 +56,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/every_2_5_hours"
                 android:tag="4"
-                android:enabled="@{safeUnbox(!viewModel.isDisableSubTime)}"
                 android:textSize="@dimen/font_18"
                 android:layout_marginTop="@dimen/size_4"/>
 
@@ -80,7 +65,6 @@
                 android:text="@string/every_3_hours"
                 android:tag="5"
                 android:textSize="@dimen/font_18"
-                android:enabled="@{safeUnbox(!viewModel.isDisableSubTime)}"
                 android:layout_marginTop="@dimen/size_4"/>
 
             <com.google.android.material.radiobutton.MaterialRadioButton
@@ -88,7 +72,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/every_3_5_hours"
                 android:tag="6"
-                android:enabled="@{safeUnbox(!viewModel.isDisableSubTime)}"
                 android:textSize="@dimen/font_18"
                 android:layout_marginTop="@dimen/size_4"/>
 
@@ -168,6 +151,4 @@
 
     </ScrollView>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-</layout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

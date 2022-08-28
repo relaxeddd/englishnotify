@@ -94,21 +94,6 @@
             android:progress="44"
             android:layout_marginEnd="@dimen/size_4"/>
 
-        <ImageView
-            android:id="@+id/image_word_own_created"
-            android:layout_width="@dimen/size_16"
-            android:layout_height="@dimen/size_16"
-            app:srcCompat="@drawable/ic_dictionary_own"
-            android:contentDescription="@string/ic_own_created"
-            android:layout_marginEnd="@dimen/size_4"/>
-
-        <ImageView
-            android:id="@+id/image_word_own"
-            android:layout_width="@dimen/size_16"
-            android:layout_height="@dimen/size_16"
-            app:srcCompat="@drawable/ic_own"
-            android:contentDescription="@string/ic_own"/>
-
     </LinearLayout>
 
     <FrameLayout

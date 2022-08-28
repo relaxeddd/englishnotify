@@ -1,5 +1,6 @@
 package relaxeddd.englishnotify.ui.dictionary_container
 
-import relaxeddd.englishnotify.common.ViewModelBase
+import relaxeddd.englishnotify.view_base.ViewModelBase
+import javax.inject.Inject
 
-class ViewModelDictionaryContainer : ViewModelBase()
+class ViewModelDictionaryContainer @Inject constructor() : ViewModelBase()

@@ -1,24 +1,38 @@
 package relaxeddd.englishnotify.ui.dictionary_container
 
+import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.*
 import relaxeddd.englishnotify.databinding.FragmentDictionaryContainerBinding
-import relaxeddd.englishnotify.model.preferences.SharedHelper
+import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.ui.dictionary.FragmentDictionary
 import relaxeddd.englishnotify.ui.dictionary_all.FragmentDictionaryAll
-import relaxeddd.englishnotify.ui.dictionary_exercises.FragmentDictionaryExercises
 import relaxeddd.englishnotify.ui.dictionary_know.FragmentDictionaryKnow
-import relaxeddd.englishnotify.ui.dictionary_own.FragmentDictionaryOwn
+import relaxeddd.englishnotify.view_base.BaseFragment
+import javax.inject.Inject
 
 class FragmentDictionaryContainer : BaseFragment<ViewModelDictionaryContainer, FragmentDictionaryContainerBinding>() {
 
+    @Inject
+    override lateinit var prefs: Preferences
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    override val viewModel by viewModels<ViewModelDictionaryContainer> { viewModelFactory }
+
     private var adapterFragmentsMap = HashMap<Int, FragmentDictionary<*, *>?>()
-    private var currentPosition: Int = SharedHelper.getDictionaryTabPosition()
+    private val currentPosition: Int get() = prefs.getDictionaryTabPosition()
+
     private val currentFragment: FragmentDictionary<*, *>?
         get() = adapterFragmentsMap[currentPosition]
 
@@ -34,29 +48,29 @@ class FragmentDictionaryContainer : BaseFragment<ViewModelDictionaryContainer, F
                 }
             }
             updateMenuIcons(false)
-            currentPosition = position
-            SharedHelper.setDictionaryTabPosition(position)
+            prefs.setDictionaryTabPosition(position)
         }
     }
 
-    override fun getLayoutResId() = R.layout.fragment_dictionary_container
     override fun getToolbarTitleResId() = R.string.dictionary
     override fun getMenuResId() = R.menu.menu_fragment_dictionary
     override fun getSearchMenuItemId() = R.id.item_menu_search_dictionary
-    override fun getViewModelFactory() = InjectorUtils.provideDictionaryContainerViewModelFactory()
-    override fun getViewModelClass() = ViewModelDictionaryContainer::class.java
     override fun isTopLevelFragment() = true
 
-    override fun configureBinding() {
-        super.configureBinding()
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = FragmentDictionaryContainerBinding.inflate(inflater)
+        return binding?.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         val adapter = DictionaryFragmentsAdapter(this)
 
         binding?.apply {
             viewPagerDictionaryContainer.adapter = adapter
             TabLayoutMediator(tabLayoutDictionaryContainer, viewPagerDictionaryContainer) { tab, position ->
                 tab.text = getString(when(position) {
-                    DictionaryTab.OWN.ordinal -> R.string.own_words
-                    DictionaryTab.EXERCISES.ordinal -> R.string.exercises
                     DictionaryTab.KNOW.ordinal -> R.string.already_know
                     else -> R.string.all_words
                 })
@@ -67,7 +81,7 @@ class FragmentDictionaryContainer : BaseFragment<ViewModelDictionaryContainer, F
 
     override fun onStart() {
         super.onStart()
-        if (binding?.viewPagerDictionaryContainer?.currentItem != SharedHelper.getDictionaryTabPosition()) {
+        if (binding?.viewPagerDictionaryContainer?.currentItem != prefs.getDictionaryTabPosition()) {
             binding?.viewPagerDictionaryContainer?.setCurrentItem(currentPosition, false)
         }
     }
@@ -152,8 +166,6 @@ class FragmentDictionaryContainer : BaseFragment<ViewModelDictionaryContainer, F
 
         override fun createFragment(position: Int) : Fragment {
             val fragment = when (position) {
-                DictionaryTab.OWN.ordinal -> FragmentDictionaryOwn()
-                DictionaryTab.EXERCISES.ordinal -> FragmentDictionaryExercises()
                 DictionaryTab.KNOW.ordinal -> FragmentDictionaryKnow()
                 else -> FragmentDictionaryAll()
             }
@@ -165,6 +177,6 @@ class FragmentDictionaryContainer : BaseFragment<ViewModelDictionaryContainer, F
     }
 
     private enum class DictionaryTab {
-        ALL, OWN, EXERCISES, KNOW
+        ALL, KNOW
     }
 }

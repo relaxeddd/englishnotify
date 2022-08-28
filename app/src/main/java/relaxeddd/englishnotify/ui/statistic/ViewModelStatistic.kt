@@ -4,52 +4,60 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import relaxeddd.englishnotify.common.*
-import relaxeddd.englishnotify.model.preferences.SharedHelper
-import relaxeddd.englishnotify.model.repository.RepositoryWord
-import java.util.Comparator
+import relaxeddd.englishnotify.common.NAVIGATION_LOADING_HIDE
+import relaxeddd.englishnotify.common.NAVIGATION_LOADING_SHOW
+import relaxeddd.englishnotify.common.TagInfo
+import relaxeddd.englishnotify.domain_words.entity.Word
+import relaxeddd.englishnotify.domain_words.repository.RepositoryWords
+import relaxeddd.englishnotify.preferences.Preferences
+import relaxeddd.englishnotify.view_base.ViewModelBase
+import relaxeddd.englishnotify.view_base.models.Event
+import javax.inject.Inject
 import kotlin.math.min
 
-class ViewModelStatistic(private val repositoryWord: RepositoryWord) : ViewModelBase() {
+class ViewModelStatistic @Inject constructor(
+    private val prefs: Preferences,
+    private val repositoryWords: RepositoryWords,
+) : ViewModelBase() {
 
-    private val learnStageMax = SharedHelper.getTrueAnswersToLearn()
+    private val learnStageMax = prefs.getTrueAnswersToLearn()
 
     private val wordsObserver = Observer<List<Word>> {
         updateOwnWords()
     }
 
-    var ownTagInfo = TagInfo(OWN)
+    var ownTagInfo = TagInfo()
     val ownWords = MutableLiveData<List<Word>>(ArrayList())
 
     init {
-        repositoryWord.words.observeForever(wordsObserver)
+        repositoryWords.words.observeForever(wordsObserver)
         updateOwnWords()
     }
 
     override fun onCleared() {
         super.onCleared()
-        repositoryWord.words.removeObserver(wordsObserver)
+        repositoryWords.words.removeObserver(wordsObserver)
     }
 
     fun resetProgress(word: Word) {
         viewModelScope.launch {
-            repositoryWord.setWordLearnStage(word, 0, false)
-            repositoryWord.setWordLearnStage(word, 0, true)
+            repositoryWords.setWordLearnStage(word, 0, false)
+            repositoryWords.setWordLearnStage(word, 0, true)
         }
     }
 
     fun deleteWord(word: Word) {
         navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
         viewModelScope.launch {
-            repositoryWord.deleteWord(word.id)
+            repositoryWords.deleteWord(word.id)
             navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
         }
     }
 
     private fun updateWordsTagInfo(words: List<Word>) {
-        val learnStageMax = SharedHelper.getTrueAnswersToLearn()
-        val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
-        val tagInfoOwn = TagInfo(OWN)
+        val learnStageMax = prefs.getTrueAnswersToLearn()
+        val isEnabledSecondaryProgress = prefs.isEnabledSecondaryProgress()
+        val tagInfoOwn = TagInfo()
 
         tagInfoOwn.received = 0
         tagInfoOwn.learned = 0
@@ -65,8 +73,8 @@ class ViewModelStatistic(private val repositoryWord: RepositoryWord) : ViewModel
     }
 
     private fun updateOwnWords() {
-        val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
-        val words = ArrayList(repositoryWord.words.value ?: emptyList()).filter { !it.isDeleted }.sortedWith(object: Comparator<Word> {
+        val isEnabledSecondaryProgress = prefs.isEnabledSecondaryProgress()
+        val words = ArrayList(repositoryWords.words.value ?: emptyList()).filter { !it.isDeleted }.sortedWith(object: Comparator<Word> {
             override fun compare(o1: Word?, o2: Word?): Int {
                 if (o1 == null) return 1
                 if (o2 == null) return -1

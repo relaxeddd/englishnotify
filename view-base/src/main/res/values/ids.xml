@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="fragmentDictionaryContainer" type="id"/>
+    <item name="fragmentTrainingSetting" type="id"/>
+    <item name="fragmentNotifications" type="id"/>
+    <item name="fragmentSettings" type="id"/>
+
+    <item name="action_fragmentSettings_to_fragmentParse" type="id"/>
+    <item name="action_fragmentSettings_to_fragmentStatistic" type="id"/>
+
+</resources>

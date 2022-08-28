@@ -1,23 +1,42 @@
 package relaxeddd.englishnotify.ui.training_setting
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.updatePaddingRelative
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.*
+import relaxeddd.englishnotify.common.CATEGORY
+import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK
+import relaxeddd.englishnotify.common.NAVIGATION_FRAGMENT_TRAINING
+import relaxeddd.englishnotify.common.TRAINING_ENG_TO_RUS
+import relaxeddd.englishnotify.common.TRAINING_MIXED
+import relaxeddd.englishnotify.common.TRAINING_RUS_TO_ENG
+import relaxeddd.englishnotify.common.TRAINING_TYPE
+import relaxeddd.englishnotify.common_ui_func.doOnApplyWindowInsets
 import relaxeddd.englishnotify.databinding.FragmentTrainingSettingBinding
-import relaxeddd.englishnotify.model.preferences.SharedHelper
+import relaxeddd.englishnotify.preferences.Preferences
+import relaxeddd.englishnotify.preferences.utils.ALL_APP_WORDS
 import relaxeddd.englishnotify.ui.categories.AdapterCategories
+import relaxeddd.englishnotify.view_base.BaseFragment
+import javax.inject.Inject
 
 class FragmentTrainingSetting : BaseFragment<ViewModelTrainingSetting, FragmentTrainingSettingBinding>() {
 
+    @Inject
+    override lateinit var prefs: Preferences
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    override val viewModel by viewModels<ViewModelTrainingSetting> { viewModelFactory }
+
     private lateinit var adapter: AdapterCategories
 
-    override fun getLayoutResId() = R.layout.fragment_training_setting
     override fun getToolbarTitleResId() = R.string.training_setting
-    override fun getViewModelFactory() = InjectorUtils.provideTrainingSettingViewModelFactory(requireContext())
-    override fun getViewModelClass() = ViewModelTrainingSetting::class.java
     override fun getMenuResId() = R.menu.menu_accept
     override fun isHomeMenuButtonEnabled() = true
     override fun getHomeMenuButtonIconResId() = R.drawable.ic_back
@@ -28,6 +47,52 @@ class FragmentTrainingSetting : BaseFragment<ViewModelTrainingSetting, FragmentT
     override fun getFabIconResId() = R.drawable.ic_accept
     override fun getFabListener() = View.OnClickListener { viewModel.onClickAccept() }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = FragmentTrainingSettingBinding.inflate(inflater)
+        return binding?.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding?.apply {
+            when (viewModel.trainingLanguage) {
+                TRAINING_RUS_TO_ENG -> radioButtonTrainingSettingRuToEn.isChecked = true
+                TRAINING_MIXED -> radioButtonTrainingSettingMixed.isChecked = true
+                else -> radioButtonTrainingSettingEnToRu.isChecked = true
+            }
+            radioButtonTrainingSettingRuToEn.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) viewModel.trainingLanguage = TRAINING_RUS_TO_ENG
+            }
+            radioButtonTrainingSettingEnToRu.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) viewModel.trainingLanguage = TRAINING_ENG_TO_RUS
+            }
+            radioButtonTrainingSettingMixed.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) viewModel.trainingLanguage = TRAINING_MIXED
+            }
+            recyclerViewTrainingSettingCategories.doOnApplyWindowInsets { v, insets, padding ->
+                v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
+            }
+
+            adapter = AdapterCategories(viewModel)
+
+            recyclerViewTrainingSettingCategories.itemAnimator = null
+            recyclerViewTrainingSettingCategories.adapter = adapter
+            switchTrainingSettingListenTraining.isChecked = prefs.isListeningTraining()
+            switchTrainingSettingListenTraining.setOnCheckedChangeListener { _, isChecked ->
+                prefs.setListeningTraining(isChecked)
+            }
+            switchTrainingSettingHearAnswer.isChecked = prefs.isHearAnswer()
+            switchTrainingSettingHearAnswer.setOnCheckedChangeListener { _, isChecked ->
+                prefs.setHearAnswer(isChecked)
+            }
+            switchTrainingSettingCheckLearnedWords.isChecked = prefs.isCheckLearnedWords()
+            switchTrainingSettingCheckLearnedWords.setOnCheckedChangeListener { _, isChecked ->
+                prefs.setCheckLearnedWords(isChecked)
+            }
+        }
+    }
+
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.item_menu_accept -> {
             viewModel.onClickAccept()
@@ -36,51 +101,11 @@ class FragmentTrainingSetting : BaseFragment<ViewModelTrainingSetting, FragmentT
         else -> super.onOptionsItemSelected(item)
     }
 
-    override fun configureBinding() {
-        super.configureBinding()
-        adapter = AdapterCategories(viewModel)
-        val binding = binding ?: return
+    override fun subscribeToViewModel() {
+        super.subscribeToViewModel()
 
-        binding.recyclerViewTrainingSettingCategories.itemAnimator = null
-        binding.recyclerViewTrainingSettingCategories.adapter = adapter
-        binding.switchTrainingSettingListenTraining.isChecked = SharedHelper.isListeningTraining()
-        binding.switchTrainingSettingListenTraining.setOnCheckedChangeListener { _, isChecked ->
-            SharedHelper.setListeningTraining(isChecked)
-        }
-        binding.switchTrainingSettingHearAnswer.isChecked = SharedHelper.isHearAnswer()
-        binding.switchTrainingSettingHearAnswer.setOnCheckedChangeListener { _, isChecked ->
-            SharedHelper.setHearAnswer(isChecked)
-        }
-        binding.switchTrainingSettingCheckLearnedWords.isChecked = SharedHelper.isCheckLearnedWords()
-        binding.switchTrainingSettingCheckLearnedWords.setOnCheckedChangeListener { _, isChecked ->
-            SharedHelper.setCheckLearnedWords(isChecked)
-        }
-        viewModel.categories.observe(viewLifecycleOwner, { items ->
+        viewModel.categories.observe(viewLifecycleOwner) { items ->
             if (items != null && items.isNotEmpty()) adapter.submitList(items)
-        })
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val binding = binding ?: return
-
-        when (viewModel.trainingLanguage) {
-            TRAINING_RUS_TO_ENG -> binding.radioButtonTrainingSettingRuToEn.isChecked = true
-            TRAINING_MIXED -> binding.radioButtonTrainingSettingMixed.isChecked = true
-            else -> binding.radioButtonTrainingSettingEnToRu.isChecked = true
-        }
-        binding.radioButtonTrainingSettingRuToEn.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) viewModel.trainingLanguage = TRAINING_RUS_TO_ENG
-        }
-        binding.radioButtonTrainingSettingEnToRu.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) viewModel.trainingLanguage = TRAINING_ENG_TO_RUS
-        }
-        binding.radioButtonTrainingSettingMixed.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) viewModel.trainingLanguage = TRAINING_MIXED
-        }
-        binding.recyclerViewTrainingSettingCategories.doOnApplyWindowInsets { v, insets, padding ->
-            v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
         }
     }
 

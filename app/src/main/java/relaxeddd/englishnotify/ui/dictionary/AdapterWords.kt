@@ -17,20 +17,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.checkbox.MaterialCheckBox
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.OWN_KEY_SYMBOL
-import relaxeddd.englishnotify.model.preferences.SharedHelper
-import relaxeddd.englishnotify.common.Word
 import relaxeddd.englishnotify.common.animateDropdown
+import relaxeddd.englishnotify.domain_words.entity.Word
+import relaxeddd.englishnotify.preferences.Preferences
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashSet
 
-abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewModelDictionary) : ListAdapter<Word, VH>(WordDiffCallback) {
-
-    companion object {
-        var learnStageMax = SharedHelper.getTrueAnswersToLearn()
-        var isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
-    }
+abstract class AdapterWords<VH : AdapterWords.ViewHolder>(
+    private val prefs: Preferences, // TODO: refactor without using prefs, viewModel
+    private val viewModel: ViewModelDictionary,
+) : ListAdapter<Word, VH>(WordDiffCallback) {
 
     var languageType = 0
         set(value) {
@@ -74,7 +70,7 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
 
     open fun bind(holder: VH, item: Word, clickListener: View.OnClickListener, longListener: View.OnLongClickListener,
                   clickListenerPlay: View.OnClickListener, checkListener: CompoundButton.OnCheckedChangeListener) {
-        holder.bind(item, isSelectState, checkList, clickListener, longListener, clickListenerPlay, checkListener)
+        holder.bind(prefs, item, isSelectState, checkList, clickListener, longListener, clickListenerPlay, checkListener)
     }
 
     fun checkAll() {
@@ -88,7 +84,7 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
 
     @SuppressLint("RestrictedApi")
     protected fun showPopupWord(view: View, word: Word) {
-        val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
+        val isEnabledSecondaryProgress = prefs.isEnabledSecondaryProgress()
         val popupMenu = PopupMenu(view.context, view)
 
         popupMenu.inflate(R.menu.menu_popup_word)
@@ -96,8 +92,6 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
             when (it.itemId) {
                 R.id.item_menu_edit -> viewModel.edit(word)
                 R.id.item_menu_delete -> viewModel.deleteWord(word)
-                R.id.item_menu_add_own -> viewModel.addToOwn(word)
-                R.id.item_menu_delete_own -> viewModel.removeFromOwnDict(word)
                 R.id.item_menu_reset_progress -> viewModel.resetProgress(word)
             }
             true
@@ -105,8 +99,6 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
 
         popupMenu.menu.findItem(R.id.item_menu_edit)?.isVisible = word.isCreatedByUser
         popupMenu.menu.findItem(R.id.item_menu_reset_progress)?.isVisible = word.learnStage > 0 || (isEnabledSecondaryProgress && word.learnStageSecondary > 0)
-        popupMenu.menu.findItem(R.id.item_menu_add_own)?.isVisible = !word.isOwnCategory
-        popupMenu.menu.findItem(R.id.item_menu_delete_own)?.isVisible = word.isOwnCategory
         val menuHelper = MenuPopupHelper(view.context, popupMenu.menu as MenuBuilder, view)
         menuHelper.setForceShowIcon(true)
         menuHelper.show()
@@ -136,15 +128,13 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
         abstract fun getWordContainerDropDawn() : ViewGroup?
         abstract fun getTextTimestamp() : TextView
         abstract fun getTextTags() : TextView
-        abstract fun getImageOwnWord() : ImageView
-        abstract fun getImageOwnCreatedWord() : ImageView
         abstract fun getCheckBoxSelect() : MaterialCheckBox
         abstract fun getImagePlay() : ImageView
         abstract fun getProgressLearn() : ProgressBar
         abstract fun getProgressLearnSecondary() : ProgressBar?
 
         @CallSuper
-        open fun bind(word: Word, isSelectState: Boolean, checkList: java.util.HashSet<Word>,
+        open fun bind(prefs: Preferences, word: Word, isSelectState: Boolean, checkList: HashSet<Word>,
                       clickListener: View.OnClickListener, longClickListener: View.OnLongClickListener,
                       clickListenerPlay: View.OnClickListener, checkedChangeListener: CompoundButton.OnCheckedChangeListener) {
             hideDropDawnContainer()
@@ -162,8 +152,6 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
             getTextTimestamp().text = SimpleDateFormat("hh:mm dd.MM", Locale.getDefault()).format(word.timestamp) ?: ""
             getTextTags().text = tagsString
             getTextTags().visibility = if (word.tags.isNotEmpty()) View.VISIBLE else View.GONE
-            getImageOwnWord().visibility = if (word.isOwnCategory) View.VISIBLE else View.GONE
-            getImageOwnCreatedWord().visibility = if (word.isCreatedByUser) View.VISIBLE else View.GONE
 
             getImagePlay().visibility = if (!isSelectState) View.VISIBLE else View.GONE
             getCheckBoxSelect().visibility = if (isSelectState) View.VISIBLE else View.GONE
@@ -175,10 +163,10 @@ abstract class AdapterWords<VH : AdapterWords.ViewHolder>(val viewModel: ViewMod
                 getCheckBoxSelect().isChecked = false
             }
 
-            getProgressLearn().progress = word.getLearnProgress(learnStageMax)
-            if (isEnabledSecondaryProgress) {
+            getProgressLearn().progress = word.getLearnProgress(prefs.getTrueAnswersToLearn())
+            if (prefs.isEnabledSecondaryProgress()) {
                 getProgressLearnSecondary()?.visibility = View.VISIBLE
-                getProgressLearnSecondary()?.progress = word.getLearnProgressSecondary(learnStageMax)
+                getProgressLearnSecondary()?.progress = word.getLearnProgressSecondary(prefs.getTrueAnswersToLearn())
             } else {
                 getProgressLearnSecondary()?.visibility = View.GONE
             }

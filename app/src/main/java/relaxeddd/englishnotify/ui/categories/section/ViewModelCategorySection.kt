@@ -1,16 +1,29 @@
 package relaxeddd.englishnotify.ui.categories.section
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.android.material.radiobutton.MaterialRadioButton
 import kotlinx.coroutines.launch
 import relaxeddd.englishnotify.R
-import relaxeddd.englishnotify.common.*
-import relaxeddd.englishnotify.model.repository.RepositoryUser
-import relaxeddd.englishnotify.model.repository.RepositoryWord
-import relaxeddd.englishnotify.ui.categories.CategorySection
+import relaxeddd.englishnotify.common.CategoryItem
+import relaxeddd.englishnotify.common.ISelectCategory
+import relaxeddd.englishnotify.common.NAVIGATION_ACTIVITY_BACK
+import relaxeddd.englishnotify.common.OWN_KEY_SYMBOL
+import relaxeddd.englishnotify.common.getStringByResName
+import relaxeddd.englishnotify.common.showToast
+import relaxeddd.englishnotify.domain_words.repository.RepositoryWords
+import relaxeddd.englishnotify.preferences.Preferences
+import relaxeddd.englishnotify.preferences.utils.ALL_APP_WORDS
+import relaxeddd.englishnotify.view_base.ViewModelBase
+import relaxeddd.englishnotify.view_base.models.Event
+import javax.inject.Inject
 
-class ViewModelCategorySection(type: CategorySection, private val repositoryUser: RepositoryUser) : ViewModelBase(), ISelectCategory {
+class ViewModelCategorySection @Inject constructor(
+    private val context: Context,
+    private val prefs: Preferences,
+    repositoryWords: RepositoryWords,
+) : ViewModelBase(), ISelectCategory {
 
     companion object {
 
@@ -22,29 +35,21 @@ class ViewModelCategorySection(type: CategorySection, private val repositoryUser
     val categories = MutableLiveData<List<CategoryItem>>(ArrayList())
 
     init {
-        val allTags = ArrayList((repositoryUser.liveDataUser.value?.tagsAvailable ?: ArrayList()))
-        allTags.addAll(RepositoryWord.getInstance().getOwnWordCategories())
+        val allTags = arrayListOf(ALL_APP_WORDS)
+        allTags.addAll(repositoryWords.getOwnWordCategories())
 
         val list = ArrayList<CategoryItem>()
 
         if (selectedCategory.isEmpty()) {
-            selectedCategory = repositoryUser.liveDataUser.value?.selectedTag ?: ""
+            selectedCategory = prefs.getSelectedCategory()
         }
-        for (tag in allTags) {
-            var isFit = isCategoryFit(tag, type)
-
-            if (type == CategorySection.OWN_CATEGORIES && !isFit) {
-                isFit = !isCategoryFit(tag, CategorySection.MAIN) && !isCategoryFit(tag, CategorySection.EXERCISES)
-                        && !isCategoryFit(tag, CategorySection.OTHER)
-            }
-            if (isFit) {
-                val categoryItem = CategoryItem(tag)
-                list.add(categoryItem)
-            }
+        allTags.forEach {
+            val categoryItem = CategoryItem(it)
+            list.add(categoryItem)
         }
 
         categories.value = list
-        title.value = getStringByResName(selectedCategory).replaceFirst(OWN_KEY_SYMBOL, "")
+        title.value = getStringByResName(context, selectedCategory).replaceFirst(OWN_KEY_SYMBOL, "")
     }
 
     override fun getSelectedCategory() = selectedCategory
@@ -65,12 +70,12 @@ class ViewModelCategorySection(type: CategorySection, private val repositoryUser
             }
         }
 
-        title.value = getStringByResName(selectedCategory).replaceFirst(OWN_KEY_SYMBOL, "")
+        title.value = getStringByResName(context, selectedCategory).replaceFirst(OWN_KEY_SYMBOL, "")
     }
 
     override fun onFragmentResume() {
         super.onFragmentResume()
-        title.value = getStringByResName(selectedCategory).replaceFirst(OWN_KEY_SYMBOL, "")
+        title.value = getStringByResName(context, selectedCategory).replaceFirst(OWN_KEY_SYMBOL, "")
     }
 
     override fun onRadioButtonInit(category: String, radioButton: MaterialRadioButton) {
@@ -96,47 +101,21 @@ class ViewModelCategorySection(type: CategorySection, private val repositoryUser
         val category = selectedCategory
 
         if (category.isEmpty()) {
-            showToast(R.string.error_update)
-            return
-        }
-        if (category == OWN && RepositoryWord.getInstance().getOwnWords().isEmpty()) {
-            showToast(R.string.category_own_not_selected)
+            showToast(context, R.string.error_update)
             return
         }
 
-        if (!category.equals(repositoryUser.liveDataUser.value?.selectedTag, true)) {
+        if (!category.equals(prefs.getSelectedCategory(), true)) {
             viewModelScope.launch {
-                navigateEvent.value = Event(NAVIGATION_LOADING_SHOW)
-                val result = repositoryUser.setSelectedTag(category)
-                navigateEvent.value = Event(NAVIGATION_LOADING_HIDE)
-
-                if (result) {
+                if (category.isNotEmpty()) {
+                    prefs.setSelectedCategory(category)
                     navigateEvent.value = Event(NAVIGATION_ACTIVITY_BACK)
+                } else {
+                    showToast(context, R.string.tags_should_not_be_empty)
                 }
             }
         } else {
             navigateEvent.value = Event(NAVIGATION_ACTIVITY_BACK)
-        }
-    }
-
-    private fun isCategoryFit(category: String, type: CategorySection) = when(type) {
-        CategorySection.MAIN -> {
-            when (category) {
-                ALL_APP_WORDS, ALL_APP_WORDS_WITHOUT_SIMPLE, IRREGULAR, PROVERB, HARD, HARD_5 -> true
-                else -> false
-            }
-        }
-        CategorySection.OWN_CATEGORIES -> isOwnCategory(category)
-        CategorySection.EXERCISES -> category.contains(EXERCISE)
-        CategorySection.OTHER -> {
-            when (category) {
-                TOURISTS, TOURISTS_5, PRONOUN, HUMAN_BODY, HUMAN_BODY_5, COLORS, COLORS_5, TIME, TIME_5, PHRASES, PHRASES_5, ANIMALS, ANIMALS_5,
-                FAMILY, FAMILY_5, HUMAN_QUALITIES, HUMAN_QUALITIES_5, FEELINGS, FEELINGS_5, EMOTIONS, EMOTIONS_5, WORK, WORK_5,
-                MOVEMENT, MOVEMENT_5, PROFESSIONS, PROFESSIONS_5, FREQUENT, FREQUENT_5, EDUCATION, EDUCATION_5, FOOD, FOOD_5,
-                WEATHER, WEATHER_5, HOUSE, HOUSE_5, GEOGRAPHY, GEOGRAPHY_5, ENTERTAINMENT, ENTERTAINMENT_5, SPORT, SPORT_5,
-                AUTO, AUTO_5, FREQUENT_VERBS, FREQUENT_VERBS_5 -> true
-                else -> false
-            }
         }
     }
 }

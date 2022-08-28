@@ -1,18 +1,21 @@
 package relaxeddd.englishnotify.ui.dictionary_all
 
-import relaxeddd.englishnotify.common.EXERCISE
-import relaxeddd.englishnotify.model.preferences.SharedHelper
-import relaxeddd.englishnotify.common.Word
-import relaxeddd.englishnotify.model.repository.RepositoryUser
-import relaxeddd.englishnotify.model.repository.RepositoryWord
+import relaxeddd.englishnotify.domain_words.entity.Word
+import relaxeddd.englishnotify.domain_words.repository.RepositoryWords
+import relaxeddd.englishnotify.preferences.Preferences
 import relaxeddd.englishnotify.ui.dictionary.ViewModelDictionary
+import javax.inject.Inject
 
-class ViewModelDictionaryAll(repositoryWord: RepositoryWord, repositoryUser: RepositoryUser) : ViewModelDictionary(repositoryWord, repositoryUser) {
+class ViewModelDictionaryAll @Inject constructor(
+    prefs: Preferences,
+    repositoryWords: RepositoryWords,
+) : ViewModelDictionary(prefs, repositoryWords) {
 
-    override fun filterWords(items: HashSet<Word>) : HashSet<Word> {
-        val learnStageMax = SharedHelper.getTrueAnswersToLearn()
-        val isEnabledSecondaryProgress = SharedHelper.isEnabledSecondaryProgress()
-        return super.filterWords(items).filter { it.type != EXERCISE && !it.isLearned(isEnabledSecondaryProgress, learnStageMax)
-                && (!it.isCreatedByUser || isShowOwnWords.value == true) }.toHashSet()
+    override fun filterWords(prefs: Preferences, items: HashSet<Word>) : HashSet<Word> {
+        val learnStageMax = prefs.getTrueAnswersToLearn()
+        val isEnabledSecondaryProgress = prefs.isEnabledSecondaryProgress()
+        return super.filterWords(prefs, items).filter {
+            !it.isLearned(isEnabledSecondaryProgress, learnStageMax)
+        }.toHashSet()
     }
 }

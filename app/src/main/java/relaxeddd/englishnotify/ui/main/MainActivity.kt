@@ -11,13 +11,14 @@ import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.speech.tts.TextToSpeech
 import android.view.View
-import android.view.ViewGroup
 import android.view.WindowInsets
-import android.widget.ImageView
+import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
@@ -25,26 +26,35 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.IdpResponse
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.GoogleApiAvailability
+import dagger.android.support.DaggerAppCompatActivity
 import relaxeddd.englishnotify.R
 import relaxeddd.englishnotify.common.*
+import relaxeddd.englishnotify.common_ui_func.doOnApplyWindowInsets
+import relaxeddd.englishnotify.common_ui_func.openWebApplication
 import relaxeddd.englishnotify.databinding.MainActivityBinding
 import relaxeddd.englishnotify.databinding.NavigationHeaderBinding
-import relaxeddd.englishnotify.dialogs.*
-import relaxeddd.englishnotify.donate.ActivityBilling
-import relaxeddd.englishnotify.model.preferences.SharedHelper
-import relaxeddd.englishnotify.push.PushTokenHelper
+import relaxeddd.englishnotify.dialogs.DialogPatchNotes
+import relaxeddd.englishnotify.dialogs.DialogRateApp
+import relaxeddd.englishnotify.dialogs.DialogVoiceInput
+import relaxeddd.englishnotify.domain_words.entity.Word
+import relaxeddd.englishnotify.preferences.Preferences
+import relaxeddd.englishnotify.preferences.utils.THEME_BLACK
+import relaxeddd.englishnotify.preferences.utils.THEME_BLUE
+import relaxeddd.englishnotify.preferences.utils.THEME_BLUE_LIGHT
+import relaxeddd.englishnotify.preferences.utils.THEME_STANDARD
+import relaxeddd.englishnotify.view_base.interfaces.IFabOwner
+import relaxeddd.englishnotify.view_base.interfaces.INavControllerOwner
+import relaxeddd.englishnotify.view_base.interfaces.INavigationOwner
+import relaxeddd.englishnotify.view_base.interfaces.IToolbarOwner
+import relaxeddd.englishnotify.view_base.interfaces.ListenerResult
 import java.util.*
+import javax.inject.Inject
 import kotlin.system.exitProcess
 
-class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), NavigationHost, FloatingActionButtonHost {
+@MainActivityBeforeRefactoringWarning
+class MainActivity : DaggerAppCompatActivity(), INavigationOwner, IToolbarOwner, IFabOwner, INavControllerOwner {
 
     companion object {
-        const val REQUEST_SIGN_IN = 1312
-        const val REQUEST_PLAY_SERVICES_RESULT = 7245
         const val REQUEST_RECOGNIZE_SPEECH = 5242
 
         private const val NAV_ID_NONE = -1
@@ -57,10 +67,18 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
         )
     }
 
+    @Inject
+    lateinit var prefs: Preferences
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    val viewModel by viewModels<ViewModelMain> { viewModelFactory }
+
+    private lateinit var binding: MainActivityBinding
+
     private var currentFragmentId: Int = NAV_ID_NONE
     private lateinit var navController: NavController
-    private val providers: List<AuthUI.IdpConfig> = listOf(AuthUI.IdpConfig.GoogleBuilder().build())
-    private var navigationHeaderBinding: NavigationHeaderBinding? = null
 
     private var tts: TextToSpeech? = null
     private var isTtsInit = false
@@ -71,37 +89,264 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
     private var isPlaying = false
     private var recognizeSpeechCallback: ((String?) -> Unit)? = null
 
-    private val listenerNewVersion: ListenerResult<Boolean> = object: ListenerResult<Boolean> {
-        override fun onResult(result: Boolean) {
-            if (result) {
-                openWebApplication(this@MainActivity)
+    var isMyResumed = false
+
+    //------------------------------------------------------------------------------------------------------------------
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        binding = MainActivityBinding.inflate(layoutInflater).also {
+            setContentView(it.root)
+            setupTheme(it)
+        }
+
+        volumeControlStream = AudioManager.STREAM_MUSIC
+
+        val isBottomNavigation = prefs.isBottomNavigation()
+        val initialNavigationId = prefs.getStartFragmentId() ?: R.id.fragmentDictionaryContainer
+        initInsets(binding, isBottomNavigation)
+        initNavigation(binding, isBottomNavigation, initialNavigationId)
+
+        viewModel.onViewCreate()
+
+        subscribeToViewModel()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        isMyResumed = true
+    }
+
+    override fun onPause() {
+        super.onPause()
+        isMyResumed = false
+    }
+
+    override fun onStop() {
+        super.onStop()
+        tts?.shutdown()
+        tts = null
+        isTtsInit = false
+        isTtsInitFailed = false
+    }
+
+    override fun onBackPressed() {
+        if (viewModel.isShowLoading.value == true) {
+            viewModel.isShowLoading.value = false
+        } else {
+            super.onBackPressed()
+        }
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        currentFragmentId = binding.drawerNavigation.checkedItem?.itemId ?: NAV_ID_NONE
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when(requestCode) {
+            REQUEST_RECOGNIZE_SPEECH -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    val spokenText = data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).let { results ->
+                        results?.get(0)
+                    } ?: ""
+                    recognizeSpeechCallback?.invoke(spokenText)
+                }
+                recognizeSpeechCallback = null
+            }
+            else -> {
+                super.onActivityResult(requestCode, resultCode, data)
             }
         }
     }
 
-    override fun getLayoutResId() = R.layout.main_activity
-    override fun getViewModelFactory() = InjectorUtils.provideMainViewModelFactory()
-    override fun getViewModelClass(): Class<ViewModelMain> = ViewModelMain::class.java
-
-    override fun configureBinding() {
-        super.configureBinding()
-        binding.viewModel = viewModel
+    override fun registerToolbar(toolbar: Toolbar) {
+        if (!prefs.isBottomNavigation()) {
+            val appBarConfiguration = AppBarConfiguration.Builder(TOP_LEVEL_DESTINATIONS).setOpenableLayout(binding.drawer).build()
+            toolbar.setupWithNavController(navController, appBarConfiguration)
+        }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun configureFab(iconResId: Int?, listener: (View.OnClickListener)?) {
+        if (iconResId != null && iconResId != EMPTY_RES) {
+            binding.buttonMainFab.visibility = View.VISIBLE
+            binding.buttonMainFab.setImageResource(iconResId)
+        } else {
+            binding.buttonMainFab.visibility = View.GONE
+        }
+        binding.buttonMainFab.setOnClickListener(listener)
+    }
 
-        volumeControlStream = AudioManager.STREAM_MUSIC
-        PushTokenHelper.initChannelNotifications(this)
-        initGooglePlayServices()
+    override fun onNavigationEvent(eventId: Int) {
+        when (eventId) {
+            NAVIGATION_ACTIVITY_BACK -> {
+                onBackPressed()
+            }
+            NAVIGATION_FRAGMENT_NOTIFICATIONS -> {
+                if (navController.currentDestination?.label != getString(R.string.label_fragment_notifications)) {
+                    navController.myNavigate(R.id.action_global_fragmentNotifications)
+                }
+            }
+            NAVIGATION_FRAGMENT_SETTINGS -> {
+                if (navController.currentDestination?.label != getString(R.string.label_fragment_settings)) {
+                    navController.myNavigate(R.id.action_global_fragmentSettings)
+                }
+            }
+            NAVIGATION_DIALOG_RATE_APP -> {
+                if (isMyResumed) {
+                    val dialog = DialogRateApp()
+                    dialog.confirmListener = object : ListenerResult<Boolean> {
+                        override fun onResult(result: Boolean) {
+                            if (result) {
+                                openWebApplication(this@MainActivity)
+                            }
+                        }
+                    }
+                    dialog.show(supportFragmentManager, "Rate app Dialog")
+                }
+            }
+            NAVIGATION_EXIT -> {
+                finishAffinity()
+                exitProcess(0)
+            }
+            NAVIGATION_DIALOG_PATCH_NOTES -> {
+                val dialog = DialogPatchNotes()
+                dialog.show(supportFragmentManager, "Patch Notes Dialog")
+            }
+            NAVIGATION_RECREATE_ACTIVITY -> {
+                if (isMyResumed) {
+                    finish()
+                    startActivity(Intent(this, MainActivity::class.java).apply { addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION) })
+                }
+            }
+            NAVIGATION_LOADING_SHOW -> setLoadingVisible(true)
+            NAVIGATION_LOADING_HIDE -> setLoadingVisible(false)
+        }
+    }
 
-        val isOldDesign = SharedHelper.isOldNavigationDesign()
+    override fun getNavController() = Navigation.findNavController(this, R.id.fragment_navigation_host)
 
-        navigationHeaderBinding = NavigationHeaderBinding.inflate(layoutInflater).apply {
-            lifecycleOwner = this@MainActivity
+    //------------------------------------------------------------------------------------------------------------------
+    fun setLoadingVisible(isVisible: Boolean) {
+        viewModel.isShowLoading.value = isVisible
+    }
+
+    fun playWord(word: Word?) {
+        playText(word?.eng)
+    }
+
+    fun playText(text: String?) {
+        if (isPlaying) return
+
+        text ?: return
+        val textToSpeak = text.replace("_", "").replace("|", "")
+        if (textToSpeak.isEmpty()) return
+
+        val isEngPlay = text.any { (it in 'a'..'z') || (it in 'A'..'Z') }
+
+        isPlaying = true
+        if (tts == null || !isTtsInit || isTtsInitFailed || (isLastPlayedEng != isEngPlay)) {
+            isLastPlayedEng = isEngPlay
+            isTtsInitFailed = false
+
+            tts = TextToSpeech(this) {
+                if (it == TextToSpeech.SUCCESS) {
+                    tts?.language = if (isLastPlayedEng) Locale.US else Locale.getDefault()
+                    isTtsInit = true
+                    speak(textToSpeak)
+                    lastVoiceText = textToSpeak
+                } else {
+                    isPlaying = false
+                    isTtsInitFailed = true
+                    showToast(this, getString(R.string.error_word_voice, it.toString()))
+                }
+            }
+        } else {
+            speak(textToSpeak)
+            lastVoiceText = textToSpeak
+        }
+    }
+
+    fun requestRecognizeSpeech(localeString: String, recognizeSpeechCallback: ((String?) -> Unit)) {
+        try {
+            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+                putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+                putExtra(RecognizerIntent.EXTRA_LANGUAGE, getLocaleStringByKey(localeString) ?: Locale.getDefault())
+            }
+            this.recognizeSpeechCallback = recognizeSpeechCallback
+            startActivityForResult(intent, REQUEST_RECOGNIZE_SPEECH)
+        } catch (e: Exception) {
+            val dialog = DialogVoiceInput()
+            dialog.confirmListener = object: ListenerResult<Boolean> {
+                override fun onResult(result: Boolean) {
+                    if (result) {
+                        recognizeSpeechCallback(null)
+                    }
+                    this@MainActivity.recognizeSpeechCallback = null
+                }
+            }
+            dialog.show(supportFragmentManager, "Restore word Dialog")
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    private fun subscribeToViewModel() {
+        viewModel.navigation.observe(this) {
+            it.getContentIfNotHandled()?.let { eventId ->
+                onNavigationEvent(eventId)
+            }
+        }
+        viewModel.isShowLoading.observe(this) {
+            binding.containerMainProgressBar.isVisible = it
+        }
+        viewModel.isBottomNavigation.observe(this) {
+            binding.bottomNavigationViewMain.isVisible = it
+            binding.drawerNavigation.isVisible = !it
+        }
+    }
+
+    private fun speak(textToSpeak: String) {
+        if (textToSpeak == lastVoiceText && isFastSpeechSpeed) {
+            tts?.setSpeechRate(0.5f)
+            isFastSpeechSpeed = false
+        } else {
+            tts?.setSpeechRate(1f)
+            isFastSpeechSpeed = true
+        }
+        tts?.speak(textToSpeak, TextToSpeech.QUEUE_FLUSH, null, null)
+        isPlaying = false
+    }
+
+    private fun getLocaleStringByKey(key: String) = when(key) {
+        "EN" -> Locale.US.toString()
+        "RU" -> Locale("ru", "RU").toString()
+        "DE" -> Locale.GERMANY.toString()
+        "ES" -> Locale("es", "ES").toString()
+        "FR" -> Locale.FRANCE.toString()
+        "ZH" -> Locale.CHINA.toString()
+        "JA" -> Locale.JAPAN.toString()
+        "IT" -> Locale.ITALY.toString()
+        else -> null
+    }
+
+    private fun setupTheme(binding: MainActivityBinding) {
+        when (prefs.getAppThemeType()) {
+            THEME_STANDARD -> setTheme(R.style.AppTheme)
+            THEME_BLUE -> setTheme(R.style.AppTheme2)
+            THEME_BLACK -> setTheme(R.style.AppTheme3)
+            THEME_BLUE_LIGHT -> setTheme(R.style.AppTheme4)
+            else -> setTheme(R.style.AppTheme)
         }
 
-        if (!isOldDesign) {
+        val appThemeType = prefs.getAppThemeType()
+        val isNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+        binding.bottomNavigationViewMain.setBackgroundColor(ContextCompat.getColor(this, if (isNightMode) R.color.bottom_navigation_color else getPrimaryColorResId(appThemeType)))
+        binding.bottomNavigationViewMain.itemBackgroundResource = if (isNightMode) R.color.bottom_navigation_color else getPrimaryColorResId(appThemeType)
+        binding.buttonMainFab.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, if (isNightMode) R.color.floating_button_color else getPrimaryColorResId(appThemeType)))
+    }
+
+    private fun initInsets(binding: MainActivityBinding, isBottomNavigation: Boolean) {
+        if (!isBottomNavigation) {
             binding.drawerContainer.setOnApplyWindowInsetsListener { v, insets ->
                 v.onApplyWindowInsets(insets)
                 v.updatePadding(
@@ -151,13 +396,9 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
 
         binding.containerMainActivity.setOnApplyWindowInsetsListener(NoopWindowInsetsListener)
         binding.statusBarScrim.setOnApplyWindowInsetsListener(HeightTopWindowInsetsListener)
-        binding.containerMainSignIn.doOnApplyWindowInsets { v, insets, padding ->
-            if (!isOldDesign) {
-                (v.layoutParams as? ViewGroup.MarginLayoutParams)?.bottomMargin = padding.bottom + insets.systemWindowInsetBottom
-            }
-        }
+    }
 
-        val initialNavigationId = SharedHelper.getStartFragmentId()
+    private fun initNavigation(binding: MainActivityBinding, isBottomNavigation: Boolean, initialNavigationId: Int) {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_navigation_host) as NavHostFragment
         navController = navHostFragment.navController
 
@@ -166,9 +407,9 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
 
             currentFragmentId = destination.id
             if (isTopLevelTab) {
-                SharedHelper.setStartFragmentId(destination.id)
+                prefs.setStartFragmentId(destination.id)
             }
-            if (!isOldDesign) {
+            if (!isBottomNavigation) {
                 val lockMode = if (isTopLevelTab) {
                     DrawerLayout.LOCK_MODE_UNLOCKED
                 } else {
@@ -182,7 +423,7 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
 
         Navigation.setViewNavController(binding.buttonMainFab, navController)
 
-        binding.navigationViewMain.setOnNavigationItemSelectedListener {
+        binding.bottomNavigationViewMain.setOnNavigationItemSelectedListener {
             if (it.itemId == currentFragmentId) {
                 return@setOnNavigationItemSelectedListener true
             }
@@ -198,39 +439,32 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
             return@setOnNavigationItemSelectedListener true
         }
 
-        if (!isOldDesign) {
-            binding.navigation.apply {
+        if (!isBottomNavigation) {
+            binding.drawerNavigation.let { drawerNavigation ->
                 val menuView = findViewById<RecyclerView>(R.id.design_navigation_view)
 
-                navigationHeaderBinding?.apply {
-                    doOnApplyWindowInsets { v, insets, padding ->
+                NavigationHeaderBinding.inflate(layoutInflater).let { navigationHeaderView ->
+                    drawerNavigation.doOnApplyWindowInsets { v, insets, padding ->
                         v.updatePadding(top = padding.top + insets.systemWindowInsetTop)
                         menuView?.updatePadding(bottom = insets.systemWindowInsetBottom)
                     }
-                    addHeaderView(root)
-                    imageNavigationHeaderLike.setOnClickListener {
+                    drawerNavigation.addHeaderView(navigationHeaderView.root)
+                    navigationHeaderView.imageNavigationHeaderLike.setOnClickListener {
                         openWebApplication(this@MainActivity)
                     }
+                    navigationHeaderView.imageHeaderLogo.setOnClickListener {
+                        onNavigationEvent(NAVIGATION_DIALOG_RATE_APP)
+                    }
                 }
-                itemBackground = navigationItemBackground(context)
+                drawerNavigation.itemBackground = navigationItemBackground(this)
 
-                setupWithNavController(this, navController)
+                setupWithNavController(drawerNavigation, navController)
+                drawerNavigation.setCheckedItem(initialNavigationId)
             }
-        }
-
-        findViewById<ImageView>(R.id.image_header_logo)?.setOnClickListener {
-            onNavigationEvent(NAVIGATION_DIALOG_RATE_APP)
-        }
-
-        initPrivacyPolicyText(binding.textMainPrivacyPolicy, this)
-
-        viewModel.onViewCreate()
-
-        if (!isOldDesign) {
-            binding.navigation.setCheckedItem(initialNavigationId)
         } else {
-            binding.navigationViewMain.selectedItemId = initialNavigationId
+            binding.bottomNavigationViewMain.selectedItemId = initialNavigationId
         }
+
         when (initialNavigationId) {
             R.id.fragmentTrainingSetting -> navController.myNavigate(R.id.action_global_fragmentTrainingSetting)
             R.id.fragmentNotifications -> navController.myNavigate(R.id.action_global_fragmentNotifications)
@@ -238,290 +472,5 @@ class MainActivity : ActivityBilling<ViewModelMain, MainActivityBinding>(), Navi
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.onViewResume()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        tts?.shutdown()
-        tts = null
-        isTtsInit = false
-        isTtsInitFailed = false
-    }
-
-    override fun onBackPressed() {
-        if (viewModel.isShowLoading.value == true) {
-            viewModel.isShowLoading.value = false
-        } else {
-            super.onBackPressed()
-        }
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        currentFragmentId = binding.navigation.checkedItem?.itemId ?: NAV_ID_NONE
-    }
-
-    override fun registerToolbar(toolbar: Toolbar) {
-        if (!SharedHelper.isOldNavigationDesign()) {
-            val appBarConfiguration = AppBarConfiguration.Builder(TOP_LEVEL_DESTINATIONS).setOpenableLayout(binding.drawer).build()
-            toolbar.setupWithNavController(navController, appBarConfiguration)
-        }
-    }
-
-    override fun configureFab(iconResId: Int?, listener: (View.OnClickListener)?) {
-        if (iconResId != null && iconResId != EMPTY_RES) {
-            binding.buttonMainFab.visibility = View.VISIBLE
-            binding.buttonMainFab.setImageResource(iconResId)
-        } else {
-            binding.buttonMainFab.visibility = View.GONE
-        }
-        binding.buttonMainFab.setOnClickListener(listener)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        when(requestCode) {
-            REQUEST_SIGN_IN -> {
-                val response: IdpResponse? = IdpResponse.fromResultIntent(data)
-
-                if (resultCode == Activity.RESULT_OK) {
-                    binding.textMainPrivacyPolicy.visibility = View.GONE
-                    viewModel.requestInit()
-                } else if (isMyResumed && response != null) {
-                    AuthUI.getInstance().signOut(this).addOnCompleteListener {}
-                    showToast(response.error.toString())
-                }
-            }
-            REQUEST_RECOGNIZE_SPEECH -> {
-                if (resultCode == Activity.RESULT_OK) {
-                    val spokenText = data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).let { results ->
-                        results?.get(0)
-                    } ?: ""
-                    recognizeSpeechCallback?.invoke(spokenText)
-                }
-                recognizeSpeechCallback = null
-            }
-            REQUEST_PLAY_SERVICES_RESULT -> {
-                finish()
-            }
-            else -> {
-                super.onActivityResult(requestCode, resultCode, data)
-            }
-        }
-    }
-
-    override fun onNavigationEvent(eventId: Int) {
-        when (eventId) {
-            NAVIGATION_ACTIVITY_BACK -> {
-                onBackPressed()
-            }
-            NAVIGATION_FRAGMENT_NOTIFICATIONS -> {
-                if (navController.currentDestination?.label != getString(R.string.label_fragment_notifications)) {
-                    navController.myNavigate(R.id.action_global_fragmentNotifications)
-                }
-            }
-            NAVIGATION_FRAGMENT_SETTINGS -> {
-                if (navController.currentDestination?.label != getString(R.string.label_fragment_settings)) {
-                    navController.myNavigate(R.id.action_global_fragmentSettings)
-                }
-            }
-            NAVIGATION_DIALOG_RATE_APP -> {
-                if (isMyResumed) {
-                    val dialog = DialogRateApp()
-                    dialog.confirmListener = object : ListenerResult<Boolean> {
-                        override fun onResult(result: Boolean) {
-                            if (result) {
-                                openWebApplication(this@MainActivity)
-                            }
-                        }
-                    }
-                    dialog.show(supportFragmentManager, "Rate app Dialog")
-                }
-            }
-            NAVIGATION_EXIT -> {
-                finishAffinity()
-                exitProcess(0)
-            }
-            NAVIGATION_GOOGLE_AUTH -> {
-                startActivityForResult(
-                    AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(providers)
-                        .build(),
-                    REQUEST_SIGN_IN
-                )
-            }
-            NAVIGATION_DIALOG_NEW_VERSION -> {
-                val dialogNewVersion = DialogNewVersion()
-                dialogNewVersion.confirmListener = listenerNewVersion
-                dialogNewVersion.show(supportFragmentManager, "New version Dialog")
-            }
-            NAVIGATION_DIALOG_PATCH_NOTES -> {
-                val dialog = DialogPatchNotes()
-                dialog.show(supportFragmentManager, "Patch Notes Dialog")
-            }
-            NAVIGATION_GOOGLE_LOGOUT -> {
-                if (isMyResumed) {
-                    viewModel.isShowLoading.value = true
-                    AuthUI.getInstance().signOut(this).addOnCompleteListener {
-                        viewModel.isShowLoading.value = false
-                    }
-                }
-            }
-            NAVIGATION_RECREATE_ACTIVITY -> {
-                if (isMyResumed) {
-                    finish()
-                    startActivity(Intent(this, MainActivity::class.java).apply { addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION) })
-                }
-            }
-            NAVIGATION_DIALOG_SUBSCRIPTION_INFO -> {
-                if (isMyResumed) {
-                    val dialog = DialogSubscriptionInfo()
-                    dialog.confirmListener = object : ListenerResult<Boolean> {
-                        override fun onResult(result: Boolean) {
-                            if (result) {
-                                onNavigationEvent(NAVIGATION_DIALOG_SUBSCRIPTION)
-                            }
-                        }
-                    }
-                    dialog.show(supportFragmentManager, "Sub Info Dialog")
-                }
-            }
-            NAVIGATION_DIALOG_SUBSCRIPTION_REQUIRED -> {
-                if (isMyResumed) {
-                    val dialog = DialogNeedSubscription()
-                    dialog.confirmListener = object : ListenerResult<Boolean> {
-                        override fun onResult(result: Boolean) {
-                            if (result) {
-                                onNavigationEvent(NAVIGATION_DIALOG_SUBSCRIPTION_INFO)
-                            }
-                        }
-                    }
-                    dialog.show(supportFragmentManager, "Sub Info Dialog")
-                }
-            }
-            NAVIGATION_LOADING_SHOW -> setLoadingVisible(true)
-            NAVIGATION_LOADING_HIDE -> setLoadingVisible(false)
-            else -> super.onNavigationEvent(eventId)
-        }
-    }
-
-    override fun setupThemeColors() {
-        super.setupThemeColors()
-        val isNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
-        binding.navigationViewMain.setBackgroundColor(ContextCompat.getColor(this, if (isNightMode) R.color.bottom_navigation_color else getPrimaryColorResId()))
-        binding.navigationViewMain.itemBackgroundResource = if (isNightMode) R.color.bottom_navigation_color else getPrimaryColorResId()
-        binding.buttonMainFab.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, if (isNightMode) R.color.floating_button_color else getPrimaryColorResId()))
-    }
-
-    fun setLoadingVisible(isVisible: Boolean) {
-        viewModel.isShowLoading.value = isVisible
-    }
-
-    fun playWord(word: Word?) {
-        playText(word?.eng)
-    }
-
-    fun playText(text: String?) {
-        if (isPlaying) return
-
-        text ?: return
-        val textToSpeak = text.replace("_", "").replace("|", "")
-        if (textToSpeak.isEmpty()) return
-
-        val isEngPlay = text.any { (it in 'a'..'z') || (it in 'A'..'Z') }
-
-        isPlaying = true
-        if (tts == null || !isTtsInit || isTtsInitFailed || (isLastPlayedEng != isEngPlay)) {
-            isLastPlayedEng = isEngPlay
-            isTtsInitFailed = false
-
-            tts = TextToSpeech(this) {
-                if (it == TextToSpeech.SUCCESS) {
-                    tts?.language = if (isLastPlayedEng) Locale.US else Locale.getDefault()
-                    isTtsInit = true
-                    speak(textToSpeak)
-                    lastVoiceText = textToSpeak
-                } else {
-                    isPlaying = false
-                    isTtsInitFailed = true
-                    showToast(getString(R.string.error_word_voice, it.toString()))
-                }
-            }
-        } else {
-            speak(textToSpeak)
-            lastVoiceText = textToSpeak
-        }
-    }
-
-    fun requestRecognizeSpeech(localeString: String, recognizeSpeechCallback: ((String?) -> Unit)) {
-        try {
-            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-                putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-                putExtra(RecognizerIntent.EXTRA_LANGUAGE, getLocaleStringByKey(localeString) ?: Locale.getDefault())
-            }
-            this.recognizeSpeechCallback = recognizeSpeechCallback
-            startActivityForResult(intent, REQUEST_RECOGNIZE_SPEECH)
-        } catch (e: Exception) {
-            val dialog = DialogVoiceInput()
-            dialog.confirmListener = object: ListenerResult<Boolean> {
-                override fun onResult(result: Boolean) {
-                    if (result) {
-                        recognizeSpeechCallback(null)
-                    }
-                    this@MainActivity.recognizeSpeechCallback = null
-                }
-            }
-            dialog.show(supportFragmentManager, "Restore word Dialog")
-        }
-    }
-
-    private fun speak(textToSpeak: String) {
-        if (textToSpeak == lastVoiceText && isFastSpeechSpeed) {
-            tts?.setSpeechRate(0.5f)
-            isFastSpeechSpeed = false
-        } else {
-            tts?.setSpeechRate(1f)
-            isFastSpeechSpeed = true
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            tts?.speak(textToSpeak, TextToSpeech.QUEUE_FLUSH, null, null)
-            isPlaying = false
-        } else {
-            @Suppress("DEPRECATION")
-            tts?.speak(textToSpeak, TextToSpeech.QUEUE_FLUSH, null)
-            isPlaying = false
-        }
-    }
-
-    private fun initGooglePlayServices() {
-        val googleApiAvailability = GoogleApiAvailability.getInstance()
-        val status = googleApiAvailability.isGooglePlayServicesAvailable(this)
-
-        if (status != ConnectionResult.SUCCESS) {
-            if (googleApiAvailability.isUserResolvableError(status)) {
-                val dialog = googleApiAvailability.getErrorDialog(this, status, REQUEST_PLAY_SERVICES_RESULT)
-                dialog.setOnCancelListener { finish() }
-                dialog.show()
-            }
-        } else {
-            GoogleApiAvailability.getInstance().makeGooglePlayServicesAvailable(this)
-        }
-    }
-
     private fun isTopLevelTab(tabResId: Int) = TOP_LEVEL_DESTINATIONS.contains(tabResId)
-
-    private fun getLocaleStringByKey(key: String) = when(key) {
-        "EN" -> Locale.US.toString()
-        "RU" -> Locale("ru", "RU").toString()
-        "DE" -> Locale.GERMANY.toString()
-        "ES" -> Locale("es", "ES").toString()
-        "FR" -> Locale.FRANCE.toString()
-        "ZH" -> Locale.CHINA.toString()
-        "JA" -> Locale.JAPAN.toString()
-        "IT" -> Locale.ITALY.toString()
-        else -> null
-    }
 }

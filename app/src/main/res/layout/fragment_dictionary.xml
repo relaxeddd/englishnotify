@@ -1,170 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="UnusedAttribute">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <data>
-
-        <import type="android.view.View" />
-        <variable
-            name="hasWords"
-            type="boolean" />
-        <variable
-            name="clickListenerCloseFilter"
-            type="android.view.View.OnClickListener"/>
-        <variable
-            name="viewModel"
-            type="relaxeddd.englishnotify.ui.dictionary.ViewModelDictionary"/>
-
-    </data>
-
-    <RelativeLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_dictionary"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:scrollbars="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:paddingBottom="@dimen/size_72"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_dictionary"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:scrollbars="vertical"
-            android:visibility="@{hasWords ? View.VISIBLE : View.GONE}"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:paddingBottom="@dimen/size_72"/>
+    <TextView
+        android:id="@+id/text_dictionary_no_words"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/no_words_default"
+        android:textSize="@dimen/font_16"/>
 
-        <TextView
-            android:id="@+id/text_dictionary_no_words"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/no_words_default"
-            android:textSize="@dimen/font_16"
-            android:visibility="@{!hasWords ? View.VISIBLE : View.GONE}"/>
+    <LinearLayout
+        android:id="@+id/container_dictionary_filter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/filter_bg_color"
+        android:elevation="@dimen/default_elevation"
+        android:layout_marginTop="-4dp"
+        android:visibility="gone"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/container_dictionary_filter"
+        <RelativeLayout
+            android:id="@+id/container_dictionary_filter_tags"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/filter_bg_color"
-            android:elevation="@dimen/default_elevation"
-            android:layout_marginTop="-4dp"
-            android:visibility="gone"
-            android:orientation="vertical">
+            android:layout_marginTop="@dimen/size_8">
 
-            <RelativeLayout
-                android:id="@+id/container_dictionary_filter_tags"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/text_dictionary_filter_tags"
+                android:text="@string/notification_categories"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/size_8"
-                android:onClick="@{viewModel.clickListenerFilterTags}">
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_14"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="@dimen/size_32"
+                android:layout_marginTop="@dimen/size_16"
+                android:layout_marginBottom="@dimen/size_16"
+                android:maxLines="1"
+                android:ellipsize="end"/>
 
-                <TextView
-                    android:id="@+id/text_dictionary_filter_tags"
-                    android:text="@string/notification_categories"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/font_14"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginStart="@dimen/size_32"
-                    android:layout_marginTop="@dimen/size_16"
-                    android:layout_marginBottom="@dimen/size_16"
-                    android:maxLines="1"
-                    android:ellipsize="end"/>
-
-                <TextView
-                    android:id="@+id/text_dictionary_filter_tags_values"
-                    android:text='@{!viewModel.filterTags.isEmpty() ? viewModel.filterTags.toString() : ""}'
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="@{!viewModel.filterTags.isEmpty() ? View.VISIBLE : View.GONE}"
-                    android:layout_below="@+id/text_dictionary_filter_tags"
-                    android:textSize="@dimen/font_10"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    android:textColor="@color/white"
-                    android:layout_marginTop="@dimen/size_2"
-                    android:layout_marginStart="@dimen/size_32"
-                    android:layout_marginBottom="@dimen/size_12"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/text_dictionary_filter_tags_values"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/size_8"
-                android:onClick="@{viewModel.clickListenerSortBy}">
+                android:layout_below="@+id/text_dictionary_filter_tags"
+                android:textSize="@dimen/font_10"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textColor="@color/white"
+                android:layout_marginTop="@dimen/size_2"
+                android:layout_marginStart="@dimen/size_32"
+                android:layout_marginBottom="@dimen/size_12"/>
 
-                <TextView
-                    android:text="@string/sort_by"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/text_dictionary_sort_by"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/font_14"
-                    android:layout_marginTop="@dimen/size_16"
-                    android:layout_marginStart="@dimen/size_32"
-                    android:layout_marginBottom="@dimen/size_16"
-                    android:layout_marginEnd="@dimen/size_32"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_toStartOf="@+id/text_dictionary_sort_by_value"
-                    android:ellipsize="end"
-                    android:maxLines="1" />
+        </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/text_dictionary_sort_by_value"
-                    android:text="@{viewModel.sortByType.getTitle()}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:layout_marginEnd="@dimen/size_32"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentEnd="true"/>
+        <RelativeLayout
+            android:id="@+id/container_sorted_by"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_8">
 
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/text_dictionary_sort_by"
+                android:text="@string/sort_by"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/size_8"
-                android:layout_marginBottom="@dimen/size_8"
-                android:visibility="@{viewModel.isShowOwnWordsContainer ? View.VISIBLE : View.GONE}">
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_14"
+                android:layout_marginTop="@dimen/size_16"
+                android:layout_marginStart="@dimen/size_32"
+                android:layout_marginBottom="@dimen/size_16"
+                android:layout_marginEnd="@dimen/size_32"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/text_dictionary_sort_by_value"
+                android:ellipsize="end"
+                android:maxLines="1" />
 
-                <TextView
-                    android:id="@+id/text_dictionary_show_own_words"
-                    android:text="@string/show_own_words"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/font_14"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_alignStart="@+id/check_box_dictionary_show_own_words"
-                    android:layout_toStartOf="@+id/check_box_dictionary_show_own_words"
-                    android:layout_marginTop="@dimen/size_16"
-                    android:layout_marginStart="@dimen/size_32"
-                    android:layout_marginBottom="@dimen/size_16"
-                    android:ellipsize="end"
-                    android:maxLines="1"/>
+            <TextView
+                android:id="@+id/text_dictionary_sort_by_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:layout_marginEnd="@dimen/size_32"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"/>
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/check_box_dictionary_show_own_words"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:checked="@{safeUnbox(viewModel.isShowOwnWords)}"
-                    android:layout_marginEnd="@dimen/size_32"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentEnd="true"/>
+        </RelativeLayout>
 
-            </RelativeLayout>
+    </LinearLayout>
 
-        </LinearLayout>
-
-    </RelativeLayout>
-
-</layout>
+</RelativeLayout>
