@@ -4,8 +4,6 @@
     <color name="system_ui_scrim_black">#B3000000</color>
 
     <color name="background_main">#131313</color>
-    <color name="text_color_main">@color/white</color>
-    <color name="card_view_color">#000000</color>
     <color name="progress_bar_secondary">@color/gray</color>
     <color name="navigation_bar_color">#5E000000</color>
     <color name="navigation_bar_divider_color">#45777777</color>
