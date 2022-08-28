@@ -1,23 +1,20 @@
-package relaxeddd.englishnotify.di
+package relaxeddd.englishnotify.infrastructure.di
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import dagger.Binds
-import dagger.MapKey
 import dagger.Module
+import relaxeddd.englishnotify.infrastructure.FakePreferences
 import relaxeddd.englishnotify.notifications.NotificationsWorkManagerHelper
 import relaxeddd.englishnotify.notifications.NotificationsWorkManagerHelperImpl
 import relaxeddd.englishnotify.preferences.Preferences
-import relaxeddd.englishnotify.preferences.PreferencesImpl
 import relaxeddd.englishnotify.ui.AppViewModelFactory
 import javax.inject.Singleton
-import kotlin.reflect.KClass
 
-@Module(includes = [ApplicationModuleBinds::class])
-object ApplicationModule
+@Module(includes = [TestApplicationModuleBinds::class])
+object TestApplicationModule
 
 @Module
-abstract class ApplicationModuleBinds {
+abstract class TestApplicationModuleBinds {
 
     @Binds
     internal abstract fun bindViewModelFactory(factory: AppViewModelFactory): ViewModelProvider.Factory
@@ -30,12 +27,5 @@ abstract class ApplicationModuleBinds {
 
     @Singleton
     @Binds
-    internal abstract fun bindPreferences(prefs: PreferencesImpl): Preferences
+    internal abstract fun bindPreferences(prefs: FakePreferences): Preferences
 }
-
-@Target(
-    AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER, AnnotationTarget.PROPERTY_SETTER
-)
-@Retention(AnnotationRetention.RUNTIME)
-@MapKey
-annotation class ViewModelKey(val value: KClass<out ViewModel>)
