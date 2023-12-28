@@ -117,12 +117,12 @@ abstract class BaseDaggerlessFragment<VM : ViewModelBase, B : ViewBinding> : Fra
             searchView = searchItem.actionView as SearchView
 
             searchItem.setOnActionExpandListener( object: MenuItem.OnActionExpandListener {
-                override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
+                override fun onMenuItemActionExpand(item: MenuItem): Boolean {
                     onSearchViewStateChanged(false)
                     return true
                 }
 
-                override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+                override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
                     textSearch = ""
                     onSearchViewStateChanged(true)
                     return true
