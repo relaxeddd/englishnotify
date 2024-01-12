@@ -1,12 +1,15 @@
 package relaxeddd.englishnotify.notifications
 
+import android.Manifest.permission
 import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import androidx.annotation.WorkerThread
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.RemoteInput
@@ -229,6 +232,9 @@ class NotificationHelper {
 
                 val notificationId = if (existsNotificationId != -1) existsNotificationId else Random.nextInt(10000)
                 NotificationManagerCompat.from(ctx.applicationContext).apply {
+                    if (ActivityCompat.checkSelfPermission(ctx, permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                        return
+                    }
                     if (tag != null) {
                         notify(tag, notificationId, build())
                     } else {

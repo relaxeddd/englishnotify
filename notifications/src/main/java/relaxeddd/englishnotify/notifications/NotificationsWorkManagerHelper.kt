@@ -3,9 +3,9 @@ package relaxeddd.englishnotify.notifications
 import android.content.Context
 import androidx.work.BackoffPolicy
 import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.OneTimeWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import androidx.work.WorkRequest
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -38,7 +38,7 @@ class NotificationsWorkManagerHelperImpl @Inject constructor(
             TimeUnit.MINUTES,
         ).setBackoffCriteria(
             BackoffPolicy.LINEAR,
-            OneTimeWorkRequest.MIN_BACKOFF_MILLIS,
+            WorkRequest.MIN_BACKOFF_MILLIS,
             TimeUnit.MILLISECONDS
         ).setInitialDelay(repeatTimeInMinutes, TimeUnit.MINUTES).build()
 
