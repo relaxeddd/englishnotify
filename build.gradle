@@ -6,20 +6,20 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.2.0'
+        classpath 'com.android.tools.build:gradle:8.2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.22"
         classpath "android.arch.navigation:navigation-safe-args-gradle-plugin:1.0.0"
         //classpath "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:1.9.22-1.0.16"
     }
 }
 
-task clean(type: Delete) {
+tasks.register('clean', Delete) {
     delete rootProject.buildDir
 }
 
 ext {
-    versionCode = 91
-    versionName = "4.0.3"
+    versionCode = 92
+    versionName = "4.0.4"
     minSdkVersion = 21
     targetSdkVersion = 34
     compileSdkVersion = 34
