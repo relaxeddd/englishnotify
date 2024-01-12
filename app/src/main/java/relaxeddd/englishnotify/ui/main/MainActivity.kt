@@ -1,12 +1,16 @@
 package relaxeddd.englishnotify.ui.main
 
+import android.Manifest.permission.POST_NOTIFICATIONS
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.graphics.Insets
 import android.media.AudioManager
 import android.os.Build
+import android.os.Build.VERSION
+import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.speech.tts.TextToSpeech
@@ -56,6 +60,7 @@ class MainActivity : DaggerAppCompatActivity(), INavigationOwner, IToolbarOwner,
 
     companion object {
         const val REQUEST_RECOGNIZE_SPEECH = 5242
+        private const val REQUEST_NOTIFICATIONS_PERMISSION_CODE = 4234
 
         private const val NAV_ID_NONE = -1
 
@@ -107,7 +112,9 @@ class MainActivity : DaggerAppCompatActivity(), INavigationOwner, IToolbarOwner,
         initInsets(binding, isBottomNavigation)
         initNavigation(binding, isBottomNavigation, initialNavigationId)
 
-        viewModel.onViewCreate()
+        val hasNotificationsPermission =
+            VERSION.SDK_INT < VERSION_CODES.TIRAMISU || checkSelfPermission(POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
+        viewModel.onViewCreate(hasNotificationsPermission)
 
         subscribeToViewModel()
     }
@@ -141,6 +148,14 @@ class MainActivity : DaggerAppCompatActivity(), INavigationOwner, IToolbarOwner,
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         currentFragmentId = binding.drawerNavigation.checkedItem?.itemId ?: NAV_ID_NONE
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        if (requestCode == REQUEST_NOTIFICATIONS_PERMISSION_CODE) {
+            viewModel.showPatchNotesIfNeeded()
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -212,6 +227,11 @@ class MainActivity : DaggerAppCompatActivity(), INavigationOwner, IToolbarOwner,
             NAVIGATION_DIALOG_PATCH_NOTES -> {
                 val dialog = DialogPatchNotes()
                 dialog.show(supportFragmentManager, "Patch Notes Dialog")
+            }
+            NAVIGATION_REQUEST_NOTIFICATIONS_PERMISSION -> {
+                if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
+                    requestPermissions(arrayOf(POST_NOTIFICATIONS), REQUEST_NOTIFICATIONS_PERMISSION_CODE)
+                }
             }
             NAVIGATION_RECREATE_ACTIVITY -> {
                 if (isMyResumed) {
