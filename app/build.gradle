@@ -97,7 +97,7 @@ dependencies {
     implementation "androidx.work:work-runtime-ktx:$workmanager"
 
     //In-app rate
-    implementation "com.google.android.play:core:$playCore"
+    implementation "com.google.android.play:review:$inAppReview"
 
     testImplementation "junit:junit:$junit"
     testImplementation "io.mockk:mockk:$mokk"

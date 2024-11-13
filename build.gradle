@@ -35,7 +35,7 @@ ext {
     workmanager = '2.9.0'
     dagger = '2.50'
 
-    playCore = '1.10.3'
+    inAppReview = '2.0.2'
 
     junit = '4.13.2'
     mokk = '1.12.7'
